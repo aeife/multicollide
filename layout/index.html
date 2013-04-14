@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="css/font-awesome.css"/>
   <!--[if IE 7]><link rel="stylesheet" href="css/font-awesome-ie7.min.css"><![endif]-->
 
+  <style type="text/css">
+    .rounded {
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+      
+  </style>
+
 </head>
 <body style="padding-top:60px;">
 
@@ -236,12 +245,29 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
       </div>
       <div class="span3">
-          <ul class="nav nav-list affix">
-            <li class="nav-header">List header</li>
-            <li class="active"><a href="#">Home sdfdsf sdfdsf sdf dsfsdf dsf</a></li>
-            <li><a href="#">Library</a></li>
-            ...
-          </ul>
+        <!-- offset9 not working in ie7 -->
+        <div class="span3 affix text-center rounded" style="height: 700px; margin-left:0px; background-color: #E5E5E5;">
+
+          <div id="profileStatus" class="rounded" style="height:300px; margin: 5px; background-color:lightgrey;">
+            <h4>Create an account and profit:</h4>
+            <ul style="text-align:left;">
+              <li>get your own profile</li>
+              <li>statistics of all your games</li>
+              <li>conquer the highscore list</li>
+            </ul>
+            <br/>
+            <br/>
+            <div class="btn-group btn-group-vertical text-left">
+              <a class="btn btn-medium">Create Account!</a>
+              <br/>
+              <a class="btn btn-medium">Log In!</a>
+            </div>
+          </div>
+
+          <div id="newsFeed">
+            NEWS
+          </div>
+        </div>
       </div>
   </div>
 
