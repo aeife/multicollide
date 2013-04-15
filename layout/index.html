@@ -9,53 +9,78 @@
   <!--[if IE 7]><link rel="stylesheet" href="css/font-awesome-ie7.min.css"><![endif]-->
 
   <style type="text/css">
-    .rounded {
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
+    .box {
+      background-color: #fafafa;
+      background-repeat: repeat-x;
+      border: 1px solid #d4d4d4;
+      
+    }
+
+    #sidebar {
+      border-top: 0px;
+      padding:2px;
     }
       
-     .jumbotron {
-        margin: 40px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 100px;
-        line-height: 1;
-      }
-      .jumbotron h2 {
-        font-size: 80px;
-        line-height: 1;
-      }
+   .jumbotron {
+      margin: 40px 0;
+      text-align: center;
+    }
+    .jumbotron h1 {
+      font-size: 100px;
+      line-height: 1;
+    }
+    .jumbotron h2 {
+      font-size: 80px;
+      line-height: 1;
+    }
+
+    .navbar {
+      margin-bottom: 0px;
+    }
+
+    .navbar-inner {
+      border-radius:0px;
+    }
+
+    .col{
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    
+    }
+
+    .col-wrap{
+        overflow: hidden; 
+    }
   </style>
 
+  
+
 </head>
-<body style="padding-top:60px;">
+<body>
+  <div class="container">
+    <div class="navbar"  style="min-width:800px;">
+      <div class="navbar-inner">
+        <div class="container">
 
-  <div class="navbar navbar-fixed-top"  style="min-width:800px;">
-    <div class="navbar-inner">
-      <div class="container">
+          <a class="brand" href="#">MultiCollide</a>
 
-        <a class="brand" href="#">MultiCollide</a>
-
-          <ul class="nav">
-            <li class="active"><a href="#"><i class="icon-home"></i> Home</a></li>
-            <li><a href="#"><i class="icon-list"></i>Games</a></li>
-            <li><a href="#"><i class="icon-book"></i>Blog</a></li>
-          </ul>
-          <ul class="nav pull-right">
-            <li><a href="#">Quick Play</a></li>
-            <li><a href="#"><i class="icon-wrench icon-large"></i>  </a></li>
-          </ul>
+            <ul class="nav">
+              <li class="active"><a href="#"><i class="icon-home"></i> Home</a></li>
+              <li><a href="#"><i class="icon-list"></i>Games</a></li>
+              <li><a href="#"><i class="icon-book"></i>Blog</a></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li style="font-size:20px;"><a href="#">Quick Play</a></li>
+              <li><a href="#"><i class="icon-wrench icon-large"></i>  </a></li>
+            </ul>
 
 
-      </div><!-- /.container -->
-    </div><!-- /.navbar-inner -->
-  </div><!-- /.navbar -->
+        </div><!-- /.container -->
+      </div><!-- /.navbar-inner -->
+    </div><!-- /.navbar -->
 
-  <div class="container"  style="min-width:600px;">
-    <div class="row" >
-      <div class="span9">
+    <div class="row col-wrap">
+      <div class="span9 sameHeight">
         <div class="jumbotron" style="text-align:center;">
           <h1>MultiCollide</h1>
           <h2>A HTML 5 Multiplayer game using socket.io and node.js</h2>
@@ -73,13 +98,13 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat. 
 
 Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus. 
-
       </div>
       <div class="span3">
-        <!-- offset9 not working in ie7 -->
-        <div class="span3 affix text-center rounded" style="height: 700px; margin-left:0px; background-color: #E5E5E5;">
+        <div id="sidebar" class="box sameHeight text-center">
+          <!-- offset9 not working in ie7 -->
 
-          <div id="profileStatus" class="rounded" style="height:300px; margin: 5px; background-color:lightgrey;">
+
+          <div id="profileStatus" class="box" style="height:300px;">
             <h4>Create an account and profit:</h4>
             <ul style="text-align:left;">
               <li>get your own profile</li>
@@ -100,11 +125,24 @@ Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
           </div>
         </div>
       </div>
-  </div>
+    </div>
+
+    <div id="footer" class="text-center">
+      <i>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos e</i>
+    </div>
+  </div><!-- /.container -->
 
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/bootstrap.js"></script>
+  <script>
+    boxes = $('.sameHeight');
+    maxHeight = Math.max.apply(
+      Math, boxes.map(function() {
+        return $(this).height();
+    }).get());
+    boxes.height(maxHeight);
+  </script>
 
 </body>
 </html>
