@@ -51,6 +51,46 @@
     .col-wrap{
         overflow: hidden; 
     }
+
+    #profileBox {
+      padding: 5px;
+    }
+
+    #profileBox h4 {
+      text-align: center;
+    }
+
+    #profileBox img {
+      float:left;
+    }
+
+    #profileBox ul {
+      float:left;
+      list-style:none;
+      margin-left: 10px;
+    }
+
+    #profileBox ul li {
+      padding: 5px;
+    }
+
+    #profileBoxLower {
+      text-align: center;
+      font-size: 17px;
+      padding: 10px;
+    }
+
+    .newsItem {
+      padding: 10px;
+    }
+
+    .newsItem h4, .newsItem h5 {
+      text-align: center;
+    }
+
+    .clear {
+      clear: both;
+    }
   </style>
 
   
@@ -80,6 +120,7 @@
     </div><!-- /.navbar -->
 
     <div class="row col-wrap">
+
       <div class="span9 sameHeight">
         <div class="jumbotron" style="text-align:center;">
           <h1>MultiCollide</h1>
@@ -98,30 +139,102 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat. 
 
 Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus. 
+      
+      <div id="serverBrowser">
+        <h1 class="text-center">Server Browser</h1>
+        <div class="btn-toolbar text-center">
+          <div class="btn-group">
+            <a href="#" class="btn">create game</a>
+          </div>
+          <div class="btn-group">
+            <a href="#" class="btn">refresh</a>
+          </div>
+        </div>
+        <table class="table table-striped table-hover">
+          <tr>
+            <th>Game Name</th>
+            <th>Players</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>Game Nr. One</td>
+            <td>4 / 10</td>
+            <td>Lobby</td>
+            <td><a href="#" class="btn btn-small">join</a></td>
+          </tr>
+          <tr>
+            <td>Private Elite Game</td>
+            <td>2 / 4</td>
+            <td>Lobby</td>
+            <td><a href="#" class="btn btn-small">join</a></td>
+          </tr>
+          <tr>
+            <td>Beginners Only</td>
+            <td>10 / 10</td>
+            <td>Playing</td>
+            <td><a href="#" class="btn btn-small">join</a></td>
+          </tr>
+          <tr>
+            <td>Another fine Game</td>
+            <td>4 / 10</td>
+            <td>Playing</td>
+            <td><a href="#" class="btn btn-small">join</a></td>
+          </tr>
+        </table>
       </div>
+
+      </div>
+
       <div class="span3">
-        <div id="sidebar" class="box sameHeight text-center">
+        <div id="sidebar" class="box sameHeight">
           <!-- offset9 not working in ie7 -->
 
 
-          <div id="profileStatus" class="box" style="height:300px;">
+          <div id="profileBox" class="box" style="height:200px;">
             <h4>Create an account and profit:</h4>
             <ul style="text-align:left;">
               <li>get your own profile</li>
               <li>statistics of all your games</li>
               <li>conquer the highscore list</li>
             </ul>
-            <br/>
-            <br/>
-            <div class="btn-group btn-group-vertical text-left">
-              <a class="btn btn-medium">Create Account!</a>
-              <br/>
-              <a class="btn btn-medium">Log In!</a>
+            <div class="btn-toolbar text-center">
+              <div class="btn-group">
+                <a class="btn btn-medium">Create Account</a>
+              </div>
+              <div class="btn-group">
+                <a class="btn btn-medium">Log In</a>
+              </div>
             </div>
           </div>
 
+          <div id="profileBox" class="box" style="height:200px;">
+            <h4><a href="#">Username</a></h4>
+            <img src="http://placehold.it/100x100"/>
+            
+            <ul>
+              <li>Played: 132</li>
+              <li>Won: 30</li>
+              <li>Score: 8232</li>
+            </ul>
+           
+            <div id="profileBoxLower" class="clear">
+              <a href="#"><i class="icon-group icon-large"></i>5 friends online</a>
+            </div>
+
+          </div>
+
           <div id="newsFeed">
-            NEWS
+            <div class="newsItem">
+              <h4>New Patch 0.1.12</h4>
+              <h5>12.07.2013</h5>
+              The new version 0.1.12 adds some new features and fixes a lot of bugs.
+            </div>
+            <div class="newsItem">
+              <h4>Server Downtime</h4>
+              <h5>01.07.2013</h5>
+              Servers will be shut down for maintenance. Downtime is expected to be from 9 till 11 pm GMT.
+            </div>
           </div>
         </div>
       </div>
