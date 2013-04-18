@@ -9,6 +9,7 @@ var express = require('express')
 
 var app = express();
 
+
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -25,12 +26,20 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 app.get('/', function (req, res) {
+  
   res.send('Welcome to the API');
 });
 
+
 app.get('/user/123', function (req, res) {
-  res.send({games: 321});
+  res.send({games: 321, friends: ['trick', 'tick', 'track']});
 });
 
 http.createServer(app).listen(app.get('port'), function(){
