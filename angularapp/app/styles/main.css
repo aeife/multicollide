@@ -1,1 +1,83 @@
 /* Will be compiled down to a single stylesheet with your sass files */
+.box {
+  background-color: #fafafa;
+  background-repeat: repeat-x;
+  border: 1px solid #d4d4d4;
+  
+}
+
+#sidebar {
+  border-top: 0px;
+  padding:2px;
+}
+  
+.jumbotron {
+  margin: 40px 0;
+  text-align: center;
+}
+.jumbotron h1 {
+  font-size: 100px;
+  line-height: 1;
+}
+.jumbotron h2 {
+  font-size: 80px;
+  line-height: 1;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-inner {
+  border-radius:0px;
+}
+
+.col{
+margin-bottom: -99999px;
+padding-bottom: 99999px;
+
+}
+
+.col-wrap{
+    overflow: hidden; 
+}
+
+#profileBox {
+  padding: 5px;
+}
+
+#profileBox h4 {
+  text-align: center;
+}
+
+#profileBox img {
+  float:left;
+}
+
+#profileBox ul {
+  float:left;
+  list-style:none;
+  margin-left: 10px;
+}
+
+#profileBox ul li {
+  padding: 5px;
+}
+
+#profileBoxLower {
+  text-align: center;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.newsItem {
+  padding: 10px;
+}
+
+.newsItem h4, .newsItem h5 {
+  text-align: center;
+}
+
+.clear {
+  clear: both;
+}
