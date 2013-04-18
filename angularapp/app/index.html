@@ -27,8 +27,79 @@
 
     <!-- Add your site or application content here -->
 
-      <div class="container" ng-view>
-        
+      <div class="container">
+        <div class="navbar"  style="min-width:800px;">
+          <div class="navbar-inner">
+            <div class="container">
+
+              <a class="brand" href="#">MultiCollide</a>
+
+                <ul class="nav">
+                  <li class="active"><a href="#"><i class="icon-home"></i> Home</a></li>
+                  <li><a href="#"><i class="icon-list"></i>Games</a></li>
+                  <li><a href="#"><i class="icon-book"></i>Blog</a></li>
+                </ul>
+                <ul class="nav pull-right">
+                  <li style="font-size:20px;"><a href="#">Quick Play</a></li>
+                  <li><a href="#"><i class="icon-wrench icon-large"></i>  </a></li>
+                </ul>
+
+
+            </div><!-- /.container -->
+          </div><!-- /.navbar-inner -->
+        </div><!-- /.navbar -->
+
+        <div class="row col-wrap">
+
+          <!--  <div class="span9 sameheight"> -->
+          <div class="span9" ng-view>
+               
+
+          </div>
+
+          <div class="span3">
+            <div id="sidebar" class="box sameHeight">
+              <!-- offset9 not working in ie7 -->
+
+              <profile-box></profile-box>
+
+
+              <div id="profileBox" class="box" style="height:200px;">
+                <h4><a href="#">Username</a></h4>
+                <img src="http://placehold.it/100x100"/>
+                
+                <ul>
+                  <li>Played: 132</li>
+                  <li>Won: 30</li>
+                  <li>Score: 8232</li>
+                </ul>
+               
+                <div id="profileBoxLower" class="clear">
+                  <a href="#"><i class="icon-group icon-large"></i>5 friends online</a>
+                </div>
+
+              </div>
+
+              <div id="newsFeed">
+                <div class="newsItem">
+                  <h4>New Patch 0.1.12</h4>
+                  <h5>12.07.2013</h5>
+                  The new version 0.1.12 adds some new features and fixes a lot of bugs.
+                </div>
+                <div class="newsItem">
+                  <h4>Server Downtime</h4>
+                  <h5>01.07.2013</h5>
+                  Servers will be shut down for maintenance. Downtime is expected to be from 9 till 11 pm GMT.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="footer" class="text-center">
+          <i>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos e</i>
+        </div>
+
       </div><!-- /.container -->
 
 
@@ -56,6 +127,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/directives/profileBox.js"></script>
+    <script src="scripts/controllers/login.js"></script>
     <!-- endbuild -->
 
     <script>
