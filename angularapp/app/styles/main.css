@@ -1,4 +1,9 @@
 /* Will be compiled down to a single stylesheet with your sass files */
+
+body {
+  overflow: scroll
+}
+
 .box {
   background-color: #fafafa;
   background-repeat: repeat-x;
