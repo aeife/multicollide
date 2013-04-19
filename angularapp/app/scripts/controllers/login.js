@@ -12,12 +12,7 @@ angular.module('angularappApp')
         .success(function(data){
             console.log("successful send log in data")
             console.log(data);
-
-            $cookies.test = "yep";
-            //$cookieStore.put('loggedin', true);
-            //$cookieStore.put('ownid', data.id);
-
-
+            $cookies.loggedin = "true";
         });
     }
   });

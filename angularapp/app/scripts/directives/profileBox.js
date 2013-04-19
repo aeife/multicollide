@@ -7,23 +7,8 @@ angular.module('angularappApp')
       templateUrl: 'views/profileBox.html',
       controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore){
 
-        // $cookies.$watch('loggedin', function(newValue, oldValue) {
-          if ($cookies.loggedin){
-            $scope.templateUrl = 'views/profileBoxUser.html';
 
-            var User = $resource('http://localhost\\:3000/user/:userId', {userId:'@id'});
-            var user = User.get({userId:$cookies.ownid}, function() {
-              console.log(user);
-              $scope.username = user.username;
-              $scope.games = user.games;
-            });
-
-
-          } else {
-            $scope.templateUrl = 'views/profileBoxGuest.html';
-          }
-        // });
-
+        
 
         /*if ($rootScope.loggedin){
           $scope.templateUrl = 'views/profileBoxUser.html';
@@ -31,15 +16,50 @@ angular.module('angularappApp')
           $scope.templateUrl = 'views/profileBoxGuest.html';
         }*/
 
-        var User = $resource('http://localhost\\:3000/test');
+       // var User = $resource('http://localhost\\:3000/test');
+
+        $scope.showProfile = function(){
+          $scope.templateUrl = 'views/profileBoxUser.html';
+
+          var User = $resource('http://localhost\\:3000/user/own', {});
+          var user = User.get({}, function() {
+            console.log(user);
+            $scope.username = user.username;
+            $scope.games = user.games;
+          });
+        }
+
+        $scope.logout = function(){
+          $http.post('http://localhost:3000/logout');
+          delete $cookies.loggedin;
+          
+        }
+
+        if ($cookies.loggedin){
+          $scope.showProfile();
+        } else {
+          $scope.templateUrl = 'views/profileBoxGuest.html';
+        }
+
+        // watch for cookie
+        $scope.cookie = $cookies;
+        $scope.$watch("cookie.loggedin", function(newValue, oldValue) {
+          console.log("cookies changes!");
+          if (newValue)  $scope.showProfile();
+          else $scope.templateUrl = 'views/profileBoxGuest.html';
+        }, true);
+      
+
 
         $scope.changeStatus = function(){
+          console.log($scope.cookie);
           console.log($cookies);
+          if ($cookies.loggedin) console.log("LOGGED IN");
 
-          var User1 = $resource('http://localhost\\:3000/user/own', {});
-          var user1 = User1.get({}, function() {
-            console.log(user1);
-          });
+          // var User1 = $resource('http://localhost\\:3000/user/own', {});
+          // var user1 = User1.get({}, function() {
+          //   console.log(user1);
+          // });
           //console.log($cookieStore.get('ownid'));
 
           /*if ($rootScope.loggedin){

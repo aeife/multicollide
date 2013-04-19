@@ -79,10 +79,20 @@ app.post('/login', function(req, res){
   //response.send(request.body);    // echo the result back
 });
 
+app.post('/logout', function(req, res){
+  console.log("LOGOUT");
+
+  req.session.destroy = true;
+
+  
+
+  //response.send(request.body);    // echo the result back
+});
+
 app.get('/user/own', function (req, res) {
 
   if (req.session.loggedin){
-    res.json({id: 123});
+    res.json({username: "testuser", id: 123, games: 321});
   }
 
 });
