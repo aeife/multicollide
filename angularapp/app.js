@@ -13,14 +13,14 @@ console.log('../angularapp');
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
-  app.set('views', '../angularapp/app');
+  app.set('views', __dirname + '/app');
   app.engine('html', require('ejs').renderFile);
   app.use(express.bodyParser());
   app.use(express.logger('dev'));
   app.use(express.cookieParser());
   app.use(express.session({secret: '1234567890QWERTY'}));
   app.use(express.compress());
-  app.use(express.static('../angularapp/app'));
+  app.use(express.static(__dirname + '/app'));
 });
 
 app.configure('development', function(){
