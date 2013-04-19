@@ -38,6 +38,11 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
+// app.get('/login', function (req, res) {
+//     res.json({ha: "ha"});
+// });
+
+
 
 app.get('/user/123', function (req, res) {
   console.log(req.session);
