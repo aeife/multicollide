@@ -18,7 +18,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.logger('dev'));
   app.use(express.cookieParser());
-  app.use(express.session({secret: '1234567890QWERTY'}));
+  app.use(express.session({secret: '1234567890QWERTY', cookie: { httpOnly: false }}));
   app.use(express.compress());
   app.use(express.static(__dirname + '/app'));
 });
@@ -42,9 +42,9 @@ app.get('/', function (req, res) {
 app.get('/user/123', function (req, res) {
   console.log(req.session);
   if (req.session.loggedin){
-    res.json({games: 321, friends: ['trick', 'tick', 'track']});
+    res.json({games: 321, friends: ['trick', 'tick', 'track'], username: "test"});
   } else {
-    res.json({games: 321, friends: ['false']});
+    res.json({friends: ['false']});
   }
 });
 
@@ -73,10 +73,18 @@ app.post('/login', function(req, res){
 
   if (req.body.username === "test" && req.body.password === "tester"){
     req.session.loggedin = true;
-    res.json({loggedin: true});
+    res.json({loggedin: true, id: 123});
   }
 
   //response.send(request.body);    // echo the result back
+});
+
+app.get('/user/own', function (req, res) {
+
+  if (req.session.loggedin){
+    res.json({id: 123});
+  }
+
 });
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -5,14 +5,51 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, $resource, $http){
-        $scope.templateUrl = 'views/profileBoxGuest.html';
+      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore){
 
+        // $cookies.$watch('loggedin', function(newValue, oldValue) {
+          if ($cookies.loggedin){
+            $scope.templateUrl = 'views/profileBoxUser.html';
+
+            var User = $resource('http://localhost\\:3000/user/:userId', {userId:'@id'});
+            var user = User.get({userId:$cookies.ownid}, function() {
+              console.log(user);
+              $scope.username = user.username;
+              $scope.games = user.games;
+            });
+
+
+          } else {
+            $scope.templateUrl = 'views/profileBoxGuest.html';
+          }
+        // });
+
+
+        /*if ($rootScope.loggedin){
+          $scope.templateUrl = 'views/profileBoxUser.html';
+        } else {
+          $scope.templateUrl = 'views/profileBoxGuest.html';
+        }*/
 
         var User = $resource('http://localhost\\:3000/test');
 
         $scope.changeStatus = function(){
-            $scope.templateUrl = 'views/profileBoxUser.html';
+          console.log($cookies);
+
+          var User1 = $resource('http://localhost\\:3000/user/own', {});
+          var user1 = User1.get({}, function() {
+            console.log(user1);
+          });
+          //console.log($cookieStore.get('ownid'));
+
+          /*if ($rootScope.loggedin){
+          $scope.templateUrl = 'views/profileBoxUser.html';
+        } else {
+          $scope.templateUrl = 'views/profileBoxGuest.html';
+        }*/
+            /*$scope.templateUrl = 'views/profileBoxUser.html';
+
+            console.log($rootScope.loggedin);
 
             $http.get('http://localhost:3000/user/123').
             success(function(data, status, headers, config) {
@@ -39,7 +76,7 @@ angular.module('angularappApp')
               console.log(user);
             });
 
-            $http.post('http://localhost:3000/test', {test: "data"});
+            $http.post('http://localhost:3000/test', {test: "data"});*/
         };
 
 
