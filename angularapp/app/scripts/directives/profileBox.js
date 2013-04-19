@@ -17,7 +17,7 @@ angular.module('angularappApp')
 
        // var User = $resource('http://localhost\\:3000/test');
 
-        $scope.showProfile = function(){
+/*        $scope.showProfile = function(){
           //$scope.templateUrl = 'views/profileBoxUser.html';
 
           // var own = user.getOwnUserInfo();
@@ -36,7 +36,7 @@ angular.module('angularappApp')
             $scope.username = ownuser.username;
             $scope.games = ownuser.games;
           });
-        }
+        }*/
 
         $scope.logout = function(){
           auth.logout();
@@ -48,21 +48,25 @@ angular.module('angularappApp')
           $scope.templateUrl = 'views/profileBoxGuest.html';
         }*/
 
-        // watch for cookie
-        $scope.cookie = auth.isLoggedIn();
+        // watch for login status
+        $scope.loggedIn = auth.isLoggedIn();
 
         
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           console.log("cookies changes!");
-          $scope.cookie = auth.isLoggedIn();
-          if (newValue)  $scope.showProfile();
+          $scope.loggedIn = auth.isLoggedIn();
+          if (newValue) {
+            user.getOwnUserInfo().then(function(data) {
+            $scope.user = data;
+            });
+          }
           //else $scope.templateUrl = 'views/profileBoxGuest.html';
         }, true);
       
 
 
         $scope.changeStatus = function(){
-          console.log($scope.cookie);
+          console.log(auth.isLoggedIn);
           // console.log($scope.user);
           // console.log($scope.cookie);
           // console.log($cookies);
