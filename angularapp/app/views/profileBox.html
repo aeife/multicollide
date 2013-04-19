@@ -1,5 +1,5 @@
-<!-- <ng-include src="templateUrl"></ng-include>
-<a href="" ng-click="changeStatus()">change log in status</a> -->
+<!-- <ng-include src="templateUrl"></ng-include> -->
+<a href="" ng-click="changeStatus()">change log in status</a>
 
 <div ng-switch="cookie.loggedin">
     <div ng-switch-when="true">
@@ -8,7 +8,7 @@
 
 
         <div id="profileBox" class="box" style="height:200px;">
-          <h4><a href="#">{{username}}</a></h4>
+          <h4><a href="#">{{user.username}}</a></h4>
           <img src="http://placehold.it/100x100"/>
           
           <ul>

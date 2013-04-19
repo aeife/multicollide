@@ -22,6 +22,8 @@ angular.module('angularappApp')
         $http.post('http://localhost:3000/logout');
         delete $cookies.loggedin;
       },
-      isLoggedIn: $cookies.loggedin
+      isLoggedIn: function() {
+        return $cookies.loggedin
+      }
     };
   });

@@ -5,10 +5,9 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore, auth){
+      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore, auth, user){
 
 
-        
 
         /*if ($rootScope.loggedin){
           $scope.templateUrl = 'views/profileBoxUser.html';
@@ -21,11 +20,21 @@ angular.module('angularappApp')
         $scope.showProfile = function(){
           //$scope.templateUrl = 'views/profileBoxUser.html';
 
+          // var own = user.getOwnUserInfo();
+          console.log("OWN:");
+          // console.log(own);
+          // $scope.user = user.getOwnUserInfo();
+
+          user.getOwnUserInfo().then(function(data) {
+            $scope.user = data;
+          });
+
+
           var User = $resource('http://localhost\\:3000/user/own', {});
-          var user = User.get({}, function() {
-            console.log(user);
-            $scope.username = user.username;
-            $scope.games = user.games;
+          var ownuser = User.get({}, function() {
+            console.log(ownuser);
+            $scope.username = ownuser.username;
+            $scope.games = ownuser.games;
           });
         }
 
@@ -41,6 +50,8 @@ angular.module('angularappApp')
 
         // watch for cookie
         $scope.cookie = $cookies;
+
+        
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           console.log("cookies changes!");
           if (newValue)  $scope.showProfile();
@@ -50,9 +61,11 @@ angular.module('angularappApp')
 
 
         $scope.changeStatus = function(){
-          console.log($scope.cookie);
-          console.log($cookies);
-          if ($cookies.loggedin) console.log("LOGGED IN");
+          console.log(auth.isLoggedIn());
+          // console.log($scope.user);
+          // console.log($scope.cookie);
+          // console.log($cookies);
+          // if ($cookies.loggedin) console.log("LOGGED IN");
 
           // var User1 = $resource('http://localhost\\:3000/user/own', {});
           // var user1 = User1.get({}, function() {
