@@ -41,7 +41,7 @@ angular.module('angularappApp')
 
         // watch for cookie
         $scope.cookie = $cookies;
-        $scope.$watch("cookie.loggedin", function(newValue, oldValue) {
+        $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           console.log("cookies changes!");
           if (newValue)  $scope.showProfile();
           //else $scope.templateUrl = 'views/profileBoxGuest.html';
