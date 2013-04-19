@@ -1,2 +1,54 @@
-<ng-include src="templateUrl"></ng-include>
-<a href="" ng-click="changeStatus()">change log in status</a>
+<!-- <ng-include src="templateUrl"></ng-include>
+<a href="" ng-click="changeStatus()">change log in status</a> -->
+
+<div ng-switch="cookie.loggedin">
+    <div ng-switch-when="true">
+
+
+
+
+        <div id="profileBox" class="box" style="height:200px;">
+          <h4><a href="#">{{username}}</a></h4>
+          <img src="http://placehold.it/100x100"/>
+          
+          <ul>
+            <li>Played: {{games}}</li>
+            <li>Won: 30</li>
+            <li>Score: 8232</li>
+          </ul>
+         
+          <div id="profileBoxLower" class="clear">
+            <a href="#"><i class="icon-group icon-large"></i>5 friends online</a>
+             <a class="btn btn-medium" ng-click="logout()">Log Out</a>
+          </div>
+
+        </div>
+
+
+
+
+    </div>
+    <div ng-switch-default>
+
+
+
+        <div id="profileBox" class="box" style="height:200px;">
+          <h4>Create an account and profit:</h4>
+          <ul style="text-align:left;">
+            <li>get your own profile</li>
+            <li>statistics of all your games</li>
+            <li>conquer the highscore list</li>
+          </ul>
+          <div class="btn-toolbar text-center">
+            <div class="btn-group">
+              <a class="btn btn-medium">Create Account</a>
+            </div>
+            <div class="btn-group">
+              <a href="#/login" class="btn btn-medium">Log In</a>
+            </div>
+          </div>
+        </div>
+
+
+    </div>
+</div>

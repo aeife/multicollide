@@ -5,7 +5,7 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore){
+      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore, auth){
 
 
         
@@ -19,7 +19,7 @@ angular.module('angularappApp')
        // var User = $resource('http://localhost\\:3000/test');
 
         $scope.showProfile = function(){
-          $scope.templateUrl = 'views/profileBoxUser.html';
+          //$scope.templateUrl = 'views/profileBoxUser.html';
 
           var User = $resource('http://localhost\\:3000/user/own', {});
           var user = User.get({}, function() {
@@ -30,23 +30,21 @@ angular.module('angularappApp')
         }
 
         $scope.logout = function(){
-          $http.post('http://localhost:3000/logout');
-          delete $cookies.loggedin;
-          
+          auth.logout();
         }
 
-        if ($cookies.loggedin){
+/*        if ($cookies.loggedin){
           $scope.showProfile();
         } else {
           $scope.templateUrl = 'views/profileBoxGuest.html';
-        }
+        }*/
 
         // watch for cookie
         $scope.cookie = $cookies;
         $scope.$watch("cookie.loggedin", function(newValue, oldValue) {
           console.log("cookies changes!");
           if (newValue)  $scope.showProfile();
-          else $scope.templateUrl = 'views/profileBoxGuest.html';
+          //else $scope.templateUrl = 'views/profileBoxGuest.html';
         }, true);
       
 
