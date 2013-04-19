@@ -49,11 +49,12 @@ angular.module('angularappApp')
         }*/
 
         // watch for cookie
-        $scope.cookie = $cookies;
+        $scope.cookie = auth.isLoggedIn();
 
         
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           console.log("cookies changes!");
+          $scope.cookie = auth.isLoggedIn();
           if (newValue)  $scope.showProfile();
           //else $scope.templateUrl = 'views/profileBoxGuest.html';
         }, true);
@@ -61,7 +62,7 @@ angular.module('angularappApp')
 
 
         $scope.changeStatus = function(){
-          console.log(auth.isLoggedIn());
+          console.log($scope.cookie);
           // console.log($scope.user);
           // console.log($scope.cookie);
           // console.log($cookies);
