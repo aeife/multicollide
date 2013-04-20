@@ -184,6 +184,13 @@ app.get('/user/own', function (req, res) {
 
 });
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
+});
+
+
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function(socket){
+  console.log("client connected");
 });

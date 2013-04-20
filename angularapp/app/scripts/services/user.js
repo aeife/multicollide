@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $http, $location) {
+  .factory('user', function ($resource, $http, $location, socket) {
     // Service logic
     // ...
     var User = $resource('/user/:name', {name:''});
+    socket.emit("test");
     // var user = User.get({userId:123}, function() {
     //   user.abc = true;
     //   user.$save();
