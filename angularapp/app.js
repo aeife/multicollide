@@ -157,13 +157,15 @@ app.post('/logout', function(req, res){
 
 
 app.get('/user/:name', function (req, res) {
+  console.log("GETTING USER");
+
   console.log(req.params.name);
-  if (req.session.loggedin){
+
     User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
       console.log(user);
       res.json(user);
     });
-  }
+
 
 });
 

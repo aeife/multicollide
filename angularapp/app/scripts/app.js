@@ -15,6 +15,10 @@ angular.module('angularappApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl'
       })
+      .when('/user/:name', {
+        templateUrl: 'views/user.html',
+        controller: 'UserCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

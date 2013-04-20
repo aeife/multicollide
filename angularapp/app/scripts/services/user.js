@@ -23,11 +23,12 @@ angular.module('angularappApp')
         });
       },
       getUserInfo: function(username, callback) {
+        console.log("getting user info");
 
-        var ownuser = User.get({name: username}, function() {
-          console.log("OWN USER: ");
-          console.log(ownuser);
-          callback(ownuser);
+        var user = User.get({name: username}, function() {
+          console.log("USER: ");
+          console.log(user);
+          callback(user);
         })
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {
