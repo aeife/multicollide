@@ -56,8 +56,9 @@ angular.module('angularappApp')
           console.log("cookies changes!");
           $scope.loggedIn = auth.isLoggedIn();
           if (newValue) {
+            console.log("fetching own user data!");
             user.getOwnUserInfo().then(function(data) {
-            $scope.user = data;
+              $scope.user = data;
             });
           }
           //else $scope.templateUrl = 'views/profileBoxGuest.html';

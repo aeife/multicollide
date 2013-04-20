@@ -12,6 +12,7 @@ angular.module('angularappApp')
       getOwnUserInfo: function() {
         var promise = $http.get('http://localhost:3000/user/own').then(function (response) {
           // The then function here is an opportunity to modify the response
+          console.log("OWN USER DATA:");
           console.log(response);
           // The return value gets picked up by the then in the controller.
           return response.data;

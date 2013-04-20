@@ -27,12 +27,28 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.all('/*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/multicollide');
+
+var userSchema = mongoose.Schema({
+    name: String,
+    games: Number
+})
+var User = mongoose.model('User', userSchema);
+
+
+
+
+// SERVER APP
 
 app.get('/', function (req, res) {
     res.render('index.html');
@@ -43,6 +59,7 @@ app.get('/', function (req, res) {
 // });
 
 
+// API
 
 app.get('/user/123', function (req, res) {
   console.log(req.session);
@@ -78,9 +95,17 @@ app.post('/login', function(req, res){
 
   if (req.body.username === "test" && req.body.password === "tester"){
     req.session.loggedin = true;
+    req.session.username = "test";
     res.json({loggedin: true, id: 123});
   }
 
+
+    var silence = new User({ name: 'Silence' })
+  console.log(silence.name) // 'Silence'
+
+  silence.save(function (err, silence) {
+  if (err) console.log("ERR");
+  });
   //response.send(request.body);    // echo the result back
 });
 
@@ -97,7 +122,10 @@ app.post('/logout', function(req, res){
 app.get('/user/own', function (req, res) {
 
   if (req.session.loggedin){
-    res.json({username: "testuser", id: 123, games: 321});
+    User.findOne({ name: req.session.username }, function(err, user){
+      console.log(user);
+      res.json(user);
+    });
   }
 
 });
