@@ -56,9 +56,14 @@ angular.module('angularappApp')
           console.log("cookies changes!");
           $scope.loggedIn = auth.isLoggedIn();
           if (newValue) {
+
             console.log("fetching own user data!");
             user.getUserInfo(auth.key(), function(data){
-              $scope.user = data
+              
+              $scope.$apply(function () {
+                $scope.user = data;
+              });
+             
             });
             // user.getUserInfo(auth.key).then(function(data) {
             //   $scope.user = data;
@@ -70,7 +75,7 @@ angular.module('angularappApp')
 
 
         $scope.changeStatus = function(){
-          console.log(auth.isLoggedIn);
+          console.log($scope.user);
           // console.log($scope.user);
           // console.log($scope.cookie);
           // console.log($cookies);

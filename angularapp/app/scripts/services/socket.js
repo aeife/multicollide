@@ -21,6 +21,16 @@ angular.module('angularappApp')
             }
           });
         })
+      },
+      once: function (eventName, data, callback) {
+        socket.once(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        })
       }
     };
   });

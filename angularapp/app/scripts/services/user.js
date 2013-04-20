@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $http, $location, socket) {
+  .factory('user', function ($resource, $http, $location, socket, socketResource) {
     // Service logic
     // ...
     var User = $resource('/user/:name', {name:''});
-    socket.emit("test");
+    var socketUser = socketResource('/user/', {param: "test"});
+
     // var user = User.get({userId:123}, function() {
     //   user.abc = true;
     //   user.$save();
@@ -24,14 +25,18 @@ angular.module('angularappApp')
       getUserInfo: function(username, callback) {
         console.log("getting user info");
 
-        var user = User.get({name: username}, function() {
-          console.log("USER: ");
-          console.log(user);
+        // var user = User.get({name: username}, function() {
+        //   console.log("USER: ");
+        //   console.log(user);
+        //   callback(user);
+        // }, function(err){
+        //   console.log("ERROR");
+        //   $location.path("/404")
+        // })
+
+        socketUser.get({name: username}, function(user){
           callback(user);
-        }, function(err){
-          console.log("ERROR");
-          $location.path("/404")
-        })
+        });
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {
         //   // The then function here is an opportunity to modify the response
