@@ -44,6 +44,8 @@ var userSchema = mongoose.Schema({
     name: String,
     password: String,
     games: Number,
+    won: Number,
+    score: Number
 })
 var User = mongoose.model('User', userSchema);
 
@@ -121,6 +123,17 @@ app.post('/logout', function(req, res){
   
 
   //response.send(request.body);    // echo the result back
+});
+
+app.get('/user/:name', function (req, res) {
+  console.log(req.params.name);
+  if (req.session.loggedin){
+    User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
+      console.log(user);
+      res.json(user);
+    });
+  }
+
 });
 
 app.get('/user/own', function (req, res) {
