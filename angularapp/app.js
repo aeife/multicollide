@@ -163,7 +163,11 @@ app.get('/user/:name', function (req, res) {
 
     User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
       console.log(user);
-      res.json(user);
+      if (user) {
+        res.json(user);
+      } else {
+        res.send(404, { error: 'Something blew up!' });
+      }
     });
 
 

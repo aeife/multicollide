@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $http) {
+  .factory('user', function ($resource, $http, $location) {
     // Service logic
     // ...
-
-    var OwnUser = $resource('http://localhost\\:3000/user/own', {});
     var User = $resource('/user/:name', {name:''});
     // var user = User.get({userId:123}, function() {
     //   user.abc = true;
@@ -29,6 +27,9 @@ angular.module('angularappApp')
           console.log("USER: ");
           console.log(user);
           callback(user);
+        }, function(err){
+          console.log("ERROR");
+          $location.path("/")
         })
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {

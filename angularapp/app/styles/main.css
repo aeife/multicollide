@@ -86,3 +86,25 @@ padding-bottom: 99999px;
 .clear {
   clear: both;
 }
+
+
+/* PROFILE */
+
+#profile {
+  padding: 0px 50px 50px 50px;
+}
+
+#profile img {
+  float:left;
+  margin-right: 100px;
+}
+
+#profile ul {
+  list-style: none;
+  margin: 0px;
+  float:left;
+}
+
+#profile ul li {
+  margin: 10px 10px 10px 0px;
+}
