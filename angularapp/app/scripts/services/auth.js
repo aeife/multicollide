@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('auth', function ($http, $cookies) {
+  .factory('auth', function ($http, $cookies, user) {
     // Service logic
     // ...
 
@@ -11,6 +11,20 @@ angular.module('angularappApp')
     return {
       someMethod: function () {
         return meaningOfLife;
+      },
+      signup: function (username, password, callback) {
+        console.log("signing up");
+        user.newUser(username, password, function(data){
+          callback(data);
+        });
+        // $http.post('/signup', {username: username, password: password})
+        // .success(function (err){
+        //   if (err) return err;
+        //   else return false;
+        // })
+        // .error(function (data){
+        //   console.log("error");
+        // });
       },
       login: function (username, password) {
         $http.post('/login', {username: username, password: password})

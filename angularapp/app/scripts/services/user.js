@@ -6,7 +6,7 @@ angular.module('angularappApp')
     // ...
 
     var OwnUser = $resource('http://localhost\\:3000/user/own', {});
-    var User = $resource('/user/:name', {name:'name'});
+    var User = $resource('/user/:name', {name:''});
     // var user = User.get({userId:123}, function() {
     //   user.abc = true;
     //   user.$save();
@@ -14,6 +14,14 @@ angular.module('angularappApp')
 
     // Public API here
     return {
+      newUser: function(username, password, callback){
+        console.log(username);
+        var user = new User({name: username, password: password});
+        user.$save({}, function(data){
+          console.log(data);
+          callback(data);
+        });
+      },
       getUserInfo: function(username, callback) {
 
         var ownuser = User.get({name: username}, function() {
