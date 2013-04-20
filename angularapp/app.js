@@ -5,7 +5,8 @@
 
 var express = require('express')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , crypto = require('crypto');
 
 var app = express();
 
@@ -41,7 +42,8 @@ mongoose.connect('mongodb://localhost/multicollide');
 
 var userSchema = mongoose.Schema({
     name: String,
-    games: Number
+    password: String,
+    games: Number,
 })
 var User = mongoose.model('User', userSchema);
 
@@ -89,24 +91,26 @@ app.post('/test', function (req, res) {
 });
 
 app.post('/login', function(req, res){
-  console.log(req);
-  console.log(req.session);
-  console.log(req.body);      // your JSON
-
-  if (req.body.username === "test" && req.body.password === "tester"){
-    req.session.loggedin = true;
-    req.session.username = "test";
-    res.json({loggedin: true, id: 123});
-  }
+  // console.log(req);
+  // console.log(req.session);
+  // console.log(req.body);      // your JSON
 
 
-    var silence = new User({ name: 'Silence' })
-  console.log(silence.name) // 'Silence'
-
-  silence.save(function (err, silence) {
-  if (err) console.log("ERR");
+  User.findOne({ name: req.body.username, password: crypto.createHash('sha512').update(req.body.password).digest('hex')}, function(err, user){
+    if (user) {
+      req.session.loggedin = true;
+      req.session.username = req.body.username;
+      res.json({loggedin: true});
+    }
   });
-  //response.send(request.body);    // echo the result back
+
+
+  // if (req.body.username === "test" && req.body.password === "tester"){
+  //   req.session.loggedin = true;
+  //   req.session.username = "test";
+  //   res.json({loggedin: true, id: 123});
+  // }
+
 });
 
 app.post('/logout', function(req, res){
@@ -122,7 +126,7 @@ app.post('/logout', function(req, res){
 app.get('/user/own', function (req, res) {
 
   if (req.session.loggedin){
-    User.findOne({ name: req.session.username }, function(err, user){
+    User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
       console.log(user);
       res.json(user);
     });
