@@ -29,7 +29,7 @@ angular.module('angularappApp')
           callback(user);
         }, function(err){
           console.log("ERROR");
-          $location.path("/")
+          $location.path("/404")
         })
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {

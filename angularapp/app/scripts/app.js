@@ -19,7 +19,11 @@ angular.module('angularappApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/user.html',
         controller: 'UserCtrl'
       })
+      .when('/404', {
+        templateUrl: 'views/error.html',
+        controller: 'ErrorCtrl'
+      })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/404'
       });
   });
