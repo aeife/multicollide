@@ -18,14 +18,6 @@ angular.module('angularappApp')
         user.newUser(username, password, function(data){
           callback(data);
         });
-        // $http.post('/signup', {username: username, password: password})
-        // .success(function (err){
-        //   if (err) return err;
-        //   else return false;
-        // })
-        // .error(function (data){
-        //   console.log("error");
-        // });
       },
       login: function (username, password) {
         /* REST API*/

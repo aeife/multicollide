@@ -76,33 +76,6 @@ app.get('/', function (req, res) {
 
 // API
 
-app.get('/user/123', function (req, res) {
-  console.log(req.session);
-  if (req.session.loggedin){
-    res.json({games: 321, friends: ['trick', 'tick', 'track'], username: "test"});
-  } else {
-    res.json({friends: ['false']});
-  }
-});
-
-app.get('/test', function (req, res) {
-  console.log(req.session);
-  
-  if (req.session.test){
-    req.session.test = "test1";
-    res.json({test: "YEAH"});
-  } else {
-    req.session.test = "test1";
-    res.json({test: "NO"});
-  }
-
-});
-
-app.post('/test', function (req, res) {
-  console.log("reqBody:");
-  console.log(req.body);
-});
-
 app.post('/user', function(req, res){
   var user = User({name: req.body.name, password: crypto.createHash('sha512').update(req.body.password).digest('hex')});
   user.save(function (err, user) {

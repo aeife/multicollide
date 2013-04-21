@@ -5,7 +5,7 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, $resource, $http, $rootScope, $cookies, $cookieStore, auth, user){
+      controller: function($scope, auth, user){
 
         $scope.logout = function(){
           auth.logout();

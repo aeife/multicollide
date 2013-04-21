@@ -1,17 +1,12 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $http, $location, socket, socketResource, $rootScope) {
+  .factory('user', function ($resource, $location, socketResource, $rootScope) {
     // Service logic
-    // ...
+
     var User = $resource('/user/:name', {name:''});
     var Friend = $resource('/friend/:name');
     var socketUser = socketResource('/user/', {param: "test"});
-
-    // var user = User.get({userId:123}, function() {
-    //   user.abc = true;
-    //   user.$save();
-    // });
 
     // Public API here
     return {
