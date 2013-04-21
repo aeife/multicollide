@@ -5,6 +5,7 @@ angular.module('angularappApp')
     // Service logic
     // ...
     var User = $resource('/user/:name', {name:''});
+    var Friend = $resource('/friend');
     var socketUser = socketResource('/user/', {param: "test"});
 
     // var user = User.get({userId:123}, function() {
@@ -14,6 +15,15 @@ angular.module('angularappApp')
 
     // Public API here
     return {
+      addFriend: function(username){
+        var friend = new Friend({name: username});
+        friend.$save({}, function(data){
+
+        });
+        // Friend.$save({name: username}, function(data){
+
+        // });
+      },
       newUser: function(username, password, callback){
 
         /* REST API */

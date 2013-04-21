@@ -19,4 +19,9 @@ angular.module('angularappApp')
             redirect("/");
         }
     });
+
+    $scope.addAsFriend = function(){
+        console.log("adding user " + $scope.user.name + " as friend");
+        user.addFriend($scope.user.name);
+    }
   });

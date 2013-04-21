@@ -202,6 +202,29 @@ app.get('/user/own', function (req, res) {
 
 });
 
+
+app.post('/friend', function(req, res){
+  console.log("adding friend");
+
+  console.log(req.session.username + " wants to add " + req.body.name);
+
+  User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
+    user.friends.push(req.body.name);
+    user.save(function (err, user) {
+      if (err) console.log(err);
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
