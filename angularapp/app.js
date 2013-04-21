@@ -225,4 +225,21 @@ io.sockets.on('connection', function(socket){
     }
   });
 
+  socket.on('/login/', function(data){
+    switch(data.type){
+      case "post":{
+        User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
+          if (err) console.log(err);
+          if (user) {
+            console.log("FOUND");
+            // req.session.loggedin = true;
+            // req.session.username = req.body.username;
+            socket.emit('/login/', {loggedin: true});
+          }
+        });
+      }
+    }
+  });
+
+
 });
