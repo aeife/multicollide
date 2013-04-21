@@ -151,9 +151,7 @@ app.post('/login', function(req, res){
 app.post('/logout', function(req, res){
   console.log("LOGOUT");
 
-  req.session.destroy = true;
-
-  
+  req.session.destroy();  
 
   //response.send(request.body);    // echo the result back
 });

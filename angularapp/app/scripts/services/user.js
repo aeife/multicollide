@@ -40,7 +40,7 @@ angular.module('angularappApp')
 
       },
       getUserInfo: function(username, callback) {
-        console.log("getting user info");
+        console.log("getting user info for " + username);
 
         /* REST API */
         var user = User.get({name: username}, function() {
