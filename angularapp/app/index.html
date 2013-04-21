@@ -52,9 +52,12 @@
 
         <div class="row col-wrap">
 
+          
+
           <!--  <div class="span9 sameHeight"> -->
-          <div class="span9" ng-view>
-               
+          <div class="span9">
+              <flashbox></flashbox>
+              <div ng-view></div>
 
           </div>
 
@@ -126,6 +129,7 @@
     <script src="scripts/controllers/games.js"></script>
     <script src="scripts/controllers/blog.js"></script>
     <script src="scripts/directives/passconfirm.js"></script>
+    <script src="scripts/services/flash.js"></script>
     <!-- endbuild -->
 
     <script>

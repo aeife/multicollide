@@ -1,0 +1,4 @@
+<div ng-repeat="message in flash.get()" class="flash text-center alert-{{message.type}}">
+    {{message.msg}}
+    <a href="" ng-click="removeFlash($index)"><i class="icon-remove-sign"></i></a>
+</div>

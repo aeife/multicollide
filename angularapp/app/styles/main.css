@@ -1,4 +1,4 @@
-/* Will be compiled down to a single stylesheet with your sass files */
+ Will be compiled down to a single stylesheet with your sass files */
 
 body {
   overflow: scroll
@@ -87,6 +87,26 @@ padding-bottom: 99999px;
   clear: both;
 }
 
+/* FLASH MESSAGES */
+
+.flash {
+  margin-left:20px;
+  border: 1px solid;
+  margin-top: 2px;
+  padding-left: 20px;
+}
+
+.flash a {
+  float:right;
+  color: grey;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.flash a:hover {
+  color: black;
+}
+
 
 /* PROFILE */
 /*
@@ -107,4 +127,4 @@ padding-bottom: 99999px;
 
 #profile ul li {
   margin: 10px 10px 10px 0px;
-}*/
+}
