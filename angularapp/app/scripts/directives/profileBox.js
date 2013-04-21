@@ -60,9 +60,14 @@ angular.module('angularappApp')
             console.log("fetching own user data!");
             user.getUserInfo(auth.key(), function(data){
               
-              $scope.$apply(function () {
+              /* apply is only needed with socket api, while rest api is in use it would generate a "$digest already in progress" error*/
+              if(!$scope.$$phase) {
+                $scope.$apply(function () {
+                  $scope.user = data;
+                });
+              } else {
                 $scope.user = data;
-              });
+              }
              
             });
             // user.getUserInfo(auth.key).then(function(data) {

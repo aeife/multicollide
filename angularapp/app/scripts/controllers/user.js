@@ -6,9 +6,13 @@ angular.module('angularappApp')
 
         if (data) {
             console.log("setting data");
-            $scope.$apply(function () {
+            if(!$scope.$$phase) {
+                $scope.$apply(function () {
+                  $scope.user = data;
+                });
+            } else {
                 $scope.user = data;
-            });
+            }
         } else {
             redirect("/");
         }

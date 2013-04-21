@@ -25,6 +25,7 @@ angular.module('angularappApp')
       getUserInfo: function(username, callback) {
         console.log("getting user info");
 
+        /* REST API */
         // var user = User.get({name: username}, function() {
         //   console.log("USER: ");
         //   console.log(user);
@@ -34,6 +35,7 @@ angular.module('angularappApp')
         //   $location.path("/404")
         // })
 
+        /* SOCKET API */
         socketUser.get({name: username}, function(user){
           callback(user);
         });

@@ -28,20 +28,18 @@ function SocketResourceFactory(url, params, socket) {
 }
 
 SocketResourceFactory.prototype = {
-  test: function(){
-    console.log("test");
-  },
   get: function(query, callback){
     query.type = "get";
     this.socket.emit(this.url, query);
-
-    var self = this;
-
-    // dont register an event handler each time get is called
     this.socket.once(this.url, function (data){
-      console.log(data);
       callback(data);
     });
-  
+  },
+  post: function(query, callback){
+    query.type = "post";
+    this.socket.emit(this.url, query);
+    this.socket.once(this.url, function (data){
+      callback(data);
+    });
   }
 }
