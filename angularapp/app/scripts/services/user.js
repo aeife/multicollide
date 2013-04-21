@@ -40,7 +40,7 @@ angular.module('angularappApp')
           callback(user);
         }, function(){
           $rootScope.$apply(function() {
-            $location.path('/bar');
+            $location.path('/404');
           });
         });
 
