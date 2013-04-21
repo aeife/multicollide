@@ -20,14 +20,5 @@ angular.module('angularappApp')
             });
         }
     }
-
-    // $scope.on("form.$invalid", function(){
-    //     console.log("test");
-    // });
-
-  $scope.flash = flash;
-
-  $scope.test = function(){
-    flash.delete();
-  }
-});
+    $scope.flash = flash;
+  });
