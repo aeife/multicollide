@@ -1,11 +1,21 @@
 <div id="profile">
     <h1 class="text-center">Profile: {{user.name}}</h1>
-    <img src="http://placehold.it/100x100"/>
+    <div class="span3">
+        <img src="http://placehold.it/100x100"/>
+    </div>
+    <div class="span3">
     <ul>
         <li>Played: {{user.games}}</li>
         <li>Won: {{user.won}}</li>
         <li>Score: {{user.score}}</li>
     </ul>
+</div>
+    <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
+        <h4>Friends</h4>
+        <ul>
+            <li ng-repeat="friend in user.friends">{{friend}}</li>
+        </ul>
+    </div>
     <div class="clearfix"></div>
     <h4>Last Games</h4>
     <ul>
