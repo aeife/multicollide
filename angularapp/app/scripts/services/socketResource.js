@@ -5,14 +5,8 @@ angular.module('angularappApp')
     // Service logic
     // ...
 
-    var meaningOfLife = 42;
-
-    // var User = $resource('/user/:name', {name:''});
-
-
     
     // Public API here
-    console.log(SocketResourceFactory);
     return function(url, params) {
       var srf = new SocketResourceFactory(url, params, socket);
       return srf;
