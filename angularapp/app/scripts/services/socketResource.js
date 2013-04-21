@@ -28,11 +28,14 @@ function SocketResourceFactory(url, params, socket) {
 }
 
 SocketResourceFactory.prototype = {
-  get: function(query, callback){
+  get: function(query, callbackSuccess, callbackError){
     query.type = "get";
     this.socket.emit(this.url, query);
     this.socket.once(this.url, function (data){
-      callback(data);
+      if (data)
+        callbackSuccess(data);
+      else
+        callbackError();
     });
   },
   post: function(query, callback){

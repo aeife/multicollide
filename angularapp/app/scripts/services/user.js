@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $http, $location, socket, socketResource) {
+  .factory('user', function ($resource, $http, $location, socket, socketResource, $rootScope) {
     // Service logic
     // ...
     var User = $resource('/user/:name', {name:''});
@@ -38,6 +38,10 @@ angular.module('angularappApp')
         /* SOCKET API */
         socketUser.get({name: username}, function(user){
           callback(user);
+        }, function(){
+          $rootScope.$apply(function() {
+            $location.path('/bar');
+          });
         });
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {

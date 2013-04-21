@@ -196,17 +196,24 @@ io.sockets.on('connection', function(socket){
 
   socket.on('/user/', function(data){
     switch(data.type){
+      // get /user/ -> profile
       case "get":
         User.findOne({ name: data.name }, {password : 0}, function(err, user){
           console.log(user);
           if (user) {
             socket.emit('/user/', user);
           } else {
-           // res.send(404, { error: 'Something blew up!' });
+            socket.emit('/user/');
           }
         });
+        break;
+
+      // post /user/ -> sign up
+      case "post":
         break;
     }
   });
 
 });
+
+
