@@ -208,8 +208,13 @@ app.post('/friend', function(req, res){
     if (user.friends.indexOf(req.body.name) < 0){
       user.friends.push(req.body.name);
       user.save(function (err, user) {
-        if (err) console.log(err);
-      });
+        var error = false;
+        if (err) {
+          console.log(err);
+          error = true;
+        }
+        res.json({error: error});
+        });
     }
   });
 });
@@ -222,7 +227,12 @@ app.delete('/friend/:name', function(req, res){
   User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
     user.friends.remove(req.params.name);
     user.save(function (err, user) {
-      if (err) console.log(err);
+      var error = false;
+      if (err) {
+        console.log(err);
+        error = true;
+      }
+      res.json({error: error});
     });
   });
 });

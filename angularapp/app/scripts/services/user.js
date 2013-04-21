@@ -15,17 +15,20 @@ angular.module('angularappApp')
 
     // Public API here
     return {
-      addFriend: function(username){
+      addFriend: function(username, callback){
         var friend = new Friend({name: username});
         friend.$save({}, function(data){
-
+          callback(data.error);
         });
         // Friend.$save({name: username}, function(data){
 
         // });
       },
-      deleteFriend: function(username){
-        Friend.remove({name: username});
+      deleteFriend: function(username, callback){
+        Friend.remove({name: username}, function(data){
+          console.log("GOT RESPONSE");
+          callback(data.error);
+        });
       },
       newUser: function(username, password, callback){
 
