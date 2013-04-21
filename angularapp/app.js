@@ -210,10 +210,19 @@ io.sockets.on('connection', function(socket){
 
       // post /user/ -> sign up
       case "post":
+        var user = User({name: data.name, password: crypto.createHash('sha512').update(data.password).digest('hex')});
+        user.save(function (err, user) {
+          var error = null;
+          if (err) {
+            console.log(err);
+            if (err.code === 11000) {
+              error = "duplicate name";
+            }
+          }
+          socket.emit('/user/', {error: error});
+        });
         break;
     }
   });
 
 });
-
-

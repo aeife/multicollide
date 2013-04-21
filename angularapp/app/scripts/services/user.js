@@ -15,12 +15,19 @@ angular.module('angularappApp')
     // Public API here
     return {
       newUser: function(username, password, callback){
-        console.log(username);
-        var user = new User({name: username, password: password});
-        user.$save({}, function(data){
-          console.log(data);
+
+        /* REST API */
+        // var user = new User({name: username, password: password});
+        // user.$save({}, function(data){
+        //   console.log(data);
+        //   callback(data);
+        // });
+
+        /* SOCKET API */
+        socketUser.post({name: username, password: password}, function(data){
           callback(data);
         });
+
       },
       getUserInfo: function(username, callback) {
         console.log("getting user info");

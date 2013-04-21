@@ -5,7 +5,14 @@ angular.module('angularappApp')
     $scope.signup = function(){
         if ($scope.password === $scope.passwordRepeat) {
             auth.signup($scope.username, $scope.password, function(data){
-                $scope.error = data.error;
+                if(!$scope.$$phase) {
+                    $scope.$apply(function () {
+                       $scope.error = data.error;
+                    });
+                } else {
+                    $scope.error = data.error;
+                }
+                // $scope.error = data.error;
             });
         }
     }
