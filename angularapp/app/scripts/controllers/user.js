@@ -38,12 +38,6 @@ angular.module('angularappApp')
                     }
                 });
             }
-
-
-
-
-
-
         } else {
             redirect("/");
         }
@@ -54,6 +48,11 @@ angular.module('angularappApp')
     $scope.addAsFriend = function(){
         console.log("adding user " + $scope.user.name + " as friend");
         user.addFriend($scope.user.name);
+    }
+
+    $scope.deleteFriend = function(){
+        console.log("deleting user " + $scope.user.name + " as friend");
+        user.deleteFriend($scope.user.name);
     }
 
   });

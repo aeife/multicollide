@@ -214,6 +214,19 @@ app.post('/friend', function(req, res){
   });
 });
 
+app.delete('/friend/:name', function(req, res){
+  console.log(req.body);
+  console.log(req.params);
+  console.log(req.session.username + " wants to delete " + req.params.name);
+
+  User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
+    user.friends.remove(req.params.name);
+    user.save(function (err, user) {
+      if (err) console.log(err);
+    });
+  });
+});
+
 
 
 

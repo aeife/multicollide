@@ -5,7 +5,7 @@ angular.module('angularappApp')
     // Service logic
     // ...
     var User = $resource('/user/:name', {name:''});
-    var Friend = $resource('/friend');
+    var Friend = $resource('/friend/:name');
     var socketUser = socketResource('/user/', {param: "test"});
 
     // var user = User.get({userId:123}, function() {
@@ -23,6 +23,9 @@ angular.module('angularappApp')
         // Friend.$save({name: username}, function(data){
 
         // });
+      },
+      deleteFriend: function(username){
+        Friend.remove({name: username});
       },
       newUser: function(username, password, callback){
 
