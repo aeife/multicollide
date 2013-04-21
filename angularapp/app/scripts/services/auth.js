@@ -6,6 +6,7 @@ angular.module('angularappApp')
     // ...
 
     var socketLogin = socketResource('/login/', {param: "test"});
+    var socketLogout = socketResource('/logout/', {param: "test"});
 
     // Public API here
     return {
@@ -47,7 +48,13 @@ angular.module('angularappApp')
         });
       },
       logout: function () {
-        $http.post('http://localhost:3000/logout');
+        /* REST API */
+        // $http.post('http://localhost:3000/logout');
+
+        /* SOCKET API */
+        socketLogout.post({}, function () {});
+
+
         delete $cookies.loggedin;
         delete $cookies.username;
       },

@@ -241,5 +241,12 @@ io.sockets.on('connection', function(socket){
     }
   });
 
-
+  socket.on('/logout/', function(data){
+    switch(data.type){
+      case "post":{
+        console.log("LOGGING USER OUT");
+        // req.session.destroy = true;
+      }
+    }
+  });
 });
