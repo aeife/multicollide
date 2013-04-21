@@ -16,4 +16,8 @@ angular.module('angularappApp')
             });
         }
     }
+
+    $scope.test = function(){
+        console.log("test valid signup");
+    }
   });
