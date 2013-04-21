@@ -13,6 +13,8 @@ angular.module('angularappApp')
             } else {
                 $scope.user = data;
             }
+            console.log(data);
+            console.log($scope.user.own);
         } else {
             redirect("/");
         }

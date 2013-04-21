@@ -53,7 +53,8 @@ var userSchema = mongoose.Schema({
     password: String,
     games: {type: Number, default: 0},
     won: {type: Number, default: 0},
-    score: {type: Number, default: 0}
+    score: {type: Number, default: 0},
+    friends: [String]
 })
 userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);
@@ -131,6 +132,8 @@ app.post('/login', function(req, res){
     if (user) {
       console.log("FOUND");
       req.session.loggedin = true;
+      console.log("setting session username");
+      console.log(req.body.username);
       req.session.username = req.body.username;
       res.json({loggedin: true});
     }
@@ -164,7 +167,22 @@ app.get('/user/:name', function (req, res) {
     User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
       console.log(user);
       if (user) {
-        res.json(user);
+        
+        console.log(user.name);
+        console.log(req.session.username);
+
+        var userobj = user.toObject();
+
+        //check if own user
+        if (user.name === req.session.username) {
+          // own user only data
+          userobj.own = true;
+          console.log(userobj);
+        } else {
+          // delete own user only data
+          delete userobj.friends;
+        }
+        res.json(userobj);
       } else {
         res.send(404, { error: 'Something blew up!' });
       }
