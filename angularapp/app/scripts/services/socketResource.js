@@ -25,7 +25,7 @@ SocketResourceFactory.prototype = {
   get: function(query, callbackSuccess, callbackError){
     query.type = "get";
     this.socket.emit(this.url, query);
-    this.socket.once(this.url, function (data){
+    this.socket.once(this.url+query.name, function (data){
       if (data)
         callbackSuccess(data);
       else

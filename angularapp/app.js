@@ -279,9 +279,9 @@ io.sockets.on('connection', function(socket){
               // delete own user only data
               delete userobj.friends;
             }
-            socket.emit('/user/', userobj);
+            socket.emit('/user/'+data.name, userobj);
           } else {
-            socket.emit('/user/');
+            socket.emit('/user/'+data.name);
           }
 
         });
