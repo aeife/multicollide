@@ -6,7 +6,11 @@
 var express = require('express')
   , http = require('http')
   , path = require('path')
-  , crypto = require('crypto');
+  , crypto = require('crypto')
+  , secret = 'some secret'
+  , sessionKey = 'express.sid'
+  , cookieParser = express.cookieParser(secret)
+  , sessionStore = new express.session.MemoryStore;
 
 var app = express();
 
@@ -18,8 +22,8 @@ app.configure(function(){
   app.engine('html', require('ejs').renderFile);
   app.use(express.bodyParser());
   app.use(express.logger('dev'));
-  app.use(express.cookieParser());
-  app.use(express.session({secret: '1234567890QWERTY', cookie: { httpOnly: false }}));
+  app.use(cookieParser);
+  app.use(express.session({store: sessionStore, key: sessionKey, cookie: { httpOnly: false }}));
   app.use(express.compress());
   app.use(express.static(__dirname + '/app'));
 });
@@ -226,20 +230,60 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 var io = require('socket.io').listen(server);
 
+io.set('authorization', function(data, accept) {
+  cookieParser(data, {}, function(err) {
+    if (err) {
+      accept(err, false);
+    } else {
+      console.log("SESSION KEY?");
+      console.log(data.signedCookies[sessionKey]);
+      data.sessionID = data.signedCookies[sessionKey]
+      sessionStore.load(data.signedCookies[sessionKey], function(err, session) {
+        if (err || !session) {
+          accept('Session error', false);
+        } else {
+          // console.log("SESSION");
+          // console.log(session);
+          
+          data.session = session;
+          data.session.id = data.signedCookies[sessionKey];
+          accept(null, true);
+        }
+      });
+    }
+  });
+});
+
+
 io.sockets.on('connection', function(socket){
+  socket.session = socket.handshake.session;
   console.log("client connected");
 
   socket.on('/user/', function(data){
     switch(data.type){
       // get /user/ -> profile
       case "get":
+        console.log("USERNAME FROM REST SESSION:");
+        console.log(socket.session.username);
+
         User.findOne({ name: data.name }, {password : 0}, function(err, user){
           console.log(user);
           if (user) {
-            socket.emit('/user/', user);
+            var userobj = user.toObject();
+
+            //check if own user
+            if (user.name === socket.session.username) {
+              // own user only data
+              userobj.own = true;
+            } else {
+              // delete own user only data
+              delete userobj.friends;
+            }
+            socket.emit('/user/', userobj);
           } else {
             socket.emit('/user/');
           }
+
         });
         break;
 
