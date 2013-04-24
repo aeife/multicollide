@@ -314,6 +314,7 @@ io.sockets.on('connection', function(socket){
             console.log("FOUND");
             socket.session.loggedin = true;
             socket.session.username = data.username;
+            socket.session.save();
             // req.session.loggedin = true;
             // req.session.username = req.body.username;
             socket.emit('/login/', {loggedin: true});

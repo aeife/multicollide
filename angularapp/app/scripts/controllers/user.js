@@ -19,11 +19,22 @@ angular.module('angularappApp')
                 user.getUserInfo(auth.key(), function(data){
 
                     if (data) {
+                        console.log("friends");
+                        console.log(data);
                         if (data.friends.indexOf($scope.user.name) > -1) {
-                            $scope.isFriend = true;
+                            var isFriend = true;
                         } else {
-                            $scope.isFriend = false;
+                            var isFriend = false;
                         }
+                        
+                        if(!$scope.$$phase) {
+                            $scope.$apply(function () {
+                               $scope.isFriend = isFriend;
+                            });
+                        } else {
+                            $scope.isFriend = isFriend;
+                        }
+
                     } else {
                         redirect("/");
                     }
