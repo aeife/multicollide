@@ -28,16 +28,16 @@ angular.module('angularappApp')
       newUser: function(username, password, callback){
 
         /* REST API */
-        var user = new User({name: username, password: password});
-        user.$save({}, function(data){
-          console.log(data);
-          callback(data);
-        });
-
-        /* SOCKET API */
-        // socketUser.post({name: username, password: password}, function(data){
+        // var user = new User({name: username, password: password});
+        // user.$save({}, function(data){
+        //   console.log(data);
         //   callback(data);
         // });
+
+        /* SOCKET API */
+        socketUser.post({name: username, password: password}, function(data){
+          callback(data);
+        });
 
       },
       getUserInfo: function(username, callback) {
