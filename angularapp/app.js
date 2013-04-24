@@ -312,6 +312,8 @@ io.sockets.on('connection', function(socket){
           if (err) console.log(err);
           if (user) {
             console.log("FOUND");
+            socket.session.loggedin = true;
+            socket.session.username = data.username;
             // req.session.loggedin = true;
             // req.session.username = req.body.username;
             socket.emit('/login/', {loggedin: true});

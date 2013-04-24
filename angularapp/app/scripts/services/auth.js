@@ -21,23 +21,23 @@ angular.module('angularappApp')
       },
       login: function (username, password) {
         /* REST API*/
-        $http.post('/login', {username: username, password: password})
-        .success(function (data){
-          $cookies.username = username;
-          $cookies.loggedin = "true";
-        });
+        // $http.post('/login', {username: username, password: password})
+        // .success(function (data){
+        //   $cookies.username = username;
+        //   $cookies.loggedin = "true";
+        // });
 
         /* SOCKET API*/
-        // socketLogin.post({username: username, password: password}, function (data) {
-        //   console.log(data);
-        //   if (data.loggedin) {
-        //     $rootScope.$apply(function() {
-        //       $cookies.username = username;
-        //       $cookies.loggedin = "true";
-        //     });
+        socketLogin.post({username: username, password: password}, function (data) {
+          console.log(data);
+          if (data.loggedin) {
+            $rootScope.$apply(function() {
+              $cookies.username = username;
+              $cookies.loggedin = "true";
+            });
             
-        //   }
-        // });
+          }
+        });
       },
       logout: function () {
         /* REST API */
