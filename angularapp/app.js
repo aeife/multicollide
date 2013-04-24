@@ -265,6 +265,7 @@ io.sockets.on('connection', function(socket){
       case "get":
         console.log("USERNAME FROM REST SESSION:");
         console.log(socket.session.username);
+        console.log(socket.session);
 
         User.findOne({ name: data.name }, {password : 0}, function(err, user){
           console.log(user);
