@@ -331,7 +331,8 @@ io.sockets.on('connection', function(socket){
         socket.session.destroy();
         console.log(socket.handshake.sessionID);
         sessionStore.destroy(socket.handshake.sessionID);
-        socket.session = {};
+        socket.session.loggedin = null;
+        socket.session.username = null;
         // console.log(socket.session);
         // console.log(socket.session.username);
         // req.session.destroy = true;
