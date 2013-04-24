@@ -261,7 +261,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('/user/', function(data){
     switch(data.type){
-      // get /user/ -> profile
+      // get /user/:name -> profile
       case "get":
         console.log("USERNAME FROM REST SESSION:");
         console.log(socket.session.username);
@@ -311,12 +311,9 @@ io.sockets.on('connection', function(socket){
         User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
           if (err) console.log(err);
           if (user) {
-            console.log("FOUND");
             socket.session.loggedin = true;
             socket.session.username = data.username;
             socket.session.save();
-            // req.session.loggedin = true;
-            // req.session.username = req.body.username;
             socket.emit('/login/', {loggedin: true});
           }
         });
