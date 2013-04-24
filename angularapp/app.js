@@ -257,6 +257,7 @@ io.set('authorization', function(data, accept) {
 
 io.sockets.on('connection', function(socket){
   socket.session = socket.handshake.session;
+  console.log(socket.session);
   console.log("client connected");
 
   socket.on('/user/', function(data){
@@ -264,7 +265,7 @@ io.sockets.on('connection', function(socket){
       // get /user/:name -> profile
       case "get":
         console.log("USERNAME FROM REST SESSION:");
-        console.log(socket.session.username);
+        // console.log(socket.session.username);
         console.log(socket.session);
 
         User.findOne({ name: data.name }, {password : 0}, function(err, user){
@@ -325,6 +326,14 @@ io.sockets.on('connection', function(socket){
     switch(data.type){
       case "post":{
         console.log("LOGGING USER OUT");
+        console.log(socket.session);
+        console.log(socket.session.username);
+        socket.session.destroy();
+        console.log(socket.handshake.sessionID);
+        sessionStore.destroy(socket.handshake.sessionID);
+        socket.session = {};
+        // console.log(socket.session);
+        // console.log(socket.session.username);
         // req.session.destroy = true;
       }
     }

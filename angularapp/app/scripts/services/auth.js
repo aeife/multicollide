@@ -41,10 +41,10 @@ angular.module('angularappApp')
       },
       logout: function () {
         /* REST API */
-        $http.post('http://localhost:3000/logout');
+        // $http.post('http://localhost:3000/logout');
 
         /* SOCKET API */
-        // socketLogout.post({}, function () {});
+        socketLogout.post({}, function () {});
 
 
         delete $cookies.loggedin;
