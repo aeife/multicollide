@@ -6,7 +6,7 @@ angular.module('angularappApp')
 
     var User = $resource('/user/:name', {name:''});
     var Friend = $resource('/friend/:name');
-    var socketUser = socketResource('/user/', {param: "test"});
+    var socketUser = socketResource('/user/:name', {param: "test"});
 
     // Public API here
     return {
