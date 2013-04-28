@@ -9,14 +9,8 @@ angular.module('angularappApp')
             flash.error("passwords do not match")
         } else {
             auth.signup($scope.username, $scope.password, function(data){
-                if(!$scope.$$phase) {
-                    $scope.$apply(function () {
-                       $scope.error = data.error;
-                    });
-                } else {
-                    $scope.error = data.error;
-                }
-                // $scope.error = data.error;
+                console.log(data);
+                $scope.error = data.error;
             });
         }
     }

@@ -16,7 +16,7 @@ angular.module('angularappApp')
       signup: function (username, password, callback) {
         console.log("signing up");
         user.newUser(username, password, function(data){
-          callback(data);
+          $rootScope.$apply(callback(data));
         });
       },
       login: function (username, password) {

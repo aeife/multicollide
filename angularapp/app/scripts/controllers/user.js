@@ -6,13 +6,8 @@ angular.module('angularappApp')
 
         if (data) {
             console.log("setting data");
-            if(!$scope.$$phase) {
-                $scope.$apply(function () {
-                  $scope.user = data;
-                });
-            } else {
-                $scope.user = data;
-            }
+
+            $scope.user = data;
 
             // check if already a friend
             if (auth.key()){
@@ -22,20 +17,10 @@ angular.module('angularappApp')
                         console.log("friends");
                         console.log(data);
                         if (data.friends.indexOf($scope.user.name) > -1) {
-                            var isFriend = true;
+                            $scope.isFriend = true;
                         } else {
-                            var isFriend = false;
+                            $scope.isFriend = false;
                         }
-                        
-                        $scope.isFriend = isFriend;
-                        // if(!$scope.$$phase) {
-                        //     $scope.$apply(function () {
-                        //        $scope.isFriend = isFriend;
-                        //     });
-                        // } else {
-                        //     $scope.isFriend = isFriend;
-                        // }
-
                     } else {
                         redirect("/");
                     }
