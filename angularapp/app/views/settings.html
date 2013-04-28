@@ -1,0 +1,23 @@
+<h1 class="text-center">Settings</h1>
+<div class="newpassword-form text-center" ng-hide="!loggedIn">
+  <h1>Change Password</h1>
+  <form name="newpasswordForm" action="" novalidate>
+    <fieldset>
+      <div class="clearfix">
+        <input name="oldPassword" type="password" ng-model="oldPassword" placeholder="Old Password" required>
+      </div>
+      <div class="clearfix">
+        <input name = "newPassword" type="password" ng-model="newPassword" placeholder="New Password" required>
+      </div>
+        <!-- <div ng-show="form.password.$error.required">
+          Field required</div>
+        </div> -->
+      <div class="clearfix">
+        <input name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="Confirm New Password" required>
+        <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
+      </div>
+      <button class="btn primary" type="submit" ng-click="changePassword()">Change Password</button>
+      <!-- <button ng-click="test()" ng-disabled="form.$invalid">SAVE</button> -->
+    </fieldset>
+  </form>
+</div>

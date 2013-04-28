@@ -35,6 +35,10 @@ angular.module('angularappApp', ['ngResource', 'ngCookies'])
         templateUrl: 'views/blog.html',
         controller: 'BlogCtrl'
       })
+      .when('/settings', {
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl'
+      })
       .otherwise({
         redirectTo: '/404'
       });

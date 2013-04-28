@@ -7,9 +7,16 @@ angular.module('angularappApp')
     var User = $resource('/user/:name', {name:''});
     var Friend = $resource('/friend/:name');
     var socketUser = socketResource('/user/:name', {param: "test"});
+    var socketSettingsChangePassword = socketResource('/settings/changePassword', {param: "test"});
 
     // Public API here
     return {
+      changePassword: function(username, oldPassword, newPassword, callback){
+        socketSettingsChangePassword.post({name: username, oldPassword: oldPassword, newPassword: newPassword}, function(data){
+          console.log(data);
+          $rootScope.$apply(callback(data));
+        });
+      },
       addFriend: function(username, callback){
         var friend = new Friend({name: username});
         friend.$save({}, function(data){
