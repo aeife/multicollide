@@ -27,13 +27,14 @@ angular.module('angularappApp')
                             var isFriend = false;
                         }
                         
-                        if(!$scope.$$phase) {
-                            $scope.$apply(function () {
-                               $scope.isFriend = isFriend;
-                            });
-                        } else {
-                            $scope.isFriend = isFriend;
-                        }
+                        $scope.isFriend = isFriend;
+                        // if(!$scope.$$phase) {
+                        //     $scope.$apply(function () {
+                        //        $scope.isFriend = isFriend;
+                        //     });
+                        // } else {
+                        //     $scope.isFriend = isFriend;
+                        // }
 
                     } else {
                         redirect("/");
