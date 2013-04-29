@@ -62,7 +62,7 @@ angular.module('angularappApp')
         delete $cookies.username;
       },
       isLoggedIn: function() {
-        return $cookies.loggedin
+        return $cookies.loggedin;
       },
       key: function(){
         return $cookies.username;

@@ -2,8 +2,8 @@
 
 angular.module('angularappApp')
   .controller('SettingsCtrl', function ($scope, user, auth, flash) {
-    $scope.loggedIn = auth.isLoggedIn();
-    console.log(auth.isLoggedIn());
+    
+    $scope.isLoggedIn = auth.isLoggedIn;
 
     $scope.changePassword = function(){
         if ($scope.newpasswordForm.$invalid) {
