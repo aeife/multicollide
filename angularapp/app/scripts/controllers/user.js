@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('UserCtrl', function ($scope, $routeParams, user, auth) {
+  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location) {
     user.getUserInfo($routeParams.name, function(data){
 
         if (data) {
@@ -22,12 +22,12 @@ angular.module('angularappApp')
                             $scope.isFriend = false;
                         }
                     } else {
-                        redirect("/");
+                        $location.path("/route");
                     }
                 });
             }
         } else {
-            redirect("/");
+            $location.path("/route");
         }
     });
 

@@ -113,6 +113,8 @@ app.post('/login', function(req, res){
       console.log(req.body.username);
       req.session.username = req.body.username;
       res.json({loggedin: true});
+    } else {
+      res.json({loggedin: false});
     }
   });
 
@@ -316,6 +318,8 @@ io.sockets.on('connection', function(socket){
             socket.session.username = data.username;
             socket.session.save();
             socket.emit('/login/', {loggedin: true});
+          } else {
+            socket.emit('/login/', {loggedin: false});
           }
         });
       }

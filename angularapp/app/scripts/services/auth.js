@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope) {
+  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash) {
     // Service logic
     // ...
 
@@ -23,8 +23,14 @@ angular.module('angularappApp')
         /* REST API*/
         // $http.post('/login', {username: username, password: password})
         // .success(function (data){
-        //   $cookies.username = username;
-        //   $cookies.loggedin = "true";
+        //   if (data.loggedin) {
+        //     $cookies.username = username;
+        //     $cookies.loggedin = "true";
+
+        //     $location.path("/");
+        //   } else {
+        //     flash.error("wrong login");
+        //   }
         // });
 
         /* SOCKET API*/
@@ -34,7 +40,12 @@ angular.module('angularappApp')
             $rootScope.$apply(function() {
               $cookies.username = username;
               $cookies.loggedin = "true";
+
+              $location.path("/");
             });
+            
+          } else {
+            $rootScope.$apply(flash.error("wrong login"));
             
           }
         });
