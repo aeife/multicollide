@@ -30,9 +30,6 @@ angular.module('angularappApp')
           }
         }, true);
       
-        $scope.changeStatus = function(){
-          console.log($scope.user);
-        };
       }
     };
   });
