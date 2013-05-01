@@ -370,6 +370,48 @@ io.sockets.on('connection', function(socket){
     }
   });
 
+
+  socket.on('/friend/', function(data){
+    switch(data.type){
+      case "post":
+        // post /friend/ -> add friend
+        console.log(socket.session.username + " wants to add " + data.name);
+
+        User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+          if (user.friends.indexOf(data.name) < 0){
+            user.friends.push(data.name);
+            user.save(function (err, user) {
+              var error = false;
+              if (err) {
+                console.log(err);
+                error = true;
+              }
+              socket.emit('/friend/', {error: error});
+            });
+          }
+        });
+        break;
+      case "remove":
+        // remove /friend/:name -> remove friend
+        console.log(socket.session.username + " wants to delete " + data.name);
+
+        User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+          user.friends.remove(data.name);
+          user.save(function (err, user) {
+            var error = false;
+            if (err) {
+              console.log(err);
+              error = true;
+            }
+            socket.emit('/friend/'+data.name, {error: error});
+          });
+        });
+        break;
+    }
+    
+  });
+
+
   socket.on('/settings/changePassword', function(data){
     //check if correct old password
     User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){

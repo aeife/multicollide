@@ -6,6 +6,7 @@ angular.module('angularappApp')
 
     var User = $resource('/user/:name', {name:''});
     var Friend = $resource('/friend/:name');
+    var socketFriend = socketResource('/friend/:name', {param: "test"});
     var socketUser = socketResource('/user/:name', {param: "test"});
     var socketSettingsChangePassword = socketResource('/settings/changePassword', {param: "test"});
 
@@ -18,18 +19,29 @@ angular.module('angularappApp')
         });
       },
       addFriend: function(username, callback){
-        var friend = new Friend({name: username});
-        friend.$save({}, function(data){
-          callback(data.error);
-        });
-        // Friend.$save({name: username}, function(data){
-
+        /* REST API */
+        // var friend = new Friend({name: username});
+        // friend.$save({}, function(data){
+        //   callback(data.error);
         // });
+
+        /* SOCKET API */
+        socketFriend.post({name: username}, function(data){
+          console.log(data);
+          $rootScope.$apply(callback(data.error));
+        });
       },
       deleteFriend: function(username, callback){
-        Friend.remove({name: username}, function(data){
-          console.log("GOT RESPONSE");
-          callback(data.error);
+        /* REST API */
+        // Friend.remove({name: username}, function(data){
+        //   console.log("GOT RESPONSE");
+        //   callback(data.error);
+        // });
+
+        /* SOCKET API */
+        socketFriend.remove({name: username}, function(data){
+          console.log(data);
+          $rootScope.$apply(callback(data.error));
         });
       },
       newUser: function(username, password, callback){
