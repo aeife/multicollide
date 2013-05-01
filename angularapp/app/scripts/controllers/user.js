@@ -24,12 +24,12 @@ angular.module('angularappApp')
                             $scope.isFriend = false;
                         }
                     } else {
-                        $location.path("/route");
+                        $location.path("/404");
                     }
                 });
             }
         } else {
-            $location.path("/route");
+            $location.path("/404");
         }
     });
 

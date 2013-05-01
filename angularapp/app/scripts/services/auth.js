@@ -60,6 +60,8 @@ angular.module('angularappApp')
 
         delete $cookies.loggedin;
         delete $cookies.username;
+
+        $location.path("/");
       },
       isLoggedIn: function() {
         return $cookies.loggedin;
