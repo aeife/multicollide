@@ -24,7 +24,11 @@
         <div ng-switch-when="false">
             <a href="" ng-click="addAsFriend()" class="btn">add friend</a>
         </div>
+        <div ng-hide="!user.online">
+            online
+        </div>
     </div>
+    
 
     <div class="clearfix"></div>
     <h4>Last Games</h4>

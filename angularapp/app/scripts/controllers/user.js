@@ -8,6 +8,8 @@ angular.module('angularappApp')
             console.log("setting data");
 
             $scope.user = data;
+            console.log("online status:");
+            console.log(data.online);
 
             // check if already a friend
             if (auth.key()){

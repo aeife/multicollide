@@ -51,24 +51,24 @@ angular.module('angularappApp')
         console.log("getting user info for " + username);
 
         /* REST API */
-        var user = User.get({name: username}, function() {
-          console.log("USER: ");
-          console.log(user);
-          callback(user);
-        }, function(err){
-          console.log("ERROR");
-          $location.path("/404")
-        })
+        // var user = User.get({name: username}, function() {
+        //   console.log("USER: ");
+        //   console.log(user);
+        //   callback(user);
+        // }, function(err){
+        //   console.log("ERROR");
+        //   $location.path("/404")
+        // })
 
         /* SOCKET API */
-        // socketUser.get({name: username}, function(user){
-        //   console.log(user);
-        //   $rootScope.$apply(callback(user));
-        // }, function(){
-        //   $rootScope.$apply(function() {
-        //     $location.path('/404');
-        //   });
-        // });
+        socketUser.get({name: username}, function(user){
+          console.log(user);
+          $rootScope.$apply(callback(user));
+        }, function(){
+          $rootScope.$apply(function() {
+            $location.path('/404');
+          });
+        });
 
         // var promise = $http.get('http://localhost:3000/user/own').then(function (response) {
         //   // The then function here is an opportunity to modify the response

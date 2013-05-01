@@ -230,6 +230,8 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+var connectedUsers = [];
+
 var io = require('socket.io').listen(server);
 
 io.set('authorization', function(data, accept) {
@@ -262,11 +264,18 @@ io.sockets.on('connection', function(socket){
   console.log(socket.session);
   console.log("client connected");
 
+  // check if already logged in and add to connected user list
+  if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
+    console.log("adding user to list");
+    connectedUsers.push(socket.session.username);
+  }
+
+  console.log(connectedUsers);
+
   socket.on('/user/', function(data){
     switch(data.type){
       // get /user/:name -> profile
       case "get":
-        console.log("USERNAME FROM REST SESSION:");
         // console.log(socket.session.username);
         console.log(socket.session);
 
@@ -283,6 +292,12 @@ io.sockets.on('connection', function(socket){
               // delete own user only data
               delete userobj.friends;
             }
+
+            //check if currently online
+            if (connectedUsers.indexOf(user.name) > -1) {
+              userobj.online = true;
+            }
+
             socket.emit('/user/'+data.name, userobj);
           } else {
             socket.emit('/user/'+data.name);
@@ -317,6 +332,8 @@ io.sockets.on('connection', function(socket){
             socket.session.loggedin = true;
             socket.session.username = data.username;
             socket.session.save();
+
+            connectedUsers.push(data.username);
             socket.emit('/login/', {loggedin: true});
           } else {
             socket.emit('/login/', {loggedin: false});
@@ -330,6 +347,12 @@ io.sockets.on('connection', function(socket){
     switch(data.type){
       case "post":{
         console.log("LOGGING USER OUT");
+
+        // delete user from connected user list
+        if (connectedUsers.indexOf(socket.session.username) > -1){
+          connectedUsers.splice(connectedUsers.indexOf(socket.session.username),1);
+        }
+
         console.log(socket.session);
         console.log(socket.session.username);
         socket.session.destroy();
@@ -337,6 +360,9 @@ io.sockets.on('connection', function(socket){
         sessionStore.destroy(socket.handshake.sessionID);
         socket.session.loggedin = null;
         socket.session.username = null;
+
+
+
         // console.log(socket.session);
         // console.log(socket.session.username);
         // req.session.destroy = true;
@@ -362,4 +388,16 @@ io.sockets.on('connection', function(socket){
           }
    });
   });
+
+
+  socket.on('disconnect', function(data){
+    console.log("CLIENT DISCONNECTED");
+    if (socket.session.username){
+      // delete user from connected user list
+      if (connectedUsers.indexOf(socket.session.username) > -1){
+        connectedUsers.splice(connectedUsers.indexOf(socket.session.username),1);
+      }
+    }
+  });
+
 });
