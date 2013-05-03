@@ -267,7 +267,7 @@ io.sockets.on('connection', function(socket){
   // check if already logged in and add to connected user list
   if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
     console.log("adding user to list");
-    connectedUsers.push(socket.session.username);
+    addConnectedUser(socket.session.username);
   }
 
   console.log(connectedUsers);
@@ -333,7 +333,7 @@ io.sockets.on('connection', function(socket){
             socket.session.username = data.username;
             socket.session.save();
 
-            connectedUsers.push(data.username);
+            addConnectedUser(data.username);
             socket.emit('/login/', {loggedin: true});
           } else {
             socket.emit('/login/', {loggedin: false});
@@ -350,7 +350,7 @@ io.sockets.on('connection', function(socket){
 
         // delete user from connected user list
         if (connectedUsers.indexOf(socket.session.username) > -1){
-          connectedUsers.splice(connectedUsers.indexOf(socket.session.username),1);
+          deleteConnectedUser(socket.session.username);
         }
 
         console.log(socket.session);
@@ -437,9 +437,18 @@ io.sockets.on('connection', function(socket){
     if (socket.session.username){
       // delete user from connected user list
       if (connectedUsers.indexOf(socket.session.username) > -1){
-        connectedUsers.splice(connectedUsers.indexOf(socket.session.username),1);
+        deleteConnectedUser(socket.session.username);
       }
     }
   });
 
 });
+
+
+function addConnectedUser(username){
+  connectedUsers.push(username);
+}
+
+function deleteConnectedUser(username){
+  connectedUsers.splice(connectedUsers.indexOf(username),1);
+}
