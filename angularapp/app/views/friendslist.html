@@ -1,18 +1,20 @@
-<h3>friends list</h3>
-<!-- <ul>
-    <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true"><a ng-href="#/user/{{user}}">{{friend.$key}}</a> {{friend.online}}</li>
-</ul> -->
+<div ng-hide="!friends">
+    <h3>friends list</h3>
+    <!-- <ul>
+        <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true"><a ng-href="#/user/{{user}}">{{friend.$key}}</a> {{friend.online}}</li>
+    </ul> -->
 
-<table>
-    <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-        <td>{{friend.$key}}</td>
-        <td ng-switch="friend.online">
-            <div ng-switch-when="true" style="color: green;">
-                online
-            </div>
-            <div ng-switch-default style="color: red;">
-                offline
-            </div>
-        </td>
-    </tr>
-</table>
+    <table>
+        <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
+            <td>{{friend.$key}}</td>
+            <td ng-switch="friend.online">
+                <div ng-switch-when="true" style="color: green;">
+                    online
+                </div>
+                <div ng-switch-default style="color: red;">
+                    offline
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

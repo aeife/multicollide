@@ -51,6 +51,8 @@ angular.module('angularappApp')
             //         });
             //     }
             // });
+          } else {
+            $scope.friends = null;
           }
         });
 
