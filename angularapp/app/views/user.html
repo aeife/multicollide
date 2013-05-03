@@ -10,12 +10,12 @@
         <li>Score: {{user.score}}</li>
     </ul>
 </div>
-    <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
+<!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
         <h4>Friends</h4>
         <ul>
             <li ng-repeat="friend in user.friends"><a ng-href="#/user/{{friend}}">{{friend}}</a></li>
         </ul>
-    </div>
+    </div> -->
 
     <div ng-switch="isFriend" ng-hide="user.own">
         <div ng-switch-when="true">
@@ -25,7 +25,7 @@
             <a href="" ng-click="addAsFriend()" class="btn">add friend</a>
         </div>
         <div ng-hide="!user.online">
-            online
+             <i class="icon-circle online"> online </i>
         </div>
     </div>
     
