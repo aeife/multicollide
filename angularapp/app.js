@@ -263,10 +263,11 @@ io.sockets.on('connection', function(socket){
   socket.session = socket.handshake.session;
   console.log(socket.session);
   console.log("client connected");
-
+  // console.log(socket.session.username);
+  
   // check if already logged in and add to connected user list
   if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
-    console.log("adding user to list");
+    // console.log("adding user to list");
     addConnectedUser(socket.session.username, socket);
   }
 

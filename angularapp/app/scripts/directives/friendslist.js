@@ -22,7 +22,7 @@ angular.module('angularappApp')
                         console.log(i);
                         console.log(sdata);
                         console.log(data.friends);
-                        console.log(sdata.user + " has changed online status!");
+                        console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
                     });
                 }
