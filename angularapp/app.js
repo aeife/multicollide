@@ -267,7 +267,7 @@ io.sockets.on('connection', function(socket){
   // check if already logged in and add to connected user list
   if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
     console.log("adding user to list");
-    addConnectedUser(socket.session.username);
+    addConnectedUser(socket.session.username, socket);
   }
 
   console.log(connectedUsers);
@@ -333,7 +333,7 @@ io.sockets.on('connection', function(socket){
             socket.session.username = data.username;
             socket.session.save();
 
-            addConnectedUser(data.username);
+            addConnectedUser(data.username, socket);
             socket.emit('/login/', {loggedin: true});
           } else {
             socket.emit('/login/', {loggedin: false});
@@ -350,7 +350,7 @@ io.sockets.on('connection', function(socket){
 
         // delete user from connected user list
         if (connectedUsers.indexOf(socket.session.username) > -1){
-          deleteConnectedUser(socket.session.username);
+          deleteConnectedUser(socket.session.username, socket);
         }
 
         console.log(socket.session);
@@ -437,7 +437,7 @@ io.sockets.on('connection', function(socket){
     if (socket.session.username){
       // delete user from connected user list
       if (connectedUsers.indexOf(socket.session.username) > -1){
-        deleteConnectedUser(socket.session.username);
+        deleteConnectedUser(socket.session.username, socket);
       }
     }
   });
@@ -445,10 +445,12 @@ io.sockets.on('connection', function(socket){
 });
 
 
-function addConnectedUser(username){
+function addConnectedUser(username, socket){
   connectedUsers.push(username);
+  socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
 }
 
-function deleteConnectedUser(username){
+function deleteConnectedUser(username, socket){
   connectedUsers.splice(connectedUsers.indexOf(username),1);
+  socket.broadcast.emit("onlinestatus:"+username, {user: username, online: false});
 }
