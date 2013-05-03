@@ -1,4 +1,4 @@
 <h3>friends list</h3>
 <ul>
-    <li ng-repeat="(user,friend) in friends"><a ng-href="#/user/{{user}}">{{user}}</a> {{friend.online}}</li>
+    <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true"><a ng-href="#/user/{{user}}">{{friend.$key}}</a> {{friend.online}}</li>
 </ul>
