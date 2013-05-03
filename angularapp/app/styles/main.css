@@ -8,7 +8,6 @@ body {
   background-color: #fafafa;
   background-repeat: repeat-x;
   border: 1px solid #d4d4d4;
-  
 }
 
 #sidebar {
@@ -73,6 +72,20 @@ padding-bottom: 99999px;
   text-align: center;
   font-size: 17px;
   padding: 10px;
+}
+
+#friendslist ul {
+  list-style: none;
+}
+
+#friendslist ul a {
+  color: grey;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#friendslist ul .online {
+  color: green;
 }
 
 .newsItem {

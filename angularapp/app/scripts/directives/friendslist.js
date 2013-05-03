@@ -21,6 +21,7 @@ angular.module('angularappApp')
           if (newValue) {
             user.getFriendsStatus(function(data){
                 $scope.friends = data;
+                $scope.friendCount = friendsOnline($scope.friends);
                 console.log($scope.friends);
             
 
@@ -31,6 +32,8 @@ angular.module('angularappApp')
                         console.log(data.friends);
                         console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
+
+                        $scope.friendCount = friendsOnline($scope.friends);
                     });
                 }
             });
@@ -65,3 +68,14 @@ angular.module('angularappApp')
       },
     };
   });
+
+function friendsOnline (friends) {
+    var result = 0;
+    for (var friend in friends){
+        console.log(friend);
+        if (friends[friend].online) result++;
+    }
+
+    console.log("NEW: " + result);
+    return result;
+}
