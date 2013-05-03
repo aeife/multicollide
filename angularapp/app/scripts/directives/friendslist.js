@@ -10,7 +10,8 @@ angular.module('angularappApp')
         // subscribe to online status changes for all friends
         // onlinestatus:<username>
         $scope.friends = {};
-        if (auth.key()) {
+        $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
+          if (newValue) {
             user.getUserInfo(auth.key(), function(data){
                 console.log(data.friends);
 
@@ -26,9 +27,9 @@ angular.module('angularappApp')
                         $scope.friends[sdata.user].online = sdata.online;
                     });
                 }
-
             });
-        }
+          }
+        });
       },
     };
   });
