@@ -264,7 +264,7 @@ io.sockets.on('connection', function(socket){
   console.log(socket.session);
   console.log("client connected");
   // console.log(socket.session.username);
-  
+
   // check if already logged in and add to connected user list
   if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
     // console.log("adding user to list");
@@ -410,6 +410,35 @@ io.sockets.on('connection', function(socket){
         break;
     }
     
+  });
+
+  socket.on('/friends/', function(data){
+    console.log("GETTING FRIENDS STATUS");
+
+    //getting status for all friends
+
+    var result = {};
+    //getting all friends
+    User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+      if (err) console.log(err);
+      //check status for friends
+      console.log("FRIENDS");
+      // console.log(user);
+      console.log(user.friends);
+      console.log(user.friends.length);
+      if (user){
+        console.log(user);
+        for (var i = 0; i < user.friends.length; i++){
+          var online = false;
+          if (connectedUsers.indexOf(user.friends[i]) > -1){
+            online = true;
+          }
+          result[user.friends[i]] = {online: online};
+        }
+        console.log("EMITTING TO /FRIENDS/");
+        socket.emit('/friends/', result);
+      }
+    });
   });
 
 
