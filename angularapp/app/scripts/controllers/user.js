@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub) {
+  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope) {
     
     
 
@@ -10,6 +10,7 @@ angular.module('angularappApp')
         if (data) {
             $scope.socketS = socketSub('onlinestatus:'+data.name, function(data){
                 console.log(data);
+                $scope.user.online = data.online;
             });
 
             console.log("setting data");
@@ -17,7 +18,7 @@ angular.module('angularappApp')
             $scope.user = data;
             console.log("online status:");
             console.log(data.online);
-            $scope.socketS.start();
+            $scope.socketS.subForRoute();
 
             // check if already a friend
             if (auth.key()){
@@ -41,10 +42,14 @@ angular.module('angularappApp')
         }
     });
 
+    // $rootScope.$on('$routeChangeSuccess', function() {
+    //   $scope.socketS.stop();
+    // });
 
-    $scope.test = function(){
-        $scope.socketS.stop();
-    }
+
+    // $scope.test = function(){
+    //     $scope.socketS.stop();
+    // }
 
     $scope.addAsFriend = function(){
         console.log("adding user " + $scope.user.name + " as friend");

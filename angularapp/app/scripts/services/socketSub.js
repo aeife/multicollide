@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('socketSub', function (socket) {
+  .factory('socketSub', function (socket, $rootScope) {
     // Service logic
     // ...
 
@@ -9,17 +9,23 @@ angular.module('angularappApp')
     var meaningOfLife = 42;
 
     // Public API here
-    return function(eventName, callback, params) {
-      var ssub = new SocketSubFactory(eventName, callback, socket);
+    return function(eventName, callback) {
+      var ssub = new SocketSubFactory(eventName, callback, socket, $rootScope);
       return ssub;
     }
   });
 
 
-function SocketSubFactory(eventName, callback, socket) {
+function SocketSubFactory(eventName, callback, socket, $rootScope) {
   this.eventName = eventName;
-  this.callback = callback;
   this.socket = socket;
+  this.$rootScope = $rootScope;
+  this.callback = function () {  
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
+        }
 }
 
 SocketSubFactory.prototype = {
@@ -30,5 +36,12 @@ SocketSubFactory.prototype = {
   stop: function(){
     console.log("stop listening");
     this.socket.removeListener(this.eventName, this.callback);
+  },
+  subForRoute: function(){
+    this.start();
+    var self = this;
+    this.$rootScope.$on('$routeChangeSuccess', function() {
+      self.stop();
+    });
   }
 }
