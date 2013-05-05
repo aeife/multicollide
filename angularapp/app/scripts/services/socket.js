@@ -31,6 +31,12 @@ angular.module('angularappApp')
             }
           });
         })
+      },
+      removeListener: function (eventName, callback) {
+        socket.removeListener(eventName, callback);
+      },
+      onn: function (eventName, callback) {
+        socket.on(eventName, callback);
       }
     };
   });
