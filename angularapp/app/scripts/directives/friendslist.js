@@ -36,6 +36,29 @@ angular.module('angularappApp')
                         $scope.friendCount = friendsOnline($scope.friends);
                     });
                 }
+
+                // new friend
+                socket.on("friend:new", function(sdata){
+                    console.log("new friend!");
+                    console.log($scope.friends);
+                    console.log(sdata);
+                    $scope.friends[sdata.user] = {online: data.online};
+                    console.log($scope.friends);
+                    var friend = $scope.friends[sdata.user];
+                    socket.on("onlinestatus:"+sdata.user, function(sdata){
+                        console.log(sdata.user + " has changed online status to: " + sdata.online);
+                        $scope.friends[sdata.user].online = sdata.online;
+
+                        $scope.friendCount = friendsOnline($scope.friends);
+                    });
+                });
+
+                // deleted friend
+                socket.on("friend:deleted", function(sdata){
+                    delete $scope.friends[sdata.user];
+
+                    // TODO: remove Listener onlinestatus:sdata.user
+                });
             });
 
             // user.getUserInfo(auth.key(), function(data){

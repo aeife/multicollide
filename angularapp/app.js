@@ -388,6 +388,15 @@ io.sockets.on('connection', function(socket){
                 error = true;
               }
               socket.emit('/friend/', {error: error});
+
+              // emit new friend and his status
+              if (!error) {
+                var online = false;
+                if (connectedUsers.indexOf(data.name) > -1){
+                  online = true;
+                }
+                socket.emit('friend:new', {user: data.name, online: online});
+              }
             });
           }
         });
@@ -405,6 +414,9 @@ io.sockets.on('connection', function(socket){
               error = true;
             }
             socket.emit('/friend/'+data.name, {error: error});
+
+            // emit deleted friend
+            socket.emit('friend:deleted', {user: data.name});
           });
         });
         break;
