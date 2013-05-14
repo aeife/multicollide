@@ -231,6 +231,8 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 
 var connectedUsers = [];
+var clients = {};
+var clientUsernames = {};
 
 var io = require('socket.io').listen(server);
 
@@ -262,6 +264,10 @@ io.set('authorization', function(data, accept) {
 io.sockets.on('connection', function(socket){
   socket.session = socket.handshake.session;
   console.log(socket.session);
+
+  // save sockets for all clients ordered with socket id
+  clients[socket.id] = socket;
+  console.log(socket.id);
   console.log("client connected");
   // console.log(socket.session.username);
 
@@ -335,6 +341,8 @@ io.sockets.on('connection', function(socket){
             socket.session.save();
 
             addConnectedUser(data.username, socket);
+            console.log("ID FOR USER: " + data.username);
+            console.log(getIdForUsername(data.username));
             socket.emit('/login/', {loggedin: true});
           } else {
             socket.emit('/login/', {loggedin: false});
@@ -377,6 +385,8 @@ io.sockets.on('connection', function(socket){
       case "post":
         // post /friend/ -> add friend
         console.log(socket.session.username + " wants to add " + data.name);
+
+        clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
 
         User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
           if (user.friends.indexOf(data.name) < 0){
@@ -476,6 +486,8 @@ io.sockets.on('connection', function(socket){
 
   socket.on('disconnect', function(data){
     console.log("CLIENT DISCONNECTED");
+    console.log("deleting " + socket.id);
+    delete clients[socket.id];
     if (socket.session.username){
       // delete user from connected user list
       if (connectedUsers.indexOf(socket.session.username) > -1){
@@ -489,10 +501,16 @@ io.sockets.on('connection', function(socket){
 
 function addConnectedUser(username, socket){
   connectedUsers.push(username);
+  clientUsernames[username] = socket.id;
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
 }
 
 function deleteConnectedUser(username, socket){
   connectedUsers.splice(connectedUsers.indexOf(username),1);
+  delete clientUsernames[username];
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: false});
+}
+
+function getIdForUsername(username){
+  return clientUsernames[username];
 }

@@ -15,6 +15,11 @@ angular.module('angularappApp')
         // $scope.friends["tester9"] = {online: false};
         $scope.socketS = {};
 
+        //incomming friend requests
+        socket.on('friend:request', function(data){
+            console.log(data.from + " wants to add you!");
+        });
+
 
 
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
