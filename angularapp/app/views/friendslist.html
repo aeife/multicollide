@@ -28,6 +28,9 @@
             </ul>
             <ul>
                 <li>newUser <a href=""><i class=" icon-ok-sign"></i></a><a href=""><i class=" icon-remove-sign"></i></a></li>
+                <li ng-repeat="request in requests">
+                    {{request}} <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href=""><i class=" icon-remove-sign"></i></a>
+                </li>
             </ul>
           </div>
         </div>

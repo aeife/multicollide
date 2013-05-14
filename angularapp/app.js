@@ -230,9 +230,17 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+// names of current connected users
 var connectedUsers = [];
+
+// sockets for all connected clients ordered with socket ids
 var clients = {};
+
+// saves ids for usernames
 var clientUsernames = {};
+
+// saves friend requests for all names ordered with username
+var friendRequests = {};
 
 var io = require('socket.io').listen(server);
 
@@ -386,35 +394,37 @@ io.sockets.on('connection', function(socket){
         // post /friend/ -> add friend
         console.log(socket.session.username + " wants to add " + data.name);
 
-        clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
+        // clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
+        addFriendRequest(data.name, socket.session.username);
 
-        User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-          if (user.friends.indexOf(data.name) < 0){
-            user.friends.push(data.name);
-            user.save(function (err, user) {
-              var error = false;
-              if (err) {
-                console.log(err);
-                error = true;
-              }
-              socket.emit('/friend/', {error: error});
+        // User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        //   if (user.friends.indexOf(data.name) < 0){
+        //     user.friends.push(data.name);
+        //     user.save(function (err, user) {
+        //       var error = false;
+        //       if (err) {
+        //         console.log(err);
+        //         error = true;
+        //       }
+        //       socket.emit('/friend/', {error: error});
 
-              // emit new friend and his status
-              if (!error) {
-                var online = false;
-                if (connectedUsers.indexOf(data.name) > -1){
-                  online = true;
-                }
-                socket.emit('friend:new', {user: data.name, online: online});
-              }
-            });
-          }
-        });
+        //       // emit new friend and his status
+        //       if (!error) {
+        //         var online = false;
+        //         if (connectedUsers.indexOf(data.name) > -1){
+        //           online = true;
+        //         }
+        //         socket.emit('friend:new', {user: data.name, online: online});
+        //       }
+        //     });
+        //   }
+        // });
         break;
       case "remove":
         // remove /friend/:name -> remove friend
         console.log(socket.session.username + " wants to delete " + data.name);
 
+        // delete friend for both users
         User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
           user.friends.remove(data.name);
           user.save(function (err, user) {
@@ -429,9 +439,83 @@ io.sockets.on('connection', function(socket){
             socket.emit('friend:deleted', {user: data.name});
           });
         });
+
+        User.findOne({ name: data.name }, {password : 0}, function(err, user){
+          user.friends.remove(socket.session.username);
+          user.save(function (err, user) {
+            var error = false;
+            if (err) {
+              console.log(err);
+              error = true;
+            }
+            clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
+
+            // emit deleted friend
+            clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+          });
+        });
         break;
     }
     
+  });
+
+  socket.on('friend:accept', function(data){
+    console.log(socket.session.username + " accepts request from " + data.user);
+
+    // add friend for both users
+    User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+      if (user.friends.indexOf(data.user) < 0){
+        user.friends.push(data.user);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+          socket.emit('/friend/', {error: error});
+
+          // emit new friend and his status
+          if (!error) {
+            var online = false;
+            if (connectedUsers.indexOf(data.user) > -1){
+              online = true;
+            }
+            socket.emit('friend:new', {user: data.user, online: online});
+          }
+        });
+      }
+    });
+
+    User.findOne({ name: data.user }, {password : 0}, function(err, user){
+      if (user.friends.indexOf(socket.session.username) < 0){
+        user.friends.push(socket.session.username);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+          clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+
+          // emit new friend and his status
+          if (!error) {
+            var online = false;
+            if (connectedUsers.indexOf(socket.session.username) > -1){
+              online = true;
+            }
+            clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
+          }
+        });
+      }
+    });
+
+    // TODO: wait for db and check for errors first
+    removeFriendRequest(socket.session.username, data.user);
+  });
+
+  socket.on('friend:decline', function(data){
+    console.log(scoket.session.username + " declines friend request from " + data.user);
+    removeFriendRequest(socket.session.username, data.user);
   });
 
   socket.on('/friends/', function(data){
@@ -513,4 +597,26 @@ function deleteConnectedUser(username, socket){
 
 function getIdForUsername(username){
   return clientUsernames[username];
+}
+
+function addFriendRequest(username, friend){
+  if (!friendRequests[username])
+    friendRequests[username] = [];
+
+  // only request if not already requested
+  if (friendRequests[username].indexOf(friend) === -1){
+    friendRequests[username].push(friend)
+
+    // send friend request if user is online
+    if (connectedUsers.indexOf(username) > -1){
+      clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
+    }
+  }
+}
+
+function removeFriendRequest(username, friend){
+  if (friendRequests[username] && friendRequests[username].indexOf(friend) > -1){
+    console.log("REMOVE!");
+    friendRequests[username].splice(friendRequests[username].indexOf(friend), 1);
+  }
 }

@@ -17,11 +17,14 @@ angular.module('angularappApp')
 
         //incomming friend requests
         socket.on('friend:request', function(data){
-            console.log(data.from + " wants to add you!");
+            console.log(data);
+            $scope.requests = data.requests;
+            // console.log(data.from + " wants to add you!");
         });
 
 
 
+        // change to when server accepts login, otherwise server session may not be ready
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           if (newValue) {
             user.getFriendsStatus(function(data){
@@ -55,6 +58,11 @@ angular.module('angularappApp')
 
                 // new friend
                 socket.on("friend:new", function(sdata){
+                    // if from request, delete request
+                    if ($scope.requests && $scope.requests.indexOf(sdata.user) > -1){
+                        $scope.requests.splice($scope.requests.indexOf(sdata.user), 1);
+                    }
+
                     console.log("new friend!");
                     console.log($scope.friends);
                     console.log(sdata);
@@ -110,6 +118,18 @@ angular.module('angularappApp')
           }
         });
 
+
+        $scope.accept = function(username){
+            console.log("accepting request from " + username);
+            socket.emit("friend:accept", {user: username});
+        }
+
+        $scope.decline = function(username){
+            console.log("declining request from " + username);
+            socket.emit("friend:decline", {user: username});
+            // remove request
+            $scope.requests.splice($scope.requests.indexof(username), 1);
+        }
 
         $scope.sortMe = function() {
             return function(object) {
