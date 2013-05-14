@@ -514,7 +514,7 @@ io.sockets.on('connection', function(socket){
   });
 
   socket.on('friend:decline', function(data){
-    console.log(scoket.session.username + " declines friend request from " + data.user);
+    console.log(socket.session.username + " declines friend request from " + data.user);
     removeFriendRequest(socket.session.username, data.user);
   });
 

@@ -88,6 +88,7 @@ angular.module('angularappApp')
                 // deleted friend
                 socket.on("friend:deleted", function(sdata){
                     delete $scope.friends[sdata.user];
+                    $scope.friendCount = friendsOnline($scope.friends);
 
                     // TODO: remove Listener onlinestatus:sdata.user
                     console.log("stopping listener for " + sdata.user);
@@ -128,7 +129,7 @@ angular.module('angularappApp')
             console.log("declining request from " + username);
             socket.emit("friend:decline", {user: username});
             // remove request
-            $scope.requests.splice($scope.requests.indexof(username), 1);
+            $scope.requests.splice($scope.requests.indexOf(username), 1);
         }
 
         $scope.sortMe = function() {
