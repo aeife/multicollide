@@ -587,6 +587,8 @@ function addConnectedUser(username, socket){
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
+
+  sendFriendRequestsIfExist(username);
 }
 
 function deleteConnectedUser(username, socket){
@@ -612,6 +614,11 @@ function addFriendRequest(username, friend){
       clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
     }
   }
+}
+
+function sendFriendRequestsIfExist(username){
+  if (friendRequests[username] && friendRequests[username].length > 0)
+  clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
 }
 
 function removeFriendRequest(username, friend){
