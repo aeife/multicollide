@@ -14,6 +14,7 @@ angular.module('angularappApp')
         // $scope.friends["tester3"] = {online: true};
         // $scope.friends["tester9"] = {online: false};
         $scope.socketS = {};
+        $scope.requests = [];
 
         //incomming friend requests
         socket.on('friend:request', function(data){
