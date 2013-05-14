@@ -5,7 +5,7 @@ angular.module('angularappApp')
     return {
       templateUrl: 'views/friendslist.html',
       restrict: 'E',
-      controller: function($scope, auth, user, socket){
+      controller: function($scope, auth, user, socket, socketSub){
         // get friend list
         // subscribe to online status changes for all friends
         // onlinestatus:<username>
@@ -13,7 +13,7 @@ angular.module('angularappApp')
         // $scope.friends["test"] = {online:false};
         // $scope.friends["tester3"] = {online: true};
         // $scope.friends["tester9"] = {online: false};
-
+        $scope.socketS = {};
 
 
 
@@ -27,7 +27,8 @@ angular.module('angularappApp')
 
                 for (var friend in $scope.friends) {
                     console.log(friend);
-                    socket.on("onlinestatus:"+friend, function(sdata){
+
+                    $scope.socketS[friend] = socketSub('onlinestatus:'+friend, function(sdata){
                         console.log(sdata);
                         console.log(data.friends);
                         console.log(sdata.user + " has changed online status to: " + sdata.online);
@@ -35,6 +36,16 @@ angular.module('angularappApp')
 
                         $scope.friendCount = friendsOnline($scope.friends);
                     });
+                    $scope.socketS[friend].start();
+
+                    // socket.on("onlinestatus:"+friend, function(sdata){
+                    //     console.log(sdata);
+                    //     console.log(data.friends);
+                    //     console.log(sdata.user + " has changed online status to: " + sdata.online);
+                    //     $scope.friends[sdata.user].online = sdata.online;
+
+                    //     $scope.friendCount = friendsOnline($scope.friends);
+                    // });
                 }
 
                 // new friend
@@ -42,15 +53,23 @@ angular.module('angularappApp')
                     console.log("new friend!");
                     console.log($scope.friends);
                     console.log(sdata);
-                    $scope.friends[sdata.user] = {online: data.online};
+                    $scope.friends[sdata.user] = {online: sdata.online};
+                    $scope.friendCount = friendsOnline($scope.friends);
                     console.log($scope.friends);
                     var friend = $scope.friends[sdata.user];
-                    socket.on("onlinestatus:"+sdata.user, function(sdata){
+
+                    $scope.socketS[sdata.user] = socketSub('onlinestatus:'+sdata.user, function(sdata){
                         console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
 
                         $scope.friendCount = friendsOnline($scope.friends);
                     });
+                    // socket.on("onlinestatus:"+sdata.user, function(sdata){
+                    //     console.log(sdata.user + " has changed online status to: " + sdata.online);
+                    //     $scope.friends[sdata.user].online = sdata.online;
+
+                    //     $scope.friendCount = friendsOnline($scope.friends);
+                    // });
                 });
 
                 // deleted friend
@@ -58,6 +77,10 @@ angular.module('angularappApp')
                     delete $scope.friends[sdata.user];
 
                     // TODO: remove Listener onlinestatus:sdata.user
+                    console.log("stopping listener for " + sdata.user);
+                    console.log($scope.socketS);
+                    console.log($scope.socketS[sdata.user]);
+                    $scope.socketS[sdata.user].stop();
                 });
             });
 
