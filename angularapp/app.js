@@ -40,6 +40,12 @@ app.configure('development', function(){
 // });
 
 
+/* 
+******************************************************
+*********************** Dabase *********************** 
+******************************************************
+*/
+
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/multicollide');
@@ -67,7 +73,11 @@ var User = mongoose.model('User', userSchema);
 
 
 
-// SERVER APP
+/* 
+******************************************************
+********************** REST API ********************** 
+******************************************************
+*/
 
 app.get('/', function (req, res) {
     res.render('index.html');
@@ -76,9 +86,6 @@ app.get('/', function (req, res) {
 // app.get('/login', function (req, res) {
 //     res.json({ha: "ha"});
 // });
-
-
-// API
 
 app.post('/user', function(req, res){
   var user = User({name: req.body.name, password: crypto.createHash('sha512').update(req.body.password).digest('hex')});
@@ -219,12 +226,7 @@ app.delete('/friend/:name', function(req, res){
 
 
 
-
-
-
-
-
-
+// server
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
@@ -242,8 +244,18 @@ var clientUsernames = {};
 // saves friend requests for all names ordered with username
 var friendRequests = {};
 
+// socket.io listens on server
 var io = require('socket.io').listen(server);
 
+/* 
+******************************************************
+********************* Socket API *********************
+******************************************************
+*/
+
+/*
+  set authorization for sockets
+*/
 io.set('authorization', function(data, accept) {
   cookieParser(data, {}, function(err) {
     if (err) {
@@ -269,24 +281,27 @@ io.set('authorization', function(data, accept) {
 });
 
 
+/*
+  user connected
+*/
 io.sockets.on('connection', function(socket){
   socket.session = socket.handshake.session;
   console.log(socket.session);
 
   // save sockets for all clients ordered with socket id
   clients[socket.id] = socket;
-  console.log(socket.id);
   console.log("client connected");
   // console.log(socket.session.username);
 
-  // check if already logged in and add to connected user list
+  // if user is already logged in: add to connected user list
   if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
-    // console.log("adding user to list");
     addConnectedUser(socket.session.username, socket);
   }
 
-  console.log(connectedUsers);
-
+  /*
+    get user profile or sign up a new account
+    (REST notation)
+  */
   socket.on('/user/', function(data){
     switch(data.type){
       // get /user/:name -> profile
@@ -338,6 +353,11 @@ io.sockets.on('connection', function(socket){
     }
   });
 
+
+  /*
+    user logs in
+    (REST notation)
+  */
   socket.on('/login/', function(data){
     switch(data.type){
       case "post":{
@@ -360,6 +380,10 @@ io.sockets.on('connection', function(socket){
     }
   });
 
+  /*
+    user logs out
+    (REST notation)
+  */
   socket.on('/logout/', function(data){
     switch(data.type){
       case "post":{
@@ -388,6 +412,10 @@ io.sockets.on('connection', function(socket){
   });
 
 
+  /*
+    user adds or removes a friend
+    (REST notation)
+  */
   socket.on('/friend/', function(data){
     switch(data.type){
       case "post":
@@ -459,6 +487,9 @@ io.sockets.on('connection', function(socket){
     
   });
 
+  /*
+    user accepted friend request
+  */
   socket.on('friend:accept', function(data){
     console.log(socket.session.username + " accepts request from " + data.user);
 
@@ -513,25 +544,26 @@ io.sockets.on('connection', function(socket){
     removeFriendRequest(socket.session.username, data.user);
   });
 
+  /*
+    user declined friend request
+  */
   socket.on('friend:decline', function(data){
     console.log(socket.session.username + " declines friend request from " + data.user);
     removeFriendRequest(socket.session.username, data.user);
   });
 
+
+  /*
+    get status of all friends
+  */
   socket.on('/friends/', function(data){
     console.log("GETTING FRIENDS STATUS");
 
-    //getting status for all friends
-
     var result = {};
-    //getting all friends
+    //getting all friends and check their status
     User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
       if (err) console.log(err);
-      //check status for friends
-      console.log("FRIENDS");
-      // console.log(user);
-      console.log(user.friends);
-      console.log(user.friends.length);
+
       if (user){
         console.log(user);
         for (var i = 0; i < user.friends.length; i++){
@@ -548,8 +580,11 @@ io.sockets.on('connection', function(socket){
   });
 
 
+  /*
+    user changed password
+  */
   socket.on('/settings/changePassword', function(data){
-    //check if correct old password
+    //check if correct old password, then change
     User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
           if (err) console.log(err);
           if (user) {
@@ -568,12 +603,15 @@ io.sockets.on('connection', function(socket){
   });
 
 
+  /*
+    user disconnected
+  */
   socket.on('disconnect', function(data){
-    console.log("CLIENT DISCONNECTED");
-    console.log("deleting " + socket.id);
+    console.log("client disconnected");
+
     delete clients[socket.id];
     if (socket.session.username){
-      // delete user from connected user list
+      // if user was logged in: delete user from connected user list
       if (connectedUsers.indexOf(socket.session.username) > -1){
         deleteConnectedUser(socket.session.username, socket);
       }
@@ -582,7 +620,14 @@ io.sockets.on('connection', function(socket){
 
 });
 
+/*
+  handles a connecting user
 
+  adds a user to the list of connected users
+  adds the according id and username to the dictionary
+  emits the event
+  sends the user all pending friend requests
+*/
 function addConnectedUser(username, socket){
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
@@ -591,21 +636,36 @@ function addConnectedUser(username, socket){
   sendFriendRequestsIfExist(username);
 }
 
+/*
+  handles a disconnected user
+
+  deletes a user from the list of connected users
+  deletes the connected of username and id for user
+  emits the event
+*/
 function deleteConnectedUser(username, socket){
   connectedUsers.splice(connectedUsers.indexOf(username),1);
   delete clientUsernames[username];
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: false});
 }
 
+/*
+  returns the id (socket.id) for a given username
+*/
 function getIdForUsername(username){
   return clientUsernames[username];
 }
 
+
+/*
+  adds a friend request for username from friend
+*/
 function addFriendRequest(username, friend){
+  // if no array for user exists: create it
   if (!friendRequests[username])
     friendRequests[username] = [];
 
-  // only request if not already requested
+  // only request if not already requested (so no multiple requests are possible)
   if (friendRequests[username].indexOf(friend) === -1){
     friendRequests[username].push(friend)
 
@@ -616,14 +676,19 @@ function addFriendRequest(username, friend){
   }
 }
 
+/*
+  emits all pending friend requests to specific user 
+*/
 function sendFriendRequestsIfExist(username){
   if (friendRequests[username] && friendRequests[username].length > 0)
   clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
 }
 
+/*
+  removes a friend request for username from friend
+*/
 function removeFriendRequest(username, friend){
   if (friendRequests[username] && friendRequests[username].indexOf(friend) > -1){
-    console.log("REMOVE!");
     friendRequests[username].splice(friendRequests[username].indexOf(friend), 1);
   }
 }
