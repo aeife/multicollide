@@ -9,14 +9,18 @@ angular.module('angularappApp')
         // get friend list
         // subscribe to online status changes for all friends
         // onlinestatus:<username>
+
+        // list of friends
         $scope.friends = {};
-        // $scope.friends["test"] = {online:false};
-        // $scope.friends["tester3"] = {online: true};
-        // $scope.friends["tester9"] = {online: false};
+
+        // list of socket objects for each friend
         $scope.socketS = {};
+
+        // list of friend requests
         $scope.requests = [];
 
-        //incomming friend requests
+        // handle incomming friend requests
+        // TODO: use generic socket service
         socket.on('friend:request', function(data){
             console.log(data);
             $scope.requests = data.requests;
@@ -25,107 +29,78 @@ angular.module('angularappApp')
 
 
 
-        // change to when server accepts login, otherwise server session may not be ready
+        // TODO: change to when server accepts login, otherwise server session may not be ready
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
           if (newValue) {
+            // on log in: get friends and there online status
             user.getFriendsStatus(function(data){
                 $scope.friends = data;
                 $scope.friendCount = friendsOnline($scope.friends);
-                console.log($scope.friends);
-            
 
+                // open a socket handler for each friend
                 for (var friend in $scope.friends) {
                     console.log(friend);
 
                     $scope.socketS[friend] = socketSub('onlinestatus:'+friend, function(sdata){
-                        console.log(sdata);
-                        console.log(data.friends);
-                        console.log(sdata.user + " has changed online status to: " + sdata.online);
+                        // console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
 
                         $scope.friendCount = friendsOnline($scope.friends);
                     });
+
+                    // start listening for messages
                     $scope.socketS[friend].start();
-
-                    // socket.on("onlinestatus:"+friend, function(sdata){
-                    //     console.log(sdata);
-                    //     console.log(data.friends);
-                    //     console.log(sdata.user + " has changed online status to: " + sdata.online);
-                    //     $scope.friends[sdata.user].online = sdata.online;
-
-                    //     $scope.friendCount = friendsOnline($scope.friends);
-                    // });
                 }
 
-                // new friend
+                // new friend (= own or other user accepted friend request)
                 socket.on("friend:new", function(sdata){
-                    // if from request, delete request
+                    // if accepted from own user delete according request
                     if ($scope.requests && $scope.requests.indexOf(sdata.user) > -1){
                         $scope.requests.splice($scope.requests.indexOf(sdata.user), 1);
                     }
 
-                    console.log("new friend!");
-                    console.log($scope.friends);
-                    console.log(sdata);
+                    // add friend to list, adjust friend count and add socket handler
                     $scope.friends[sdata.user] = {online: sdata.online};
                     $scope.friendCount = friendsOnline($scope.friends);
                     console.log($scope.friends);
                     var friend = $scope.friends[sdata.user];
 
                     $scope.socketS[sdata.user] = socketSub('onlinestatus:'+sdata.user, function(sdata){
-                        console.log(sdata.user + " has changed online status to: " + sdata.online);
+                        // console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
 
                         $scope.friendCount = friendsOnline($scope.friends);
                     });
-                    // socket.on("onlinestatus:"+sdata.user, function(sdata){
-                    //     console.log(sdata.user + " has changed online status to: " + sdata.online);
-                    //     $scope.friends[sdata.user].online = sdata.online;
 
-                    //     $scope.friendCount = friendsOnline($scope.friends);
-                    // });
+                    // start listening for messages
+                    $scope.socketS[sdata.user].start();
                 });
 
                 // deleted friend
                 socket.on("friend:deleted", function(sdata){
+                    // delete friend from list and adjust friends count
                     delete $scope.friends[sdata.user];
                     $scope.friendCount = friendsOnline($scope.friends);
 
-                    // TODO: remove Listener onlinestatus:sdata.user
+                    // remove Listener onlinestatus:sdata.user
                     console.log("stopping listener for " + sdata.user);
-                    console.log($scope.socketS);
-                    console.log($scope.socketS[sdata.user]);
                     $scope.socketS[sdata.user].stop();
                 });
             });
 
-            // user.getUserInfo(auth.key(), function(data){
-            //     console.log(data.friends);
-
-            //     for (var i = 0; i < data.friends.length; i++) {
-            //         $scope.friends[data.friends[i]] = {online: false};
-            //         console.log($scope.friends);
-            //         console.log(i);
-            //         socket.on("onlinestatus:"+data.friends[i], function(sdata){
-            //             console.log(i);
-            //             console.log(sdata);
-            //             console.log(data.friends);
-            //             console.log(sdata.user + " has changed online status to: " + sdata.online);
-            //             $scope.friends[sdata.user].online = sdata.online;
-            //         });
-            //     }
-            // });
           } else {
             $scope.friends = null;
           }
         });
 
 
+        // user accepted friend request
         $scope.accept = function(username){
             console.log("accepting request from " + username);
             socket.emit("friend:accept", {user: username});
         }
 
+        // user declined friend request
         $scope.decline = function(username){
             console.log("declining request from " + username);
             socket.emit("friend:decline", {user: username});
@@ -133,22 +108,16 @@ angular.module('angularappApp')
             $scope.requests.splice($scope.requests.indexOf(username), 1);
         }
 
-        $scope.sortMe = function() {
-            return function(object) {
-                return object.value.online;
-            }
-        }
       },
     };
   });
 
+// get count of friends with online status true
 function friendsOnline (friends) {
     var result = 0;
     for (var friend in friends){
-        console.log(friend);
         if (friends[friend].online) result++;
     }
 
-    console.log("NEW: " + result);
     return result;
 }
