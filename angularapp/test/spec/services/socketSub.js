@@ -11,8 +11,8 @@ describe('Service: socketSub', function () {
     socketSub = _socketSub_;
   }));
 
-  it('should do something', function () {
-    expect(!!socketSub).toBe(true);
-  });
+  // it('should do something', function () {
+  //   expect(!!socketSub).toBe(true);
+  // });
 
 });

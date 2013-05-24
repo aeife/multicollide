@@ -11,8 +11,8 @@ describe('Service: socketResource', function () {
     socketResource = _socketResource_;
   }));
 
-  it('should do something', function () {
-    expect(!!socketResource).toBe(true);
-  });
+  // it('should do something', function () {
+  //   expect(!!socketResource).toBe(true);
+  // });
 
 });

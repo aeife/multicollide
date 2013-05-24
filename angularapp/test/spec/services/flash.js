@@ -11,8 +11,8 @@ describe('Service: flash', function () {
     flash = _flash_;
   }));
 
-  it('should do something', function () {
-    expect(!!flash).toBe(true);
-  });
+  // it('should do something', function () {
+  //   expect(!!flash).toBe(true);
+  // });
 
 });

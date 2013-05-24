@@ -11,9 +11,9 @@ describe('Filter: toArray', function () {
     toArray = $filter('toArray');
   }));
 
-  it('should return the input prefixed with "toArray filter:"', function () {
-    var text = 'angularjs';
-    expect(toArray(text)).toBe('toArray filter: ' + text);
-  });
+  // it('should return the input prefixed with "toArray filter:"', function () {
+  //   var text = 'angularjs';
+  //   expect(toArray(text)).toBe('toArray filter: ' + text);
+  // });
 
 });
