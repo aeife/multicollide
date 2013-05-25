@@ -2,12 +2,28 @@
 
 describe('Directive: friendslist', function () {
   beforeEach(module('angularappApp'));
+  beforeEach(module('angularappAppMock.services'));
 
-  var element;
+  var FriendslistCtrl, 
+      scope, 
+      socket;
 
-  // it('should make hidden element visible', inject(function ($rootScope, $compile) {
-  //   element = angular.element('<friendslist></friendslist>');
-  //   element = $compile(element)($rootScope);
-  //   expect(element.text()).toBe('this is the friendslist directive');
-  // }));
+  beforeEach(inject(function ($rootScope, $compile, $controller, $injector) {
+    scope = $rootScope.$new();
+    socket = $injector.get("socket");
+    
+    FriendslistCtrl = $controller('FriendslistCtrl', {
+      $scope: scope,
+      socket: socket
+    });
+  }));
+
+  it('friendsOnline should display correct number of friends with online status true', function(){
+    console.log(scope.friends);
+    scope.friends = {
+      user1: {online: true}, 
+      user2: {online: false}
+    };
+    expect(scope.friendsOnline(scope.friends)).toBe(1);
+  });
 });

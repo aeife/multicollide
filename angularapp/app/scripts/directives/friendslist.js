@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .directive('friendslist', function () {
-    return {
-      templateUrl: 'views/friendslist.html',
-      restrict: 'E',
-      controller: function($scope, auth, user, socket, socketSub){
+    .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub){
         // get friend list
         // subscribe to online status changes for all friends
         // onlinestatus:<username>
@@ -35,7 +31,7 @@ angular.module('angularappApp')
             // on log in: get friends and there online status
             user.getFriendsStatus(function(data){
                 $scope.friends = data;
-                $scope.friendCount = friendsOnline($scope.friends);
+                $scope.friendCount = $scope.friendsOnline($scope.friends);
 
                 // open a socket handler for each friend
                 for (var friend in $scope.friends) {
@@ -45,7 +41,7 @@ angular.module('angularappApp')
                         // console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
 
-                        $scope.friendCount = friendsOnline($scope.friends);
+                        $scope.friendCount = $scope.friendsOnline($scope.friends);
                     });
 
                     // start listening for messages
@@ -61,7 +57,7 @@ angular.module('angularappApp')
 
                     // add friend to list, adjust friend count and add socket handler
                     $scope.friends[sdata.user] = {online: sdata.online};
-                    $scope.friendCount = friendsOnline($scope.friends);
+                    $scope.friendCount = $scope.friendsOnline($scope.friends);
                     console.log($scope.friends);
                     var friend = $scope.friends[sdata.user];
 
@@ -69,7 +65,7 @@ angular.module('angularappApp')
                         // console.log(sdata.user + " has changed online status to: " + sdata.online);
                         $scope.friends[sdata.user].online = sdata.online;
 
-                        $scope.friendCount = friendsOnline($scope.friends);
+                        $scope.friendCount = $scope.friendsOnline($scope.friends);
                     });
 
                     // start listening for messages
@@ -80,7 +76,7 @@ angular.module('angularappApp')
                 socket.on("friend:deleted", function(sdata){
                     // delete friend from list and adjust friends count
                     delete $scope.friends[sdata.user];
-                    $scope.friendCount = friendsOnline($scope.friends);
+                    $scope.friendCount = $scope.friendsOnline($scope.friends);
 
                     // remove Listener onlinestatus:sdata.user
                     console.log("stopping listener for " + sdata.user);
@@ -108,16 +104,22 @@ angular.module('angularappApp')
             $scope.requests.splice($scope.requests.indexOf(username), 1);
         }
 
-      },
-    };
+        // get count of friends with online status true
+        $scope.friendsOnline = function(friends) {
+            var result = 0;
+            for (var friend in friends){
+                if (friends[friend].online) result++;
+            }
+
+            return result;
+        }
+
+      })
+    .directive('friendslist', function () {
+        return {
+          templateUrl: 'views/friendslist.html',
+          restrict: 'E',
+          controller: 'FriendslistCtrl'
+        };
   });
 
-// get count of friends with online status true
-function friendsOnline (friends) {
-    var result = 0;
-    for (var friend in friends){
-        if (friends[friend].online) result++;
-    }
-
-    return result;
-}
