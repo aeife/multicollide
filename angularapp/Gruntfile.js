@@ -43,11 +43,11 @@ module.exports = function (grunt) {
         ],
         tasks: ['livereload']
       },
-      devwatch: {
+      watchTests: {
         files: [
           'test/spec/{,*/}*.js'
         ],
-        tasks: ['xserver']
+        tasks: ['karma']
       }
     },
     connect: {
@@ -280,7 +280,7 @@ module.exports = function (grunt) {
   grunt.registerTask('xserver', [
     'karma',
     'express',
-    'watch:devwatch',
+    'watch:watchTests',
     'express-keepalive'
   ]);
 
