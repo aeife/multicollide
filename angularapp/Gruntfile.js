@@ -3,7 +3,7 @@ var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
-
+var path = require('path');
 module.exports = function (grunt) {
   // load all grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -256,10 +256,24 @@ module.exports = function (grunt) {
           ]
         }]
       }
+    },
+    express: {
+      custom: {
+        options: {
+          server: path.resolve('./app.js')
+        }
+      }
     }
+
   });
 
   grunt.renameTask('regarde', 'watch');
+
+  grunt.loadNpmTasks('grunt-express');
+  grunt.registerTask('xserver', [
+    'express',
+    'express-keepalive'
+  ]);
 
   grunt.registerTask('server', [
     'clean:server',

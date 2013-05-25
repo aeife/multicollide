@@ -225,9 +225,18 @@ app.delete('/friend/:name', function(req, res){
 
 
 // server
-var server = http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+/*.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
-});
+});*/
+
+// for grunt
+exports = module.exports = server;
+// delegates user() function
+exports.use = function() {
+  app.use.apply(app, arguments);
+};
+
 
 
 // names of current connected users
