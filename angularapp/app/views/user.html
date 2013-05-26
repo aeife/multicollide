@@ -46,9 +46,7 @@
     <div ng-switch-default>
         <h1 class="text-center">Seach Player</h1>
         <ul class="text-center">
-            <li ng-repeat="user in connectedUsers">
-                {{user}}
-            </li>
+            <li ng-repeat="user in connectedUsers | withoutGuests"><a href="#/user/{{user}}">{{user}}</a></li>
         </ul>
     </div>
 </div>

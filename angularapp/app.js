@@ -311,9 +311,10 @@ io.sockets.on('connection', function(socket){
   socket.session = socket.handshake.session;
   console.log(socket.session);
 
+
   // save sockets for all clients ordered with socket id
   clients[socket.id] = socket;
-  console.log("client connected");
+  console.log("client connected as " + socket.session.usernamey);
   // console.log(socket.session.username);
 
   // if user is already logged in: add to connected user list
@@ -399,11 +400,12 @@ io.sockets.on('connection', function(socket){
         User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
           if (err) console.log(err);
           if (user) {
-            socket.session.loggedin = true;
+            // socket.session.loggedin = true;
+            setSession("loggedIn", true, socket);
             // socket.session.username = data.username;
             // socket.session.save();
 
-            addConnectedUser(data.username, socket, true);
+            addConnectedUser(data.username, socket);
             console.log("ID FOR USER: " + data.username);
             console.log(getIdForUsername(data.username));
             socket.emit('/login/', {loggedin: true});
@@ -434,8 +436,9 @@ io.sockets.on('connection', function(socket){
         socket.session.destroy();
         console.log(socket.handshake.sessionID);
         sessionStore.destroy(socket.handshake.sessionID);
+
         socket.session.loggedin = null;
-        socket.session.username = generateRandomGuestName;
+        socket.session.username = generateRandomGuestName();
 
 
 
@@ -708,25 +711,31 @@ function generateRandomGuestName(){
   sends the user all pending friend requests
 */
 function addConnectedUser(username, socket, wasGuest){
-
-console.log("CHEECKKKKKKKKING");
-console.log(socket.session.username);
   // if no username, generate random and save
   if (!username){
     username = generateRandomGuestName();
-    socket.session.username = username;
+    setSession("username", username, socket);
+    // socket.session.username = username;
   } else if (socket.session.username.indexOf("Guest") > -1){
-    console.log("USER WAS GUEST BEFOOOORE!!!!");
     // user was guest before he logged in
     deleteConnectedUser(socket.session.username, socket);
-    socket.session.username = username;
+    // socket.session.username = username;
+    setSession("username", username, socket);
   }
+  // socket.session.save();
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
 
   sendFriendRequestsIfExist(username);
 }
+
+
+function setSession(attr, val, socket){
+  socket.session[attr] = val;
+  socket.session.save();
+}
+
 
 /*
   handles a disconnected user

@@ -5,6 +5,7 @@ angular.module('angularappApp')
     
     if (!$routeParams.name){
         $scope.playerlist = true;
+        $scope.connectedUsers = [];
 
         socketApi.getConnectedUsers(function(data){
             console.log(data);
