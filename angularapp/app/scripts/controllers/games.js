@@ -19,6 +19,10 @@ angular.module('angularappApp')
       console.log("trying to join game with id " + id);
     }
 
+    $scope.createGame = function(){
+      lobby.newLobby();
+    }
+
     $scope.refresh = function(){
       lobby.getAvailableGames(function(data){
         console.log(data);

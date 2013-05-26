@@ -253,6 +253,16 @@ var friendRequests = {};
 
 // saves all current available lobbys
 var lobbys = {};
+// highest current lobby id for continues counting
+var lobbyHighestCount = 0;
+
+// mock data
+lobbys = {
+          0: {name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
+          1: {name: "fine game", status: "playing", players: 9, maxplayers: 10},
+          2: {name: "another game", status: "lobby", players: 4, maxplayers: 10}
+        };
+lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
 // socket.io listens on server
 var io = require('socket.io').listen(server);
@@ -631,12 +641,14 @@ io.sockets.on('connection', function(socket){
 
   socket.on('/games', function(data){
     console.log("client requested games info");
-    lobbys = {
-              1: {name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
-              2: {name: "fine game", status: "playing", players: 9, maxplayers: 10},
-              3: {name: "another game", status: "lobby", players: 4, maxplayers: 10}}
-              ;
     socket.emit('/games', lobbys);
+  });
+
+
+  socket.on('lobby:new', function(data){
+    console.log("client requested games info");
+    addLobby({name: "new game", status: "lobby", players: 1, maxplayers: 2});
+    socket.emit('lobby:new', {error: false});
   });
 
 });
@@ -678,6 +690,9 @@ function getIdForUsername(username){
 }
 
 
+
+
+
 /*
   adds a friend request for username from friend
 */
@@ -712,4 +727,16 @@ function removeFriendRequest(username, friend){
   if (friendRequests[username] && friendRequests[username].indexOf(friend) > -1){
     friendRequests[username].splice(friendRequests[username].indexOf(friend), 1);
   }
+}
+
+
+
+
+
+function addLobby(data){
+  lobbys[lobbyHighestCount++] = {name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers};
+}
+
+function removeLobby(id){
+  delete lobbys[id];
 }
