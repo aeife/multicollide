@@ -647,8 +647,14 @@ io.sockets.on('connection', function(socket){
 
   socket.on('lobby:new', function(data){
     console.log("client requested games info");
-    addLobby({name: "new game", status: "lobby", players: 1, maxplayers: 2});
-    socket.emit('lobby:new', {error: false});
+    var newLobby = addLobby({name: "new game", status: "lobby", players: 1, maxplayers: 2});
+    socket.emit('lobby:new', newLobby);
+  });
+
+  socket.on('lobby:join', function(data){
+    console.log("client wants to join lobby");
+    joinLobby(data.id);
+    socket.emit('lobby:join', lobbys[data.id]);
   });
 
 });
@@ -734,9 +740,22 @@ function removeFriendRequest(username, friend){
 
 
 function addLobby(data){
-  lobbys[lobbyHighestCount++] = {name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers};
+  var tmpCount = lobbyHighestCount;
+
+  // add lobby
+  // add player who opened lobby as first player to lobby
+  lobbys[lobbyHighestCount++] = {name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers, currentPlayers: ["host"]};
+
+  return lobbys[tmpCount];
 }
 
 function removeLobby(id){
   delete lobbys[id];
+}
+
+function joinLobby(id){
+  if (!lobbys[id].currentPlayers){
+    lobbys[id].currentPlayers = [];
+  }
+  lobbys[id].currentPlayers.push("guest");
 }

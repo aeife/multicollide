@@ -1,23 +1,33 @@
-<h1 class="text-center">Server Browser</h1>
-<div class="btn-toolbar text-center">
-    <div class="btn-group">
-        <a href="" class="btn" ng-click="createGame()">create game</a>
+<div ng-switch="inLobby">
+    <div ng-switch-when="true">
+        <h1>Lobby: {{lobby.name}}</h1>
+        <ul>
+            <li ng-repeat="player in lobby.currentPlayers">{{player}}</li>
+        </ul>
     </div>
-    <div class="btn-group">
-        <a href="" class="btn" ng-click="refresh()">refresh</a>
+    <div ng-switch-default>
+        <h1 class="text-center">Server Browser</h1>
+        <div class="btn-toolbar text-center">
+            <div class="btn-group">
+                <a href="" class="btn" ng-click="createGame()">create game</a>
+            </div>
+            <div class="btn-group">
+                <a href="" class="btn" ng-click="refresh()">refresh</a>
+            </div>
+        </div>
+        <table class="dataTable table table-striped table-hover">
+            <tr>
+                <th ng-click="reorder('name')">Game Name</th>
+                <th ng-click="reorder('players')">Players</th>
+                <th ng-click="reorder('status')">Status</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
+                <td>{{game.name}}</td>
+                <td>{{game.players}} / {{game.maxplayers}}</td>
+                <td>{{game.status}}</td>
+                <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
+            </tr>
+        </table>
     </div>
 </div>
-<table class="dataTable table table-striped table-hover">
-    <tr>
-        <th ng-click="reorder('name')">Game Name</th>
-        <th ng-click="reorder('players')">Players</th>
-        <th ng-click="reorder('status')">Status</th>
-        <th></th>
-    </tr>
-    <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
-        <td>{{game.name}}</td>
-        <td>{{game.players}} / {{game.maxplayers}}</td>
-        <td>{{game.status}}</td>
-        <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
-    </tr>
-</table>

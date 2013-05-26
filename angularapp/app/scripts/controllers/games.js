@@ -5,6 +5,7 @@ angular.module('angularappApp')
     $scope.games = null;
     $scope.order = "name";
     $scope.reverse = false;
+    $scope.inLobby = false;
 
     $scope.reorder = function(attr){
       if (attr === $scope.order){
@@ -17,10 +18,17 @@ angular.module('angularappApp')
 
     $scope.joinGame = function(id){
       console.log("trying to join game with id " + id);
+      lobby.joinLobby(id, function(data){
+        console.log("successfull joined lobby");
+        $scope.onJoinedLobby(data);
+      });
     }
 
     $scope.createGame = function(){
-      lobby.newLobby();
+      lobby.newLobby(function(data){
+        console.log("successfull created lobby");
+        $scope.onJoinedLobby(data);
+      });
     }
 
     $scope.refresh = function(){
@@ -28,6 +36,11 @@ angular.module('angularappApp')
         console.log(data);
         $scope.games = data;
       });
+    }
+
+    $scope.onJoinedLobby = function (data){
+      $scope.inLobby = true;
+      $scope.lobby = data;
     }
 
     $scope.refresh();

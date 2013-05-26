@@ -19,6 +19,12 @@ angular.module('angularappApp')
         socket.once("lobby:new", function(data){
           callback(data);
         });
+      },
+      joinLobby: function(id, callback){
+        socket.emit("lobby:join", {id: id});
+        socket.once("lobby:join", function(data){
+          callback(data);
+        });
       }
     };
   });

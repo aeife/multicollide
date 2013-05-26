@@ -18,10 +18,17 @@ angular.module('angularappApp')
           $rootScope.$apply(callback(data));
         });
       },
-      newLobby: function(){
+      newLobby: function(callback){
         console.log("adding new lobby");
         socketApi.newLobby(function(data){
           // console.log("finished");
+          $rootScope.$apply(callback(data));
+        });
+      },
+      joinLobby: function(id, callback){
+        console.log("joining lobby");
+        socketApi.joinLobby(id, function(data){
+          $rootScope.$apply(callback(data));
         });
       }
     };
