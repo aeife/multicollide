@@ -1,16 +1,23 @@
-<h1  class="text-center">Server Browser</h1>
-
+<h1 class="text-center">Server Browser</h1>
+<div class="btn-toolbar text-center">
+    <div class="btn-group">
+        <a href="" class="btn">create game</a>
+    </div>
+    <div class="btn-group">
+        <a href="" class="btn" ng-click="refresh()">refresh</a>
+    </div>
+</div>
 <table class="dataTable table table-striped table-hover">
     <tr>
-      <th ng-click="reorder('name')">Game Name</th>
-      <th ng-click="reorder('players')">Players</th>
-      <th ng-click="reorder('status')">Status</th>
-      <th></th>
+        <th ng-click="reorder('name')">Game Name</th>
+        <th ng-click="reorder('players')">Players</th>
+        <th ng-click="reorder('status')">Status</th>
+        <th></th>
     </tr>
     <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
-      <td>{{game.name}}</td>
-      <td>{{game.players}} / {{game.maxplayers}}</td>
-      <td>{{game.status}}</td>
-      <td><a href="#" class="btn btn-small">join</a></td>
+        <td>{{game.name}}</td>
+        <td>{{game.players}} / {{game.maxplayers}}</td>
+        <td>{{game.status}}</td>
+        <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
     </tr>
-  </table>
+</table>
