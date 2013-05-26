@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $location, socketResource, $rootScope) {
+  .factory('user', function ($resource, $location, socketResource, $rootScope, socketApi) {
     // Service logic
 
     var User = $resource('/user/:name', {name:''});
@@ -100,8 +100,6 @@ angular.module('angularappApp')
         // // Return the promise to the controller
         // return promise;
       }
-
-
     };
   });
 

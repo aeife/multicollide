@@ -1,47 +1,59 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope) {
+  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi) {
     
-    
+    if (!$routeParams.name){
+        $scope.playerlist = true;
 
-    user.getUserInfo($routeParams.name, function(data){
-
-        if (data) {
-            $scope.socketS = socketSub('onlinestatus:'+data.name, function(data){
-                console.log(data);
-                $scope.user.online = data.online;
+        socketApi.getConnectedUsers(function(data){
+            console.log(data);
+            $rootScope.$apply(function(){
+                $scope.connectedUsers = data.users;
             });
+            
 
-            console.log("setting data");
+        })
+    } else {
+        $scope.playerlist = false;
+        
+        user.getUserInfo($routeParams.name, function(data){
 
-            $scope.user = data;
-            console.log("online status:");
-            console.log(data.online);
-            $scope.socketS.subForRoute();
-
-            // check if already a friend
-            if (auth.key()){
-                user.getUserInfo(auth.key(), function(data){
-
-                    if (data) {
-                        console.log("friends");
-                        console.log(data);
-                        if (data.friends.indexOf($scope.user.name) > -1) {
-                            $scope.isFriend = true;
-                        } else {
-                            $scope.isFriend = false;
-                        }
-                    } else {
-                        $location.path("/404");
-                    }
+            if (data) {
+                $scope.socketS = socketSub('onlinestatus:'+data.name, function(data){
+                    console.log(data);
+                    $scope.user.online = data.online;
                 });
-            }
-        } else {
-            $location.path("/404");
-        }
-    });
 
+                console.log("setting data");
+
+                $scope.user = data;
+                console.log("online status:");
+                console.log(data.online);
+                $scope.socketS.subForRoute();
+
+                // check if already a friend
+                if (auth.key()){
+                    user.getUserInfo(auth.key(), function(data){
+
+                        if (data) {
+                            console.log("friends");
+                            console.log(data);
+                            if (data.friends.indexOf($scope.user.name) > -1) {
+                                $scope.isFriend = true;
+                            } else {
+                                $scope.isFriend = false;
+                            }
+                        } else {
+                            $location.path("/404");
+                        }
+                    });
+                }
+            } else {
+                $location.path("/404");
+            }
+        });
+    }
     // $rootScope.$on('$routeChangeSuccess', function() {
     //   $scope.socketS.stop();
     // });

@@ -8,6 +8,12 @@ angular.module('angularappApp')
 
     // Public API here
     return {
+      getConnectedUsers: function(callback){
+        socket.emit("users:connected");
+        socket.once("users:connected", function (data){
+            $rootScope.$apply(callback(data));
+        })
+      },
       friendRequest: function(callback){
         socket.on("friend:request", function(data){
           callback(data);

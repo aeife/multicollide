@@ -381,6 +381,13 @@ io.sockets.on('connection', function(socket){
     }
   });
 
+  /*
+    get all users
+  */
+  socket.on('users:connected', function(data){
+    socket.emit('users:connected', {users: connectedUsers});
+  });
+
 
   /*
     user logs in
@@ -393,10 +400,10 @@ io.sockets.on('connection', function(socket){
           if (err) console.log(err);
           if (user) {
             socket.session.loggedin = true;
-            socket.session.username = data.username;
-            socket.session.save();
+            // socket.session.username = data.username;
+            // socket.session.save();
 
-            addConnectedUser(data.username, socket);
+            addConnectedUser(data.username, socket, true);
             console.log("ID FOR USER: " + data.username);
             console.log(getIdForUsername(data.username));
             socket.emit('/login/', {loggedin: true});
@@ -700,10 +707,18 @@ function generateRandomGuestName(){
   emits the event
   sends the user all pending friend requests
 */
-function addConnectedUser(username, socket){
+function addConnectedUser(username, socket, wasGuest){
+
+console.log("CHEECKKKKKKKKING");
+console.log(socket.session.username);
   // if no username, generate random and save
   if (!username){
     username = generateRandomGuestName();
+    socket.session.username = username;
+  } else if (socket.session.username.indexOf("Guest") > -1){
+    console.log("USER WAS GUEST BEFOOOORE!!!!");
+    // user was guest before he logged in
+    deleteConnectedUser(socket.session.username, socket);
     socket.session.username = username;
   }
   connectedUsers.push(username);
