@@ -43,6 +43,10 @@ angular.module('angularappApp')
         socket.removeAllListeners("lobby:player:joined", function(){
           console.log("successfull deleted all listeners for lobby:player:joined");
         })
+
+        socket.removeAllListeners("lobby:player:left", function(){
+          console.log("successfull deleted all listeners for lobby:player:left");
+        })
       },
       listenLobbyPlayerJoined: function(callback){
         // register listeners
