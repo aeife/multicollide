@@ -8,16 +8,22 @@ angular.module('angularappApp')
         $scope.searchPlayer = {string: ""};
         $scope.connectedUsers = [];
 
-        socketApi.getConnectedUsers(function(data){
-            console.log(data);
-            $rootScope.$apply(function(){
-                $scope.connectedUsers = data.users;
-            });
-        })
+        
 
         $scope.clearPlayerSearch = function(){
             $scope.searchPlayer.string = "";
         }
+
+        $scope.refresh = function(){
+            socketApi.getConnectedUsers(function(data){
+                console.log(data);
+                $rootScope.$apply(function(){
+                    $scope.connectedUsers = data.users;
+                });
+            });
+        }
+
+        $scope.refresh();
     } else {
         $scope.playerlist = false;
         
