@@ -58,7 +58,6 @@ angular.module('angularappApp')
     }
 
     $scope.$on('$routeChangeStart', function(next, current) { 
-      console.log("LEFT ROUTE!");
       // if user was in lobby, leave
       if ($scope.lobby){
         $scope.leaveGame();

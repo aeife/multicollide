@@ -683,8 +683,6 @@ io.sockets.on('connection', function(socket){
 
 
 function generateRandomGuestName(){
-  console.log("GENERATE RAND GUEST");
-
   //generate random number until not already in use
   var randNr;
   do{
@@ -693,8 +691,6 @@ function generateRandomGuestName(){
 
   return "Guest"+randNr;
 }
-
-
 
 /*
   handles a connecting user
@@ -705,12 +701,10 @@ function generateRandomGuestName(){
   sends the user all pending friend requests
 */
 function addConnectedUser(username, socket){
-  console.log("ADDDDDDING " + username);
+  // if no username, generate random and save
   if (!username){
-    console.log("DSFDSFSDFSDF");
     username = generateRandomGuestName();
     socket.session.username = username;
-    console.log(socket.session.username);
   }
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
