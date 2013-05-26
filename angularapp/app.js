@@ -251,6 +251,9 @@ var clientUsernames = {};
 // saves friend requests for all names ordered with username
 var friendRequests = {};
 
+// saves all current available lobbys
+var lobbys = {};
+
 // socket.io listens on server
 var io = require('socket.io').listen(server);
 
@@ -623,6 +626,17 @@ io.sockets.on('connection', function(socket){
         deleteConnectedUser(socket.session.username, socket);
       }
     }
+  });
+
+
+  socket.on('/games', function(data){
+    console.log("client requested games info");
+    lobbys = {
+              1: {name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
+              2: {name: "fine game", status: "playing", players: 9, maxplayers: 10},
+              3: {name: "another game", status: "lobby", players: 4, maxplayers: 10}}
+              ;
+    socket.emit('/games', lobbys);
   });
 
 });
