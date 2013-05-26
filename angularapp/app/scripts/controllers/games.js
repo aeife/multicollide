@@ -43,5 +43,27 @@ angular.module('angularappApp')
       $scope.lobby = data;
     }
 
+    $scope.onLeftLobby = function () {
+      $scope.inLobby = false;
+      $scope.lobby = null;
+    }
+
+    // @TODO: Leave Lobby on F5 / refresh / tab close
+    $scope.leaveGame = function(){
+      lobby.leaveLobby($scope.lobby.id, function(data){
+        console.log("left lobby");
+        console.log(data);
+        $scope.onLeftLobby();
+      });
+    }
+
+    $scope.$on('$routeChangeStart', function(next, current) { 
+      console.log("LEFT ROUTE!");
+      // if user was in lobby, leave
+      if ($scope.lobby){
+        $scope.leaveGame();
+      }
+    });
+
     $scope.refresh();
   });

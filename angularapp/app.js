@@ -264,6 +264,9 @@ lobbys = {
         };
 lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
+// saves current lobby for each username 
+var lobbyForUsername = {};
+
 // socket.io listens on server
 var io = require('socket.io').listen(server);
 
@@ -314,9 +317,14 @@ io.sockets.on('connection', function(socket){
   // console.log(socket.session.username);
 
   // if user is already logged in: add to connected user list
-  if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
+  // if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
+  // if (socket.session.username && socket.session.loggedin && connectedUsers.indexOf(socket.session.username) === -1){
+  if (connectedUsers.indexOf(socket.session.username) === -1){
     addConnectedUser(socket.session.username, socket);
-  }
+  } 
+  // else {
+  //   socket.session.username = "Guest";
+  // }
 
   /*
     get user profile or sign up a new account
@@ -420,7 +428,7 @@ io.sockets.on('connection', function(socket){
         console.log(socket.handshake.sessionID);
         sessionStore.destroy(socket.handshake.sessionID);
         socket.session.loggedin = null;
-        socket.session.username = null;
+        socket.session.username = generateRandomGuestName;
 
 
 
@@ -629,6 +637,12 @@ io.sockets.on('connection', function(socket){
   socket.on('disconnect', function(data){
     console.log("client disconnected");
 
+    // leave lobby if in lobby
+    if (lobbyForUsername[socket.session.username]){
+      leaveLobby(lobbyForUsername[socket.session.username], socket);  
+    }
+
+
     delete clients[socket.id];
     if (socket.session.username){
       // if user was logged in: delete user from connected user list
@@ -648,16 +662,39 @@ io.sockets.on('connection', function(socket){
   socket.on('lobby:new', function(data){
     console.log("client requested games info");
     var newLobby = addLobby({name: "new game", status: "lobby", players: 1, maxplayers: 2});
+    joinLobby(newLobby.id, socket);
     socket.emit('lobby:new', newLobby);
   });
 
   socket.on('lobby:join', function(data){
     console.log("client wants to join lobby");
-    joinLobby(data.id);
+    joinLobby(data.id, socket);
     socket.emit('lobby:join', lobbys[data.id]);
   });
 
+  socket.on('lobby:leave', function(data){
+    console.log("client wants to leave lobby");
+    console.log(socket.session.username);
+    leaveLobby(data.id, socket);
+    socket.emit('lobby:leave', lobbys[data.id]);
+  });
+
 });
+
+
+function generateRandomGuestName(){
+  console.log("GENERATE RAND GUEST");
+
+  //generate random number until not already in use
+  var randNr;
+  do{
+    randNr = Math.floor((Math.random()*900)+100);
+  } while (connectedUsers.indexOf("Guest"+randNr) > -1)
+
+  return "Guest"+randNr;
+}
+
+
 
 /*
   handles a connecting user
@@ -668,6 +705,13 @@ io.sockets.on('connection', function(socket){
   sends the user all pending friend requests
 */
 function addConnectedUser(username, socket){
+  console.log("ADDDDDDING " + username);
+  if (!username){
+    console.log("DSFDSFSDFSDF");
+    username = generateRandomGuestName();
+    socket.session.username = username;
+    console.log(socket.session.username);
+  }
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
   socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
@@ -744,7 +788,14 @@ function addLobby(data){
 
   // add lobby
   // add player who opened lobby as first player to lobby
-  lobbys[lobbyHighestCount] = {id: lobbyHighestCount, name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers, currentPlayers: ["host"]};
+  lobbys[lobbyHighestCount] = { 
+                                id: lobbyHighestCount, 
+                                name: data.name + lobbyHighestCount, 
+                                status: data.status, 
+                                players: data.players, 
+                                maxplayers: data.maxplayers, 
+                                currentPlayers: []
+                              };
 
   return lobbys[lobbyHighestCount];
 }
@@ -753,9 +804,25 @@ function removeLobby(id){
   delete lobbys[id];
 }
 
-function joinLobby(id){
+function joinLobby(id, socket){
   if (!lobbys[id].currentPlayers){
     lobbys[id].currentPlayers = [];
   }
-  lobbys[id].currentPlayers.push("guest");
+  lobbys[id].currentPlayers.push(socket.session.username);
+  lobbyForUsername[socket.session.username] = id;
+}
+
+function leaveLobby(id, socket){
+  if (lobbys[id].currentPlayers.indexOf(socket.session.username) > -1){
+    lobbys[id].currentPlayers.splice(lobbys[id].currentPlayers.indexOf(socket.session.username),1);
+  }
+
+  delete lobbyForUsername[socket.session.username];
+}
+
+/*
+  get Lobby in which player with given socket.id is
+*/
+function getLobbyOfUsername(name) {
+  return lobbyForUsername[name];
 }

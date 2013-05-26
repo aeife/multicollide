@@ -1,6 +1,14 @@
 <div ng-switch="inLobby">
     <div ng-switch-when="true">
-        <h1>Lobby: {{lobby.name}}</h1>
+        <h1 class="text-center">Lobby: {{lobby.name}}</h1>
+        <div class="btn-toolbar text-center">
+            <div class="btn-group">
+                <a href="" class="btn" ng-click="leaveGame()">leave lobby</a>
+            </div>
+            <div class="btn-group">
+                <a href="" class="btn" ng-click="">ready</a>
+            </div>
+        </div>
         <ul>
             <li ng-repeat="player in lobby.currentPlayers">{{player}}</li>
         </ul>
