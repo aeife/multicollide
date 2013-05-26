@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-    .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub){
+    .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub, socketApi){
         // get friend list
         // subscribe to online status changes for all friends
         // onlinestatus:<username>
@@ -17,12 +17,17 @@ angular.module('angularappApp')
 
         // handle incomming friend requests
         // TODO: use generic socket service
-        socket.on('friend:request', function(data){
+        // socket.on('friend:request', function(data){
+        //     console.log(data);
+        //     $scope.requests = data.requests;
+        //     // console.log(data.from + " wants to add you!");
+        // });
+
+        socketApi.friendRequest(function(data){
             console.log(data);
             $scope.requests = data.requests;
             // console.log(data.from + " wants to add you!");
         });
-
 
 
         // TODO: change to when server accepts login, otherwise server session may not be ready

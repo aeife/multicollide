@@ -8,6 +8,11 @@ angular.module('angularappApp')
 
     // Public API here
     return {
+      friendRequest: function(callback){
+        socket.on("friend:request", function(data){
+          callback(data);
+        })
+      },
       games: function(callback){
         socket.emit("/games");
         socket.once("/games", function (data){
