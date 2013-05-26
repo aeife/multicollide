@@ -45,8 +45,9 @@
     </div>
     <div ng-switch-default>
         <h1 class="text-center">Seach Player</h1>
+        <div class="text-center"><input ng-model="searchPlayer.string"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a></div>
         <ul class="text-center">
-            <li ng-repeat="user in connectedUsers | withoutGuests"><a href="#/user/{{user}}">{{user}}</a></li>
+            <li ng-repeat="user in connectedUsers | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user}}">{{user}}</a></li>
         </ul>
     </div>
 </div>

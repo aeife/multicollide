@@ -5,6 +5,7 @@ angular.module('angularappApp')
     
     if (!$routeParams.name){
         $scope.playerlist = true;
+        $scope.searchPlayer = {string: ""};
         $scope.connectedUsers = [];
 
         socketApi.getConnectedUsers(function(data){
@@ -12,9 +13,11 @@ angular.module('angularappApp')
             $rootScope.$apply(function(){
                 $scope.connectedUsers = data.users;
             });
-            
-
         })
+
+        $scope.clearPlayerSearch = function(){
+            $scope.searchPlayer.string = "";
+        }
     } else {
         $scope.playerlist = false;
         
