@@ -804,6 +804,10 @@ function joinLobby(id, socket){
   }
   lobbys[id].currentPlayers.push(socket.session.username);
   lobbyForUsername[socket.session.username] = id;
+
+  //send join event to other players in lobby
+  //@TODO: only players in same lobby
+  socket.broadcast.emit("lobby:player:joined", {username: socket.session.username});
 }
 
 function leaveLobby(id, socket){

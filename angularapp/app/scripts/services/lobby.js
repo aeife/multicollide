@@ -36,6 +36,11 @@ angular.module('angularappApp')
         socketApi.leaveLobby(id, function(data){
           $rootScope.$apply(callback(data));
         });
+      },
+      onPlayerJoined: function(callback){
+        socketApi.listenLobbyPlayerJoined(function(data){
+          $rootScope.$apply(callback(data));
+        });
       }
     };
   });

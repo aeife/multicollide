@@ -36,6 +36,9 @@ angular.module('angularappApp')
       removeListener: function (eventName, callback) {
         socket.removeListener(eventName, callback);
       },
+      removeAllListeners: function (eventName, callback) {
+        socket.removeAllListeners(eventName, callback);
+      },
       onn: function (eventName, callback) {
         socket.on(eventName, callback);
       }

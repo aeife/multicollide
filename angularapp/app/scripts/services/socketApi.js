@@ -25,10 +25,25 @@ angular.module('angularappApp')
         socket.once("lobby:join", function(data){
           callback(data);
         });
+
+        
       },
       leaveLobby: function(id, callback){
         socket.emit("lobby:leave", {id: id});
         socket.once("lobby:leave", function(data){
+          callback(data);
+        });
+
+        // remove listeners
+        socket.removeAllListeners("lobby:player:joined", function(){
+          console.log("successfull deleted all listeners for lobby:player:joined");
+        })
+      },
+      listenLobbyPlayerJoined: function(callback){
+        // register listeners
+        socket.on("lobby:player:joined", function(data){
+          console.log("player joined your lobby");
+          console.log(data);
           callback(data);
         });
       }

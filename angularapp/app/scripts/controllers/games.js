@@ -41,6 +41,10 @@ angular.module('angularappApp')
     $scope.onJoinedLobby = function (data){
       $scope.inLobby = true;
       $scope.lobby = data;
+
+      lobby.onPlayerJoined(function(data){
+        $scope.lobby.currentPlayers.push(data.username);
+      });
     }
 
     $scope.onLeftLobby = function () {
