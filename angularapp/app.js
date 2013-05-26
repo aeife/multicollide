@@ -385,8 +385,20 @@ io.sockets.on('connection', function(socket){
   /*
     get all users
   */
+  socket.on('users:all', function(data){
+    console.log("GETTIN ALL USERS");
+    User.find({}, {name : 1, _id : 0}, function(err, users){
+      console.log(users);
+      socket.emit('users:all', users);
+    });
+    // socket.emit('users:connected', {users: connectedUsers});
+  });
+
+  /*
+    get connected users
+  */
   socket.on('users:connected', function(data){
-    socket.emit('users:connected', {users: connectedUsers});
+    socket.emit('users:connected', connectedUsers);
   });
 
 

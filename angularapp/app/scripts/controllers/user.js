@@ -5,20 +5,25 @@ angular.module('angularappApp')
     
     if (!$routeParams.name){
         $scope.playerlist = true;
-        $scope.searchPlayer = {string: ""};
+        $scope.onlyConnected = true;
+        $scope.searchPlayer = "";
         $scope.connectedUsers = [];
 
-        
-
         $scope.clearPlayerSearch = function(){
-            $scope.searchPlayer.string = "";
+            this.searchPlayer = "";
         }
 
         $scope.refresh = function(){
-            socketApi.getConnectedUsers(function(data){
+            var func = socketApi.getAllUsers;
+            console.log(this.onlyConnected);
+            if (this.onlyConnected){
+                func = socketApi.getConnectedUsers;
+            }
+
+            func(function(data){
                 console.log(data);
                 $rootScope.$apply(function(){
-                    $scope.connectedUsers = data.users;
+                    $scope.connectedUsers = data;
                 });
             });
         }
