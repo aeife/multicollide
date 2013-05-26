@@ -254,13 +254,13 @@ var friendRequests = {};
 // saves all current available lobbys
 var lobbys = {};
 // highest current lobby id for continues counting
-var lobbyHighestCount = 0;
+var lobbyHighestCount = -1;
 
 // mock data
 lobbys = {
-          0: {name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
-          1: {name: "fine game", status: "playing", players: 9, maxplayers: 10},
-          2: {name: "another game", status: "lobby", players: 4, maxplayers: 10}
+          0: {id: 0, name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
+          1: {id: 1, name: "fine game", status: "playing", players: 9, maxplayers: 10},
+          2: {id: 2, name: "another game", status: "lobby", players: 4, maxplayers: 10}
         };
 lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
@@ -740,13 +740,13 @@ function removeFriendRequest(username, friend){
 
 
 function addLobby(data){
-  var tmpCount = lobbyHighestCount;
+  lobbyHighestCount++;
 
   // add lobby
   // add player who opened lobby as first player to lobby
-  lobbys[lobbyHighestCount++] = {name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers, currentPlayers: ["host"]};
+  lobbys[lobbyHighestCount] = {id: lobbyHighestCount, name: data.name + lobbyHighestCount, status: data.status, players: data.players, maxplayers: data.maxplayers, currentPlayers: ["host"]};
 
-  return lobbys[tmpCount];
+  return lobbys[lobbyHighestCount];
 }
 
 function removeLobby(id){

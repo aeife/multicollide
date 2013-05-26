@@ -30,6 +30,12 @@ angular.module('angularappApp')
         socketApi.joinLobby(id, function(data){
           $rootScope.$apply(callback(data));
         });
+      },
+      leaveLobby: function(id, callback){
+        console.log("leaving lobby");
+        socketApi.leaveLobby(id, function(data){
+          $rootScope.$apply(callback(data));
+        });
       }
     };
   });

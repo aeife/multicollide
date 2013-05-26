@@ -25,6 +25,12 @@ angular.module('angularappApp')
         socket.once("lobby:join", function(data){
           callback(data);
         });
+      },
+      leaveLobby: function(id, callback){
+        socket.emit("lobby:leave", {id: id});
+        socket.once("lobby:leave", function(data){
+          callback(data);
+        });
       }
     };
   });
