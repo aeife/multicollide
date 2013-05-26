@@ -1,13 +1,13 @@
 <h1  class="text-center">Server Browser</h1>
 
-<table class="table table-striped table-hover">
+<table class="dataTable table table-striped table-hover">
     <tr>
-      <th>Game Name</th>
-      <th>Players</th>
-      <th>Status</th>
+      <th ng-click="reorder('name')">Game Name</th>
+      <th ng-click="reorder('players')">Players</th>
+      <th ng-click="reorder('status')">Status</th>
       <th></th>
     </tr>
-    <tr ng-repeat="game in games | toArray | orderBy:'players'">
+    <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
       <td>{{game.name}}</td>
       <td>{{game.players}} / {{game.maxplayers}}</td>
       <td>{{game.status}}</td>
