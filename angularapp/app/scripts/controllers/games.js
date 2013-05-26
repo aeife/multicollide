@@ -45,6 +45,12 @@ angular.module('angularappApp')
       lobby.onPlayerJoined(function(data){
         $scope.lobby.currentPlayers.push(data.username);
       });
+
+      lobby.onPlayerLeft(function(data){
+        if ($scope.lobby.currentPlayers.indexOf(data.username) > -1){
+          $scope.lobby.currentPlayers.splice($scope.lobby.currentPlayers.indexOf(data.username), 1);
+        }
+      });
     }
 
     $scope.onLeftLobby = function () {

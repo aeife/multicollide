@@ -816,6 +816,10 @@ function leaveLobby(id, socket){
   }
 
   delete lobbyForUsername[socket.session.username];
+
+  //send left event to other players in lobby
+  //@TODO: only players in same lobby
+  socket.broadcast.emit("lobby:player:left", {username: socket.session.username});
 }
 
 /*

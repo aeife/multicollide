@@ -46,6 +46,13 @@ angular.module('angularappApp')
           console.log(data);
           callback(data);
         });
+      },
+      listenLobbyPlayerLeft: function(callback){
+        socket.on("lobby:player:left", function(data){
+          console.log("player left your lobby");
+          console.log(data);
+          callback(data);
+        });
       }
     };
   });
