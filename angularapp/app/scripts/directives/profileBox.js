@@ -9,18 +9,18 @@ angular.module('angularappApp')
 
         $scope.logout = function(){
           auth.logout();
-        }
+        };
 
         // watch for login status
         $scope.loggedIn = auth.isLoggedIn();
 
-        
+
         $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
-          console.log("cookies changes!");
+          console.log('cookies changes!');
           $scope.loggedIn = auth.isLoggedIn();
           if (newValue) {
 
-            console.log("fetching own user data!");
+            console.log('fetching own user data!');
             user.getUserInfo(auth.key(), function(data){
               $scope.user = data;
             });
@@ -29,7 +29,7 @@ angular.module('angularappApp')
             // });
           }
         }, true);
-      
+
       }
     };
   });

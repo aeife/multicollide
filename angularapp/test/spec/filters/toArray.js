@@ -12,7 +12,7 @@ describe('Filter: toArray', function () {
   }));
 
   it('should convert a object to an instance of array', function () {
-    var obj = {k1: "v1", k2: "v2"};
+    var obj = {k1: 'v1', k2: 'v2'};
     expect(toArray(obj) instanceof Array).toBe(true);
   });
 

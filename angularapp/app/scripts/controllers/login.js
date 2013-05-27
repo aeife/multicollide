@@ -5,6 +5,6 @@ angular.module('angularappApp')
     $scope.username = '';
     $scope.password = '';
     $scope.login = function(){
-        auth.login($scope.username, $scope.password);
-    }
+      auth.login($scope.username, $scope.password);
+    };
   });

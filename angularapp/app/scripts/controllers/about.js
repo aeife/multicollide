@@ -1,6 +1,5 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('AboutCtrl', function ($scope, flash) {
-
+  .controller('AboutCtrl', function ($scope) {
   });

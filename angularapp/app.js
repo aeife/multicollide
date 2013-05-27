@@ -1,16 +1,17 @@
+'use strict';
 
 /**
  * Module dependencies.
  */
 
-var express = require('express')
-  , http = require('http')
-  , path = require('path')
-  , crypto = require('crypto')
-  , secret = 'some secret'
-  , sessionKey = 'express.sid'
-  , cookieParser = express.cookieParser(secret)
-  , sessionStore = new express.session.MemoryStore;
+var express = require('express'),
+  http = require('http'),
+  path = require('path'),
+  crypto = require('crypto'),
+  secret = 'some secret',
+  sessionKey = 'express.sid',
+  cookieParser = express.cookieParser(secret),
+  sessionStore = new express.session.MemoryStore();
 
 var app = express();
 
@@ -33,9 +34,9 @@ app.configure('development', function(){
 });
 
 // app.all('/*', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header('Access-Control-Allow-Origin', '*');
 //   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 //   next();
 // });
 
@@ -49,21 +50,21 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/multicollide');
 
 mongoose.connection.on('error', function(err) {
-    console.error('MongoDB error: %s', err);
+  console.error('MongoDB error: %s', err);
 });
 mongoose.connection.on('index',function(err) {
-    console.error('MongoDB error: %s', err);
+  console.error('MongoDB error: %s', err);
 });
 mongoose.set('debug', true);
 
 var userSchema = mongoose.Schema({
-    name: {type: String, index: {unique: true}},
-    password: String,
-    games: {type: Number, default: 0},
-    won: {type: Number, default: 0},
-    score: {type: Number, default: 0},
-    friends: [String]
-})
+  name: {type: String, index: {unique: true}},
+  password: String,
+  games: {type: Number, default: 0},
+  won: {type: Number, default: 0},
+  score: {type: Number, default: 0},
+  friends: [String]
+});
 userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);
 
@@ -71,29 +72,29 @@ var User = mongoose.model('User', userSchema);
 
 
 
-/* 
+/*
 ******************************************************
-********************** REST API ********************** 
+********************** REST API **********************
 ******************************************************
 */
 
 app.get('/', function (req, res) {
-    res.render('index.html');
+  res.render('index.html');
 });
 
 // app.get('/login', function (req, res) {
-//     res.json({ha: "ha"});
+//     res.json({ha: 'ha'});
 // });
 
 app.post('/user', function(req, res){
-  var user = User({name: req.body.name, password: crypto.createHash('sha512').update(req.body.password).digest('hex')});
+  var user = new User({name: req.body.name, password: crypto.createHash('sha512').update(req.body.password).digest('hex')});
   user.save(function (err, user) {
     var error = null;
     if (err) {
       console.log(err);
       if (err.code === 11000) {
-        console.log("DSFSDFDSF");
-        error = "duplicate name";
+        console.log('DSFSDFDSF');
+        error = 'duplicate name';
       }
     }
     res.json({error: error});
@@ -110,11 +111,13 @@ app.post('/login', function(req, res){
 
 
   User.findOne({ name: req.body.username, password: crypto.createHash('sha512').update(req.body.password).digest('hex')}, function(err, user){
-    if (err) console.log(err);
+    if (err) {
+      console.log(err);
+    }
     if (user) {
-      console.log("FOUND");
+      console.log('FOUND');
       req.session.loggedin = true;
-      console.log("setting session username");
+      console.log('setting session username');
       console.log(req.body.username);
       req.session.username = req.body.username;
       res.json({loggedin: true});
@@ -124,51 +127,51 @@ app.post('/login', function(req, res){
   });
 
 
-  // if (req.body.username === "test" && req.body.password === "tester"){
+  // if (req.body.username === 'test' && req.body.password === 'tester'){
   //   req.session.loggedin = true;
-  //   req.session.username = "test";
+  //   req.session.username = 'test';
   //   res.json({loggedin: true, id: 123});
   // }
 
 });
 
 app.post('/logout', function(req, res){
-  console.log("LOGOUT");
+  console.log('LOGOUT');
 
-  req.session.destroy();  
+  req.session.destroy();
 
   //response.send(request.body);    // echo the result back
 });
 
 
 app.get('/user/:name', function (req, res) {
-  console.log("GETTING USER");
+  console.log('GETTING USER');
 
   console.log(req.params.name);
 
-    User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
-      console.log(user);
-      if (user) {
-        
-        console.log(user.name);
-        console.log(req.session.username);
+  User.findOne({ name: req.params.name }, {password : 0}, function(err, user){
+    console.log(user);
+    if (user) {
 
-        var userobj = user.toObject();
+      console.log(user.name);
+      console.log(req.session.username);
 
-        //check if own user
-        if (user.name === req.session.username) {
-          // own user only data
-          userobj.own = true;
-          console.log(userobj);
-        } else {
-          // delete own user only data
-          delete userobj.friends;
-        }
-        res.json(userobj);
+      var userobj = user.toObject();
+
+      //check if own user
+      if (user.name === req.session.username) {
+        // own user only data
+        userobj.own = true;
+        console.log(userobj);
       } else {
-        res.send(404, { error: 'Something blew up!' });
+        // delete own user only data
+        delete userobj.friends;
       }
-    });
+      res.json(userobj);
+    } else {
+      res.send(404, { error: 'Something blew up!' });
+    }
+  });
 
 
 });
@@ -186,7 +189,7 @@ app.get('/user/own', function (req, res) {
 
 
 app.post('/friend', function(req, res){
-  console.log(req.session.username + " wants to add " + req.body.name);
+  console.log(req.session.username + ' wants to add ' + req.body.name);
 
   User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
     if (user.friends.indexOf(req.body.name) < 0){
@@ -198,7 +201,7 @@ app.post('/friend', function(req, res){
           error = true;
         }
         res.json({error: error});
-        });
+      });
     }
   });
 });
@@ -206,7 +209,7 @@ app.post('/friend', function(req, res){
 app.delete('/friend/:name', function(req, res){
   console.log(req.body);
   console.log(req.params);
-  console.log(req.session.username + " wants to delete " + req.params.name);
+  console.log(req.session.username + ' wants to delete ' + req.params.name);
 
   User.findOne({ name: req.session.username }, {password : 0}, function(err, user){
     user.friends.remove(req.params.name);
@@ -227,7 +230,7 @@ app.delete('/friend/:name', function(req, res){
 // server
 var server = http.createServer(app);
 /*.listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+  console.log('Express server listening on port ' + app.get('port'));
 });*/
 
 // for grunt
@@ -258,19 +261,19 @@ var lobbyHighestCount = -1;
 
 // mock data
 lobbys = {
-          0: {id: 0, name: "game nr. 1", status: "lobby", players: 2, maxplayers: 10},
-          1: {id: 1, name: "fine game", status: "playing", players: 9, maxplayers: 10},
-          2: {id: 2, name: "another game", status: "lobby", players: 4, maxplayers: 10}
-        };
+  0: {id: 0, name: 'game nr. 1', status: 'lobby', players: 2, maxplayers: 10},
+  1: {id: 1, name: 'fine game', status: 'playing', players: 9, maxplayers: 10},
+  2: {id: 2, name: 'another game', status: 'lobby', players: 4, maxplayers: 10}
+};
 lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
-// saves current lobby for each username 
+// saves current lobby for each username
 var lobbyForUsername = {};
 
 // socket.io listens on server
 var io = require('socket.io').listen(server);
 
-/* 
+/*
 ******************************************************
 ********************* Socket API *********************
 ******************************************************
@@ -284,18 +287,20 @@ io.set('authorization', function(data, accept) {
     if (err) {
       accept(err, false);
     } else {
-      console.log("SESSION KEY?");
+      console.log('SESSION KEY?');
       console.log(data.signedCookies[sessionKey]);
-      data.sessionID = data.signedCookies[sessionKey]
+      data.sessionID = data.signedCookies[sessionKey];
       sessionStore.load(data.signedCookies[sessionKey], function(err, session) {
         if (err || !session) {
           accept('Session error', false);
         } else {
-          // console.log("SESSION");
+          // console.log('SESSION');
           // console.log(session);
-          
+
           data.session = session;
-          data.session.id = data.signedCookies[sessionKey];
+
+          //@TODO: NOT NECESSARY??
+          // data.session.id = data.signedCookies[sessionKey];
           accept(null, true);
         }
       });
@@ -314,7 +319,7 @@ io.sockets.on('connection', function(socket){
 
   // save sockets for all clients ordered with socket id
   clients[socket.id] = socket;
-  console.log("client connected as " + socket.session.usernamey);
+  console.log('client connected as ' + socket.session.usernamey);
   // console.log(socket.session.username);
 
   // if user is already logged in: add to connected user list
@@ -322,9 +327,9 @@ io.sockets.on('connection', function(socket){
   // if (socket.session.username && socket.session.loggedin && connectedUsers.indexOf(socket.session.username) === -1){
   if (connectedUsers.indexOf(socket.session.username) === -1){
     addConnectedUser(socket.session.username, socket);
-  } 
+  }
   // else {
-  //   socket.session.username = "Guest";
+  //   socket.session.username = 'Guest';
   // }
 
   /*
@@ -334,51 +339,51 @@ io.sockets.on('connection', function(socket){
   socket.on('/user/', function(data){
     switch(data.type){
       // get /user/:name -> profile
-      case "get":
-        // console.log(socket.session.username);
-        console.log(socket.session);
+    case 'get':
+      // console.log(socket.session.username);
+      console.log(socket.session);
 
-        User.findOne({ name: data.name }, {password : 0}, function(err, user){
-          console.log(user);
-          if (user) {
-            var userobj = user.toObject();
+      User.findOne({ name: data.name }, {password : 0}, function(err, user){
+        console.log(user);
+        if (user) {
+          var userobj = user.toObject();
 
-            //check if own user
-            if (user.name === socket.session.username) {
-              // own user only data
-              userobj.own = true;
-            } else {
-              // delete own user only data
-              delete userobj.friends;
-            }
-
-            //check if currently online
-            if (connectedUsers.indexOf(user.name) > -1) {
-              userobj.online = true;
-            }
-
-            socket.emit('/user/'+data.name, userobj);
+          //check if own user
+          if (user.name === socket.session.username) {
+            // own user only data
+            userobj.own = true;
           } else {
-            socket.emit('/user/'+data.name);
+            // delete own user only data
+            delete userobj.friends;
           }
 
-        });
-        break;
-
-      // post /user/ -> sign up
-      case "post":
-        var user = User({name: data.name, password: crypto.createHash('sha512').update(data.password).digest('hex')});
-        user.save(function (err, user) {
-          var error = null;
-          if (err) {
-            console.log(err);
-            if (err.code === 11000) {
-              error = "duplicate name";
-            }
+          //check if currently online
+          if (connectedUsers.indexOf(user.name) > -1) {
+            userobj.online = true;
           }
-          socket.emit('/user/', {error: error});
-        });
-        break;
+
+          socket.emit('/user/'+data.name, userobj);
+        } else {
+          socket.emit('/user/'+data.name);
+        }
+
+      });
+      break;
+
+    // post /user/ -> sign up
+    case 'post':
+      var user = new User({name: data.name, password: crypto.createHash('sha512').update(data.password).digest('hex')});
+      user.save(function (err, user) {
+        var error = null;
+        if (err) {
+          console.log(err);
+          if (err.code === 11000) {
+            error = 'duplicate name';
+          }
+        }
+        socket.emit('/user/', {error: error});
+      });
+      break;
     }
   });
 
@@ -386,7 +391,7 @@ io.sockets.on('connection', function(socket){
     get all users
   */
   socket.on('users:all', function(data){
-    console.log("GETTIN ALL USERS");
+    console.log('GETTIN ALL USERS');
     User.find({}, {name : 1, _id : 0}, function(err, users){
       console.log(users);
       socket.emit('users:all', users);
@@ -408,24 +413,25 @@ io.sockets.on('connection', function(socket){
   */
   socket.on('/login/', function(data){
     switch(data.type){
-      case "post":{
-        User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
-          if (err) console.log(err);
-          if (user) {
-            // socket.session.loggedin = true;
-            setSession("loggedIn", true, socket);
-            // socket.session.username = data.username;
-            // socket.session.save();
+    case 'post':
+      User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
+        if (err) {
+          console.log(err);
+        }
+        if (user) {
+          // socket.session.loggedin = true;
+          setSession('loggedIn', true, socket);
+          // socket.session.username = data.username;
+          // socket.session.save();
 
-            addConnectedUser(data.username, socket);
-            console.log("ID FOR USER: " + data.username);
-            console.log(getIdForUsername(data.username));
-            socket.emit('/login/', {loggedin: true});
-          } else {
-            socket.emit('/login/', {loggedin: false});
-          }
-        });
-      }
+          addConnectedUser(data.username, socket);
+          console.log('ID FOR USER: ' + data.username);
+          console.log(getIdForUsername(data.username));
+          socket.emit('/login/', {loggedin: true});
+        } else {
+          socket.emit('/login/', {loggedin: false});
+        }
+      });
     }
   });
 
@@ -435,29 +441,26 @@ io.sockets.on('connection', function(socket){
   */
   socket.on('/logout/', function(data){
     switch(data.type){
-      case "post":{
-        console.log("LOGGING USER OUT");
+    case 'post':
+      console.log('LOGGING USER OUT');
 
-        // delete user from connected user list
-        if (connectedUsers.indexOf(socket.session.username) > -1){
-          deleteConnectedUser(socket.session.username, socket);
-        }
-
-        console.log(socket.session);
-        console.log(socket.session.username);
-        socket.session.destroy();
-        console.log(socket.handshake.sessionID);
-        sessionStore.destroy(socket.handshake.sessionID);
-
-        socket.session.loggedin = null;
-        socket.session.username = generateRandomGuestName();
-
-
-
-        // console.log(socket.session);
-        // console.log(socket.session.username);
-        // req.session.destroy = true;
+      // delete user from connected user list
+      if (connectedUsers.indexOf(socket.session.username) > -1){
+        deleteConnectedUser(socket.session.username, socket);
       }
+
+      console.log(socket.session);
+      console.log(socket.session.username);
+      socket.session.destroy();
+      console.log(socket.handshake.sessionID);
+      sessionStore.destroy(socket.handshake.sessionID);
+
+      socket.session.loggedin = null;
+      socket.session.username = generateRandomGuestName();
+
+      // console.log(socket.session);
+      // console.log(socket.session.username);
+      // req.session.destroy = true;
     }
   });
 
@@ -468,80 +471,80 @@ io.sockets.on('connection', function(socket){
   */
   socket.on('/friend/', function(data){
     switch(data.type){
-      case "post":
-        // post /friend/ -> add friend
-        console.log(socket.session.username + " wants to add " + data.name);
+    case 'post':
+      // post /friend/ -> add friend
+      console.log(socket.session.username + ' wants to add ' + data.name);
 
-        // clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
-        addFriendRequest(data.name, socket.session.username);
+      // clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
+      addFriendRequest(data.name, socket.session.username);
 
-        // User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-        //   if (user.friends.indexOf(data.name) < 0){
-        //     user.friends.push(data.name);
-        //     user.save(function (err, user) {
-        //       var error = false;
-        //       if (err) {
-        //         console.log(err);
-        //         error = true;
-        //       }
-        //       socket.emit('/friend/', {error: error});
+      // User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+      //   if (user.friends.indexOf(data.name) < 0){
+      //     user.friends.push(data.name);
+      //     user.save(function (err, user) {
+      //       var error = false;
+      //       if (err) {
+      //         console.log(err);
+      //         error = true;
+      //       }
+      //       socket.emit('/friend/', {error: error});
 
-        //       // emit new friend and his status
-        //       if (!error) {
-        //         var online = false;
-        //         if (connectedUsers.indexOf(data.name) > -1){
-        //           online = true;
-        //         }
-        //         socket.emit('friend:new', {user: data.name, online: online});
-        //       }
-        //     });
-        //   }
-        // });
-        break;
-      case "remove":
-        // remove /friend/:name -> remove friend
-        console.log(socket.session.username + " wants to delete " + data.name);
+      //       // emit new friend and his status
+      //       if (!error) {
+      //         var online = false;
+      //         if (connectedUsers.indexOf(data.name) > -1){
+      //           online = true;
+      //         }
+      //         socket.emit('friend:new', {user: data.name, online: online});
+      //       }
+      //     });
+      //   }
+      // });
+      break;
+    case 'remove':
+      // remove /friend/:name -> remove friend
+      console.log(socket.session.username + ' wants to delete ' + data.name);
 
-        // delete friend for both users
-        User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-          user.friends.remove(data.name);
-          user.save(function (err, user) {
-            var error = false;
-            if (err) {
-              console.log(err);
-              error = true;
-            }
-            socket.emit('/friend/'+data.name, {error: error});
+      // delete friend for both users
+      User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        user.friends.remove(data.name);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+          socket.emit('/friend/'+data.name, {error: error});
 
-            // emit deleted friend
-            socket.emit('friend:deleted', {user: data.name});
-          });
+          // emit deleted friend
+          socket.emit('friend:deleted', {user: data.name});
         });
+      });
 
-        User.findOne({ name: data.name }, {password : 0}, function(err, user){
-          user.friends.remove(socket.session.username);
-          user.save(function (err, user) {
-            var error = false;
-            if (err) {
-              console.log(err);
-              error = true;
-            }
-            clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
+      User.findOne({ name: data.name }, {password : 0}, function(err, user){
+        user.friends.remove(socket.session.username);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+          clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
 
-            // emit deleted friend
-            clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
-          });
+          // emit deleted friend
+          clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
         });
-        break;
+      });
+      break;
     }
-    
+
   });
 
   /*
     user accepted friend request
   */
   socket.on('friend:accept', function(data){
-    console.log(socket.session.username + " accepts request from " + data.user);
+    console.log(socket.session.username + ' accepts request from ' + data.user);
 
     // add friend for both users
     User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
@@ -598,7 +601,7 @@ io.sockets.on('connection', function(socket){
     user declined friend request
   */
   socket.on('friend:decline', function(data){
-    console.log(socket.session.username + " declines friend request from " + data.user);
+    console.log(socket.session.username + ' declines friend request from ' + data.user);
     removeFriendRequest(socket.session.username, data.user);
   });
 
@@ -607,12 +610,14 @@ io.sockets.on('connection', function(socket){
     get status of all friends
   */
   socket.on('/friends/', function(data){
-    console.log("GETTING FRIENDS STATUS");
+    console.log('GETTING FRIENDS STATUS');
 
     var result = {};
     //getting all friends and check their status
     User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-      if (err) console.log(err);
+      if (err) {
+        console.log(err);
+      }
 
       if (user){
         console.log(user);
@@ -623,7 +628,7 @@ io.sockets.on('connection', function(socket){
           }
           result[user.friends[i]] = {online: online};
         }
-        console.log("EMITTING TO /FRIENDS/");
+        console.log('EMITTING TO /FRIENDS/');
         socket.emit('/friends/', result);
       }
     });
@@ -636,20 +641,23 @@ io.sockets.on('connection', function(socket){
   socket.on('/settings/changePassword', function(data){
     //check if correct old password, then change
     User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
-          if (err) console.log(err);
-          if (user) {
-            console.log("updating password to: " + data.newPassword);
-            user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
-            user.save(function (err) {
-              if (err)
-                socket.emit('/settings/changePassword', {error: "error"});
-              else
-                socket.emit('/settings/changePassword', {error: null});
-            });
+      if (err) {
+        console.log(err);
+      }
+      if (user) {
+        console.log('updating password to: ' + data.newPassword);
+        user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
+        user.save(function (err) {
+          if (err) {
+            socket.emit('/settings/changePassword', {error: 'error'});
           } else {
-            socket.emit('/settings/changePassword', {error: "wrong old password"});
+            socket.emit('/settings/changePassword', {error: null});
           }
-   });
+        });
+      } else {
+        socket.emit('/settings/changePassword', {error: 'wrong old password'});
+      }
+    });
   });
 
 
@@ -657,11 +665,11 @@ io.sockets.on('connection', function(socket){
     user disconnected
   */
   socket.on('disconnect', function(data){
-    console.log("client disconnected");
+    console.log('client disconnected');
 
     // leave lobby if in lobby
     if (lobbyForUsername[socket.session.username]){
-      leaveLobby(lobbyForUsername[socket.session.username], socket);  
+      leaveLobby(lobbyForUsername[socket.session.username], socket);
     }
 
 
@@ -676,26 +684,26 @@ io.sockets.on('connection', function(socket){
 
 
   socket.on('/games', function(data){
-    console.log("client requested games info");
+    console.log('client requested games info');
     socket.emit('/games', lobbys);
   });
 
 
   socket.on('lobby:new', function(data){
-    console.log("client requested games info");
-    var newLobby = addLobby({name: "new game", status: "lobby", players: 1, maxplayers: 2});
+    console.log('client requested games info');
+    var newLobby = addLobby({name: 'new game', status: 'lobby', players: 1, maxplayers: 2});
     joinLobby(newLobby.id, socket);
     socket.emit('lobby:new', newLobby);
   });
 
   socket.on('lobby:join', function(data){
-    console.log("client wants to join lobby");
+    console.log('client wants to join lobby');
     joinLobby(data.id, socket);
     socket.emit('lobby:join', lobbys[data.id]);
   });
 
   socket.on('lobby:leave', function(data){
-    console.log("client wants to leave lobby");
+    console.log('client wants to leave lobby');
     console.log(socket.session.username);
     leaveLobby(data.id, socket);
     socket.emit('lobby:leave', lobbys[data.id]);
@@ -709,9 +717,9 @@ function generateRandomGuestName(){
   var randNr;
   do{
     randNr = Math.floor((Math.random()*900)+100);
-  } while (connectedUsers.indexOf("Guest"+randNr) > -1)
+  } while (connectedUsers.indexOf('Guest'+randNr) > -1);
 
-  return "Guest"+randNr;
+  return 'Guest'+randNr;
 }
 
 /*
@@ -726,18 +734,18 @@ function addConnectedUser(username, socket, wasGuest){
   // if no username, generate random and save
   if (!username){
     username = generateRandomGuestName();
-    setSession("username", username, socket);
+    setSession('username', username, socket);
     // socket.session.username = username;
-  } else if (socket.session.username.indexOf("Guest") > -1){
+  } else if (socket.session.username.indexOf('Guest') > -1){
     // user was guest before he logged in
     deleteConnectedUser(socket.session.username, socket);
     // socket.session.username = username;
-    setSession("username", username, socket);
+    setSession('username', username, socket);
   }
   // socket.session.save();
   connectedUsers.push(username);
   clientUsernames[username] = socket.id;
-  socket.broadcast.emit("onlinestatus:"+username, {user: username, online: true});
+  socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
 
   sendFriendRequestsIfExist(username);
 }
@@ -759,7 +767,7 @@ function setSession(attr, val, socket){
 function deleteConnectedUser(username, socket){
   connectedUsers.splice(connectedUsers.indexOf(username),1);
   delete clientUsernames[username];
-  socket.broadcast.emit("onlinestatus:"+username, {user: username, online: false});
+  socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
 }
 
 /*
@@ -778,12 +786,13 @@ function getIdForUsername(username){
 */
 function addFriendRequest(username, friend){
   // if no array for user exists: create it
-  if (!friendRequests[username])
+  if (!friendRequests[username]) {
     friendRequests[username] = [];
+  }
 
   // only request if not already requested (so no multiple requests are possible)
   if (friendRequests[username].indexOf(friend) === -1){
-    friendRequests[username].push(friend)
+    friendRequests[username].push(friend);
 
     // send friend request if user is online
     if (connectedUsers.indexOf(username) > -1){
@@ -793,7 +802,7 @@ function addFriendRequest(username, friend){
 }
 
 /*
-  emits all pending friend requests to specific user 
+  emits all pending friend requests to specific user
 */
 function sendFriendRequestsIfExist(username){
   if (friendRequests[username] && friendRequests[username].length > 0)
@@ -818,14 +827,14 @@ function addLobby(data){
 
   // add lobby
   // add player who opened lobby as first player to lobby
-  lobbys[lobbyHighestCount] = { 
-                                id: lobbyHighestCount, 
-                                name: data.name + lobbyHighestCount, 
-                                status: data.status, 
-                                players: data.players, 
-                                maxplayers: data.maxplayers, 
-                                currentPlayers: []
-                              };
+  lobbys[lobbyHighestCount] = {
+    id: lobbyHighestCount,
+    name: data.name + lobbyHighestCount,
+    status: data.status,
+    players: data.players,
+    maxplayers: data.maxplayers,
+    currentPlayers: []
+  };
 
   return lobbys[lobbyHighestCount];
 }
@@ -843,7 +852,7 @@ function joinLobby(id, socket){
 
   //send join event to other players in lobby
   //@TODO: only players in same lobby
-  socket.broadcast.emit("lobby:player:joined", {username: socket.session.username});
+  socket.broadcast.emit('lobby:player:joined', {username: socket.session.username});
 }
 
 function leaveLobby(id, socket){
@@ -855,7 +864,7 @@ function leaveLobby(id, socket){
 
   //send left event to other players in lobby
   //@TODO: only players in same lobby
-  socket.broadcast.emit("lobby:player:left", {username: socket.session.username});
+  socket.broadcast.emit('lobby:player:left', {username: socket.session.username});
 }
 
 /*

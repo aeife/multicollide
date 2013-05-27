@@ -16,15 +16,15 @@ describe('Service: flash', function () {
   // });
 
   it('should save added messages', function () {
-    flash.error("generic error");
-    flash.info("generic info");
+    flash.error('generic error');
+    flash.info('generic info');
     expect(flash.get().length).toBe(2);
   });
 
   it('should should delete the second messages', function () {
-    flash.error("generic error");
-    flash.info("generic info");
-    flash.error("generic error2");
+    flash.error('generic error');
+    flash.info('generic info');
+    flash.error('generic error2');
 
     flash.remove(1);
     expect(flash.get().length).toBe(2);

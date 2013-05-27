@@ -3,7 +3,7 @@
 describe('Directive: passconfirm', function () {
   beforeEach(module('angularappApp'));
 
-  var element;
+  // var element;
 
   // it('should make hidden element visible', inject(function ($rootScope, $compile) {
   //   element = angular.element('<passconfirm></passconfirm>');

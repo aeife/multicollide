@@ -6,7 +6,7 @@ angular.module('angularappApp')
     // var socket = io.connect("http://localhost:3000");
     return {
       on: function (eventName, callback) {
-        socket.on(eventName, function () {  
+        socket.on(eventName, function () {
           var args = arguments;
           $rootScope.$apply(function () {
             callback.apply(socket, args);
@@ -21,7 +21,7 @@ angular.module('angularappApp')
               callback.apply(socket, args);
             }
           });
-        })
+        });
       },
       once: function (eventName, data, callback) {
         socket.once(eventName, data, function () {
@@ -31,7 +31,7 @@ angular.module('angularappApp')
               callback.apply(socket, args);
             }
           });
-        })
+        });
       },
       removeListener: function (eventName, callback) {
         socket.removeListener(eventName, callback);

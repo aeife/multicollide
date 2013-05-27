@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('angularappAppMock.services', [])
 
  .factory('socket', function($rootScope){
@@ -5,9 +7,11 @@ angular.module('angularappAppMock.services', [])
 
   // Receive Events
   this.on = function(eventName, callback){
-    if(!this.events[eventName]) this.events[eventName] = [];
+    if(!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
     this.events[eventName].push(callback);
-  }
+  };
 
   // Send Events
   this.emit = function(eventName, data, emitCallback){
@@ -17,9 +21,11 @@ angular.module('angularappAppMock.services', [])
           callback(data);
         });
       });
-    };
-    if(emitCallback) emitCallback();
-  }
+    }
+    if(emitCallback) {
+      emitCallback();
+    }
+  };
   return this;
 
 });

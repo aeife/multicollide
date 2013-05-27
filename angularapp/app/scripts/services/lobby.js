@@ -5,7 +5,7 @@ angular.module('angularappApp')
     // Service logic
     // ...
 
-    // var socketGames = socketResource('/games', {param: "test"});
+    // var socketGames = socketResource('/games', {param: 'test'});
 
     // Public API here
     return {
@@ -19,20 +19,20 @@ angular.module('angularappApp')
         });
       },
       newLobby: function(callback){
-        console.log("adding new lobby");
+        console.log('adding new lobby');
         socketApi.newLobby(function(data){
-          // console.log("finished");
+          // console.log('finished');
           $rootScope.$apply(callback(data));
         });
       },
       joinLobby: function(id, callback){
-        console.log("joining lobby");
+        console.log('joining lobby');
         socketApi.joinLobby(id, function(data){
           $rootScope.$apply(callback(data));
         });
       },
       leaveLobby: function(id, callback){
-        console.log("leaving lobby");
+        console.log('leaving lobby');
         socketApi.leaveLobby(id, function(data){
           $rootScope.$apply(callback(data));
         });

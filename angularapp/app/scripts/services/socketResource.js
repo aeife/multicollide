@@ -5,18 +5,18 @@ angular.module('angularappApp')
     // Service logic
     // ...
 
-    
+
     // Public API here
     return function(url, params) {
       var srf = new SocketResourceFactory(url, params, socket);
       return srf;
-    }
-    
+    };
+
   });
 
 function SocketResourceFactory(url, params, socket) {
   this.url = url;
-  this.param = url.split(":");
+  this.param = url.split(':');
   this.url = this.param[0];
   this.param = this.param[this.param.length-1];
   this.socket = socket;
@@ -24,18 +24,19 @@ function SocketResourceFactory(url, params, socket) {
 
 SocketResourceFactory.prototype = {
   get: function(query, callbackSuccess, callbackError){
-    query.type = "get";
+    query.type = 'get';
     this.socket.emit(this.url, query);
 
     this.socket.once(this.url+query[this.param], function (data){
-      if (data)
+      if (data) {
         callbackSuccess(data);
-      else
+      } else {
         callbackError();
+      }
     });
   },
   post: function(query, callback){
-    query.type = "post";
+    query.type = 'post';
     console.log(this.url);
     this.socket.emit(this.url, query);
     this.socket.once(this.url, function (data){
@@ -43,11 +44,11 @@ SocketResourceFactory.prototype = {
     });
   },
   remove: function(query, callback){
-    query.type = "remove";
+    query.type = 'remove';
     console.log(this.url);
     this.socket.emit(this.url, query);
     this.socket.once(this.url+query[this.param], function (data){
       callback(data);
     });
   }
-}
+};

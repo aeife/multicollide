@@ -5,16 +5,13 @@ angular.module('angularappApp')
     // Service logic
     // ...
 
-    var socketLogin = socketResource('/login/', {param: "test"});
-    var socketLogout = socketResource('/logout/', {param: "test"});
+    var socketLogin = socketResource('/login/', {param: 'test'});
+    var socketLogout = socketResource('/logout/', {param: 'test'});
 
     // Public API here
     return {
-      someMethod: function () {
-        return meaningOfLife;
-      },
       signup: function (username, password, callback) {
-        console.log("signing up");
+        console.log('signing up');
         user.newUser(username, password, function(data){
           $rootScope.$apply(callback(data));
         });
@@ -25,11 +22,11 @@ angular.module('angularappApp')
         // .success(function (data){
         //   if (data.loggedin) {
         //     $cookies.username = username;
-        //     $cookies.loggedin = "true";
+        //     $cookies.loggedin = 'true';
 
-        //     $location.path("/");
+        //     $location.path('/');
         //   } else {
-        //     flash.error("wrong login");
+        //     flash.error('wrong login');
         //   }
         // });
 
@@ -39,14 +36,14 @@ angular.module('angularappApp')
           if (data.loggedin) {
             $rootScope.$apply(function() {
               $cookies.username = username;
-              $cookies.loggedin = "true";
+              $cookies.loggedin = 'true';
 
-              $location.path("/");
+              $location.path('/');
             });
-            
+
           } else {
-            $rootScope.$apply(flash.error("wrong login"));
-            
+            $rootScope.$apply(flash.error('wrong login'));
+
           }
         });
       },
@@ -61,7 +58,7 @@ angular.module('angularappApp')
         delete $cookies.loggedin;
         delete $cookies.username;
 
-        $location.path("/");
+        $location.path('/');
       },
       isLoggedIn: function() {
         return $cookies.loggedin;
