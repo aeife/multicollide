@@ -394,7 +394,7 @@ io.sockets.on('connection', function(socket){
     console.log('GETTIN ALL USERS');
     User.find({}, {name : 1, _id : 0}, function(err, users){
       console.log(users);
-      socket.emit('users:all', users);
+      socket.emit('users:all', err, users);
     });
     // socket.emit('users:connected', {users: connectedUsers});
   });
@@ -403,7 +403,8 @@ io.sockets.on('connection', function(socket){
     get connected users
   */
   socket.on('users:connected', function(data){
-    socket.emit('users:connected', connectedUsers);
+    var err = null;
+    socket.emit('users:connected', err, connectedUsers);
   });
 
 
@@ -854,6 +855,7 @@ function joinLobby(id, socket){
   //@TODO: only players in same lobby
   socket.broadcast.emit('lobby:player:joined', {username: socket.session.username});
 }
+
 
 function leaveLobby(id, socket){
   if (lobbys[id].currentPlayers.indexOf(socket.session.username) > -1){

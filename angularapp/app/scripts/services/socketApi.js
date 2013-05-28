@@ -10,14 +10,14 @@ angular.module('angularappApp')
     return {
       getConnectedUsers: function(callback){
         socket.emit('users:connected');
-        socket.once('users:connected', function (data){
-          $rootScope.$apply(callback(data));
+        socket.once('users:connected', function (err, data){
+          $rootScope.$apply(callback(err, data));
         });
       },
       getAllUsers: function(callback){
         socket.emit('users:all');
-        socket.once('users:all', function (data){
-          $rootScope.$apply(callback(data));
+        socket.once('users:all', function (err, data){
+          $rootScope.$apply(callback(err, data));
         });
       },
       friendRequest: function(callback){

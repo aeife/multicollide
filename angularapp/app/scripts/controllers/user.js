@@ -20,7 +20,7 @@ angular.module('angularappApp')
           func = socketApi.getConnectedUsers;
         }
 
-        func(function(data){
+        func(function(err, data){
           console.log(data);
           $rootScope.$apply(function(){
             $scope.connectedUsers = data;
