@@ -2,6 +2,8 @@
 
 angular.module('angularappApp')
   .controller('SignupCtrl', function ($scope, auth, flash) {
+    $scope.signedup = false;
+
     $scope.signup = function(){
       if ($scope.signupForm.$invalid) {
         flash.error('wrong input');
@@ -9,9 +11,11 @@ angular.module('angularappApp')
         flash.error('passwords do not match');
       } else {
         auth.signup($scope.username, $scope.password, function(data){
-          console.log(data);
-          $scope.error = data.error;
-          flash.error(data.error);
+          if (data.error) {
+            flash.error(data.error);
+          } else {
+            $scope.signedup = true;
+          }
         });
       }
     };
