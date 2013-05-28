@@ -712,7 +712,12 @@ io.sockets.on('connection', function(socket){
 
 });
 
-
+/**
+ * helper function to generate a random guest name
+ *
+ * guest name = "Guest" + random number between 100 and 999
+ * @return {string} random guest name
+ */
 function generateRandomGuestName(){
   //generate random number until not already in use
   var randNr;
@@ -723,15 +728,17 @@ function generateRandomGuestName(){
   return 'Guest'+randNr;
 }
 
-/*
-  handles a connecting user
-
-  adds a user to the list of connected users
-  adds the according id and username to the dictionary
-  emits the event
-  sends the user all pending friend requests
-*/
-function addConnectedUser(username, socket, wasGuest){
+/**
+ * handles a connecting user
+ *
+ * adds a user to the list of connected users
+ * adds the according id and username to the dictionary
+ * emits the event
+ * sends the user all pending friend requests
+ * @param {string} username Name of user
+ * @param {object} socket Socket object of user
+ */
+function addConnectedUser(username, socket){
   // if no username, generate random and save
   if (!username){
     username = generateRandomGuestName();
@@ -751,40 +758,46 @@ function addConnectedUser(username, socket, wasGuest){
   sendFriendRequestsIfExist(username);
 }
 
-
+/**
+ * helper function to set a session variable and save the session
+ * @param {string} attr Variable name
+ * @param {misc} val Variable value
+ * @param {object} socket Socket object
+ */
 function setSession(attr, val, socket){
   socket.session[attr] = val;
   socket.session.save();
 }
 
-
-/*
-  handles a disconnected user
-
-  deletes a user from the list of connected users
-  deletes the connected of username and id for user
-  emits the event
-*/
+/**
+ * handles a disconnected user
+ *
+ * deletes a user from the list of connected users
+ * deletes the connected of username and id for user
+ * emits the event
+ * @param  {string} username Name of the user
+ * @param  {object} socket Socket object of the user
+ */
 function deleteConnectedUser(username, socket){
   connectedUsers.splice(connectedUsers.indexOf(username),1);
   delete clientUsernames[username];
   socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
 }
 
-/*
-  returns the id (socket.id) for a given username
-*/
+/**
+ * returns the id (socket.id) for a given username
+ * @param  {string} username Name of user
+ * @return {id} socket.id
+ */
 function getIdForUsername(username){
   return clientUsernames[username];
 }
 
-
-
-
-
-/*
-  adds a friend request for username from friend
-*/
+/**
+ * adds a friend request for username from friend
+ * @param {string} username Name of the user which receives the request
+ * @param {string} friend Name of the user which sent the request
+ */
 function addFriendRequest(username, friend){
   // if no array for user exists: create it
   if (!friendRequests[username]) {
@@ -802,27 +815,31 @@ function addFriendRequest(username, friend){
   }
 }
 
-/*
-  emits all pending friend requests to specific user
-*/
+/**
+ * emits all pending friend requests to specific user
+ * @param  {string} username Name of the user for the requests
+ */
 function sendFriendRequestsIfExist(username){
   if (friendRequests[username] && friendRequests[username].length > 0)
   clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
 }
 
-/*
-  removes a friend request for username from friend
-*/
+/**
+ * removes a friend request for username from friend
+ * @param  {string} username Name of user which received the request
+ * @param  {string} friend Name of user which sent the request
+ */
 function removeFriendRequest(username, friend){
   if (friendRequests[username] && friendRequests[username].indexOf(friend) > -1){
     friendRequests[username].splice(friendRequests[username].indexOf(friend), 1);
   }
 }
 
-
-
-
-
+/**
+ * add a lobby to the collection
+ * @param {object} data Attributes for new lobby
+ * @return {object} object of new created lobby
+ */
 function addLobby(data){
   lobbyHighestCount++;
 
@@ -840,10 +857,19 @@ function addLobby(data){
   return lobbys[lobbyHighestCount];
 }
 
+/**
+ * remove a lobby from the collection
+ * @param  {int} id Id of the corresponding lobby
+ */
 function removeLobby(id){
   delete lobbys[id];
 }
 
+/**
+ * user joins lobby
+ * @param  {int} id Id of corresponding lobby
+ * @param  {object} socket Socket object of the joining user
+ */
 function joinLobby(id, socket){
   if (!lobbys[id].currentPlayers){
     lobbys[id].currentPlayers = [];
@@ -856,7 +882,12 @@ function joinLobby(id, socket){
   socket.broadcast.emit('lobby:player:joined', {username: socket.session.username});
 }
 
-
+/**
+ * user left lobby
+ *
+ * @param  {int} id Id of the corresponding lobby
+ * @param  {object} socket Socket object of the leaving user
+ */
 function leaveLobby(id, socket){
   if (lobbys[id].currentPlayers.indexOf(socket.session.username) > -1){
     lobbys[id].currentPlayers.splice(lobbys[id].currentPlayers.indexOf(socket.session.username),1);
@@ -869,9 +900,11 @@ function leaveLobby(id, socket){
   socket.broadcast.emit('lobby:player:left', {username: socket.session.username});
 }
 
-/*
-  get Lobby in which player with given socket.id is
-*/
+/**
+ * get Lobby in which player with given name is
+ * @param  {string} name
+ * @return {int} id of lobby
+ */
 function getLobbyOfUsername(name) {
   return lobbyForUsername[name];
 }
