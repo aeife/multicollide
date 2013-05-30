@@ -7,25 +7,38 @@ angular.module('angularappApp')
       $scope.playerlist = true;
       $scope.onlyConnected = true;
       $scope.searchPlayer = '';
-      $scope.connectedUsers = [];
+      $scope.users = [];
+      $scope.connectedUsers = 0;
 
       $scope.clearPlayerSearch = function(){
         this.searchPlayer = '';
       };
 
-      $scope.refresh = function(){
-        var func = socketApi.getAllUsers;
-        console.log(this.onlyConnected);
-        if (this.onlyConnected){
-          func = socketApi.getConnectedUsers;
+      $scope.convertUserLists = function(arr){
+        var result = [];
+        for (var i = 0; i < arr.length; i++){
+          result.push(arr[i].name);
         }
 
-        func(function(err, data){
-          console.log(data);
+        return result;
+      };
+
+      $scope.refresh = function(){
+        // get connected users
+        socketApi.getConnectedUsers(function(err, data){
           $rootScope.$apply(function(){
-            $scope.connectedUsers = data;
+            $scope.users = data;
+            $scope.connectedUsers = data.length;
           });
         });
+
+        if (!this.onlyConnected){
+          socketApi.getAllUsers(function(err, data){
+            $rootScope.$apply(function(){
+              $scope.users = $scope.convertUserLists(data);
+            });
+          });
+        }
       };
 
       $scope.refresh();
