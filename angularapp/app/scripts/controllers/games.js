@@ -65,6 +65,8 @@ angular.module('angularappApp')
     $scope.onLeftLobby = function () {
       $scope.inLobby = false;
       $scope.lobby = null;
+
+      $scope.refresh();
     };
 
     // @TODO: Leave Lobby on F5 / refresh / tab close
