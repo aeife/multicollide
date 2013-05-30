@@ -38,6 +38,14 @@ angular.module('angularappApp')
       });
     };
 
+    $scope.getLobbyCount = function(){
+      if ($scope.games) {
+        return Object.keys($scope.games).length;
+      } else {
+        return 0;
+      }
+    };
+
     $scope.onJoinedLobby = function (data){
       $scope.inLobby = true;
       $scope.lobby = data;

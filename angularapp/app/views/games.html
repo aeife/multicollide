@@ -37,5 +37,7 @@
                 <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
             </tr>
         </table>
+        {{Object.keys(games).length}}
+        <h5 class="text-center" ng-hide="getLobbyCount()!=0">No open lobbys at the moment, but you can create one!</h5>
     </div>
 </div>

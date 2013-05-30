@@ -261,12 +261,12 @@ var lobbys = {};
 var lobbyHighestCount = -1;
 
 // mock data
-lobbys = {
-  0: {id: 0, name: 'game nr. 1', status: 'lobby', players: [], maxplayers: 10},
-  1: {id: 1, name: 'fine game', status: 'playing', players: [], maxplayers: 10},
-  2: {id: 2, name: 'another game', status: 'lobby', players: [], maxplayers: 10}
-};
-lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
+// lobbys = {
+//   0: {id: 0, name: 'game nr. 1', status: 'lobby', players: [], maxplayers: 10},
+//   1: {id: 1, name: 'fine game', status: 'playing', players: [], maxplayers: 10},
+//   2: {id: 2, name: 'another game', status: 'lobby', players: [], maxplayers: 10}
+// };
+// lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
 // saves current lobby for each username
 var lobbyForUsername = {};
