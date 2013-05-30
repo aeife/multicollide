@@ -877,9 +877,9 @@ function joinLobby(id, socket){
   lobbys[id].currentPlayers.push(socket.session.username);
   lobbyForUsername[socket.session.username] = id;
 
-  //send join event to other players in lobby
-  //@TODO: only players in same lobby
-  socket.broadcast.emit('lobby:player:joined', {username: socket.session.username});
+  //join socket room and send join event to other players in lobby
+  socket.join(lobbys[id].name);
+  io.sockets.in(lobbys[id].name).emit('lobby:player:joined', {username: socket.session.username});
 }
 
 /**
@@ -895,9 +895,9 @@ function leaveLobby(id, socket){
 
   delete lobbyForUsername[socket.session.username];
 
-  //send left event to other players in lobby
-  //@TODO: only players in same lobby
-  socket.broadcast.emit('lobby:player:left', {username: socket.session.username});
+  //send left event to other players in lobby and leave socket room
+  socket.leave(lobbys[id].name);
+  io.sockets.in(lobbys[id].name).emit('lobby:player:left', {username: socket.session.username});
 }
 
 /**
