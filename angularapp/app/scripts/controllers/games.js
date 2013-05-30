@@ -18,9 +18,14 @@ angular.module('angularappApp')
 
     $scope.joinGame = function(id){
       console.log('trying to join game with id ' + id);
-      lobby.joinLobby(id, function(data){
-        console.log('successfull joined lobby');
-        $scope.onJoinedLobby(data);
+      lobby.joinLobby(id, function(err, data){
+        if (err) {
+          flash.error(err);
+          $scope.refresh();
+        } else {
+          console.log('successfull joined lobby');
+          $scope.onJoinedLobby(data);
+        }
       });
     };
 

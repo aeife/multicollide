@@ -27,8 +27,8 @@ angular.module('angularappApp')
       },
       joinLobby: function(id, callback){
         console.log('joining lobby');
-        socketApi.joinLobby(id, function(data){
-          $rootScope.$apply(callback(data));
+        socketApi.joinLobby(id, function(err, data){
+          $rootScope.$apply(callback(err, data));
         });
       },
       leaveLobby: function(id, callback){

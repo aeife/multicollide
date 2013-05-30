@@ -700,8 +700,14 @@ io.sockets.on('connection', function(socket){
 
   socket.on('lobby:join', function(data){
     console.log('client wants to join lobby');
-    joinLobby(data.id, socket);
-    socket.emit('lobby:join', lobbys[data.id]);
+    // checking if lobby still exists
+    var err = null;
+    if (lobbys[data.id]){
+      joinLobby(data.id, socket);
+    } else {
+      err = 'lobby was deleted';
+    }
+    socket.emit('lobby:join', err, lobbys[data.id]);
   });
 
   socket.on('lobby:leave', function(data){
@@ -872,7 +878,7 @@ function removeLobby(id){
 
     clients[getIdForUsername(player)].leave(lobbys[id].name);
 
-    console.log(player + " leaves room " + lobbys[id].name);
+    console.log(player + ' leaves room ' + lobbys[id].name);
   }
 
   console.log(lobbyForUsername);

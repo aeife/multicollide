@@ -39,8 +39,8 @@ angular.module('angularappApp')
       },
       joinLobby: function(id, callback){
         socket.emit('lobby:join', {id: id});
-        socket.once('lobby:join', function(data){
-          callback(data);
+        socket.once('lobby:join', function(err, data){
+          callback(err, data);
         });
 
 
