@@ -422,7 +422,7 @@ io.sockets.on('connection', function(socket){
         }
         if (user) {
           // socket.session.loggedin = true;
-          setSession('loggedIn', true, socket);
+          setSession('loggedin', true, socket);
           // socket.session.username = data.username;
           // socket.session.save();
 
@@ -457,8 +457,10 @@ io.sockets.on('connection', function(socket){
       console.log(socket.handshake.sessionID);
       sessionStore.destroy(socket.handshake.sessionID);
 
+      // @TODO: do not delete and add connected user on logout, just change name and status
       socket.session.loggedin = null;
       socket.session.username = generateRandomGuestName();
+      addConnectedUser(socket.session.username, socket);
 
       // console.log(socket.session);
       // console.log(socket.session.username);
@@ -751,8 +753,8 @@ function addConnectedUser(username, socket){
     username = generateRandomGuestName();
     setSession('username', username, socket);
     // socket.session.username = username;
-  } else if (socket.session.username.indexOf('Guest') > -1){
-    // user was guest before he logged in
+  } else if (socket.session.username.indexOf('Guest') > -1 && connectedUsers.indexOf(socket.session.username) > -1){
+    // user was guest before he logged in (= he is already connected in as a guest)
     deleteConnectedUser(socket.session.username, socket);
     // socket.session.username = username;
     setSession('username', username, socket);
