@@ -10,7 +10,7 @@
             </div>
         </div>
         <ul>
-            <li ng-repeat="player in lobby.currentPlayers">{{player}}</li>
+            <li ng-repeat="player in lobby.players">{{player}}</li>
         </ul>
     </div>
     <div ng-switch-default>
@@ -32,7 +32,7 @@
             </tr>
             <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
                 <td>{{game.name}}</td>
-                <td>{{game.players}} / {{game.maxplayers}}</td>
+                <td>{{game.players.length}} / {{game.maxplayers}}</td>
                 <td>{{game.status}}</td>
                 <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
             </tr>

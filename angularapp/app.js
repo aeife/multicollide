@@ -262,9 +262,9 @@ var lobbyHighestCount = -1;
 
 // mock data
 lobbys = {
-  0: {id: 0, name: 'game nr. 1', status: 'lobby', players: 2, maxplayers: 10},
-  1: {id: 1, name: 'fine game', status: 'playing', players: 9, maxplayers: 10},
-  2: {id: 2, name: 'another game', status: 'lobby', players: 4, maxplayers: 10}
+  0: {id: 0, name: 'game nr. 1', status: 'lobby', players: [], maxplayers: 10},
+  1: {id: 1, name: 'fine game', status: 'playing', players: [], maxplayers: 10},
+  2: {id: 2, name: 'another game', status: 'lobby', players: [], maxplayers: 10}
 };
 lobbyHighestCount = lobbyHighestCount  +1 +1 +1;
 
@@ -693,7 +693,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('lobby:new', function(data){
     console.log('client requested games info');
-    var newLobby = addLobby({name: 'new game', status: 'lobby', players: 1, maxplayers: 2});
+    var newLobby = addLobby({name: 'new game', status: 'lobby', maxplayers: 10});
     joinLobby(newLobby.id, socket);
     socket.emit('lobby:new', newLobby);
   });
@@ -850,9 +850,8 @@ function addLobby(data){
     id: lobbyHighestCount,
     name: data.name + lobbyHighestCount,
     status: data.status,
-    players: data.players,
-    maxplayers: data.maxplayers,
-    currentPlayers: []
+    players: [],
+    maxplayers: data.maxplayers
   };
 
   return lobbys[lobbyHighestCount];
@@ -872,10 +871,11 @@ function removeLobby(id){
  * @param  {object} socket Socket object of the joining user
  */
 function joinLobby(id, socket){
-  if (!lobbys[id].currentPlayers){
-    lobbys[id].currentPlayers = [];
+  if (!lobbys[id].players){
+    lobbys[id].players = [];
   }
-  lobbys[id].currentPlayers.push(socket.session.username);
+  lobbys[id].players.push(socket.session.username);
+  // lobbys[id].players++;
   lobbyForUsername[socket.session.username] = id;
 
   //join socket room and send join event to other players in lobby
@@ -890,8 +890,9 @@ function joinLobby(id, socket){
  * @param  {object} socket Socket object of the leaving user
  */
 function leaveLobby(id, socket){
-  if (lobbys[id].currentPlayers.indexOf(socket.session.username) > -1){
-    lobbys[id].currentPlayers.splice(lobbys[id].currentPlayers.indexOf(socket.session.username),1);
+  if (lobbys[id].players.indexOf(socket.session.username) > -1){
+    lobbys[id].players.splice(lobbys[id].players.indexOf(socket.session.username),1);
+    // lobbys[id].players--;
   }
 
   delete lobbyForUsername[socket.session.username];

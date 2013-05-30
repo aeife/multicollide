@@ -43,12 +43,12 @@ angular.module('angularappApp')
       $scope.lobby = data;
 
       lobby.onPlayerJoined(function(data){
-        $scope.lobby.currentPlayers.push(data.username);
+        $scope.lobby.players.push(data.username);
       });
 
       lobby.onPlayerLeft(function(data){
-        if ($scope.lobby.currentPlayers.indexOf(data.username) > -1){
-          $scope.lobby.currentPlayers.splice($scope.lobby.currentPlayers.indexOf(data.username), 1);
+        if ($scope.lobby.players.indexOf(data.username) > -1){
+          $scope.lobby.players.splice($scope.lobby.players.indexOf(data.username), 1);
         }
       });
     };
