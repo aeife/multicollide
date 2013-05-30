@@ -30,7 +30,7 @@
                      <i class="icon-circle online"> online </i>
                 </div>
             </div>
-            
+
 
             <div class="clearfix"></div>
             <h4>Last Games</h4>
@@ -48,11 +48,11 @@
         <h5 class="text-center">{{connectedUsers.length}} users connected</h5>
         <div class="text-center">
             <a href="" class="btn" ng-click="refresh()">refresh</a>
-            <input type="checkbox" ng-model="onlyConnected"/> connected only
+            <input type="checkbox" ng-model="onlyConnected"/>connected only
             <input ng-model="searchPlayer.string" placeholder="search player"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
         <ul class="unstyled text-center">
-            <li ng-repeat="user in connectedUsers | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user}}">{{user.name}}</a></li>
+            <li ng-repeat="user in connectedUsers | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user.name}}">{{user.name}}</a></li>
         </ul>
     </div>
 </div>
