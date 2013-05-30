@@ -5,6 +5,16 @@ angular.module('angularappApp')
 
     $scope.isLoggedIn = auth.isLoggedIn;
 
+    if ($scope.isLoggedIn){
+      user.getUserInfo(auth.key(), function(data){
+
+        if (data) {
+          $scope.user = data;
+        } else {
+        }
+      });
+    }
+
     $scope.changePassword = function(){
       if ($scope.newpasswordForm.$invalid) {
         flash.error('wrong input');

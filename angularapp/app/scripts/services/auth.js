@@ -10,9 +10,9 @@ angular.module('angularappApp')
 
     // Public API here
     return {
-      signup: function (username, password, callback) {
+      signup: function (userSignUp, callback) {
         console.log('signing up');
-        user.newUser(username, password, function(data){
+        user.newUser(userSignUp, function(data){
           $rootScope.$apply(callback(data));
         });
       },

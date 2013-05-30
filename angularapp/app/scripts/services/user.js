@@ -45,7 +45,7 @@ angular.module('angularappApp')
           $rootScope.$apply(callback(data.error));
         });
       },
-      newUser: function(username, password, callback){
+      newUser: function(user, callback){
 
         /* REST API */
         // var user = new User({name: username, password: password});
@@ -55,7 +55,7 @@ angular.module('angularappApp')
         // });
 
         /* SOCKET API */
-        socketUser.post({name: username, password: password}, function(data){
+        socketUser.post(user, function(data){
           callback(data);
         });
 

@@ -10,7 +10,7 @@ angular.module('angularappApp')
       } else if ($scope.password !== $scope.passwordConfirm) {
         flash.error('passwords do not match');
       } else {
-        auth.signup($scope.username, $scope.password, function(data){
+        auth.signup({username: $scope.username, password: $scope.password, email: $scope.email}, function(data){
           if (data.error) {
             flash.error(data.error);
           } else {

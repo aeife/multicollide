@@ -60,6 +60,7 @@ mongoose.set('debug', true);
 var userSchema = mongoose.Schema({
   name: {type: String, index: {unique: true}},
   password: String,
+  email: String,
   games: {type: Number, default: 0},
   won: {type: Number, default: 0},
   score: {type: Number, default: 0},
@@ -372,7 +373,7 @@ io.sockets.on('connection', function(socket){
 
     // post /user/ -> sign up
     case 'post':
-      var user = new User({name: data.name, password: crypto.createHash('sha512').update(data.password).digest('hex')});
+      var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
       user.save(function (err, user) {
         var error = null;
         if (err) {
