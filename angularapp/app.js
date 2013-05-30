@@ -693,7 +693,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('lobby:new', function(data){
     console.log('client requested games info');
-    var newLobby = addLobby({name: 'new game', status: 'lobby', maxplayers: 10});
+    var newLobby = addLobby({name: 'new game', host: socket.session.username, status: 'lobby', maxplayers: 10});
     joinLobby(newLobby.id, socket);
     socket.emit('lobby:new', newLobby);
   });
@@ -849,6 +849,7 @@ function addLobby(data){
   lobbys[lobbyHighestCount] = {
     id: lobbyHighestCount,
     name: data.name + lobbyHighestCount,
+    host: data.host,
     status: data.status,
     players: [],
     maxplayers: data.maxplayers
@@ -890,16 +891,27 @@ function joinLobby(id, socket){
  * @param  {object} socket Socket object of the leaving user
  */
 function leaveLobby(id, socket){
-  if (lobbys[id].players.indexOf(socket.session.username) > -1){
-    lobbys[id].players.splice(lobbys[id].players.indexOf(socket.session.username),1);
-    // lobbys[id].players--;
+  if (lobbys[id].host === socket.session.username){
+    // host left lobby, disconnect all and delete lobby
+
+
+  } else {
+
+    if (lobbys[id].players.indexOf(socket.session.username) > -1){
+      lobbys[id].players.splice(lobbys[id].players.indexOf(socket.session.username),1);
+      // lobbys[id].players--;
+    }
+
+    delete lobbyForUsername[socket.session.username];
+
+    //send left event to other players in lobby and leave socket room
+    socket.leave(lobbys[id].name);
+    io.sockets.in(lobbys[id].name).emit('lobby:player:left', {username: socket.session.username});
+
+
+
   }
 
-  delete lobbyForUsername[socket.session.username];
-
-  //send left event to other players in lobby and leave socket room
-  socket.leave(lobbys[id].name);
-  io.sockets.in(lobbys[id].name).emit('lobby:player:left', {username: socket.session.username});
 }
 
 /**

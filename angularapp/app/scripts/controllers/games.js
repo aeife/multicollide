@@ -53,6 +53,10 @@ angular.module('angularappApp')
       });
     };
 
+    $scope.isHost = function(username){
+      return username === $scope.lobby.host;
+    };
+
     $scope.onLeftLobby = function () {
       $scope.inLobby = false;
       $scope.lobby = null;

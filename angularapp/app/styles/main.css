@@ -14,7 +14,7 @@ body {
   border-top: 0px;
   padding:2px;
 }
-  
+
 .jumbotron {
   margin: 40px 0;
   text-align: center;
@@ -43,7 +43,7 @@ padding-bottom: 99999px;
 }
 
 .col-wrap{
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 #profileBox {
@@ -145,4 +145,9 @@ padding-bottom: 99999px;
 
 .dataTable th {
   cursor: pointer;
+}
+
+
+.red {
+  color:red;
 }

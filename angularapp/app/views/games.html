@@ -10,7 +10,7 @@
             </div>
         </div>
         <ul>
-            <li ng-repeat="player in lobby.players">{{player}}</li>
+            <li ng-repeat="player in lobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
         </ul>
     </div>
     <div ng-switch-default>
