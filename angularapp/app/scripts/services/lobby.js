@@ -46,6 +46,11 @@ angular.module('angularappApp')
         socketApi.listenLobbyPlayerLeft(function(data){
           $rootScope.$apply(callback(data));
         });
+      },
+      onLobbyDeleted: function(callback){
+        socketApi.listenLobbyDeleted(function(data){
+          $rootScope.$apply(callback(data));
+        });
       }
     };
   });

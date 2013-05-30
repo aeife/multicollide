@@ -74,6 +74,13 @@ angular.module('angularappApp')
           console.log(data);
           callback(data);
         });
+      },
+      listenLobbyDeleted: function(callback){
+        socket.on('lobby:deleted', function(data){
+          console.log('lobby was deleted (host probably left lobby)');
+          console.log(data);
+          callback(data);
+        });
       }
     };
   });

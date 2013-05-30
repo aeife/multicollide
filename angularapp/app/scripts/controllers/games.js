@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('GamesCtrl', function ($scope, lobby) {
+  .controller('GamesCtrl', function ($scope, lobby, flash) {
     $scope.games = null;
     $scope.order = 'name';
     $scope.reverse = false;
@@ -50,6 +50,11 @@ angular.module('angularappApp')
         if ($scope.lobby.players.indexOf(data.username) > -1){
           $scope.lobby.players.splice($scope.lobby.players.indexOf(data.username), 1);
         }
+      });
+
+      lobby.onLobbyDeleted(function(data){
+        flash.error(data.reason);
+        $scope.onLeftLobby();
       });
     };
 

@@ -863,6 +863,20 @@ function addLobby(data){
  * @param  {int} id Id of the corresponding lobby
  */
 function removeLobby(id){
+  console.log("REMOVING LOBBY");
+  // for each user connected: delete reference to username and leave socket room
+  console.log(lobbyForUsername);
+  for (var i = 0; i < lobbys[id].players.length; i++){
+    var player = lobbys[id].players[i];
+    delete lobbyForUsername[player];
+
+    clients[getIdForUsername(player)].leave(lobbys[id].name);
+
+    console.log(player + " leaves room " + lobbys[id].name);
+  }
+
+  console.log(lobbyForUsername);
+
   delete lobbys[id];
 }
 
@@ -892,9 +906,11 @@ function joinLobby(id, socket){
  */
 function leaveLobby(id, socket){
   if (lobbys[id].host === socket.session.username){
-    // host left lobby, disconnect all and delete lobby
+    // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
+    socket.leave(lobbys[id].name);
+    io.sockets.in(lobbys[id].name).emit('lobby:deleted', {reason: 'host left'});
 
-
+    removeLobby(id);
   } else {
 
     if (lobbys[id].players.indexOf(socket.session.username) > -1){
