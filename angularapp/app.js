@@ -44,34 +44,7 @@ app.configure('development', function(){
 /**
  * Database
  */
-
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/multicollide');
-
-mongoose.connection.on('error', function(err) {
-  console.error('MongoDB error: %s', err);
-});
-mongoose.connection.on('index',function(err) {
-  console.error('MongoDB error: %s', err);
-});
-mongoose.set('debug', true);
-
-var userSchema = mongoose.Schema({
-  name: {type: String, index: {unique: true}},
-  password: String,
-  email: String,
-  games: {type: Number, default: 0},
-  won: {type: Number, default: 0},
-  score: {type: Number, default: 0},
-  friends: [String]
-});
-userSchema.set('autoIndex', true);
-var User = mongoose.model('User', userSchema);
-
-
-
-
+var User = require('./database').User;
 
 /*
 ******************************************************
