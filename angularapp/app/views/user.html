@@ -45,7 +45,13 @@
     </div>
     <div ng-switch-default>
         <h1 class="text-center">Playerlist</h1>
-        <h5 class="text-center">{{connectedUsers}} users connected</h5>
+        <h5 class="text-center">
+          <ng-pluralize count="connectedUsers"
+            when="{'0': 'Nobody is online.',
+              'one': '1 user is online.',
+              'other': '{} users are online.'}">
+          </ng-pluralize>
+        </h5>
         <div class="text-center">
             <a href="" class="btn" ng-click="refresh()">refresh</a>
             <input type="checkbox" ng-model="onlyConnected"/>connected only
