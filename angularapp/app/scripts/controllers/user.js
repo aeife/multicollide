@@ -82,14 +82,6 @@ angular.module('angularappApp')
         }
       });
     }
-    // $rootScope.$on('$routeChangeSuccess', function() {
-    //   $scope.socketS.stop();
-    // });
-
-
-    // $scope.test = function(){
-    //     $scope.socketS.stop();
-    // }
 
     $scope.addAsFriend = function(){
       console.log('adding user ' + $scope.user.name + ' as friend');
