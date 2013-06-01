@@ -10,6 +10,15 @@ angular.module('angularappApp')
       language: 'en-US',
       localization: {},
       loaded: false,
+      getAvailableLanguages: function() {
+        return [
+          {key: 'en-US', value: 'english'},
+          {key: 'de-DE', value: 'german'}
+        ];
+      },
+      getCurrentLanguage: function() {
+        return this.language;
+      },
       changeLanguage: function(newLanguage) {
         this.language = newLanguage;
 

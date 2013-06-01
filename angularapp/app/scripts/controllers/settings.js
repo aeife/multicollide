@@ -1,19 +1,20 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('SettingsCtrl', function ($scope, user, auth, flash) {
+  .controller('SettingsCtrl', function ($scope, user, auth, flash, localization) {
 
-    $scope.isLoggedIn = auth.isLoggedIn;
+    // $scope.isLoggedIn = auth.isLoggedIn;
+    // console.log($scope.isLoggedIn);
 
-    if ($scope.isLoggedIn){
-      user.getUserInfo(auth.key(), function(data){
+    // if ($scope.isLoggedIn){
+    //   user.getUserInfo(auth.key(), function(data){
 
-        if (data) {
-          $scope.user = data;
-        } else {
-        }
-      });
-    }
+    //     if (data) {
+    //       $scope.user = data;
+    //     } else {
+    //     }
+    //   });
+    // }
 
     $scope.changePassword = function(){
       if ($scope.newpasswordForm.$invalid) {
@@ -30,5 +31,12 @@ angular.module('angularappApp')
           }
         });
       }
+    };
+
+    $scope.languages = localization.getAvailableLanguages();
+    $scope.language = localization.getCurrentLanguage();
+    $scope.changeLanguage = function(){
+      console.log('changing language to ' + $scope.language);
+      localization.changeLanguage($scope.language);
     };
   });

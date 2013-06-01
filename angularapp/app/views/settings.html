@@ -21,4 +21,11 @@
     </fieldset>
   </form>
   <h5>current E-Mail: {{user.email}}</h5>
+
+
+</div>
+<div class="text-center">
+  <h5>change Language</h5>
+  <select style="margin-top:10px; width: 150px;" class="controls" ng-model="language" ng-options="item.key as item.value for item in languages"></select>
+  <a href="" class="btn" ng-click="changeLanguage()">change Lanuage</a>
 </div>
