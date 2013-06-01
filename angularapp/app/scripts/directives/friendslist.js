@@ -94,6 +94,12 @@ angular.module('angularappApp')
 
       } else {
         $scope.friends = null;
+
+        // delete listener for friends
+        for (var userSocket in $scope.socketS){
+          console.log('stopping listener for ' + userSocket);
+          $scope.socketS[userSocket].stop();
+        }
       }
     });
 
