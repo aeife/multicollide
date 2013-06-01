@@ -1,17 +1,17 @@
 {
-  "_TESTTEXT_": {
+  "_TestText_": {
     "message": "This is a test. %1 and %2",
     "description": ""
   },
-  "_NOONLINE_": {
+  "_NoOnline_": {
     "message": "No users online.",
     "description": ""
   },
-  "_ONEONLINE_": {
+  "_OneOnline_": {
     "message": "1 user online.",
     "description": ""
   },
-  "_MANYONLINE_": {
+  "_ManyOnline_": {
     "message": "{} users online.",
     "description": ""
   }

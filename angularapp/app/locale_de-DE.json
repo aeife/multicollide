@@ -1,13 +1,17 @@
 {
-  "_NOONLINE_": {
-    "message": "Kein Nutzer online.",
+  "_TestText_": {
+    "message": "Das ist ein Test. %1 and %2",
     "description": ""
   },
-  "_ONEONLINE_": {
-    "message": "1 Nutzer online.",
+  "_NoOnline_": {
+    "message": "Keine Nutzer online.",
     "description": ""
   },
-  "_MANYONLINE_": {
+  "_OneOnline_": {
+    "message": "Ein Nutzer online.",
+    "description": ""
+  },
+  "_ManyOnline_": {
     "message": "{} Nutzer online.",
     "description": ""
   }

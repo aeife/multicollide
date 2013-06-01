@@ -77,8 +77,10 @@ angular.module('angularappApp')
         if (this.loaded) {
           result = this.localization[input].message;
           // input arguments
-          for (var i = 0; i < args.length; i++){
-            result = result.replace('%'+(i+1), args[i]);
+          if (args) {
+            for (var i = 0; i < args.length; i++){
+              result = result.replace('%'+(i+1), args[i]);
+            }
           }
         }
         return result;
