@@ -42,7 +42,7 @@
         </div>
     </div>
     <div ng-switch-default>
-        <h1 class="text-center">Playerlist</h1>
+        <h1 class="text-center">{{'_Playerlist_' | i18n}}</h1>
         <h5 class="text-center">
           <!-- <ng-pluralize count="connectedUsers"
             when="{'0': 'Nobody is online.',
@@ -56,9 +56,9 @@
           </ng-pluralize>
         </h5>
         <div class="text-center">
-            <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> refresh</a>
-            <input type="checkbox" ng-model="onlyConnected"/>connected only
-            <input ng-model="searchPlayer.string" placeholder="search player"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
+            <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</a>
+            <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
+            <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
         <ul class="unstyled text-center">
             <li ng-repeat="user in users | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user}}">{{user}}</a></li>

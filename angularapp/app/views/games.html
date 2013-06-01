@@ -3,10 +3,10 @@
         <h1 class="text-center">Lobby: {{lobby.name}}</h1>
         <div class="btn-toolbar text-center">
             <div class="btn-group">
-                <a href="" class="btn" ng-click="leaveGame()">leave lobby</a>
+                <a href="" class="btn" ng-click="leaveGame()">{{'_LeaveLobby_' | i18n}}</a>
             </div>
             <div class="btn-group">
-                <a href="" class="btn" ng-click="">ready</a>
+                <a href="" class="btn" ng-click="">{{'_Ready_' | i18n}}</a>
             </div>
         </div>
         <ul>
@@ -14,30 +14,30 @@
         </ul>
     </div>
     <div ng-switch-default>
-        <h1 class="text-center">Server Browser</h1>
+        <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
         <div class="btn-toolbar text-center">
             <div class="btn-group">
-                <a href="" class="btn" ng-click="createGame()">create game</a>
+                <a href="" class="btn" ng-click="createGame()">{{'_CreateGame_' | i18n}}</a>
             </div>
             <div class="btn-group">
-                <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> refresh</a>
+                <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</a>
             </div>
         </div>
         <table class="dataTable table table-striped table-hover">
             <tr>
-                <th ng-click="reorder('name')">Game Name</th>
-                <th ng-click="reorder('players')">Players</th>
-                <th ng-click="reorder('status')">Status</th>
+                <th ng-click="reorder('name')">{{'_GameName_' | i18n}}</th>
+                <th ng-click="reorder('players')">{{'_Players_' | i18n}}</th>
+                <th ng-click="reorder('status')">{{'_Status_' | i18n}}</th>
                 <th></th>
             </tr>
             <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
                 <td>{{game.name}}</td>
                 <td>{{game.players.length}} / {{game.maxplayers}}</td>
                 <td>{{game.status}}</td>
-                <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">join</a></td>
+                <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">{{'_Join_' | i18n}}</a></td>
             </tr>
         </table>
         {{Object.keys(games).length}}
-        <h5 class="text-center" ng-hide="getLobbyCount()!=0">No open lobbys at the moment, but you can create one!</h5>
+        <h5 class="text-center" ng-hide="getLobbyCount()!=0">{{'_NoLobbys_' | i18n}}</h5>
     </div>
 </div>

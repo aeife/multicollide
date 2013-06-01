@@ -3,6 +3,30 @@
     "message": "This is a test. %1 and %2",
     "description": ""
   },
+  "_Home_": {
+    "message": "Home",
+    "description": ""
+  },
+  "_Games_": {
+    "message": "Games",
+    "description": ""
+  },
+  "_Users_": {
+    "message": "Users",
+    "description": ""
+  },
+  "_Blog_": {
+    "message": "Blog",
+    "description": ""
+  },
+  "_About_": {
+    "message": "About",
+    "description": ""
+  },
+  "_QuickPlay_": {
+    "message": "Quick Play",
+    "description": ""
+  },
   "_NoOnline_": {
     "message": "No users online.",
     "description": ""
@@ -13,6 +37,62 @@
   },
   "_ManyOnline_": {
     "message": "{} users online.",
+    "description": ""
+  },
+  "_Playerlist_": {
+    "message": "Playerlist",
+    "description": ""
+  },
+  "_ConnectedOnly_": {
+    "message": "connected only",
+    "description": ""
+  },
+  "_Refresh_": {
+    "message": "refresh",
+    "description": ""
+  },
+  "_SearchPlayer_": {
+    "message": "search player",
+    "description": ""
+  },
+  "_ServerBrowser_": {
+    "message": "Server Browser",
+    "description": ""
+  },
+  "_CreateGame_": {
+    "message": "create game",
+    "description": ""
+  },
+  "_GameName_": {
+    "message": "Game Name",
+    "description": ""
+  },
+  "_Players_": {
+    "message": "Players",
+    "description": ""
+  },
+  "_Status_": {
+    "message": "Status",
+    "description": ""
+  },
+  "_Ready_": {
+    "message": "ready",
+    "description": ""
+  },
+  "_LeaveLobby_": {
+    "message": "leave lobby",
+    "description": ""
+  },
+  "_NoLobbys_": {
+    "message": "No open lobbys at the moment, but you can create one!",
+    "description": ""
+  },
+  "_Join_": {
+    "message": "join",
+    "description": ""
+  },
+  "_Contact_": {
+    "message": "Contact",
     "description": ""
   }
 }
