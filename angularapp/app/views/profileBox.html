@@ -5,15 +5,15 @@
         <div id="profileBox" class="box" style="height:200px;">
           <h4><a href="#user/{{user.name}}">{{user.name}}</a></h4>
           <img src="http://placehold.it/100x100"/>
-          
+
           <ul>
-            <li>Played: <span  ng-model="user.games"> </span> {{user.games}}</li>
-            <li>Won: {{user.won}}</li>
-            <li>Score: {{user.score}}</li>
+            <li>{{'_Games_' | i18n}}: <span  ng-model="user.games"> </span> {{user.games}}</li>
+            <li>{{'_Won_' | i18n}}: {{user.won}}</li>
+            <li>{{'_Score_' | i18n}}: {{user.score}}</li>
           </ul>
-         
+
           <div id="profileBoxLower" class="clear">
-             <a class="btn btn-medium" ng-click="logout()">Log Out</a>
+             <a class="btn btn-medium" ng-click="logout()">{{'_Logout_' | i18n}}</a>
           </div>
 
         </div>
@@ -30,10 +30,10 @@
           </ul>
           <div class="btn-toolbar text-center">
             <div class="btn-group">
-              <a href="#/signup" class="btn btn-medium">Create Account</a>
+              <a href="#/signup" class="btn btn-medium">{{'_CreateAccount_' | i18n}}</a>
             </div>
             <div class="btn-group">
-              <a href="#/login" class="btn btn-medium">Log In</a>
+              <a href="#/login" class="btn btn-medium">{{'_LogIn_' | i18n}}</a>
             </div>
           </div>
         </div>

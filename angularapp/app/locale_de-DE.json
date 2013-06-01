@@ -95,8 +95,60 @@
     "message": "Kontakt",
     "description": ""
   },
+  "_Login_": {
+    "message": "Anmeldung",
+    "description": ""
+  },
+  "_LogIn_": {
+    "message": "anmelden",
+    "description": ""
+  },
+  "_Logout_": {
+    "message": "Ausloggen",
+    "description": ""
+  },
+  "_Signup_": {
+    "message": "Registrierung",
+    "description": ""
+  },
+  "_SignUp_": {
+    "message": "registrieren",
+    "description": ""
+  },
+  "_CreateAccount_": {
+    "message": "Account erstellen",
+    "description": ""
+  },
+  "_SignupSuccess_": {
+    "message": "Du hast dich erfolgreich registriert. Danke!",
+    "description": ""
+  },
+  "_Username_": {
+    "message": "Nutzername",
+    "description": ""
+  },
+  "_Password_": {
+    "message": "Passwort",
+    "description": ""
+  },
+  "_PasswordConfirm_": {
+    "message": "Passwort bestätigen",
+    "description": ""
+  },
+  "_Email_": {
+    "message": "Email",
+    "description": ""
+  },
   "_WrongLoginCredentials_": {
     "message": "Falsche Logindaten",
+    "description": ""
+  },
+  "_Won_": {
+    "message": "Gewonnen",
+    "description": ""
+  },
+  "_Score_": {
+    "message": "Punkte",
     "description": ""
   }
 }

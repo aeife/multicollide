@@ -1,28 +1,28 @@
 <div class="signup-form text-center">
-  <h1>Sign Up</h1>
+  <h1>{{'_Signup_' | i18n}}</h1>
   <div ng-show="signedup">
-    <h2>You have successfully signed up. Thanks!</h2>
+    <h2>{{'_SignupSuccess_' | i18n}}</h2>
   </div>
   <div ng-hide="signedup">
     <form name="signupForm" action="" novalidate>
       <fieldset>
         <div class="clearfix">
-          <input type="text" ng-model="username" placeholder="Username" required>
+          <input type="text" ng-model="username" placeholder="{{'_Username_' | i18n}}" required>
         </div>
         <div class="clearfix">
-          <input name = "password" type="password" ng-model="password" placeholder="Password" required>
+          <input name = "password" type="password" ng-model="password" placeholder="{{'_Password_' | i18n}}" required>
         </div>
           <!-- <div ng-show="form.password.$error.required">
             Field required</div>
           </div> -->
         <div class="clearfix">
-          <input name="passwordconfirm" type="password" ng-model="passwordConfirm" placeholder="Confirm Password" required>
+          <input name="passwordconfirm" type="password" ng-model="passwordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
           <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
         </div>
         <div class="clearfix">
-          <input type="email" ng-model="email" placeholder="Email"  required>
+          <input type="email" ng-model="email" placeholder="{{'_Email_' | i18n}}"  required>
         </div>
-        <button class="btn primary" type="submit" ng-click="signup()">Sign up</button>
+        <button class="btn primary" type="submit" ng-click="signup()">{{'_SignUp_' | i18n}}</button>
         <!-- <button ng-click="test()" ng-disabled="form.$invalid">SAVE</button> -->
       </fieldset>
     </form>

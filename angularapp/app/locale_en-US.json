@@ -95,8 +95,60 @@
     "message": "Contact",
     "description": ""
   },
+  "_Login_": {
+    "message": "Login",
+    "description": ""
+  },
+  "_LogIn_": {
+    "message": "Log In",
+    "description": ""
+  },
+  "_Logout_": {
+    "message": "Logout",
+    "description": ""
+  },
+  "_Signup_": {
+    "message": "Signup",
+    "description": ""
+  },
+  "_SignUp_": {
+    "message": "Sign Up",
+    "description": ""
+  },
+  "_CreateAccount_": {
+    "message": "Create Account",
+    "description": ""
+  },
+  "_SignupSuccess_": {
+    "message": "You have successfully signed up. Thanks!",
+    "description": ""
+  },
+  "_Username_": {
+    "message": "username",
+    "description": ""
+  },
+  "_Password_": {
+    "message": "password",
+    "description": ""
+  },
+  "_PasswordConfirm_": {
+    "message": "confirm password",
+    "description": ""
+  },
+  "_Email_": {
+    "message": "Email",
+    "description": ""
+  },
   "_WrongLoginCredentials_": {
     "message": "wrong login credentials",
+    "description": ""
+  },
+  "_Won_": {
+    "message": "Won",
+    "description": ""
+  },
+  "_Score_": {
+    "message": "Score",
     "description": ""
   }
 }
