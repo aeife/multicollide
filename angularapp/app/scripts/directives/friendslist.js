@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub, socketApi){
+  .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub, socketApi, localization){
     // get friend list
     // subscribe to online status changes for all friends
     // onlinestatus:<username>
+
+    // get locale keys for pluralize
+    $scope.locale = localization.getLocalizationKeys();
 
     // list of friends
     $scope.friends = {};

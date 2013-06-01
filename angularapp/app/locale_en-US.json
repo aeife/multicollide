@@ -170,5 +170,29 @@
   "_LastGames_": {
     "message": "Last Games",
     "description": ""
+  },
+  "_NoRequests_": {
+    "message": "No pending requests",
+    "description": ""
+  },
+  "_OneRequest_": {
+    "message": "1 pending request",
+    "description": ""
+  },
+  "_ManyRequests_": {
+    "message": "{} pending request",
+    "description": ""
+  },
+  "_NoFriendsOnline_": {
+    "message": "No friends online",
+    "description": ""
+  },
+  "_OneFriendOnline_": {
+    "message": "1 friend online",
+    "description": ""
+  },
+  "_ManyFriendsOnline_": {
+    "message": "{} friends online",
+    "description": ""
   }
 }

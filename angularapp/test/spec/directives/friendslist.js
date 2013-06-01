@@ -7,15 +7,18 @@ describe('Directive: friendslist', function () {
 
   var FriendslistCtrl,
       scope,
-      socket;
+      socket,
+      localization;
 
   beforeEach(inject(function ($rootScope, $compile, $controller, $injector) {
     scope = $rootScope.$new();
     socket = $injector.get('socket');
+    localization = $injector.get('localization');
 
     FriendslistCtrl = $controller('FriendslistCtrl', {
       $scope: scope,
-      socket: socket
+      socket: socket,
+      localization: localization
     });
   }));
 

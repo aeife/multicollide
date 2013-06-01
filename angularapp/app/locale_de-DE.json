@@ -170,5 +170,29 @@
   "_LastGames_": {
     "message": "Letzte Spiele",
     "description": ""
+  },
+  "_NoRequests_": {
+    "message": "Keine Freundschaftsanfragen",
+    "description": ""
+  },
+  "_OneRequest_": {
+    "message": "1 Freundschaftsanfrage",
+    "description": ""
+  },
+  "_ManyRequests_": {
+    "message": "{} Freundschaftsanfragen",
+    "description": ""
+  },
+  "_NoFriendsOnline_": {
+    "message": "Keine Freunde online",
+    "description": ""
+  },
+  "_OneFriendOnline_": {
+    "message": "1 Freund online",
+    "description": ""
+  },
+  "_ManyFriendsOnline_": {
+    "message": "{} Freunde online",
+    "description": ""
   }
 }
