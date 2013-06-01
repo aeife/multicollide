@@ -1,14 +1,18 @@
 {
   "_TESTTEXT_": {
-    "value": "This is a test."
+    "message": "This is a test.",
+    "description": ""
   },
   "_NOONLINE_": {
-    "value": "No users online."
+    "message": "No users online.",
+    "description": ""
   },
   "_ONEONLINE_": {
-    "value": "1 user online."
+    "message": "1 user online.",
+    "description": ""
   },
   "_MANYONLINE_": {
-    "value": "{} users online."
+    "message": "{} users online.",
+    "description": ""
   }
 }

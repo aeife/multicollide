@@ -78,7 +78,7 @@ angular.module('angularappApp')
         console.log(this.loaded);
         console.log(this.localization);
         if (this.loaded) {
-          result = this.localization[input].value;
+          result = this.localization[input].message;
         }
         return result;
       }
