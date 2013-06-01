@@ -2,7 +2,8 @@
 
 describe('Directive: friendslist', function () {
   beforeEach(module('angularappApp'));
-  beforeEach(module('angularappAppMock.services'));
+  beforeEach(module('angularappAppMock.socket'));
+  beforeEach(module('angularappAppMock.localization'));
 
   var FriendslistCtrl,
       scope,

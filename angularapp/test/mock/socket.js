@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappAppMock.services', [])
+angular.module('angularappAppMock.socket', [])
 
  .factory('socket', function($rootScope){
   this.events = {};

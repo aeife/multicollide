@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -42,4 +42,13 @@ angular.module('angularappApp', ['ngResource', 'ngCookies'])
       .otherwise({
         redirectTo: '/404'
       });
+  });
+
+
+angular.module('angularappAppBoot', []).
+
+  run(function(localization) { // instance-injector
+    // initialize localization service
+    // reason: user controller needs localization keys for pluralize
+    // when direct accessing user route localization is not loaded before
   });

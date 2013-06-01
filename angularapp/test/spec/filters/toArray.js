@@ -4,6 +4,7 @@ describe('Filter: toArray', function () {
 
   // load the filter's module
   beforeEach(module('angularappApp'));
+  beforeEach(module('angularappAppMock.localization'));
 
   // initialize a new instance of the filter before each test
   var toArray;

@@ -19,29 +19,42 @@ angular.module('angularappApp')
       getCurrentLanguage: function() {
         return this.language;
       },
-      getLocalizationKeys: function(callback){
-        var keys = {};
-        for (var k in this.localization) {
-          keys[k] = k;
-        }
-        return keys;
-      },
-      changeLanguage: function(newLanguage) {
-        this.language = newLanguage;
+      keys: {},
+      // generateKeys: function(callback){
+      //   for (var k in this.localization) {
+      //     this.keys[k] = k;
+      //   }
+      //   callback(this.keys);
+      // },
+      // getLocalizationKeys: function(callback){
+      //   var self = this;
+      //   if (!this.loaded)
+      //     this.init(function(){self.generateKeys(callback)});
+      //   else
+      //     this.generateKeys(callback);
+      // },
+      // changeLanguage: function(newLanguage) {
+      //   this.language = newLanguage;
 
-        // load new localization
-        this.loadLocalization();
-      },
-      init: function(callback){
-        console.log('LOADING!!');
-        var self = this;
-        $http.get('../../locale_' + this.language + '.json').success(function(data) {
-          console.log('loaded localization');
-          console.log(data);
-          self.localization = data;
-          self.loaded = true;
-          callback();
-        });
+      //   // load new localization
+      //   this.loadLocalization();
+      // },
+      // init: function(callback){
+      //   console.log('LOADING!!');
+      //   var self = this;
+      //   $http.get('../../locale_' + this.language + '.json').success(function(data) {
+      //     console.log('loaded localization');
+      //     console.log(data);
+      //     self.localization = data;
+      //     self.loaded = true;
+      //     callback();
+      //   });
+      // },
+      getLocalizationKeys: function(){
+        for (var k in this.localization) {
+          this.keys[k] = k;
+        }
+        return this.keys;
       },
       loadLocalization: function() {
         console.log('LOADING!!');
