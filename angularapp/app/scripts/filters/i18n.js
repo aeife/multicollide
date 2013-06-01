@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .filter('i18n', function () {
+  .filter('i18n', function (localization) {
 
     var locale_EN = {
       _TESTTEXT_: {
@@ -19,6 +19,10 @@ angular.module('angularappApp')
     return function (input) {
       console.log("INPUT:");
       console.log(input);
-      return localize[input].value;
+      // if (!localization.loaded)
+        // localization.loadLocalization();
+      // console.log(localization.getLocalizedValue(input));
+      // return localize[input].value;
+      return localization.getLocalizedValue(input);
     };
   });
