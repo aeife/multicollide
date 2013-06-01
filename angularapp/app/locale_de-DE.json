@@ -94,5 +94,9 @@
   "_Contact_": {
     "message": "Kontakt",
     "description": ""
+  },
+  "_WrongLoginCredentials_": {
+    "message": "Falsche Logindaten",
+    "description": ""
   }
 }

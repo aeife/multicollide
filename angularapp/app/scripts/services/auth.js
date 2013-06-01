@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash) {
+  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash, $filter) {
     // Service logic
     // ...
 
@@ -42,7 +42,7 @@ angular.module('angularappApp')
             });
 
           } else {
-            $rootScope.$apply(flash.error('wrong login'));
+            $rootScope.$apply(flash.error($filter('i18n')('_WrongLoginCredentials_')));
 
           }
         });
