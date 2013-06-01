@@ -56,6 +56,12 @@ angular.module('angularappApp')
         }
         return this.keys;
       },
+      changeLanguage: function(newLanguage) {
+        this.language = newLanguage;
+
+        // load new localization
+        this.loadLocalization();
+      },
       loadLocalization: function() {
         console.log('LOADING!!');
         var self = this;

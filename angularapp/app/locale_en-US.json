@@ -10,8 +10,5 @@
   },
   "_MANYONLINE_": {
     "value": "{} users online."
-  },
-  "_TEST_": {
-    "value": "{'0': 'Nobody is online.','one': '1 user is online.','other': '{} users are online.'}"
   }
 }
