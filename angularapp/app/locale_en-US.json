@@ -1,6 +1,6 @@
 {
   "_TESTTEXT_": {
-    "message": "This is a test.",
+    "message": "This is a test. %1 and %2",
     "description": ""
   },
   "_NOONLINE_": {

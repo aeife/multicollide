@@ -72,13 +72,14 @@ angular.module('angularappApp')
           self.loaded = true;
         });
       },
-      getLocalizedValue: function(input) {
+      getLocalizedValue: function(input, args) {
         var result = '';
-        console.log('getting localized value');
-        console.log(this.loaded);
-        console.log(this.localization);
         if (this.loaded) {
           result = this.localization[input].message;
+          // input arguments
+          for (var i = 0; i < args.length; i++){
+            result = result.replace('%'+(i+1), args[i]);
+          }
         }
         return result;
       }
