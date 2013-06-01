@@ -19,11 +19,29 @@ angular.module('angularappApp')
       getCurrentLanguage: function() {
         return this.language;
       },
+      getLocalizationKeys: function(callback){
+        var keys = {};
+        for (var k in this.localization) {
+          keys[k] = k;
+        }
+        return keys;
+      },
       changeLanguage: function(newLanguage) {
         this.language = newLanguage;
 
         // load new localization
         this.loadLocalization();
+      },
+      init: function(callback){
+        console.log('LOADING!!');
+        var self = this;
+        $http.get('../../locale_' + this.language + '.json').success(function(data) {
+          console.log('loaded localization');
+          console.log(data);
+          self.localization = data;
+          self.loaded = true;
+          callback();
+        });
       },
       loadLocalization: function() {
         console.log('LOADING!!');

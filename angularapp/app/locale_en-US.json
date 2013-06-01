@@ -1,5 +1,17 @@
 {
   "_TESTTEXT_": {
     "value": "This is a test."
+  },
+  "_NOONLINE_": {
+    "value": "No users online."
+  },
+  "_ONEONLINE_": {
+    "value": "1 user online."
+  },
+  "_MANYONLINE_": {
+    "value": "{} users online."
+  },
+  "_TEST_": {
+    "value": "{'0': 'Nobody is online.','one': '1 user is online.','other': '{} users are online.'}"
   }
 }

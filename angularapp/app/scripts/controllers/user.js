@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi) {
+  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi, localization) {
+
+    $scope.locale = localization.getLocalizationKeys();
+    // console.log("SCOPE");
+    // console.log($scope.locale);
 
     if (!$routeParams.name){
       $scope.playerlist = true;

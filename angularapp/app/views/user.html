@@ -44,10 +44,15 @@
     <div ng-switch-default>
         <h1 class="text-center">Playerlist</h1>
         <h5 class="text-center">
-          <ng-pluralize count="connectedUsers"
+          <!-- <ng-pluralize count="connectedUsers"
             when="{'0': 'Nobody is online.',
               'one': '1 user is online.',
               'other': '{} users are online.'}">
+          </ng-pluralize> -->
+          <ng-pluralize count="connectedUsers"
+            when="{0: '{{locale._NOONLINE_ | i18n}}',
+              one: '{{locale._ONEONLINE_ | i18n}}',
+              other: '{{locale._MANYONLINE_ | i18n}}' }">
           </ng-pluralize>
         </h5>
         <div class="text-center">

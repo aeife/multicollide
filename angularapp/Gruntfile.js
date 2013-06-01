@@ -288,6 +288,11 @@ module.exports = function (grunt) {
     'express-keepalive'
   ]);
 
+  grunt.registerTask('xexpress', [
+    'express',
+    'express-keepalive'
+  ]);
+
   grunt.registerTask('server', [
     'clean:server',
     'coffee:dist',
