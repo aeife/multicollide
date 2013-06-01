@@ -1,15 +1,15 @@
 <div ng-switch="playerlist">
     <div ng-switch-when="false">
         <div id="profile">
-            <h1 class="text-center">Profile: {{user.name}}</h1>
+            <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
             <div class="span3">
                 <img src="http://placehold.it/100x100"/>
             </div>
             <div class="span3">
             <ul>
-                <li>Played: {{user.games}}</li>
-                <li>Won: {{user.won}}</li>
-                <li>Score: {{user.score}}</li>
+                <li>{{'_Games_' | i18n}}: {{user.games}}</li>
+                <li>{{'_Won_' | i18n}}: {{user.won}}</li>
+                <li>{{'_Score_' | i18n}}: {{user.score}}</li>
             </ul>
         </div>
         <!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
@@ -21,19 +21,19 @@
 
             <div ng-switch="isFriend" ng-hide="user.own">
                 <div ng-switch-when="true">
-                    <a href="" ng-click="deleteFriend()" class="btn btn-danger">delete friend</a>
+                    <a href="" ng-click="deleteFriend()" class="btn btn-danger">{{'_DeleteFriend_' | i18n}}</a>
                 </div>
                 <div ng-switch-when="false">
-                    <a href="" ng-click="addAsFriend()" class="btn">add friend</a>
+                    <a href="" ng-click="addAsFriend()" class="btn">{{'_AddFriend_' | i18n}}</a>
                 </div>
                 <div ng-hide="!user.online">
-                     <i class="icon-circle online"> online </i>
+                     <i class="icon-circle online"> {{'_Online_' | i18n}}</i>
                 </div>
             </div>
 
 
             <div class="clearfix"></div>
-            <h4>Last Games</h4>
+            <h4>{{'_LastGames_' | i18n}}</h4>
             <ul>
                 <li>Game 123</li>
                 <li>Game 421</li>

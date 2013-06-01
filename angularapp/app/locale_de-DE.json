@@ -150,5 +150,25 @@
   "_Score_": {
     "message": "Punkte",
     "description": ""
+  },
+  "_Profile_": {
+    "message": "Profil",
+    "description": ""
+  },
+  "_DeleteFriend_": {
+    "message": "als Freund löschen",
+    "description": ""
+  },
+  "_AddFriend_": {
+    "message": "als Freund hinzufügen",
+    "description": ""
+  },
+  "_Online_": {
+    "message": "online",
+    "description": ""
+  },
+  "_LastGames_": {
+    "message": "Letzte Spiele",
+    "description": ""
   }
 }
