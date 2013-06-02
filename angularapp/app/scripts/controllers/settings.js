@@ -3,7 +3,9 @@
 angular.module('angularappApp')
   .controller('SettingsCtrl', function ($scope, user, auth, flash, localization) {
 
-    if (auth.isLoggedIn()){
+    $scope.isLoggedIn = auth.isLoggedIn;
+
+    if ($scope.isLoggedIn()){
       user.getUserInfo(auth.key(), function(data){
 
         if (data) {

@@ -194,5 +194,29 @@
   "_ManyFriendsOnline_": {
     "message": "{} Freunde online",
     "description": ""
+  },
+  "_Settings_": {
+    "message": "Einstellungen",
+    "description": ""
+  },
+  "_ChangeLanguage_": {
+    "message": "Sprache ändern",
+    "description": ""
+  },
+  "_ChangePassword_": {
+    "message": "Passwort ändern",
+    "description": ""
+  },
+  "_PasswordNew_": {
+    "message": "neues Passwort",
+    "description": ""
+  },
+  "_PasswordOld_": {
+    "message": "altes Passwort",
+    "description": ""
+  },
+  "_EmailCurrent_": {
+    "message": "aktuelle Email",
+    "description": ""
   }
 }
