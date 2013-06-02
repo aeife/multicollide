@@ -17,19 +17,16 @@ angular.module('angularappApp')
       };
 
       $scope.convertUserLists = function(arr){
-        var result = [];
-        for (var i = 0; i < arr.length; i++){
-          result.push(arr[i].name);
-        }
-
-        return result;
+        return arr.map(function(i) {
+          return {name: i};
+        });
       };
 
       $scope.refresh = function(){
         // get connected users
         socketApi.getConnectedUsers(function(err, data){
           $rootScope.$apply(function(){
-            $scope.users = data;
+            $scope.users = $scope.convertUserLists(data);
             $scope.connectedUsers = data.length;
           });
         });
@@ -37,7 +34,7 @@ angular.module('angularappApp')
         if (!this.onlyConnected){
           socketApi.getAllUsers(function(err, data){
             $rootScope.$apply(function(){
-              $scope.users = $scope.convertUserLists(data);
+              $scope.users = data;
             });
           });
         }
