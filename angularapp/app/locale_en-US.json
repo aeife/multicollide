@@ -36,7 +36,7 @@
     "description": ""
   },
   "_ManyOnline_": {
-    "message": "{} users online.",
+    "message": "%1 users online.",
     "description": ""
   },
   "_Playerlist_": {

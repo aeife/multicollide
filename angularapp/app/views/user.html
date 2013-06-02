@@ -52,7 +52,7 @@
           <ng-pluralize count="connectedUsers"
             when="{0: '{{locale._NoOnline_ | i18n}}',
               one: '{{locale._OneOnline_ | i18n}}',
-              other: '{{locale._ManyOnline_ | i18n}}' }">
+              other: '{{locale._ManyOnline_ | i18n:[connectedUsers]}}' }">
           </ng-pluralize>
         </h5>
         <div class="text-center">
