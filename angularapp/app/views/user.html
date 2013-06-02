@@ -60,8 +60,8 @@
             <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
             <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
-        <ul class="unstyled text-center">
-            <li ng-repeat="user in users | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user}}">{{user}}</a></li>
+        <ul class="unstyled text-center ">
+            <li class="span2" ng-repeat="user in users | withoutGuests | filter:searchPlayer.string"><a href="#/user/{{user}}">{{user}}</a></li>
         </ul>
     </div>
 </div>
