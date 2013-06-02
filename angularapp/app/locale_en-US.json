@@ -180,7 +180,7 @@
     "description": ""
   },
   "_ManyRequests_": {
-    "message": "{} pending request",
+    "message": "%1 pending request",
     "description": ""
   },
   "_NoFriendsOnline_": {
@@ -192,7 +192,7 @@
     "description": ""
   },
   "_ManyFriendsOnline_": {
-    "message": "{} friends online",
+    "message": "%1 friends online",
     "description": ""
   },
   "_Settings_": {

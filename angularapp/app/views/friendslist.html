@@ -5,14 +5,14 @@
           <ng-pluralize count="requests.length"
           when="{0: '{{locale._NoRequests_ | i18n}}',
             one: '{{locale._OneRequest_ | i18n}}',
-            other: '{{locale._ManyRequests_ | i18n}}' }">
+            other: '{{locale._ManyRequests_ | i18n : [requests.length]}}' }">
           </ng-pluralize>
           <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
             <h5>
               <ng-pluralize count="friendCount"
               when="{0: '{{locale._NoFriendsOnline_ | i18n}}',
                 one: '{{locale._OneFriendOnline_ | i18n}}',
-                other: '{{locale._ManyFriendsOnline_ | i18n}}' }">
+                other: '{{locale._ManyFriendsOnline_ | i18n : [friendCount]}}' }">
               </ng-pluralize>
             </h5>
           </a>

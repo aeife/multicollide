@@ -36,7 +36,7 @@
     "description": ""
   },
   "_ManyOnline_": {
-    "message": "{} Nutzer online.",
+    "message": "%1 Nutzer online.",
     "description": ""
   },
   "_Playerlist_": {
@@ -180,7 +180,7 @@
     "description": ""
   },
   "_ManyRequests_": {
-    "message": "{} Freundschaftsanfragen",
+    "message": "%1 Freundschaftsanfragen",
     "description": ""
   },
   "_NoFriendsOnline_": {
@@ -192,7 +192,7 @@
     "description": ""
   },
   "_ManyFriendsOnline_": {
-    "message": "{} Freunde online",
+    "message": "%1 Freunde online",
     "description": ""
   },
   "_Settings_": {
