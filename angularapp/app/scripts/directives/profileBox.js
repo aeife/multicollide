@@ -5,7 +5,7 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, auth, user){
+      controller: function($scope, auth, user, popup){
 
         $scope.logout = function(){
           auth.logout();
@@ -30,6 +30,10 @@ angular.module('angularappApp')
           }
         }, true);
 
+
+        $scope.test = function(){
+          popup.confirm("testtitle", "testtext", function(){console.log("OKAY")});
+        };
       }
     };
   });
