@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('GamesCtrl', function ($scope, lobby, flash) {
+  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog) {
     $scope.games = null;
     $scope.order = 'name';
     $scope.reverse = false;
@@ -80,6 +80,16 @@ angular.module('angularappApp')
       $scope.lobby = null;
 
       $scope.refresh();
+    };
+
+    $scope.btnLeaveGame = function(){
+      $dialog.messageBox('Leave Lobby', 'Really leave lobby?', [{result:true, label: 'Yes', cssClass: 'btn-primary'}, {result:false, label: 'Cancel'}])
+        .open()
+        .then(function(result){
+          if (result) {
+            $scope.leaveGame();
+          }
+        });
     };
 
     // @TODO: Leave Lobby on F5 / refresh / tab close
