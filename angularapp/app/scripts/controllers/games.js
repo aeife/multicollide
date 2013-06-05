@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog) {
+  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope) {
     $scope.games = null;
     $scope.order = 'name';
     $scope.reverse = false;
@@ -101,10 +101,21 @@ angular.module('angularappApp')
       });
     };
 
-    $scope.$on('$routeChangeStart', function() {
+    $scope.$on('$locationChangeStart', function(event, next, current) {
       // if user was in lobby, leave
       if ($scope.lobby){
-        $scope.leaveGame();
+        event.preventDefault();
+        $dialog.messageBox('Leave Lobby', 'Really leave lobby?', [{result:true, label: 'Yes', cssClass: 'btn-primary'}, {result:false, label: 'Cancel'}])
+        .open()
+        .then(function(result){
+          if (result) {
+            $scope.leaveGame();
+
+            // @TODO: redirect location to clicked location
+            // $location.path('/about');
+            // $location.url(next).hash();
+          }
+        });
       }
     });
 
