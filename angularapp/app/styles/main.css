@@ -8,6 +8,7 @@ body {
   background-color: #fafafa;
   background-repeat: repeat-x;
   border: 1px solid #d4d4d4;
+  border-radius: 1px;
 }
 
 #sidebar {
@@ -150,4 +151,8 @@ padding-bottom: 99999px;
 
 .red {
   color:red;
+}
+
+a {
+  text-decoration: none !important;
 }

@@ -1,4 +1,4 @@
-<div id="friendslist" ng-hide="!friends">
+<!-- <div id="friendslist" ng-hide="!friends">
     <div id="accordion2" class="box">
       <div>
         <div class="text-center">
@@ -33,6 +33,32 @@
         </div>
       </div>
     </div>
+</div> -->
+
+<div id="friendslist" ng-hide="!friends">
+  <accordion>
+    <accordion-group class="box">
+      <accordion-heading class="text-center">
+        <h4 class="text-center">Friends List</h4>
+        <div class="row-fluid text-center">
+          <i class="icon-user icon-large span6" title="friends online"> {{friendCount}}</i>
+          <i class="icon-question-sign icon-large span6" title="pending requests"> {{requests.length}}</i>
+        </div>
+      </accordion-heading>
+      <accordion-body>
+        <ul>
+            <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
+                <a href="/#/user/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i>{{friend.$key}}</a>
+            </li>
+        </ul>
+        <ul>
+            <li ng-repeat="request in requests">
+                {{request}} <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
+            </li>
+        </ul>
+      </accordion-body>
+    </accordion-group>
+  </accordion>
 </div>
 
 
