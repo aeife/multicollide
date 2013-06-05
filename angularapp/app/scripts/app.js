@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot', 'ui.bootstrap'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

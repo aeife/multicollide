@@ -5,7 +5,7 @@ angular.module('angularappApp')
     return {
       restrict: 'E',
       templateUrl: 'views/profileBox.html',
-      controller: function($scope, auth, user, popup){
+      controller: function($scope, auth, user, popup, $dialog){
 
         $scope.logout = function(){
           auth.logout();
@@ -32,7 +32,20 @@ angular.module('angularappApp')
 
 
         $scope.test = function(){
-          popup.confirm("testtitle", "testtext", function(){console.log("OKAY")});
+          // popup.confirm("testtitle", "testtext", function(){console.log("OKAY")});
+
+          var title = 'This is a message box';
+          var msg = 'This is the content of the message box';
+          var btns = [{result:true, label: 'OK', cssClass: 'btn-primary'}, {result:false, label: 'Cancel'}];
+          $dialog.messageBox(title, msg, btns)
+            .open()
+            .then(function(result){
+              if (result) {
+                console.log("okay");
+              } else {
+                console.log("cancel");
+              }
+          });
         };
       }
     };
