@@ -218,5 +218,33 @@
   "_EmailCurrent_": {
     "message": "aktuelle Email",
     "description": ""
+  },
+  "_FriendsOnline_": {
+    "message": "Freunde online",
+    "description": ""
+  },
+  "_Requests_": {
+    "message": "Freundschaftsanfragen",
+    "description": ""
+  },
+  "_LeaveLobbyReally_": {
+    "message": "Lobby wirklich verlassen?",
+    "description": ""
+  },
+  "_Yes_": {
+    "message": "ja",
+    "description": ""
+  },
+  "_No_": {
+    "message": "nein",
+    "description": ""
+  },
+  "_Cancel_": {
+    "message": "abbrechen",
+    "description": ""
+  },
+  "_FriendsList_": {
+    "message": "Freundschafsliste",
+    "description": ""
   }
 }

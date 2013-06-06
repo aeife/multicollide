@@ -1,48 +1,11 @@
-<!-- <div id="friendslist" ng-hide="!friends">
-    <div id="accordion2" class="box">
-      <div>
-        <div class="text-center">
-          <ng-pluralize count="requests.length"
-          when="{0: '{{locale._NoRequests_ | i18n}}',
-            one: '{{locale._OneRequest_ | i18n}}',
-            other: '{{locale._ManyRequests_ | i18n : [requests.length]}}' }">
-          </ng-pluralize>
-          <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-            <h5>
-              <ng-pluralize count="friendCount"
-              when="{0: '{{locale._NoFriendsOnline_ | i18n}}',
-                one: '{{locale._OneFriendOnline_ | i18n}}',
-                other: '{{locale._ManyFriendsOnline_ | i18n : [friendCount]}}' }">
-              </ng-pluralize>
-            </h5>
-          </a>
-        </div>
-        <div id="collapseOne" class="collapse">
-          <div>
-            <ul>
-                <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-                    <a href="/#/user/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i>{{friend.$key}}</a>
-                </li>
-            </ul>
-            <ul>
-                <li ng-repeat="request in requests">
-                    {{request}} <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
-                </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-</div> -->
-
 <div id="friendslist" ng-hide="!friends">
   <accordion>
     <accordion-group class="box">
       <accordion-heading class="text-center">
-        <h4 class="text-center">Friends List</h4>
+        <h4 class="text-center">{{'_FriendsList_ | i18n'}}</h4>
         <div class="row-fluid text-center">
-          <i class="icon-user icon-large span6" title="friends online"> {{friendCount}}</i>
-          <i class="icon-question-sign icon-large span6" title="pending requests"> {{requests.length}}</i>
+          <i class="icon-user icon-large span6" title="{{'_FriendsOnline_ | i18n'}}"> {{friendCount}}</i>
+          <i class="icon-question-sign icon-large span6" title="{{'_Requests_ | i18n'}}"> {{requests.length}}</i>
         </div>
       </accordion-heading>
       <accordion-body>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope) {
+  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter) {
     $scope.games = null;
     $scope.order = 'name';
     $scope.reverse = false;
@@ -83,7 +83,7 @@ angular.module('angularappApp')
     };
 
     $scope.btnLeaveGame = function(){
-      $dialog.messageBox('Leave Lobby', 'Really leave lobby?', [{result:true, label: 'Yes', cssClass: 'btn-primary'}, {result:false, label: 'Cancel'}])
+      $dialog.messageBox($filter('i18n')('_LeaveLobby_'), $filter('i18n')('_LeaveLobbyReally_'), [{result:true, label: $filter('i18n')('_Yes_'), cssClass: 'btn-primary'}, {result:false, label: $filter('i18n')('_Cancel_')}])
         .open()
         .then(function(result){
           if (result) {
@@ -105,7 +105,7 @@ angular.module('angularappApp')
       // if user was in lobby, leave
       if ($scope.lobby){
         event.preventDefault();
-        $dialog.messageBox('Leave Lobby', 'Really leave lobby?', [{result:true, label: 'Yes', cssClass: 'btn-primary'}, {result:false, label: 'Cancel'}])
+        $dialog.messageBox($filter('i18n')('_LeaveLobby_'), $filter('i18n')('_LeaveLobbyReally_'), [{result:true, label: $filter('i18n')('_Yes_'), cssClass: 'btn-primary'}, {result:false, label: $filter('i18n')('_Cancel_')}])
         .open()
         .then(function(result){
           if (result) {
