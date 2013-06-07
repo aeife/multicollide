@@ -2,16 +2,16 @@
   <accordion>
     <accordion-group class="box">
       <accordion-heading class="text-center">
-        <h4 class="text-center">{{'_FriendsList_ | i18n'}}</h4>
+        <h4 class="text-center">{{'_FriendsList_' | i18n}}</h4>
         <div class="row-fluid text-center">
-          <i class="icon-user icon-large span6" title="{{'_FriendsOnline_ | i18n'}}"> {{friendCount}}</i>
-          <i class="icon-question-sign icon-large span6" title="{{'_Requests_ | i18n'}}"> {{requests.length}}</i>
+          <i class="icon-user icon-large span6" title="{{'_FriendsOnline_'| i18n}}"> {{friendCount}}</i>
+          <i class="icon-question-sign icon-large span6" title="{{'_Requests_' | i18n}}"> {{requests.length}}</i>
         </div>
       </accordion-heading>
       <accordion-body>
         <ul>
             <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-                <a href="/#/user/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i>{{friend.$key}}</a>
+                <a href="/#/user/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
             </li>
         </ul>
         <ul>
