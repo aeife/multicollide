@@ -12,6 +12,7 @@ files = [
   'app/components/angular-resource/angular-resource.js',
   'app/components/angular-cookies/angular-cookies.js',
   'app/components/angular-bootstrap/ui-bootstrap.min.js',
+  'app/components/angular-placeholders/angular-placeholders.js',
   'app/scripts/*.js',
   'app/scripts/**/*.js',
   'test/mock/**/*.js',
