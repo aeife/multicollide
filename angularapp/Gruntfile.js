@@ -268,19 +268,32 @@ module.exports = function (grunt) {
         }]
       }
     },
+
     express: {
-      custom: {
-        options: {
-          server: path.resolve('./app.js')
-        }
+      livereload: {
+          options: {
+              port: 3000,
+              bases: path.resolve('app'),
+              monitor: {},
+              debug: true,
+              server: path.resolve('./app.js')
+          }
       }
     }
+
 
   });
 
   grunt.renameTask('regarde', 'watch');
 
   grunt.loadNpmTasks('grunt-express');
+
+  grunt.registerTask('xload', [
+    'livereload-start',
+    'express',
+    'watch:livereload'
+  ]);
+
   grunt.registerTask('xserver', [
     'karma',
     'express',

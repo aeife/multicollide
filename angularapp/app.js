@@ -26,6 +26,7 @@ app.configure(function(){
   app.use(cookieParser);
   app.use(express.session({store: sessionStore, key: sessionKey, cookie: { httpOnly: false }}));
   app.use(express.compress());
+  app.use(require('grunt-contrib-livereload/lib/utils').livereloadSnippet);
   app.use(express.static(__dirname + '/app'));
 });
 
