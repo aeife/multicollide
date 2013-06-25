@@ -4,6 +4,18 @@ body {
   overflow-y: scroll;
 }
 
+.navbar .nav a {
+  font-size:16px;
+}
+
+.navbar .brand {
+  font-size:24px;
+}
+
+.navbar .nav .quickPlay a{
+  font-size:20px;
+}
+
 .box {
   background-color: #fafafa;
   background-repeat: repeat-x;
