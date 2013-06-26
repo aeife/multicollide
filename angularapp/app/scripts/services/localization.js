@@ -44,6 +44,12 @@ angular.module('angularappApp')
       getLocalizedValue: function(input, args) {
         var result = '';
         if (this.loaded) {
+
+          //if no translation available print the placeholder
+          if (!this.localization[input]){
+            return input;
+          }
+
           result = this.localization[input].message;
           // input arguments
           if (args) {

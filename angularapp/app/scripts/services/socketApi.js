@@ -91,7 +91,7 @@ angular.module('angularappApp')
       };
 
     socketApi.listenServerShutdown(function(){
-      $dialog.messageBox('error', 'server error', [])
+      $dialog.messageBox($filter('i18n')('_Error_'), $filter('i18n')('_ServerError_'), [])
       .open();
     });
 
