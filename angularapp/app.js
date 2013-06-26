@@ -617,25 +617,30 @@ io.sockets.on('connection', function(socket){
     user changed password
   */
   socket.on('/settings/changePassword', function(data){
-    //check if correct old password, then change
-    User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
-      if (err) {
-        console.log(err);
-      }
-      if (user) {
-        console.log('updating password to: ' + data.newPassword);
-        user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
-        user.save(function (err) {
-          if (err) {
-            socket.emit('/settings/changePassword', {error: 'error'});
-          } else {
-            socket.emit('/settings/changePassword', {error: null});
-          }
-        });
-      } else {
-        socket.emit('/settings/changePassword', {error: 'wrong old password'});
-      }
-    });
+    //check if user is logged in
+    if (socket.session.loggedin) {
+      //check if correct old password, then change
+      User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
+        if (err) {
+          console.log(err);
+        }
+        if (user) {
+          console.log('updating password to: ' + data.newPassword);
+          user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
+          user.save(function (err) {
+            if (err) {
+              socket.emit('/settings/changePassword', {error: 'error'});
+            } else {
+              socket.emit('/settings/changePassword', {error: null});
+            }
+          });
+        } else {
+          socket.emit('/settings/changePassword', {error: 'wrong old password'});
+        }
+      });
+    } else {
+      socket.emit('/settings/changePassword', {error: 'only use this api when logged in'});
+    }
   });
 
 
