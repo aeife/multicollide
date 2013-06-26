@@ -92,8 +92,20 @@ angular.module('angularappApp')
 
     socketApi.listenServerShutdown(function(){
 
-      $dialog.messageBox($filter('i18n')('_Error_'), $filter('i18n')('_ServerError_'), [])
-      .open();
+      // @TODO: Load template (and image) before server shutdown to use it here
+
+      // inline template because new templates cant be fetched after server shutdown
+      var t = '<div class="modal-header">'+
+          '<h3>{{"_Error_" | i18n}}</h3>'+
+          '</div>'+
+          '<div class="modal-body">'+
+          '<p>oh oh, server offline</p>'+
+          '</div>'+
+          '<div class="modal-footer">'+
+          '</div>';
+
+      var d = $dialog.dialog({template: t, backdropClick: false, keyboard: false});
+      d.open();
     });
 
     return socketApi;

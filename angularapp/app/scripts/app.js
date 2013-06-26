@@ -1,9 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot', 'ui.bootstrap', 'placeholders'], function($dialogProvider){
-    // set backdrop static as global setting for $dialog
-    $dialogProvider.options({backdropClick: false, keyboard: false});
-  })
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot', 'ui.bootstrap', 'placeholders'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
