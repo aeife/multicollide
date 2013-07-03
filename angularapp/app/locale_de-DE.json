@@ -242,5 +242,13 @@
   "_FriendsList_": {
     "message": "Freundschafsliste",
     "description": ""
+  },
+  "_Error_": {
+    "message": "Fehler",
+    "description": ""
+  },
+  "_ServerOffline_": {
+    "message": "Server ist offline",
+    "description": ""
   }
 }

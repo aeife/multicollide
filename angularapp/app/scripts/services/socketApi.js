@@ -99,7 +99,7 @@ angular.module('angularappApp')
           '<h3>{{"_Error_" | i18n}}</h3>'+
           '</div>'+
           '<div class="modal-body">'+
-          '<p>oh oh, server offline</p>'+
+          '<p>{{"_ServerOffline_" | i18n}}</p>'+
           '</div>'+
           '<div class="modal-footer">'+
           '</div>';
