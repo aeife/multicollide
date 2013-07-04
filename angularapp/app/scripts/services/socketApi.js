@@ -94,17 +94,7 @@ angular.module('angularappApp')
 
       // @TODO: Load template (and image) before server shutdown to use it here
 
-      // inline template because new templates cant be fetched after server shutdown
-      var t = '<div class="modal-header">'+
-          '<h3>{{"_Error_" | i18n}}</h3>'+
-          '</div>'+
-          '<div class="modal-body">'+
-          '<p>{{"_ServerOffline_" | i18n}}</p>'+
-          '</div>'+
-          '<div class="modal-footer">'+
-          '</div>';
-
-      var d = $dialog.dialog({template: t, backdropClick: false, keyboard: false});
+      var d = $dialog.dialog({templateUrl: 'views/msgServerOffline.html', backdropClick: false, keyboard: false});
       d.open();
     });
 

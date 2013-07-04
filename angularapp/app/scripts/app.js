@@ -47,8 +47,12 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot',
 
 angular.module('angularappAppBoot', []).
 
-  run(function(localization) { // instance-injector
+  run(function(localization, $templateCache, $http) { // instance-injector
     // initialize localization service
     // reason: user controller needs localization keys for pluralize
     // when direct accessing user route localization is not loaded before
+
+    // load server shutdown template so it can be shown once the server is offline
+    $http.get('views/msgServerOffline.html', { cache: $templateCache }).then(function (response) {
+    });
   });
