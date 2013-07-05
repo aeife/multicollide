@@ -87,6 +87,11 @@ angular.module('angularappApp')
           socket.on('disconnect', function(data){
             callback(data);
           });
+        },
+        checkLoginStatus: function(callback){
+          socket.on('successfullConnected', function(data){
+            callback(data);
+          });
         }
       };
 

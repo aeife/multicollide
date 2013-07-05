@@ -307,6 +307,9 @@ io.sockets.on('connection', function(socket){
   //   socket.session.username = 'Guest';
   // }
 
+  // send success message with username
+  socket.emit('successfullConnected', {username: socket.session.username});
+
   /*
     get user profile or sign up a new account
     (REST notation)

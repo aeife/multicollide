@@ -47,7 +47,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot',
 
 angular.module('angularappAppBoot', []).
 
-  run(function(localization, $templateCache, $http, imagePreload) { // instance-injector
+  run(function(localization, $templateCache, $http, imagePreload, socketApi, $cookies) { // instance-injector
     // initialize localization service
     // reason: user controller needs localization keys for pluralize
     // when direct accessing user route localization is not loaded before
@@ -57,4 +57,17 @@ angular.module('angularappAppBoot', []).
     });
 
     imagePreload.preload(['images/error.png']);
+
+    // check login status on start up
+    // @TODO: Case that client has no cookie but still is logged in on the server
+    socketApi.checkLoginStatus(function(data){
+      if (data.username != $cookies.username){
+        console.log("not logged in anymore!");
+        // $cookies = {};
+        delete $cookies.username;
+        delete $cookies.loggedin;
+      } else {
+        console.log("still logged in!");
+      }
+    });
   });
