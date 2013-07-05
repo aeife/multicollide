@@ -4,7 +4,7 @@ describe('Service: flash', function () {
 
   // load the service's module
   beforeEach(module('angularappApp'));
-  beforeEach(module('angularappAppMock.localization'));
+  // beforeEach(module('angularappAppMock.localization'));
 
   // instantiate service
   var flash;

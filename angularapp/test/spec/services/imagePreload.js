@@ -11,8 +11,8 @@ describe('Service: imagePreload', function () {
     imagePreload = _imagePreload_;
   }));
 
-  it('should do something', function () {
-    expect(!!imagePreload).toBe(true);
-  });
+  // it('should do something', function () {
+  //   expect(!!imagePreload).toBe(true);
+  // });
 
 });

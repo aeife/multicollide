@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot', 'ui.bootstrap', 'placeholders'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -45,7 +45,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'angularappAppBoot',
   });
 
 
-angular.module('angularappAppBoot', []).
+angular.module('angularappAppBoot', ['angularappApp']).
 
   run(function(localization, $templateCache, $http, imagePreload, socketApi, $cookies) { // instance-injector
     // initialize localization service
