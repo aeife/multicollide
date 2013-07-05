@@ -14,9 +14,9 @@ var express = require('express'),
   // sessionStore = new express.session.MemoryStore(),
   MongoStore = require('connect-mongo')(express);
 
-  var sessionStore = new MongoStore({
-    url: 'mongodb://localhost:27017/multicollideSessions'
-  });
+var sessionStore = new MongoStore({
+  url: 'mongodb://localhost:27017/multicollideSessions'
+});
 
 var app = express();
 
@@ -836,8 +836,9 @@ function addFriendRequest(username, friend){
  * @param  {string} username Name of the user for the requests
  */
 function sendFriendRequestsIfExist(username){
-  if (friendRequests[username] && friendRequests[username].length > 0)
-  clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
+  if (friendRequests[username] && friendRequests[username].length > 0){
+    clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
+  }
 }
 
 /**
@@ -878,7 +879,7 @@ function addLobby(data){
  * @param  {int} id Id of the corresponding lobby
  */
 function removeLobby(id){
-  console.log("REMOVING LOBBY");
+  console.log('REMOVING LOBBY');
   // for each user connected: delete reference to username and leave socket room
   console.log(lobbyForUsername);
   for (var i = 0; i < lobbys[id].players.length; i++){
