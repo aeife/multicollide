@@ -20,11 +20,11 @@ var sessionStore = new MongoStore({
 
 var app = express();
 
-console.log('../angularapp');
+console.log(__dirname);
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/app');
+  app.set('views', __dirname + '/../app');
   app.engine('html', require('ejs').renderFile);
   app.use(express.bodyParser());
   app.use(express.logger('dev'));
@@ -32,7 +32,7 @@ app.configure(function(){
   app.use(express.session({store: sessionStore, key: sessionKey, cookie: { httpOnly: false }}));
   app.use(express.compress());
   app.use(require('grunt-contrib-livereload/lib/utils').livereloadSnippet);
-  app.use(express.static(__dirname + '/app'));
+  app.use(express.static(__dirname + '/../app'));
 });
 
 app.configure('development', function(){
