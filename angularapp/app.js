@@ -11,7 +11,12 @@ var express = require('express'),
   secret = 'some secret',
   sessionKey = 'express.sid',
   cookieParser = express.cookieParser(secret),
-  sessionStore = new express.session.MemoryStore();
+  // sessionStore = new express.session.MemoryStore(),
+  MongoStore = require('connect-mongo')(express);
+
+  var sessionStore = new MongoStore({
+    url: 'mongodb://localhost:27017/multicollideSessions'
+  });
 
 var app = express();
 
@@ -308,6 +313,7 @@ io.sockets.on('connection', function(socket){
   // }
 
   // send success message with username
+  // @TODO: Sessions for Guest or delete on exit?
   socket.emit('successfullConnected', {username: socket.session.username});
 
   /*
