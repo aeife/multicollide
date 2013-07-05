@@ -37,5 +37,10 @@ angular.module('angularappApp')
     $scope.changeLanguage = function(){
       console.log('changing language to ' + $scope.language);
       localization.changeLanguage($scope.language);
+
+      // save change on server if logged in
+      if ($scope.isLoggedIn()){
+        user.changeLanguageSetting($scope.language);
+      }
     };
   });

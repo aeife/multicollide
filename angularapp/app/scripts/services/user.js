@@ -99,6 +99,9 @@ angular.module('angularappApp')
         // });
         // // Return the promise to the controller
         // return promise;
+      },
+      changeLanguageSetting: function(newLanguage){
+        socketApi.changeLanguageSetting(newLanguage);
       }
     };
   });

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('localization', function ($http) {
+  .factory('localization', function ($http, $cookies) {
     // Service logic
     // ...
 
     // Public API here
     var localization = {
-      language: 'en-US',
+      language: $cookies.language? $cookies.language : 'en-US',
       localization: {},
       loaded: false,
       getAvailableLanguages: function() {
@@ -28,6 +28,13 @@ angular.module('angularappApp')
       },
       changeLanguage: function(newLanguage) {
         this.language = newLanguage;
+
+        // set cookie to new language, if english just delete
+        if (newLanguage == 'en-US' && $cookies.language){
+          delete $cookies.language;
+        } else {
+          $cookies.language = newLanguage;
+        }
 
         // load new localization
         this.loadLocalization();

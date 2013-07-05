@@ -15,6 +15,7 @@ var userSchema = mongoose.Schema({
   name: {type: String, index: {unique: true}},
   password: String,
   email: String,
+  language: {type: String, default: 'en-US'},
   games: {type: Number, default: 0},
   won: {type: Number, default: 0},
   score: {type: Number, default: 0},

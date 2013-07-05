@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash, $filter) {
+  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash, $filter, localization) {
     // Service logic
     // ...
 
@@ -37,6 +37,9 @@ angular.module('angularappApp')
             $rootScope.$apply(function() {
               $cookies.username = username;
               $cookies.loggedin = 'true';
+
+              // change language to account language
+              localization.changeLanguage(data.language);
 
               $location.path('/');
             });

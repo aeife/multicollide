@@ -92,6 +92,9 @@ angular.module('angularappApp')
           socket.on('successfullConnected', function(data){
             callback(data);
           });
+        },
+        changeLanguageSetting: function(newLanguage){
+          socket.emit('settings:newLanguage', {newLanguage: newLanguage});
         }
       };
 

@@ -412,7 +412,7 @@ io.sockets.on('connection', function(socket){
           addConnectedUser(data.username, socket);
           console.log('ID FOR USER: ' + data.username);
           console.log(getIdForUsername(data.username));
-          socket.emit('/login/', {loggedin: true});
+          socket.emit('/login/', {loggedin: true, language: user.language});
         } else {
           socket.emit('/login/', {loggedin: false});
         }
@@ -649,6 +649,25 @@ io.sockets.on('connection', function(socket){
       });
     } else {
       socket.emit('/settings/changePassword', {error: 'only use this api when logged in'});
+    }
+  });
+
+  socket.on('settings:newLanguage', function(data){
+    //check if user is logged in
+    if (socket.session.loggedin) {
+      User.findOne({ name: socket.session.username}, function(err, user){
+        if (err) {
+          console.log(err);
+        }
+        if (user) {
+          user.language = data.newLanguage;
+          user.save(function(err){
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      });
     }
   });
 
