@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('filters')
   .filter('withoutGuests', function () {
     return function (input) {
       console.log(input);

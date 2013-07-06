@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('filters')
   .filter('toArray', function() {
     return function(obj) {
       if (!(obj instanceof Object)) {
