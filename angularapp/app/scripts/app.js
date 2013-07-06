@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog', 'error'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog', 'error', 'login', 'signup'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -8,11 +8,11 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'pla
         controller: 'MainCtrl'
       })
       .when('/login', {
-        templateUrl: 'views/login.html',
+        templateUrl: 'scripts/login/login.html',
         controller: 'LoginCtrl'
       })
       .when('/signup', {
-        templateUrl: 'views/signup.html',
+        templateUrl: 'scripts/signup/signup.html',
         controller: 'SignupCtrl'
       })
       .when('/user/:name', {

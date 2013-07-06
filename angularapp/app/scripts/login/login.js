@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('login', [])
   .controller('LoginCtrl', function ($scope, auth) {
     $scope.username = '';
     $scope.password = '';

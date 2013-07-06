@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('signup', [])
   .controller('SignupCtrl', function ($scope, auth, flash) {
     $scope.signedup = false;
 
