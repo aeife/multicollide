@@ -21,6 +21,22 @@ angular.module('sockets')
             $rootScope.$apply(callback(err, data));
           });
         },
+        getOnlineStatus: function(username, callback){
+          var callbackConverted = function () {
+            var args = arguments;
+            $rootScope.$apply(function () {
+              callback.apply(socket, args);
+            });
+          };
+
+          socket.onn('onlinestatus:'+username, callbackConverted);
+
+          return {stop: function(){
+                      console.log("SocketAPI: stop listener for " + username);
+                      socket.removeListener('onlinestatus:'+username, callbackConverted);
+                    }
+                  };
+        },
         getOnlineStatusForRoute: function(username, callback){
           // convert callback to use $apply, then use onn
           // reason: function for listener and removeListener must be identical
