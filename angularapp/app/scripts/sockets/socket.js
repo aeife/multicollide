@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('sockets', [])
   .factory('socket', function ($rootScope) {
     var socket = io.connect();
     // var socket = io.connect("http://localhost:3000");

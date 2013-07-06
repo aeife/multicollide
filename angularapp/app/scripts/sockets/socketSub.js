@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('sockets')
   .factory('socketSub', function (socket, $rootScope) {
     // Service logic
     // ...
