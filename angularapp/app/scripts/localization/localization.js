@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('localization', [])
   .factory('localization', function ($http, $cookies) {
     // Service logic
     // ...
@@ -72,4 +72,9 @@ angular.module('angularappApp')
     // inital loading of localization
     localization.loadLocalization();
     return localization;
+  })
+  .filter('i18n', function (localization) {
+    return function (input, args) {
+      return localization.getLocalizedValue(input, args);
+    };
   });
