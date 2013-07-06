@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('friendslist', [])
   .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub, socketApi, localization){
     // get friend list
     // subscribe to online status changes for all friends
@@ -133,9 +133,8 @@ angular.module('angularappApp')
   })
   .directive('friendslist', function () {
     return {
-      templateUrl: 'views/friendslist.html',
+      templateUrl: 'scripts/friendslist/friendslist.html',
       restrict: 'E',
       controller: 'FriendslistCtrl'
     };
   });
-
