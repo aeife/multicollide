@@ -36,7 +36,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'pla
         controller: 'BlogCtrl'
       })
       .when('/settings', {
-        templateUrl: 'views/settings.html',
+        templateUrl: 'scripts/settings/settings.html',
         controller: 'SettingsCtrl'
       })
       .otherwise({
