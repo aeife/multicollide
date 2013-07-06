@@ -42,7 +42,7 @@
                 <ul class="nav">
                   <li ng-class="{ active: activePath=='/' }"><a href="#"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
                   <li ng-class="{ active: activePath=='/games' }"><a href="#/games"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
-                  <li ng-class="{ active: activePath=='/user/' }"><a href="#/user/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
+                  <li ng-class="{ active: activePath=='/profile/' }"><a href="#/profile/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
                   <li ng-class="{ active: activePath=='/blog' }"><a href="#/blog"><i class="icon-book"></i> {{'_Blog_' | i18n}}</a></li>
                   <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
                 </ul>
@@ -128,7 +128,6 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/auth.js"></script>
     <script src="scripts/services/user.js"></script>
-    <script src="scripts/controllers/user.js"></script>
     <script src="scripts/controllers/games.js"></script>
     <script src="scripts/services/lobby.js"></script>
 
@@ -153,6 +152,7 @@
     <script src="scripts/filters/toArray.js"></script>
     <script src="scripts/profileBox/profileBox.js"></script>
     <script src="scripts/imagePreload/imagePreload.js"></script>
+    <script src="scripts/profile/profile.js"></script>
     <!-- endbuild -->
 
     <script>

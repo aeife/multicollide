@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('angularappApp')
-  .controller('UserCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi, localization) {
+angular.module('profile', [])
+  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi, localization) {
 
     $scope.locale = localization.getLocalizationKeys();
 

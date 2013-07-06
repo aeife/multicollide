@@ -19,7 +19,8 @@ angular.module('angularappApp',
   'sockets',
   'filters',
   'profileBox',
-  'imagePreload'])
+  'imagePreload',
+  'profile'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -34,9 +35,9 @@ angular.module('angularappApp',
         templateUrl: 'scripts/signup/signup.html',
         controller: 'SignupCtrl'
       })
-      .when('/user/:name', {
-        templateUrl: 'views/user.html',
-        controller: 'UserCtrl'
+      .when('/profile/:name', {
+        templateUrl: 'scripts/profile/profile.html',
+        controller: 'ProfileCtrl'
       })
       .when('/404', {
         templateUrl: 'scripts/error/error.html',

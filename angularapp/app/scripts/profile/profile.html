@@ -61,7 +61,7 @@
             <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
         <ul class="unstyled text-center ">
-            <li class="span2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/user/{{user.name}}">{{user.name}}</a></li>
+            <li class="span2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/profile/{{user.name}}">{{user.name}}</a></li>
         </ul>
     </div>
 </div>
