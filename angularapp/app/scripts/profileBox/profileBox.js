@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('profileBox', [])
   .directive('profileBox', function () {
     return {
       restrict: 'E',
-      templateUrl: 'views/profileBox.html',
+      templateUrl: 'scripts/profileBox/profileBox.html',
       controller: function($scope, auth, user, popup, $dialog){
 
         $scope.logout = function(){
