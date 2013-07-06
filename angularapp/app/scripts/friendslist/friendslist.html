@@ -11,7 +11,7 @@
       <accordion-body>
         <ul>
             <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-                <a href="/#/user/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
+                <a href="/#/profile/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
             </li>
         </ul>
         <ul>
