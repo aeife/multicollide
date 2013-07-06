@@ -42,30 +42,27 @@ angular.module('sockets')
     // Public API here
     var socketApi =
       {
-        onlinestatus: function(username){
-          return {
-            on: function(callback){
-              return on('onlinestatus:'+username, callback);
-            }
-          };
-        },
-        connectedUsers: {
-          get: function(callback){
-            emit('users:connected');
-            once('users:connected', function (err, data){
-              $rootScope.$apply(callback(err, data));
-            });
+        on: {
+          onlinestatus: function(username, callback){
+            return on('onlinestatus:'+username, callback);
           }
         },
-        allUsers: {
-          get: function(callback){
-            emit('users:all');
-            once('users:all', function (err, data){
-              $rootScope.$apply(callback(err, data));
-            });
+        get: {
+          users: {
+            connected: function(callback){
+              emit('users:connected');
+              once('users:connected', function (err, data){
+                $rootScope.$apply(callback(err, data));
+              });
+            },
+            all: function(callback){
+              emit('users:all');
+              once('users:all', function (err, data){
+                $rootScope.$apply(callback(err, data));
+              });
+            }
           }
         }
-
       }
 
     return socketApi;

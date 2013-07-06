@@ -31,7 +31,7 @@ angular.module('profile', [])
         //   });
         // });
 
-        socketgenapi.connectedUsers.get(function(err, data){
+        socketgenapi.get.users.connected(function(err, data){
           $rootScope.$apply(function(){
             $scope.users = $scope.convertUserLists(data);
             $scope.connectedUsers = data.length;
@@ -45,7 +45,7 @@ angular.module('profile', [])
           //   });
           // });
 
-          socketgenapi.allUsers.get(function(err, data){
+          socketgenapi.get.users.all(function(err, data){
             $rootScope.$apply(function(){
               $scope.users = data;
             });
@@ -71,7 +71,7 @@ angular.module('profile', [])
           //   $scope.user.online = data.online;
           // });
 
-          socketgenapi.onlinestatus(data.name).on(function(data){
+          socketgenapi.on.onlinestatus(data.name, function(data){
             console.log(data);
             $scope.user.online = data.online;
           }).forRoute();
