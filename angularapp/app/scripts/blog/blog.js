@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('blog', [])
   .controller('BlogCtrl', function ($scope) {
   });

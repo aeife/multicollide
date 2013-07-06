@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('settings', [])
   .controller('SettingsCtrl', function ($scope, user, auth, flash, localization) {
 
     $scope.isLoggedIn = auth.isLoggedIn;

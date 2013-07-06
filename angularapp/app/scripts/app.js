@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -24,7 +24,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'pla
         controller: 'ErrorCtrl'
       })
       .when('/about', {
-        templateUrl: 'views/about.html',
+        templateUrl: 'scripts/about/about.html',
         controller: 'AboutCtrl'
       })
       .when('/games', {
@@ -32,7 +32,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'pla
         controller: 'GamesCtrl'
       })
       .when('/blog', {
-        templateUrl: 'views/blog.html',
+        templateUrl: 'scripts/blog/blog.html',
         controller: 'BlogCtrl'
       })
       .when('/settings', {
