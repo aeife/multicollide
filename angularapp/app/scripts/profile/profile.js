@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('profile', [])
-  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, socketSub, $rootScope, socketApi, localization) {
+  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, socketApi, localization) {
 
     $scope.locale = localization.getLocalizationKeys();
 
@@ -47,17 +47,16 @@ angular.module('profile', [])
       user.getUserInfo($routeParams.name, function(data){
 
         if (data) {
-          $scope.socketS = socketSub('onlinestatus:'+data.name, function(data){
-            console.log(data);
-            $scope.user.online = data.online;
-          });
-
           console.log('setting data');
 
           $scope.user = data;
           console.log('online status:');
           console.log(data.online);
-          $scope.socketS.subForRoute();
+
+          socketApi.getOnlineStatusForRoute(data.name, function(data){
+            console.log(data);
+            $scope.user.online = data.online;
+          });
 
           // check if already a friend
           if (auth.key()){
