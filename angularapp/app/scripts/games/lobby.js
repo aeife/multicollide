@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('games')
   .factory('lobby', function ($rootScope, socketResource, socketApi) {
     // Service logic
     // ...
