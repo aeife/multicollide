@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('main', [])
   .controller('MainCtrl', function ($scope) {
   });

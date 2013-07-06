@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog', 'error', 'login', 'signup'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'main', 'friendslist', 'settings', 'about', 'blog', 'error', 'login', 'signup'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'scripts/main/main.html',
         controller: 'MainCtrl'
       })
       .when('/login', {
