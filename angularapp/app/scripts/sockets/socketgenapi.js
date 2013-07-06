@@ -66,5 +66,60 @@ angular.module('sockets')
         }
       }
 
-    return socketApi;
+
+      var websocketApi = {
+        on: {
+          onlinestatus: undefined,
+          anotherOn: undefined
+        },
+        get: {
+          users: {
+            connected: "con",
+            all: undefined
+          },
+          games: undefined
+        }
+      }
+
+      function processSocketApi (obj){
+        // t.get.user.connected = function()....
+        Object.keys(obj).forEach(function(key) {
+          console.log("ITERATE FOR: " + key);
+            var msg = "";
+            iterate(obj[key], msg, key);
+        });
+      }
+
+      function iterate(obj, msg, type) {
+        for (var property in obj) {
+          if (obj.hasOwnProperty(property)) {
+            if (typeof obj[property] == "object") {
+              // continue iterating till at the deepest level
+              iterate(obj[property], msg ? msg + ":" + property : property, type);
+            } else {
+              // process found end attribute
+              var m = msg ? msg + ":" + property : property;
+
+              if (type === "get"){
+                obj[property] = function(m){
+                  return function(callback){
+                    get(m, callback);
+                  };
+                }(m);
+              } else if (type === "on"){
+                obj[property] = function(m){
+                  return function(username, callback){
+                    return on(m+":"+username, callback);
+                  };
+                }(m);
+              }
+
+            }
+          }
+        }
+      }
+
+      processSocketApi(websocketApi);
+
+    return websocketApi;
   });
