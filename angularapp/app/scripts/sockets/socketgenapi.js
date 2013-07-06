@@ -69,12 +69,16 @@ angular.module('sockets')
 
       var websocketApi = {
         on: {
-          onlinestatus: undefined,
+          onlinestatus: {
+            opts: {
+              attach: "username"
+            }
+          },
           anotherOn: undefined
         },
         get: {
           users: {
-            connected: "con",
+            connected: undefined,
             all: undefined
           },
           games: undefined
@@ -93,27 +97,42 @@ angular.module('sockets')
       function iterate(obj, msg, type) {
         for (var property in obj) {
           if (obj.hasOwnProperty(property)) {
-            if (typeof obj[property] == "object") {
+            if (typeof obj[property] == "object" && !obj[property].opts) {
               // continue iterating till at the deepest level
               iterate(obj[property], msg ? msg + ":" + property : property, type);
             } else {
               // process found end attribute
               var m = msg ? msg + ":" + property : property;
 
+              // look for options
+              var opts = {};
+              if (obj[property] && obj[property].opts && obj[property].opts.attach){
+                opts = obj[property].opts;
+              }
+
               if (type === "get"){
+
                 obj[property] = function(m){
                   return function(callback){
                     get(m, callback);
                   };
                 }(m);
-              } else if (type === "on"){
-                obj[property] = function(m){
-                  return function(username, callback){
-                    return on(m+":"+username, callback);
-                  };
-                }(m);
-              }
 
+              } else if (type === "on"){
+
+                obj[property] = function(m){
+                  if (opts.attach){
+                    return function(msg, callback){
+                      return on(m + ':' + msg, callback);
+                    };
+                  } else {
+                    return function(callback){
+                      return on(m, callback);
+                    };
+                  }
+                }(m);
+
+              }
             }
           }
         }
@@ -121,5 +140,6 @@ angular.module('sockets')
 
       processSocketApi(websocketApi);
 
+      console.log(websocketApi);
     return websocketApi;
   });
