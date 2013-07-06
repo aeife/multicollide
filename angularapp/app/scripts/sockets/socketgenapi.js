@@ -5,6 +5,14 @@ angular.module('sockets')
     // Service logic
     // ...
 
+    function convertCallback(callback){
+      return function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
+        };
+    }
 
     // Public API here
     var socketApi =
@@ -17,12 +25,7 @@ angular.module('sockets')
           };
         },
         on: function(msgname, callback){
-          var callbackConverted = function () {
-            var args = arguments;
-            $rootScope.$apply(function () {
-              callback.apply(socket, args);
-            });
-          };
+          var callbackConverted = convertCallback(callback);
 
           socket.onn(msgname, callbackConverted);
 
