@@ -39,6 +39,13 @@ angular.module('sockets')
       socket.emit(msgname, data);
     }
 
+    function get(msgname, callback){
+      emit(msgname);
+      once(msgname, function (err, data){
+        $rootScope.$apply(callback(err, data));
+      });
+    }
+
     // Public API here
     var socketApi =
       {
@@ -50,16 +57,10 @@ angular.module('sockets')
         get: {
           users: {
             connected: function(callback){
-              emit('users:connected');
-              once('users:connected', function (err, data){
-                $rootScope.$apply(callback(err, data));
-              });
+              get('users:connected', callback);
             },
             all: function(callback){
-              emit('users:all');
-              once('users:all', function (err, data){
-                $rootScope.$apply(callback(err, data));
-              });
+              get('users:all', callback);
             }
           }
         }
