@@ -29,9 +29,7 @@ angular.module('sockets')
           socket.removeListener(msgname, callbackConverted);
         },
         removeAll: function(){
-          socket.removeAllListeners(msgname, function(){
-            console.log('successfull deleted all listeners for ' + msgname);
-          });
+          socket.removeAllListeners(msgname);
         }
       };
     }
