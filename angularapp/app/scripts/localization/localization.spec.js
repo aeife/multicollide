@@ -3,7 +3,7 @@
 describe('Service: localization', function () {
 
   // load the service's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('localization'));
 
   // instantiate service
   var localization;

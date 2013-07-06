@@ -3,7 +3,7 @@
 describe('Filter: i18n', function () {
 
   // load the filter's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('localization'));
 
   // initialize a new instance of the filter before each test
   var i18n;

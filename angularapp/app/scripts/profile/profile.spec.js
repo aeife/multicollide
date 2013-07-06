@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Controller: BlogCtrl', function () {
+describe('Controller: ProfileCtrl', function () {
 
   // load the controller's module
   beforeEach(module('angularappApp'));
 
-  var BlogCtrl,
+  var UserCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    BlogCtrl = $controller('BlogCtrl', {
+    UserCtrl = $controller('ProfileCtrl', {
       $scope: scope
     });
   }));

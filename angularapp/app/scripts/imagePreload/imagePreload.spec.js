@@ -3,7 +3,7 @@
 describe('Service: imagePreload', function () {
 
   // load the service's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('imagePreload'));
 
   // instantiate service
   var imagePreload;
