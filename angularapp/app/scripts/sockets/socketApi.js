@@ -42,6 +42,16 @@ angular.module('sockets')
             callback(data);
           });
         },
+        listenFriendNew: function(callback){
+          socket.on('friend:new', function(data){
+            callback(data)
+          });
+        },
+        listenFriendDeleted: function(callback){
+          socket.on('friend:deleted', function(data){
+            callback(data)
+          });
+        },
         games: function(callback){
           socket.emit('/games');
           socket.once('/games', function (data){

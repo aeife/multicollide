@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('friendslist', [])
-  .controller('FriendslistCtrl', function($scope, auth, user, socket, socketSub, socketApi, localization){
+  .controller('FriendslistCtrl', function($scope, auth, user, socketSub, socketApi, localization){
     // get friend list
     // subscribe to online status changes for all friends
     // onlinestatus:<username>
@@ -57,7 +57,7 @@ angular.module('friendslist', [])
           }
 
           // new friend (= own or other user accepted friend request)
-          socket.on('friend:new', function(sdata){
+          socketApi.listenFriendNew(function(sdata){
             // if accepted from own user delete according request
             if ($scope.requests && $scope.requests.indexOf(sdata.user) > -1){
               $scope.requests.splice($scope.requests.indexOf(sdata.user), 1);
@@ -81,7 +81,7 @@ angular.module('friendslist', [])
           });
 
           // deleted friend
-          socket.on('friend:deleted', function(sdata){
+          socketApi.listenFriendDeleted(function(sdata){
             // delete friend from list and adjust friends count
             delete $scope.friends[sdata.user];
             $scope.friendCount = $scope.friendsOnline($scope.friends);
