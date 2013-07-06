@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog'])
+angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'placeholders', 'friendslist', 'settings', 'about', 'blog', 'error'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -20,7 +20,7 @@ angular.module('angularappApp', ['ngResource', 'ngCookies', 'ui.bootstrap', 'pla
         controller: 'UserCtrl'
       })
       .when('/404', {
-        templateUrl: 'views/error.html',
+        templateUrl: 'scripts/error/error.html',
         controller: 'ErrorCtrl'
       })
       .when('/about', {
