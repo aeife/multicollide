@@ -58,7 +58,7 @@ angular.module('profile', [])
           //   $scope.user.online = data.online;
           // });
 
-          socketgenapi.on('onlinestatus:'+data.name, function(data){
+          socketgenapi.onlinestatus(data.name).on(function(data){
             console.log(data);
             $scope.user.online = data.online;
           }).forRoute();
