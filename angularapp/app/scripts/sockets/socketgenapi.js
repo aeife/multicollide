@@ -56,6 +56,14 @@ angular.module('sockets')
               $rootScope.$apply(callback(err, data));
             });
           }
+        },
+        allUsers: {
+          get: function(callback){
+            emit('users:all');
+            once('users:all', function (err, data){
+              $rootScope.$apply(callback(err, data));
+            });
+          }
         }
 
       }

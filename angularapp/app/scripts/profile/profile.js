@@ -39,7 +39,13 @@ angular.module('profile', [])
         });
 
         if (!this.onlyConnected){
-          socketApi.getAllUsers(function(err, data){
+          // socketApi.getAllUsers(function(err, data){
+          //   $rootScope.$apply(function(){
+          //     $scope.users = data;
+          //   });
+          // });
+
+          socketgenapi.allUsers.get(function(err, data){
             $rootScope.$apply(function(){
               $scope.users = data;
             });
