@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('imagePreload', [])
   .factory('imagePreload', function () {
     return {
       preloadImages: {},
