@@ -121,13 +121,13 @@ angular.module('friendslist', [])
     // user accepted friend request
     $scope.accept = function(username){
       console.log('accepting request from ' + username);
-      socket.emit('friend:accept', {user: username});
+      socketApi.friendAccept({user: username});
     };
 
     // user declined friend request
     $scope.decline = function(username){
       console.log('declining request from ' + username);
-      socket.emit('friend:decline', {user: username});
+      socketApi.friendDecline({user: username});
       // remove request
       $scope.requests.splice($scope.requests.indexOf(username), 1);
     };

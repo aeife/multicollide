@@ -58,6 +58,12 @@ angular.module('sockets')
             callback(data);
           });
         },
+        friendAccept: function(data){
+          socket.emit('friend:accept', data);
+        },
+        friendDecline: function(data){
+          socket.emit('friend:decline', data);
+        },
         listenFriendNew: function(callback){
           socket.on('friend:new', function(data){
             callback(data)
