@@ -74,14 +74,17 @@ angular.module('sockets')
               attach: "username"
             }
           },
-          anotherOn: undefined
+          friend: {
+            request: undefined,
+            new: undefined,
+            deleted: undefined
+          }
         },
         get: {
           users: {
             connected: undefined,
             all: undefined
-          },
-          games: undefined
+          }
         },
         emit: {
           friend: {
@@ -90,6 +93,38 @@ angular.module('sockets')
           }
         }
       }
+
+      // // alternate order
+      // var websocketApi1 = {
+      //   onlinestatus: {
+      //     on: undefined,
+      //     opts: {
+      //       attach: "username"
+      //     }
+      //   },
+      //   users: {
+      //     connected: {
+      //       get: undefined
+      //     },
+      //     all: {
+      //       get: undefined
+      //     }
+      //   },
+      //   friend: {
+      //     accept: {
+      //       emit: undefined
+      //     },
+      //     decline: {
+      //       emit: undefined
+      //     },
+      //     request: {
+      //       on: undefined
+      //     },
+      //     new: {
+      //       on: undefined
+      //     }
+      //   }
+      // }
 
       function processSocketApi (obj){
         // t.get.user.connected = function()....
