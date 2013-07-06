@@ -31,6 +31,10 @@ angular.module('sockets')
       };
     }
 
+    function once(msgname, callback){
+      socket.once(msgname, callback);
+    }
+
     function emit(msgname, data){
       socket.emit(msgname, data);
     }
@@ -44,7 +48,16 @@ angular.module('sockets')
               return on('onlinestatus:'+username, callback);
             }
           };
+        },
+        connectedUsers: {
+          get: function(callback){
+            emit('users:connected');
+            once('users:connected', function (err, data){
+              $rootScope.$apply(callback(err, data));
+            });
+          }
         }
+
       }
 
     return socketApi;
