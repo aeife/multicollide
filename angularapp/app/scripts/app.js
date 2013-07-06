@@ -20,7 +20,8 @@ angular.module('angularappApp',
   'filters',
   'profileBox',
   'imagePreload',
-  'profile'])
+  'profile',
+  'games'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -48,7 +49,7 @@ angular.module('angularappApp',
         controller: 'AboutCtrl'
       })
       .when('/games', {
-        templateUrl: 'views/games.html',
+        templateUrl: 'scripts/games/games.html',
         controller: 'GamesCtrl'
       })
       .when('/blog', {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('games', [])
   .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter) {
     $scope.games = null;
     $scope.order = 'name';
