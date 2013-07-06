@@ -12,13 +12,11 @@ angular.module('sockets')
         onlinestatus: function(username){
           return {
             on: function(callback){
-              console.log("onlinestatus on");
               return socketApi.on('onlinestatus:'+username, callback);
             }
           };
         },
         on: function(msgname, callback){
-          console.log("socketapi on");
           var callbackConverted = function () {
             var args = arguments;
             $rootScope.$apply(function () {
