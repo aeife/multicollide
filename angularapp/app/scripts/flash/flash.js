@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('flash', [])
   .factory('flash', function ($rootScope) {
     // Service logic
 
@@ -41,7 +41,7 @@ angular.module('angularappApp')
   .directive('flashbox', function ($rootScope) {
     return {
       restrict: 'E',
-      templateUrl: 'views/flash.html',
+      templateUrl: 'scripts/flash/flash.html',
       controller: function($scope, flash){
         $scope.flash = flash;
         // $scope.message = flash.get().msg;
