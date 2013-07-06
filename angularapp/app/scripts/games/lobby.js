@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('games')
-  .factory('lobby', function ($rootScope, socketResource, socketApi) {
+  .factory('lobby', function ($rootScope, socketResource, socketgenapi) {
     // Service logic
     // ...
 
@@ -14,42 +14,46 @@ angular.module('games')
         //   console.log(data);
         //   $rootScope.$apply(callback(data));
         // });
-        socketApi.games(function(data){
+        socketgenapi.get.games(function(data){
           $rootScope.$apply(callback(data));
         });
       },
       newLobby: function(callback){
         console.log('adding new lobby');
-        socketApi.newLobby(function(data){
+        socketgenapi.get.lobby.new(function(data){
           // console.log('finished');
           $rootScope.$apply(callback(data));
         });
       },
       joinLobby: function(id, callback){
         console.log('joining lobby');
-        socketApi.joinLobby(id, function(err, data){
+        socketgenapi.get.lobby.join({id: id}, function(err, data){
           $rootScope.$apply(callback(err, data));
         });
       },
       leaveLobby: function(id, callback){
         console.log('leaving lobby');
-        socketApi.leaveLobby(id, function(data){
+        socketgenapi.get.lobby.leave({id: id}, function(data){
+
+          socketgenapi.on.lobby.player.joined().removeAll();
+          socketgenapi.on.lobby.player.left().removeAll();
+
           $rootScope.$apply(callback(data));
         });
       },
       onPlayerJoined: function(callback){
-        socketApi.listenLobbyPlayerJoined(function(data){
-          $rootScope.$apply(callback(data));
+        socketgenapi.on.lobby.player.joined(function(data){
+          callback(data);
         });
       },
       onPlayerLeft: function(callback){
-        socketApi.listenLobbyPlayerLeft(function(data){
-          $rootScope.$apply(callback(data));
+        socketgenapi.on.lobby.player.left(function(data){
+          callback(data);
         });
       },
       onLobbyDeleted: function(callback){
-        socketApi.listenLobbyDeleted(function(data){
-          $rootScope.$apply(callback(data));
+        socketgenapi.on.lobby.deleted(function(data){
+          callback(data);
         });
       }
     };

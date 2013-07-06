@@ -479,9 +479,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
 
-    socket.on('/games', function(data){
+    socket.on('games', function(data){
       console.log('client requested games info');
-      socket.emit('/games', lobbys);
+      socket.emit('games', lobbys);
     });
 
 

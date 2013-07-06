@@ -27,6 +27,11 @@ angular.module('sockets')
         stop: function(){
           console.log("SocketAPI: stop listener for " + msgname);
           socket.removeListener(msgname, callbackConverted);
+        },
+        removeAll: function(){
+          socket.removeAllListeners(msgname, function(){
+            console.log('successfull deleted all listeners for ' + msgname);
+          });
         }
       };
     }
@@ -39,8 +44,12 @@ angular.module('sockets')
       socket.emit(msgname, data);
     }
 
-    function get(msgname, callback){
-      emit(msgname);
+    function get(msgname, callback, data){
+      if (data){
+        emit(msgname, data);
+      } else {
+        emit(msgname);
+      }
       once(msgname, function (err, data){
         $rootScope.$apply(callback(err, data));
       });
@@ -75,21 +84,42 @@ angular.module('sockets')
             }
           },
           friend: {
-            request: undefined,
-            new: undefined,
-            deleted: undefined
+            request: {},
+            new: {},
+            deleted: {}
+          },
+          lobby: {
+            deleted: {},
+            player: {
+              joined: {},
+              left: {}
+            }
           }
         },
         get: {
           users: {
-            connected: undefined,
-            all: undefined
+            connected: {},
+            all: {}
+          },
+          games: {},
+          lobby: {
+            new: {},
+            join: {
+              opts: {
+                emitData: "id"
+              }
+            },
+            leave: {
+              opts: {
+                emitData: "id"
+              }
+            }
           }
         },
         emit: {
           friend: {
-            accept: undefined,
-            decline: undefined
+            accept: {},
+            decline: {}
           }
         }
       }
@@ -138,40 +168,48 @@ angular.module('sockets')
       function iterate(obj, msg, type) {
         for (var property in obj) {
           if (obj.hasOwnProperty(property)) {
-            if (typeof obj[property] == "object" && !obj[property].opts) {
+            if (typeof obj[property] == "object" && !obj[property].opts && Object.keys(obj[property]).length != 0) {
               // continue iterating till at the deepest level
               iterate(obj[property], msg ? msg + ":" + property : property, type);
             } else {
               // process found end attribute
               var m = msg ? msg + ":" + property : property;
 
-              // look for options
-              var opts = {};
-              if (obj[property] && obj[property].opts && obj[property].opts.attach){
-                opts = obj[property].opts;
-              }
-
               if (type === "get"){
 
-                obj[property] = function(m){
-                  return function(callback){
-                    get(m, callback);
-                  };
-                }(m);
+                obj[property] = function(m, opts){
+                  if (opts) {
+
+                    return function(data, callback){
+                      get(m, callback, data);
+                    };
+
+                  } else {
+
+                    return function(callback){
+                      get(m, callback);
+                    };
+
+                  }
+                }(m, obj[property].opts);
 
               } else if (type === "on"){
 
-                obj[property] = function(m){
-                  if (opts.attach){
+                obj[property] = function(m, opts){
+                  if (opts && opts.attach){
+
                     return function(msg, callback){
                       return on(m + ':' + msg, callback);
                     };
+
                   } else {
+
                     return function(callback){
                       return on(m, callback);
                     };
+
                   }
-                }(m);
+                }(m, obj[property].opt);
 
               } else if (type === "emit"){
 

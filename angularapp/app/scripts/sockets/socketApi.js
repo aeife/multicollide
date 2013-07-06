@@ -86,16 +86,16 @@ angular.module('sockets')
             callback(data);
           });
         },
-        joinLobby: function(id, callback){
-          socket.emit('lobby:join', {id: id});
+        joinLobby: function(data, callback){
+          socket.emit('lobby:join', data);
           socket.once('lobby:join', function(err, data){
             callback(err, data);
           });
 
 
         },
-        leaveLobby: function(id, callback){
-          socket.emit('lobby:leave', {id: id});
+        leaveLobby: function(data, callback){
+          socket.emit('lobby:leave', data);
           socket.once('lobby:leave', function(data){
             callback(data);
           });
