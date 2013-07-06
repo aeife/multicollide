@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('friendslist', [])
-  .controller('FriendslistCtrl', function($scope, auth, user, socketApi, localization){
+  .controller('FriendslistCtrl', function($scope, auth, user, socketApi, localization, socketgenapi){
     // get friend list
     // subscribe to online status changes for all friends
     // onlinestatus:<username>
@@ -95,13 +95,15 @@ angular.module('friendslist', [])
     // user accepted friend request
     $scope.accept = function(username){
       console.log('accepting request from ' + username);
-      socketApi.friendAccept({user: username});
+      // socketApi.friendAccept({user: username});
+      socketgenapi.emit.friend.accept({user: username});
     };
 
     // user declined friend request
     $scope.decline = function(username){
       console.log('declining request from ' + username);
-      socketApi.friendDecline({user: username});
+      // socketApi.friendDecline({user: username});
+      socketgenapi.emit.friend.decline({user: username});
       // remove request
       $scope.requests.splice($scope.requests.indexOf(username), 1);
     };

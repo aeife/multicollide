@@ -82,6 +82,12 @@ angular.module('sockets')
             all: undefined
           },
           games: undefined
+        },
+        emit: {
+          friend: {
+            accept: undefined,
+            decline: undefined
+          }
         }
       }
 
@@ -130,6 +136,14 @@ angular.module('sockets')
                       return on(m, callback);
                     };
                   }
+                }(m);
+
+              } else if (type === "emit"){
+
+                obj[property] = function(m){
+                  return function(data){
+                    emit(m, data);
+                  };
                 }(m);
 
               }
