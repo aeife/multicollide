@@ -21,7 +21,8 @@ angular.module('angularappApp',
   'profileBox',
   'imagePreload',
   'profile',
-  'games'])
+  'games',
+  'websocketApi'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
