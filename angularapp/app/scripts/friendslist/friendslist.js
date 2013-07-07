@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('friendslist', [])
-  .controller('FriendslistCtrl', function($scope, auth, user, socketApi, localization, socketgenapi){
+  .controller('FriendslistCtrl', function($scope, auth, user, localization, socketgenapi){
     // get friend list
     // subscribe to online status changes for all friends
     // onlinestatus:<username>

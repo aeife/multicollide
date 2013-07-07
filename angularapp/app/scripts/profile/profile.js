@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('profile', [])
-  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, socketApi, localization, socketgenapi) {
+  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi) {
 
     $scope.locale = localization.getLocalizationKeys();
 
@@ -23,14 +23,6 @@ angular.module('profile', [])
       };
 
       $scope.refresh = function(){
-        // get connected users
-        // socketApi.getConnectedUsers(function(err, data){
-        //   $rootScope.$apply(function(){
-        //     $scope.users = $scope.convertUserLists(data);
-        //     $scope.connectedUsers = data.length;
-        //   });
-        // });
-
         socketgenapi.get.users.connected(function(err, data){
           $rootScope.$apply(function(){
             $scope.users = $scope.convertUserLists(data);
@@ -39,12 +31,6 @@ angular.module('profile', [])
         });
 
         if (!this.onlyConnected){
-          // socketApi.getAllUsers(function(err, data){
-          //   $rootScope.$apply(function(){
-          //     $scope.users = data;
-          //   });
-          // });
-
           socketgenapi.get.users.all(function(err, data){
             $rootScope.$apply(function(){
               $scope.users = data;
@@ -65,11 +51,6 @@ angular.module('profile', [])
           $scope.user = data;
           console.log('online status:');
           console.log(data.online);
-
-          // socketApi.getOnlineStatusForRoute(data.name, function(data){
-          //   console.log(data);
-          //   $scope.user.online = data.online;
-          // });
 
           socketgenapi.on.onlinestatus(data.name, function(data){
             console.log(data);

@@ -5,15 +5,9 @@ angular.module('games')
     // Service logic
     // ...
 
-    // var socketGames = socketResource('/games', {param: 'test'});
-
     // Public API here
     return {
       getAvailableGames: function(callback){
-        // socketGames.post({}, function(data){
-        //   console.log(data);
-        //   $rootScope.$apply(callback(data));
-        // });
         socketgenapi.get.games(function(data){
           $rootScope.$apply(callback(data));
         });
@@ -21,7 +15,6 @@ angular.module('games')
       newLobby: function(callback){
         console.log('adding new lobby');
         socketgenapi.get.lobby.new(function(data){
-          // console.log('finished');
           $rootScope.$apply(callback(data));
         });
       },
