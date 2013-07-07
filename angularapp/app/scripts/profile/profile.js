@@ -97,6 +97,14 @@ angular.module('profile', [])
                   }
                 }).forRoute();
 
+                // register listener when friend is deleted
+                socketgenapi.on.friend.deleted(function(data){
+                  console.log(data);
+                  if (data.user === $scope.user.name){
+                    $scope.isFriend = false;
+                  }
+                }).forRoute();
+
               } else {
                 $location.path('/404');
               }
