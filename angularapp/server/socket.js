@@ -635,7 +635,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   function sendFriendRequestsIfExist(username){
     // @TODO: no db queries for guests
     User.findOne({ name: username }, {password : 0}, function(err, user){
-      console.log(user);
+      // console.log(user);
 
       // only request if not already requested (so no multiple requests are possible)
       if (user && user.requests.length > 0){
