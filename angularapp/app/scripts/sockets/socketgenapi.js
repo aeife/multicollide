@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sockets')
-  .factory('socketgenapi', function ($rootScope, socket, $dialog, $filter, websocketApi) {
+  .factory('socketgenapi', function ($rootScope, socket, $dialog, websocketApi) {
     // Service logic
 
     function convertCallback(callback){
@@ -175,5 +175,14 @@ angular.module('sockets')
       }
     }
 
-    return processSocketApi(websocketApi);
+
+    websocketApi = processSocketApi(websocketApi);
+
+    // initialization
+    websocketApi.on.disconnect(function(){
+      var d = $dialog.dialog({templateUrl: 'views/msgServerOffline.html', backdropClick: false, keyboard: false});
+      d.open();
+    });
+
+    return websocketApi;
   });

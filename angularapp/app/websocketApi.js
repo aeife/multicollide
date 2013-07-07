@@ -17,7 +17,9 @@ websocket = function(){
               joined: {},
               left: {}
             }
-          }
+          },
+          successfullConnected: {},
+          disconnect: {}
         },
         get: {
           users: {
