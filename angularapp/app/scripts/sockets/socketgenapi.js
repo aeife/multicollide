@@ -159,7 +159,7 @@ angular.module('sockets')
                   };
 
                 }
-              }(m, obj[property].opt);
+              }(m, obj[property].opts);
 
             } else if (type === "emit"){
 
