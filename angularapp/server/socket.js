@@ -301,10 +301,14 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
               console.log(err);
               error = true;
             }
-            clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
 
-            // emit deleted friend
-            clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+            // if other user is online: send deletion
+            if (clients[getIdForUsername(data.name)]) {
+              clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
+
+              // emit deleted friend
+              clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+            }
           });
         });
         break;
