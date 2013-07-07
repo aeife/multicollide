@@ -19,7 +19,8 @@ var userSchema = mongoose.Schema({
   games: {type: Number, default: 0},
   won: {type: Number, default: 0},
   score: {type: Number, default: 0},
-  friends: [String]
+  friends: [String],
+  requests: [String]
 });
 userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);

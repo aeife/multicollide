@@ -16,9 +16,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // saves ids for usernames
   var clientUsernames = {};
 
-  // saves friend requests for all names ordered with username
-  var friendRequests = {};
-
   // saves all current available lobbys
   var lobbys = {};
   // highest current lobby id for continues counting
@@ -341,36 +338,39 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
                 online = true;
               }
               socket.emit('friend:new', {user: data.user, online: online});
+
+              // add to other user
+              // @TODO: do parallel
+              User.findOne({ name: data.user }, {password : 0}, function(err, user){
+                if (user.friends.indexOf(socket.session.username) < 0){
+                  user.friends.push(socket.session.username);
+                  user.save(function (err, user) {
+                    var error = false;
+                    if (err) {
+                      console.log(err);
+                      error = true;
+                    }
+                    clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+
+                    // emit new friend and his status
+                    if (!error) {
+                      var online = false;
+                      if (connectedUsers.indexOf(socket.session.username) > -1){
+                        online = true;
+                      }
+                      clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
+
+                      // TODO: if done parallel above: wait for db and check for errors first
+                      removeFriendRequest(socket.session.username, data.user);
+                    }
+                  });
+                }
+              });
+
             }
           });
         }
       });
-
-      User.findOne({ name: data.user }, {password : 0}, function(err, user){
-        if (user.friends.indexOf(socket.session.username) < 0){
-          user.friends.push(socket.session.username);
-          user.save(function (err, user) {
-            var error = false;
-            if (err) {
-              console.log(err);
-              error = true;
-            }
-            clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
-
-            // emit new friend and his status
-            if (!error) {
-              var online = false;
-              if (connectedUsers.indexOf(socket.session.username) > -1){
-                online = true;
-              }
-              clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
-            }
-          });
-        }
-      });
-
-      // TODO: wait for db and check for errors first
-      removeFriendRequest(socket.session.username, data.user);
     });
 
     /*
@@ -604,20 +604,28 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param {string} friend Name of the user which sent the request
    */
   function addFriendRequest(username, friend){
-    // if no array for user exists: create it
-    if (!friendRequests[username]) {
-      friendRequests[username] = [];
-    }
+    User.findOne({ name: username }, {password : 0}, function(err, user){
+      console.log(user);
 
-    // only request if not already requested (so no multiple requests are possible)
-    if (friendRequests[username].indexOf(friend) === -1){
-      friendRequests[username].push(friend);
+      // only request if not already requested (so no multiple requests are possible)
+      if (user && user.requests.indexOf(friend) === -1){
+        user.requests.push(friend);
+        user.save(function (err) {
+          if (err) {
+            console.log(err);
+          }
 
-      // send friend request if user is online
-      if (connectedUsers.indexOf(username) > -1){
-        clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
+          // send friend request if user is online
+          if (connectedUsers.indexOf(username) > -1){
+
+            clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+          }
+        });
       }
-    }
+    });
+
+
+
   }
 
   /**
@@ -625,9 +633,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param  {string} username Name of the user for the requests
    */
   function sendFriendRequestsIfExist(username){
-    if (friendRequests[username] && friendRequests[username].length > 0){
-      clients[getIdForUsername(username)].emit('friend:request', {requests: friendRequests[username]});
-    }
+    // @TODO: no db queries for guests
+    User.findOne({ name: username }, {password : 0}, function(err, user){
+      console.log(user);
+
+      // only request if not already requested (so no multiple requests are possible)
+      if (user && user.requests.length > 0){
+        console.log("REQUESTS");
+        console.log(user.requests);
+        clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+      }
+    });
+
   }
 
   /**
@@ -636,9 +653,20 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param  {string} friend Name of user which sent the request
    */
   function removeFriendRequest(username, friend){
-    if (friendRequests[username] && friendRequests[username].indexOf(friend) > -1){
-      friendRequests[username].splice(friendRequests[username].indexOf(friend), 1);
-    }
+    console.log("SEARCHING " + username);
+    User.findOne({ name: username }, {password : 0}, function(err, user){
+
+      if (user && user.requests.indexOf(friend) > -1){
+        user.requests.splice(user.requests.indexOf(friend), 1);
+        console.log(user);
+        user.save(function (err) {
+          if (err) {
+            console.log("ERR");
+            console.log(err);
+          }
+        });
+      }
+    });
   }
 
   /**
