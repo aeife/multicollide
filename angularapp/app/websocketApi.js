@@ -26,6 +26,13 @@ websocket = function(){
             connected: {},
             all: {}
           },
+          user: {
+            new: {
+              opts: {
+                emitData: ["username", "password", "email"]
+              }
+            }
+          },
           games: {},
           lobby: {
             new: {},

@@ -32,7 +32,7 @@ angular.module('angularappApp')
         });
       },
       newUser: function(user, callback){
-        socketUser.post(user, function(data){
+        socketgenapi.get.user.new(user, function(data){
           callback(data);
         });
 

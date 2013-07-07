@@ -102,6 +102,21 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       get user profile or sign up a new account
       (REST notation)
     */
+
+    socket.on('user:new', function(data){
+      var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
+        user.save(function (err, user) {
+          var error = null;
+          if (err) {
+            console.log(err);
+            if (err.code === 11000) {
+              error = 'duplicate name';
+            }
+          }
+          socket.emit('user:new', {error: error});
+        });
+    });
+
     socket.on('/user/', function(data){
       switch(data.type){
         // get /user/:name -> profile
@@ -133,21 +148,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             socket.emit('/user/'+data.name);
           }
 
-        });
-        break;
-
-      // post /user/ -> sign up
-      case 'post':
-        var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
-        user.save(function (err, user) {
-          var error = null;
-          if (err) {
-            console.log(err);
-            if (err.code === 11000) {
-              error = 'duplicate name';
-            }
-          }
-          socket.emit('/user/', {error: error});
         });
         break;
       }
