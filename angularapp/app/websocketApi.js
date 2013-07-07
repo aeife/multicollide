@@ -39,6 +39,18 @@ websocket = function(){
                 emitData: "id"
               }
             }
+          },
+          friend: {
+            add: {
+              opts: {
+                emitData: "username"
+              }
+            },
+            remove: {
+              opts: {
+                emitData: "username"
+              }
+            }
           }
         },
         emit: {

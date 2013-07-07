@@ -20,13 +20,13 @@ angular.module('angularappApp')
         });
       },
       addFriend: function(username, callback){
-         socketFriend.post({name: username}, function(data){
+        socketgenapi.get.friend.add({name: username}, function(data){
           console.log(data);
           $rootScope.$apply(callback(data.error));
         });
       },
       deleteFriend: function(username, callback){
-         socketFriend.remove({name: username}, function(data){
+        socketgenapi.get.friend.remove({name: username}, function(data){
           console.log(data);
           $rootScope.$apply(callback(data.error));
         });

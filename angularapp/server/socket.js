@@ -236,81 +236,50 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     /*
       user adds or removes a friend
-      (REST notation)
     */
-    socket.on('/friend/', function(data){
-      switch(data.type){
-      case 'post':
-        // post /friend/ -> add friend
-        console.log(socket.session.username + ' wants to add ' + data.name);
+    socket.on('friend:add', function(data){
+      console.log(socket.session.username + ' wants to add ' + data.name);
+      addFriendRequest(data.name, socket.session.username);
+    });
 
-        // clients[getIdForUsername(data.name)].emit('friend:request', {from: socket.session.username});
-        addFriendRequest(data.name, socket.session.username);
+    socket.on('friend:remove', function(data){
+      // remove /friend/:name -> remove friend
+      console.log(socket.session.username + ' wants to delete ' + data.name);
 
-        // User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-        //   if (user.friends.indexOf(data.name) < 0){
-        //     user.friends.push(data.name);
-        //     user.save(function (err, user) {
-        //       var error = false;
-        //       if (err) {
-        //         console.log(err);
-        //         error = true;
-        //       }
-        //       socket.emit('/friend/', {error: error});
+      // delete friend for both users
+      User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        user.friends.remove(data.name);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+          socket.emit('friend:remove'+data.name, {error: error});
 
-        //       // emit new friend and his status
-        //       if (!error) {
-        //         var online = false;
-        //         if (connectedUsers.indexOf(data.name) > -1){
-        //           online = true;
-        //         }
-        //         socket.emit('friend:new', {user: data.name, online: online});
-        //       }
-        //     });
-        //   }
-        // });
-        break;
-      case 'remove':
-        // remove /friend/:name -> remove friend
-        console.log(socket.session.username + ' wants to delete ' + data.name);
+          // emit deleted friend
+          socket.emit('friend:deleted', {user: data.name});
+        });
+      });
 
-        // delete friend for both users
-        User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
-          user.friends.remove(data.name);
-          user.save(function (err, user) {
-            var error = false;
-            if (err) {
-              console.log(err);
-              error = true;
-            }
-            socket.emit('/friend/'+data.name, {error: error});
+      User.findOne({ name: data.name }, {password : 0}, function(err, user){
+        user.friends.remove(socket.session.username);
+        user.save(function (err, user) {
+          var error = false;
+          if (err) {
+            console.log(err);
+            error = true;
+          }
+
+          // if other user is online: send deletion
+          if (clients[getIdForUsername(data.name)]) {
+            clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
 
             // emit deleted friend
-            socket.emit('friend:deleted', {user: data.name});
-          });
+            clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+          }
         });
-
-        User.findOne({ name: data.name }, {password : 0}, function(err, user){
-          user.friends.remove(socket.session.username);
-          user.save(function (err, user) {
-            var error = false;
-            if (err) {
-              console.log(err);
-              error = true;
-            }
-
-            // if other user is online: send deletion
-            if (clients[getIdForUsername(data.name)]) {
-              clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
-
-              // emit deleted friend
-              clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
-            }
-          });
-        });
-        break;
-      }
-
+      });
     });
 
     /*
