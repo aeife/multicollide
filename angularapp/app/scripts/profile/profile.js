@@ -88,6 +88,15 @@ angular.module('profile', [])
                 } else {
                   $scope.isFriend = false;
                 }
+
+                // register listener when friend is added (his request is accepted) while visiting his profile
+                socketgenapi.on.friend.new(function(data){
+                  console.log(data);
+                  if (data.user === $scope.user.name){
+                    $scope.isFriend = data.online;
+                  }
+                }).forRoute();
+
               } else {
                 $location.path('/404');
               }
