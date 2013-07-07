@@ -43,6 +43,9 @@ websocket = function(){
           friend: {
             accept: {},
             decline: {}
+          },
+          settings: {
+            newLanguage: {}
           }
         }
       }

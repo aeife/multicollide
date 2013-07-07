@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $location, socketResource, $rootScope, socketApi) {
+  .factory('user', function ($resource, $location, socketResource, $rootScope, socketApi, socketgenapi) {
     // Service logic
 
     // var User = $resource('/user/:name', {name:''});
@@ -57,7 +57,8 @@ angular.module('angularappApp')
         });
       },
       changeLanguageSetting: function(newLanguage){
-        socketApi.changeLanguageSetting(newLanguage);
+        // socketApi.changeLanguageSetting(newLanguage);
+        socketgenapi.emit.settings.newLanguage(newLanguage);
       }
     };
   });
