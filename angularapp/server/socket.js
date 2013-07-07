@@ -383,7 +383,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     /*
       user changed password
     */
-    socket.on('/settings/changePassword', function(data){
+    socket.on('settings:changePassword', function(data){
       //check if user is logged in
       if (socket.session.loggedin) {
         //check if correct old password, then change
@@ -396,17 +396,17 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
             user.save(function (err) {
               if (err) {
-                socket.emit('/settings/changePassword', {error: 'error'});
+                socket.emit('settings:changePassword', {error: 'error'});
               } else {
-                socket.emit('/settings/changePassword', {error: null});
+                socket.emit('settings:changePassword', {error: null});
               }
             });
           } else {
-            socket.emit('/settings/changePassword', {error: 'wrong old password'});
+            socket.emit('settings:changePassword', {error: 'wrong old password'});
           }
         });
       } else {
-        socket.emit('/settings/changePassword', {error: 'only use this api when logged in'});
+        socket.emit('settings:changePassword', {error: 'only use this api when logged in'});
       }
     });
 

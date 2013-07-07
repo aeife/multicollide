@@ -51,6 +51,13 @@ websocket = function(){
                 emitData: "username"
               }
             }
+          },
+          settings: {
+            changePassword: {
+              opts: {
+                emitData: ["username", "oldPassword", "newPassword"]
+              }
+            }
           }
         },
         emit: {

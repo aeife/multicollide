@@ -14,7 +14,7 @@ angular.module('angularappApp')
     // Public API here
     return {
       changePassword: function(username, oldPassword, newPassword, callback){
-        socketSettingsChangePassword.post({name: username, oldPassword: oldPassword, newPassword: newPassword}, function(data){
+        socketgenapi.get.settings.changePassword({name: username, oldPassword: oldPassword, newPassword: newPassword}, function(data){
           console.log(data);
           $rootScope.$apply(callback(data));
         });

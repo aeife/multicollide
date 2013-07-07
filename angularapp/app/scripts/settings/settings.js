@@ -26,7 +26,7 @@ angular.module('settings', [])
           if (data.error){
             flash.error(data.error);
           } else {
-            flash.info('successfully updates password');
+            flash.info('successfully updated password');
           }
         });
       }
