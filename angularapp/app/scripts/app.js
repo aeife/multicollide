@@ -83,6 +83,7 @@ angular.module('angularappAppBoot', ['angularappApp']).
 
     // check login status on start up
     // @TODO: Case that client has no cookie but still is logged in on the server
+    // @TODO: Check if language is still account language on reconnect and logged in
     socketgenapi.on.successfullConnected(function(data){
       if (data.username != $cookies.username){
         console.log("not logged in anymore!");
