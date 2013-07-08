@@ -40,7 +40,7 @@ angular.module('settings', [])
 
       // save change on server if logged in
       if ($scope.isLoggedIn()){
-        user.changeLanguageSetting($scope.language);
+        user.changeLanguageSetting({newLanguage: $scope.language});
       }
     };
   });

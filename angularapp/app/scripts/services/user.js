@@ -35,7 +35,6 @@ angular.module('angularappApp')
         socketgenapi.get.user.new(user, function(data){
           callback(data);
         });
-
       },
       getFriendsStatus: function(callback){
         socketFriends.post({}, function(data){
