@@ -319,18 +319,22 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
                       console.log(err);
                       error = true;
                     }
-                    clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
 
-                    // emit new friend and his status
-                    if (!error) {
-                      var online = false;
-                      if (connectedUsers.indexOf(socket.session.username) > -1){
-                        online = true;
+                    // TODO: if done parallel above: wait for db and check for errors first
+                    removeFriendRequest(socket.session.username, data.user);
+
+                    // only emit to other user when he is online
+                    if (connectedUsers.indexOf(data.user) > -1){
+                      clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+
+                      // emit new friend and his status
+                      if (!error) {
+                        var online = false;
+                        if (connectedUsers.indexOf(socket.session.username) > -1){
+                          online = true;
+                        }
+                        clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
                       }
-                      clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
-
-                      // TODO: if done parallel above: wait for db and check for errors first
-                      removeFriendRequest(socket.session.username, data.user);
                     }
                   });
                 }
