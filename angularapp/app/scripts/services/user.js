@@ -1,15 +1,8 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('user', function ($resource, $location, socketResource, $rootScope, socketgenapi) {
+  .factory('user', function ($resource, $location, $rootScope, socketgenapi) {
     // Service logic
-
-    // var User = $resource('/user/:name', {name:''});
-    // var Friend = $resource('/friend/:name');
-    // var socketFriend = socketResource('/friend/:name', {param: 'test'});
-    var socketFriends = socketResource('/friends/', {param: 'test'});
-    var socketUser = socketResource('/user/:name', {param: 'test'});
-    // var socketSettingsChangePassword = socketResource('/settings/changePassword', {param: 'test'});
 
     // Public API here
     return {
