@@ -46,13 +46,16 @@ angular.module('angularappApp')
       getUserInfo: function(username, callback) {
         console.log('getting user info for ' + username);
 
-        socketUser.get({name: username}, function(user){
-          console.log(user);
-          $rootScope.$apply(callback(user));
-        }, function(){
-          $rootScope.$apply(function() {
-            $location.path('/404');
-          });
+        socketgenapi.get.user.info({name: username}, function(user){
+          if (user){
+            console.log('got user info');
+            console.log(user);
+            $rootScope.$apply(callback(user));
+          } else {
+            $rootScope.$apply(function() {
+              $location.path('/404');
+            });
+          }
         });
       },
       changeLanguageSetting: function(newLanguage){

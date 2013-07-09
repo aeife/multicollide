@@ -117,10 +117,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         });
     });
 
-    socket.on('/user/', function(data){
-      switch(data.type){
-        // get /user/:name -> profile
-      case 'get':
+    socket.on('user:info', function(data){
         // console.log(socket.session.username);
         console.log(socket.session);
 
@@ -143,14 +140,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
               userobj.online = true;
             }
 
-            socket.emit('/user/'+data.name, userobj);
+             socket.emit('user:info:'+data.name, userobj);
           } else {
-            socket.emit('/user/'+data.name);
+            socket.emit('user:info:'+data.name);
           }
 
         });
-        break;
-      }
+
     });
 
     /*

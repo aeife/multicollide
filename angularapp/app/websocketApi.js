@@ -31,6 +31,12 @@ websocket = function(){
               opts: {
                 emitData: ["username", "password", "email"]
               }
+            },
+            info: {
+              opts: {
+                emitData: "name",
+                attach: "name"
+              }
             }
           },
           games: {},

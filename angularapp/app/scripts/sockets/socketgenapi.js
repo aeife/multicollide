@@ -42,15 +42,23 @@ angular.module('sockets')
       socket.emit(msgname, data);
     }
 
-    function get(msgname, callback, data){
+    function get(msgname, callback, data, attach){
       if (data){
         emit(msgname, data);
       } else {
         emit(msgname);
       }
-      once(msgname, function (err, data){
-        $rootScope.$apply(callback(err, data));
-      });
+
+      if (data && attach){
+        // attach a string to the listener message
+        once(msgname + ':' + data[attach], function (err, data){
+          $rootScope.$apply(callback(err, data));
+        });
+      } else {
+        once(msgname, function (err, data){
+          $rootScope.$apply(callback(err, data));
+        });
+      }
     }
 
     // Public API here
@@ -128,10 +136,11 @@ angular.module('sockets')
             if (type === "get"){
 
               obj[property] = function(m, opts){
-                if (opts) {
+
+                if (opts && opts.emitData) {
 
                   return function(data, callback){
-                    get(m, callback, data);
+                    get(m, callback, data, opts.attach);
                   };
 
                 } else {
@@ -177,6 +186,8 @@ angular.module('sockets')
 
 
     websocketApi = processSocketApi(websocketApi);
+    console.log('websocketApi:');
+    console.log(websocketApi);
 
     // initialization
     websocketApi.on.disconnect(function(){
