@@ -6,10 +6,10 @@ angular.module('angularappApp')
 
     // var User = $resource('/user/:name', {name:''});
     // var Friend = $resource('/friend/:name');
-    var socketFriend = socketResource('/friend/:name', {param: 'test'});
+    // var socketFriend = socketResource('/friend/:name', {param: 'test'});
     var socketFriends = socketResource('/friends/', {param: 'test'});
     var socketUser = socketResource('/user/:name', {param: 'test'});
-    var socketSettingsChangePassword = socketResource('/settings/changePassword', {param: 'test'});
+    // var socketSettingsChangePassword = socketResource('/settings/changePassword', {param: 'test'});
 
     // Public API here
     return {

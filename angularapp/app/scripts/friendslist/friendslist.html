@@ -16,7 +16,7 @@
         </ul>
         <ul>
             <li ng-repeat="request in requests">
-                {{request}} <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
+                <a href="/#/profile/{{request}}">{{request}}</a> <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
             </li>
         </ul>
       </accordion-body>

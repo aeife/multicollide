@@ -298,7 +298,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
               console.log(err);
               error = true;
             }
-            socket.emit('/friend/', {error: error});
+            // socket.emit('/friend/', {error: error});
 
             // emit new friend and his status
             if (!error) {
@@ -325,7 +325,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
                     // only emit to other user when he is online
                     if (connectedUsers.indexOf(data.user) > -1){
-                      clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+                      // clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
 
                       // emit new friend and his status
                       if (!error) {
