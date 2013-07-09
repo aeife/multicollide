@@ -41,9 +41,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   ******************************************************
   */
 
-  /*
-    set authorization for sockets
-  */
+  /**
+   * authorization information and settings
+   */
   io.set('authorization', function(data, accept) {
     cookieParser(data, {}, function(err) {
       if (err) {
@@ -70,10 +70,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
   });
 
-
-  /*
-    user connected
-  */
+  /**
+   * client connected
+   * @param  {object} socket socket object for client
+   */
   io.sockets.on('connection', function(socket){
     socket.session = socket.handshake.session;
     console.log(socket.session);
@@ -98,11 +98,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     // @TODO: Sessions for Guest or delete on exit?
     socket.emit('successfullConnected', {username: socket.session.username});
 
-    /*
-      get user profile or sign up a new account
-      (REST notation)
-    */
-
+    /**
+     * sign up a new account
+     * @param  {object} data {username, password, email}
+     */
     socket.on('user:new', function(data){
       var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
         user.save(function (err, user) {
@@ -117,6 +116,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         });
     });
 
+    /**
+     * get user info
+     * @param  {object} data {name}
+     */
     socket.on('user:info', function(data){
         // console.log(socket.session.username);
         console.log(socket.session);
