@@ -59,6 +59,9 @@ websocket = function(){
               }
             }
           },
+          friends: {
+            all: {}
+          },
           settings: {
             changePassword: {
               opts: {

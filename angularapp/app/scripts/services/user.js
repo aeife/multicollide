@@ -37,7 +37,7 @@ angular.module('angularappApp')
         });
       },
       getFriendsStatus: function(callback){
-        socketFriends.post({}, function(data){
+        socketgenapi.get.friends.all(function(data){
           console.log('GOT FRIENDS STATUS:');
           console.log(data);
           $rootScope.$apply(callback(data));

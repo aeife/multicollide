@@ -358,7 +358,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     /*
       get status of all friends
     */
-    socket.on('/friends/', function(data){
+    socket.on('friends:all', function(data){
       console.log('GETTING FRIENDS STATUS');
 
       var result = {};
@@ -378,7 +378,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             result[user.friends[i]] = {online: online};
           }
           console.log('EMITTING TO /FRIENDS/');
-          socket.emit('/friends/', result);
+          socket.emit('friends:all', result);
         }
       });
     });
