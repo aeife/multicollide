@@ -149,9 +149,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     });
 
-    /*
-      get all users
-    */
+    /**
+     * get list of all users
+     */
     socket.on('users:all', function(data){
       console.log('GETTIN ALL USERS');
       User.find({}, {name : 1, _id : 0}, function(err, users){
@@ -161,18 +161,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // socket.emit('users:connected', {users: connectedUsers});
     });
 
-    /*
-      get connected users
-    */
+    /**
+     * get list of current connected users
+     */
     socket.on('users:connected', function(data){
       var err = null;
       socket.emit('users:connected', err, connectedUsers);
     });
 
-
-    /*
-      user logs in
-    */
+    /**
+     * client wants to log in
+     * @param  {object} data {username, password}
+     */
     socket.on('user:login', function(data){
       User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
         if (err) {
@@ -194,9 +194,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       });
     });
 
-    /*
-      user logs out
-    */
+    /**
+     * user wants to log out
+     */
     socket.on('user:logout', function(data){
       console.log('LOGGING USER OUT');
 
@@ -221,15 +221,19 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // req.session.destroy = true;
     });
 
-
-    /*
-      user adds or removes a friend
-    */
+    /**
+     * client wants to add friend
+     * @param  {object} data {name}
+     */
     socket.on('friend:add', function(data){
       console.log(socket.session.username + ' wants to add ' + data.name);
       addFriendRequest(data.name, socket.session.username);
     });
 
+    /**
+     * client wants to remove friend
+     * @param  {object} data {name}
+     */
     socket.on('friend:remove', function(data){
       // remove /friend/:name -> remove friend
       console.log(socket.session.username + ' wants to delete ' + data.name);
@@ -270,9 +274,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       });
     });
 
-    /*
-      user accepted friend request
-    */
+    /**
+     * client accepted friend request
+     * @param  {object} data user
+     */
     socket.on('friend:accept', function(data){
       console.log(socket.session.username + ' accepts request from ' + data.user);
 
@@ -334,18 +339,19 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       });
     });
 
-    /*
-      user declined friend request
-    */
+    /**
+     * client declined friend request
+     * @param  {object} data {user}
+     */
     socket.on('friend:decline', function(data){
       console.log(socket.session.username + ' declines friend request from ' + data.user);
       removeFriendRequest(socket.session.username, data.user);
     });
 
 
-    /*
-      get status of all friends
-    */
+    /**
+     * client wants list of all friends status
+     */
     socket.on('friends:all', function(data){
       console.log('GETTING FRIENDS STATUS');
 
@@ -371,10 +377,12 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       });
     });
 
-
-    /*
-      user changed password
-    */
+    /**
+     * client wants to change his password
+     * only when logged in
+     *
+     * @param  {object} data {name, oldPassword, newPassword}
+     */
     socket.on('settings:changePassword', function(data){
       //check if user is logged in
       if (socket.session.loggedin) {
@@ -402,8 +410,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       }
     });
 
+    /**
+     * client wants to set a new language
+     * new language is saved to database if client is logged in (but should not be emitted from client anyway when not logged in)
+     *
+     * @param  {object} data {newLanguage}
+     */
     socket.on('settings:newLanguage', function(data){
-      //check if user is logged in
       if (socket.session.loggedin) {
         User.findOne({ name: socket.session.username}, function(err, user){
           if (err) {
@@ -421,10 +434,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       }
     });
 
-
-    /*
-      user disconnected
-    */
+    /**
+     * client disconnected
+     */
     socket.on('disconnect', function(data){
       console.log('client disconnected');
 
@@ -444,6 +456,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
 
+    /**
+     * client requested list of open lobbys
+     */
     socket.on('games', function(data){
       console.log('client requested games info');
       socket.emit('games', lobbys);
