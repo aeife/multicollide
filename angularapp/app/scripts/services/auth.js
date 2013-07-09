@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('angularappApp')
-  .factory('auth', function ($http, $cookies, user, socketResource, $rootScope, $location, flash, $filter, localization) {
+  .factory('auth', function ($http, $cookies, user, socketgenapi, $rootScope, $location, flash, $filter, localization) {
     // Service logic
     // ...
-
-    var socketLogin = socketResource('/login/', {param: 'test'});
-    var socketLogout = socketResource('/logout/', {param: 'test'});
 
     // Public API here
     return {
@@ -17,21 +14,7 @@ angular.module('angularappApp')
         });
       },
       login: function (username, password) {
-        /* REST API*/
-        // $http.post('/login', {username: username, password: password})
-        // .success(function (data){
-        //   if (data.loggedin) {
-        //     $cookies.username = username;
-        //     $cookies.loggedin = 'true';
-
-        //     $location.path('/');
-        //   } else {
-        //     flash.error('wrong login');
-        //   }
-        // });
-
-        /* SOCKET API*/
-        socketLogin.post({username: username, password: password}, function (data) {
+        socketgenapi.get.user.login({username: username, password: password}, function (data) {
           console.log(data);
           if (data.loggedin) {
             $rootScope.$apply(function() {
@@ -51,11 +34,7 @@ angular.module('angularappApp')
         });
       },
       logout: function () {
-        /* REST API */
-        // $http.post('http://localhost:3000/logout');
-
-        /* SOCKET API */
-        socketLogout.post({}, function () {});
+        socketgenapi.get.user.logout({}, function () {});
 
 
         delete $cookies.loggedin;

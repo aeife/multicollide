@@ -172,61 +172,53 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     /*
       user logs in
-      (REST notation)
     */
-    socket.on('/login/', function(data){
-      switch(data.type){
-      case 'post':
-        User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
-          if (err) {
-            console.log(err);
-          }
-          if (user) {
-            // socket.session.loggedin = true;
-            setSession('loggedin', true, socket);
-            // socket.session.username = data.username;
-            // socket.session.save();
+    socket.on('user:login', function(data){
+      User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
+        if (err) {
+          console.log(err);
+        }
+        if (user) {
+          // socket.session.loggedin = true;
+          setSession('loggedin', true, socket);
+          // socket.session.username = data.username;
+          // socket.session.save();
 
-            addConnectedUser(data.username, socket);
-            console.log('ID FOR USER: ' + data.username);
-            console.log(getIdForUsername(data.username));
-            socket.emit('/login/', {loggedin: true, language: user.language});
-          } else {
-            socket.emit('/login/', {loggedin: false});
-          }
-        });
-      }
+          addConnectedUser(data.username, socket);
+          console.log('ID FOR USER: ' + data.username);
+          console.log(getIdForUsername(data.username));
+          socket.emit('user:login', {loggedin: true, language: user.language});
+        } else {
+          socket.emit('user:login', {loggedin: false});
+        }
+      });
     });
 
     /*
       user logs out
-      (REST notation)
     */
-    socket.on('/logout/', function(data){
-      switch(data.type){
-      case 'post':
-        console.log('LOGGING USER OUT');
+    socket.on('user:logout', function(data){
+      console.log('LOGGING USER OUT');
 
-        // delete user from connected user list
-        if (connectedUsers.indexOf(socket.session.username) > -1){
-          deleteConnectedUser(socket.session.username, socket);
-        }
-
-        console.log(socket.session);
-        console.log(socket.session.username);
-        socket.session.destroy();
-        console.log(socket.handshake.sessionID);
-        sessionStore.destroy(socket.handshake.sessionID);
-
-        // @TODO: do not delete and add connected user on logout, just change name and status
-        socket.session.loggedin = null;
-        socket.session.username = generateRandomGuestName();
-        addConnectedUser(socket.session.username, socket);
-
-        // console.log(socket.session);
-        // console.log(socket.session.username);
-        // req.session.destroy = true;
+      // delete user from connected user list
+      if (connectedUsers.indexOf(socket.session.username) > -1){
+        deleteConnectedUser(socket.session.username, socket);
       }
+
+      console.log(socket.session);
+      console.log(socket.session.username);
+      socket.session.destroy();
+      console.log(socket.handshake.sessionID);
+      sessionStore.destroy(socket.handshake.sessionID);
+
+      // @TODO: do not delete and add connected user on logout, just change name and status
+      socket.session.loggedin = null;
+      socket.session.username = generateRandomGuestName();
+      addConnectedUser(socket.session.username, socket);
+
+      // console.log(socket.session);
+      // console.log(socket.session.username);
+      // req.session.destroy = true;
     });
 
 

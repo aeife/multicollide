@@ -32,6 +32,12 @@ websocket = function(){
                 emitData: ["username", "password", "email"]
               }
             },
+            login: {
+              opts: {
+                emitData: ["username", "password"]
+              }
+            },
+            logout: {},
             info: {
               opts: {
                 emitData: "name",
