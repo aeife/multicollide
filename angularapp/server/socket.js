@@ -35,6 +35,12 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // socket.io listens on server
   var io = require('socket.io').listen(server);
 
+
+  var websocketApi = require('../app/websocketApi.js')();
+  websocketApi = websocketApi.generateStringObject(websocketApi.api);
+  // websocketApi.generateStringObject();
+
+
   /*
   ******************************************************
   ********************* Socket API *********************
@@ -155,11 +161,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     /**
      * get list of all users
      */
-    socket.on('users:all', function(data){
+    socket.on(websocketApi.get.users.all.msgkey, function(data){
       console.log('GETTIN ALL USERS');
       User.find({}, {name : 1, _id : 0}, function(err, users){
         console.log(users);
-        socket.emit('users:all', err, users);
+        socket.emit(websocketApi.get.users.all.msgkey, err, users);
       });
       // socket.emit('users:connected', {users: connectedUsers});
     });

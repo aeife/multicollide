@@ -185,7 +185,7 @@ angular.module('sockets')
     }
 
 
-    websocketApi = processSocketApi(websocketApi);
+    websocketApi = processSocketApi(websocketApi.api);
     console.log('websocketApi:');
     console.log(websocketApi);
 
