@@ -50,9 +50,9 @@ angular.module('games')
           socketgenapi.on.lobby.player.left().removeAll();
 
           // once alternative
-          socketgenapi.on.lobby.deleted().removeAll();
+          // socketgenapi.on.lobby.deleted().removeAll();
           callback(data);
-        });
+        }).once();
       }
     };
   });

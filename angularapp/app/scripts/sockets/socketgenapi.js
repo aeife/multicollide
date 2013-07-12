@@ -30,6 +30,12 @@ angular.module('sockets')
         },
         removeAll: function(){
           socket.removeAllListeners(msgname);
+        },
+        once: function(){
+          // remove normal listener
+          socket.removeAllListeners(msgname);
+          // add once listener
+          socket.once(msgname, callbackConverted);
         }
       };
     }
