@@ -45,10 +45,12 @@ angular.module('games')
         });
       },
       onLobbyDeleted: function(callback){
-        socketgenapi.once.lobby.deleted(function(data){
+        socketgenapi.on.lobby.deleted(function(data){
           socketgenapi.on.lobby.player.joined().removeAll();
           socketgenapi.on.lobby.player.left().removeAll();
 
+          // once alternative
+          socketgenapi.on.lobby.deleted().removeAll();
           callback(data);
         });
       }
