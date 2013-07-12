@@ -66,6 +66,7 @@ angular.module('games', [])
       });
 
       lobby.onLobbyDeleted(function(data){
+        console.log("onLobbyDeleted Listener");
         flash.error(data.reason);
         $scope.onLeftLobby();
       });

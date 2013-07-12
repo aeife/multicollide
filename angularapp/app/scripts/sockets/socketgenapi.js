@@ -178,6 +178,12 @@ angular.module('sockets')
                 };
               }(m);
 
+            } else if (type === "once"){
+              obj[property] = function(m){
+                return function(data){
+                  once(m, data);
+                };
+              }(m);
             }
           }
         }

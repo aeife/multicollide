@@ -21,6 +21,11 @@ websocket = function(){
       successfullConnected: {},
       disconnect: {}
     },
+    once: {
+      lobby: {
+        deleted: {}
+      }
+    },
     get: {
       users: {
         connected: {},
