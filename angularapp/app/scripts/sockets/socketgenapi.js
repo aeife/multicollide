@@ -36,6 +36,11 @@ angular.module('sockets')
           socket.removeAllListeners(msgname);
           // add once listener
           socket.once(msgname, callbackConverted);
+        },
+        whileLoggedIn: function() {
+          socket.once('user:logout', function(){
+            socket.removeListener(msgname, callbackConverted);
+          });
         }
       };
     }

@@ -30,7 +30,7 @@ angular.module('friendslist', [])
           console.log(data);
           $scope.requests = data.requests;
           // console.log(data.from + ' wants to add you!');
-        });
+        }).whileLoggedIn();
 
         // on log in: get friends and there online status
         user.getFriendsStatus(function(data){
@@ -70,7 +70,7 @@ angular.module('friendslist', [])
               $scope.friendCount = $scope.friendsOnline($scope.friends);
             });
 
-          });
+          }).whileLoggedIn();
 
           // deleted friend
           socketgenapi.on.friend.deleted(function(sdata){
@@ -81,7 +81,7 @@ angular.module('friendslist', [])
             // remove Listener onlinestatus:sdata.user
             console.log('stopping listener for ' + sdata.user);
             $scope.socketS[sdata.user].stop();
-          });
+          }).whileLoggedIn();
         });
 
       } else {
