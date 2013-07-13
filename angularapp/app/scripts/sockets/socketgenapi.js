@@ -32,6 +32,7 @@ angular.module('sockets')
           socket.removeAllListeners(msgname);
         },
         once: function(){
+          // @TODO: all listeners?
           // remove normal listener
           socket.removeAllListeners(msgname);
           // add once listener
