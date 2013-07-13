@@ -41,6 +41,9 @@ angular.module('sockets', [])
       },
       onn: function (eventName, callback) {
         socket.on(eventName, callback);
+      },
+      socketObj: function () {
+        return socket;
       }
     };
   });
