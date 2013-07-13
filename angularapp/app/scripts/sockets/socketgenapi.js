@@ -29,6 +29,7 @@ angular.module('sockets')
           socket.removeListener(msgname, callbackConverted);
         },
         removeAll: function(){
+          // dont use, each module should remove its own specific listeners
           socket.removeAllListeners(msgname);
         },
         once: function(){
