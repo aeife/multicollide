@@ -7,6 +7,7 @@ angular.module('games')
 
     // Public API here
     return {
+      listeners: {},
       getAvailableGames: function(callback){
         socketgenapi.get.games(function(data){
           $rootScope.$apply(callback(data));
@@ -26,34 +27,38 @@ angular.module('games')
       },
       leaveLobby: function(id, callback){
         console.log('leaving lobby');
+        var self = this;
         socketgenapi.get.lobby.leave({id: id}, function(data){
 
-          socketgenapi.on.lobby.player.joined().removeAll();
-          socketgenapi.on.lobby.player.left().removeAll();
-          socketgenapi.on.lobby.deleted().removeAll();
+          self.listeners.onPlayerJoined.stop();
+          self.listeners.onPlayerLeft.stop();
+          self.listeners.onLobbyDeleted.stop();
 
           $rootScope.$apply(callback(data));
         });
       },
       onPlayerJoined: function(callback){
-        socketgenapi.on.lobby.player.joined(function(data){
+        this.listeners.onPlayerJoined = socketgenapi.on.lobby.player.joined(function(data){
           callback(data);
         });
       },
       onPlayerLeft: function(callback){
-        socketgenapi.on.lobby.player.left(function(data){
+        this.listeners.onPlayerLeft = socketgenapi.on.lobby.player.left(function(data){
           callback(data);
         });
       },
       onLobbyDeleted: function(callback){
-        socketgenapi.on.lobby.deleted(function(data){
-          socketgenapi.on.lobby.player.joined().removeAll();
-          socketgenapi.on.lobby.player.left().removeAll();
+        var self = this;
+        this.listeners.onLobbyDeleted = socketgenapi.on.lobby.deleted(function(data){
+          self.listeners.onPlayerJoined.stop();
+          self.listeners.onPlayerLeft.stop();
 
           // once alternative
-          // socketgenapi.on.lobby.deleted().removeAll();
+          // can't use once with parent function because whole processor object needs to be saved to listeners to stop in later
+          self.listeners.onLobbyDeleted.stop();
+
           callback(data);
-        }).once();
+        });
       }
     };
   });

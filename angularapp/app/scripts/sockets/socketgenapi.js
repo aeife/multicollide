@@ -32,9 +32,10 @@ angular.module('sockets')
           socket.removeAllListeners(msgname);
         },
         once: function(){
-          // @TODO: all listeners?
           // remove normal listener
-          socket.removeAllListeners(msgname);
+          this.stop();
+          // @TODO: can message can be emitted in between?
+
           // add once listener
           socket.once(msgname, callbackConverted);
         },
