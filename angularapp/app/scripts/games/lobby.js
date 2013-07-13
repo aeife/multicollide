@@ -30,6 +30,7 @@ angular.module('games')
 
           socketgenapi.on.lobby.player.joined().removeAll();
           socketgenapi.on.lobby.player.left().removeAll();
+          socketgenapi.on.lobby.deleted().removeAll();
 
           $rootScope.$apply(callback(data));
         });
