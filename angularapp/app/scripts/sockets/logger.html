@@ -21,8 +21,8 @@
             <th>Count</th>
           </tr>
           <tr ng-repeat="(key, event) in events">
-            <td class="span2">{{key}}</td>
-            <td class="span1 text-center">
+            <td ng-class="{hide: event == null}" class="span2">{{key}}</td>
+            <td ng-class="{hide: event == null}" class="span1 text-center">
               <span ng-switch="event.length">
                 <span ng-switch-when="0">1</span>
                 <span ng-switch-when="null">null</span>

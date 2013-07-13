@@ -15,14 +15,10 @@ angular.module('sockets')
         $scope.totalListenerCount = function(){
           var count = 0;
           for (var event in socket.socketObj().$events){
-            if (!socket.socketObj().$events[event]){
-              count = -1;
-              break;
-            }
-            if (socket.socketObj().$events[event].length === 0){
+            if (socket.socketObj().$events[event] && socket.socketObj().$events[event].length === 0){
               // length 0 equals 1
               count++;
-            } else {
+            } else if (socket.socketObj().$events[event]) {
               count += socket.socketObj().$events[event].length
             }
           }
