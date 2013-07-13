@@ -31,8 +31,8 @@ describe('Directive: friendslist', function () {
     expect(scope.friendsOnline(scope.friends)).toBe(1);
   });
 
-  it('should add request of each user on event', function(){
-    socket.emit('friend:request', {requests: ['tester1', 'tester2', 'testuser']});
-    expect(scope.requests.length).toBe(3);
-  });
+  // it('should add request of each user on event', function(){
+  //   socket.emit('friend:request', {requests: ['tester1', 'tester2', 'testuser']});
+  //   expect(scope.requests.length).toBe(3);
+  // });
 });

@@ -18,16 +18,20 @@ angular.module('friendslist', [])
     // list of friend requests
     $scope.requests = [];
 
-    socketgenapi.on.friend.request(function(data){
-      console.log(data);
-      $scope.requests = data.requests;
-      // console.log(data.from + ' wants to add you!');
-    });
+
 
 
     // TODO: change to when server accepts login, otherwise server session may not be ready
     $scope.$watch(auth.isLoggedIn, function(newValue, oldValue) {
       if (newValue) {
+
+        //get friend requests
+        socketgenapi.on.friend.request(function(data){
+          console.log(data);
+          $scope.requests = data.requests;
+          // console.log(data.from + ' wants to add you!');
+        });
+
         // on log in: get friends and there online status
         user.getFriendsStatus(function(data){
           $scope.friends = data;
