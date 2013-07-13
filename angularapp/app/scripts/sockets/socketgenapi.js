@@ -61,13 +61,14 @@ angular.module('sockets')
         emit(msgname);
       }
 
+      // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
+      // @TODO: always send error as first parameter
       if (data && attach){
         // attach a string to the listener message
         once(msgname + ':' + data[attach], function (err, data){
           $rootScope.$apply(callback(err, data));
         });
       } else {
-        // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
         once(msgname, function (err, data){
           $rootScope.$apply(callback(err, data));
         });
