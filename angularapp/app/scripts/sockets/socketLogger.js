@@ -8,8 +8,26 @@ angular.module('sockets')
       controller: function($scope, websocketApi, socket){
         $scope.events = socket.socketObj().$events;
 
-        $scope.console = function(){
+        $scope.printToConsole = function(){
           console.log(socket.socketObj().$events);
+        }
+
+        $scope.totalListenerCount = function(){
+          var count = 0;
+          for (var event in socket.socketObj().$events){
+            if (!socket.socketObj().$events[event]){
+              count = -1;
+              break;
+            }
+            if (socket.socketObj().$events[event].length === 0){
+              // length 0 equals 1
+              count++;
+            } else {
+              count += socket.socketObj().$events[event].length
+            }
+          }
+
+          return count;
         }
       }
     };
