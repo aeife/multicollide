@@ -228,6 +228,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // console.log(socket.session);
       // console.log(socket.session.username);
       // req.session.destroy = true;
+
+      // @TODO: send errors
+      socket.emit('user:logout');
     });
 
     /**
