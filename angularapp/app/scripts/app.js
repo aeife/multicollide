@@ -93,5 +93,5 @@ angular.module('angularappAppBoot', ['angularappApp']).
       } else {
         console.log("still logged in!");
       }
-    });
+    }).once();
   });
