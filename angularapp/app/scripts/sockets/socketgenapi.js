@@ -39,8 +39,9 @@ angular.module('sockets')
           socket.once(msgname, callbackConverted);
         },
         whileLoggedIn: function() {
+          var self = this;
           socket.once('user:logout', function(){
-            socket.removeListener(msgname, callbackConverted);
+            self.stop();
           });
         }
       };
