@@ -34,7 +34,9 @@ angular.module('angularappApp')
         });
       },
       logout: function () {
-        socketgenapi.get.user.logout({}, function () {});
+        socketgenapi.get.user.logout(function () {
+          console.log("successfully logged out")
+        });
 
 
         delete $cookies.loggedin;

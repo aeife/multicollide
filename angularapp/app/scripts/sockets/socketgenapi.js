@@ -67,6 +67,7 @@ angular.module('sockets')
           $rootScope.$apply(callback(err, data));
         });
       } else {
+        // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
         once(msgname, function (err, data){
           $rootScope.$apply(callback(err, data));
         });
