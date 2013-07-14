@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('games', [])
-  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter) {
+  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter, user) {
     $scope.order = 'name';
     $scope.reverse = false;
     $scope.lobby = lobby;
-    $scope.ownUsername = $rootScope.username;
+    $scope.user = user;
 
     $scope.reorder = function(attr){
       if (attr === $scope.order){

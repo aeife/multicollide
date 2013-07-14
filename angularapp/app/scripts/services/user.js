@@ -53,6 +53,9 @@ angular.module('angularappApp')
       },
       changeLanguageSetting: function(newLanguage){
         socketgenapi.emit.settings.newLanguage(newLanguage);
+      },
+      ownUsername: function(){
+        return $rootScope.username;
       }
     };
   });
