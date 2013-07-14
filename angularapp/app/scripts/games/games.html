@@ -8,7 +8,7 @@
       <div class="btn-group">
         <a href="" class="btn" ng-click="btnLeaveGame()">{{'_LeaveLobby_' | i18n}}</a>
       </div>
-      <div class="btn-group">
+      <div class="btn-group" ng-hide="!isHost(ownUsername)">
         <a href="" class="btn" ng-click="btnReady()">{{'_Ready_' | i18n}}</a>
       </div>
     </div>

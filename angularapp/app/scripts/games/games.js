@@ -5,6 +5,7 @@ angular.module('games', [])
     $scope.order = 'name';
     $scope.reverse = false;
     $scope.lobby = lobby;
+    $scope.ownUsername = $rootScope.username;
 
     $scope.reorder = function(attr){
       if (attr === $scope.order){
