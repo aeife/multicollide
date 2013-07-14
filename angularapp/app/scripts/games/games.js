@@ -102,9 +102,13 @@ angular.module('games', [])
       });
     };
 
+    // only process first of the two events below
+    var eventProcessed = false;
+
+    // leave lobby on location change
     $scope.$on('$locationChangeStart', function(event, next, current) {
       // if user was in lobby, leave
-      if ($scope.lobby){
+      if (!eventProcessed && $scope.lobby){
         event.preventDefault();
         $dialog.messageBox($filter('i18n')('_LeaveLobby_'), $filter('i18n')('_LeaveLobbyReally_'), [{result:true, label: $filter('i18n')('_Yes_'), cssClass: 'btn-primary'}, {result:false, label: $filter('i18n')('_Cancel_')}])
         .open()
@@ -118,6 +122,17 @@ angular.module('games', [])
           }
         });
       }
+
+      eventProcessed = true;
+    });
+
+    // leave lobby on logout
+    $rootScope.$on('event:logout:before', function(){
+      if (!eventProcessed && $scope.lobby){
+        $scope.leaveGame();
+      }
+
+      eventProcessed = true;
     });
 
     $scope.refresh();
