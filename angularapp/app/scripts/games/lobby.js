@@ -17,10 +17,10 @@ angular.module('games')
           self.games = data;
         });
       },
-      newLobby: function(){
+      newLobby: function(lobbyName){
         var self = this;
-        console.log('adding new lobby');
-        socketgenapi.get.lobby.new(function(data){
+        console.log('adding new lobby: ' + lobbyName);
+        socketgenapi.get.lobby.new({lobbyName: lobbyName}, function(data){
           self.onJoinedLobby(data);
         });
       },

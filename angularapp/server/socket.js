@@ -479,7 +479,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     socket.on('lobby:new', function(data){
       console.log('client requested games info');
-      var newLobby = addLobby({name: 'new game', host: socket.session.username, status: 'lobby', maxplayers: 10});
+      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: 'lobby', maxplayers: 10});
       joinLobby(newLobby.id, socket);
       socket.emit('lobby:new', newLobby);
     });
@@ -669,7 +669,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     // add player who opened lobby as first player to lobby
     lobbys[lobbyHighestCount] = {
       id: lobbyHighestCount,
-      name: data.name + lobbyHighestCount,
+      name: (data.name) ? data.name  : "new game " + lobbyHighestCount,
       host: data.host,
       status: data.status,
       players: [],

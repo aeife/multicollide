@@ -52,7 +52,11 @@ websocket = function(){
       },
       games: {},
       lobby: {
-        new: {},
+        new: {
+          opts: {
+            emitData: "lobbyName"
+          }
+        },
         join: {
           opts: {
             emitData: "id"
