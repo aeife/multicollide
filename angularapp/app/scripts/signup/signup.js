@@ -7,6 +7,8 @@ angular.module('signup', [])
     $scope.signup = function(){
       if ($scope.signupForm.$invalid) {
         flash.error('wrong input');
+      } else if ($scope.username.indexOf('guest') !== -1) {
+        flash.error('"guest" is not allowed in username')
       } else if ($scope.password !== $scope.passwordConfirm) {
         flash.error('passwords do not match');
       } else {
