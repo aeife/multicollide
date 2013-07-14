@@ -23,7 +23,8 @@ angular.module('angularappApp',
   'imagePreload',
   'profile',
   'games',
-  'websocketApi'])
+  'websocketApi',
+  'multicollide'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

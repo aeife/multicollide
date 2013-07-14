@@ -1,5 +1,6 @@
 <div ng-switch="lobby.status">
-  <div ng-switch-when="ingame">
+  <div ng-switch-when="ingame" ng-controller="MulticollideCtrl">
+    {{test}}
     <h1>INGAME</h1>
   </div>
   <div ng-switch-when="lobby">
