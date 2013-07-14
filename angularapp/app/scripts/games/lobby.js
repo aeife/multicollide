@@ -1,41 +1,82 @@
 'use strict';
 
 angular.module('games')
-  .factory('lobby', function ($rootScope, socketgenapi) {
+  .factory('lobby', function ($rootScope, socketgenapi, flash) {
     // Service logic
     // ...
 
     // Public API here
     return {
       listeners: {},
-      getAvailableGames: function(callback){
+      inLobby: false,
+      currentLobby: null,
+      games: {},
+      getAvailableGames: function(){
+        var self = this;
         socketgenapi.get.games(function(data){
-          $rootScope.$apply(callback(data));
+          self.games = data;
         });
       },
-      newLobby: function(callback){
+      newLobby: function(){
+        var self = this;
         console.log('adding new lobby');
         socketgenapi.get.lobby.new(function(data){
-          $rootScope.$apply(callback(data));
+          self.onJoinedLobby(data);
         });
       },
-      joinLobby: function(id, callback){
+      joinLobby: function(id){
+        var self = this;
+
         console.log('joining lobby');
         socketgenapi.get.lobby.join({id: id}, function(err, data){
-          $rootScope.$apply(callback(err, data));
+          if (err) {
+            flash.error(err);
+            self.getAvailableGames();
+          } else {
+            console.log('successfull joined lobby');
+            self.onJoinedLobby(data);
+          }
         });
       },
-      leaveLobby: function(id, callback){
+      leaveLobby: function(callback){
         console.log('leaving lobby');
         var self = this;
-        socketgenapi.get.lobby.leave({id: id}, function(data){
+        socketgenapi.get.lobby.leave({id: this.currentLobby.id}, function(data){
 
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
           self.listeners.onLobbyDeleted.stop();
 
-          $rootScope.$apply(callback(data));
+          self.onLeftLobby();
         });
+      },
+      onJoinedLobby: function (data){
+        var self = this;
+
+        this.inLobby = true;
+        this.currentLobby = data;
+
+        this.onPlayerJoined(function(data){
+          self.currentLobby.players.push(data.username);
+        });
+
+        this.onPlayerLeft(function(data){
+          if (self.currentLobby.players.indexOf(data.username) > -1){
+            self.currentLobby.players.splice(self.currentLobby.players.indexOf(data.username), 1);
+          }
+        });
+
+        this.onLobbyDeleted(function(data){
+          console.log("onLobbyDeleted Listener");
+          flash.error(data.reason);
+          self.onLeftLobby();
+        });
+      },
+      onLeftLobby: function(){
+        this.inLobby = false;
+        this.currentLobby = null;
+
+        this.getAvailableGames();
       },
       onPlayerJoined: function(callback){
         this.listeners.onPlayerJoined = socketgenapi.on.lobby.player.joined(function(data){

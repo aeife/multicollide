@@ -1,6 +1,6 @@
-<div ng-switch="inLobby">
+<div ng-switch="lobby.inLobby">
     <div ng-switch-when="true">
-        <h1 class="text-center">Lobby: {{lobby.name}}</h1>
+        <h1 class="text-center">Lobby: {{lobby.currentLobby.name}}</h1>
         <div class="btn-toolbar text-center">
             <div class="btn-group">
                 <a href="" class="btn" ng-click="btnLeaveGame()">{{'_LeaveLobby_' | i18n}}</a>
@@ -10,7 +10,7 @@
             </div>
         </div>
         <ul>
-            <li ng-repeat="player in lobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
+            <li ng-repeat="player in lobby.currentLobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
         </ul>
     </div>
     <div ng-switch-default>
@@ -30,14 +30,13 @@
                 <th ng-click="reorder('status')">{{'_Status_' | i18n}}</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="game in games | toArray | orderBy:order:reverse">
+            <tr ng-repeat="game in lobby.games | toArray | orderBy:order:reverse">
                 <td>{{game.name}}</td>
                 <td>{{game.players.length}} / {{game.maxplayers}}</td>
                 <td>{{game.status}}</td>
                 <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">{{'_Join_' | i18n}}</a></td>
             </tr>
         </table>
-        {{Object.keys(games).length}}
         <h5 class="text-center" ng-hide="getLobbyCount()!=0">{{'_NoLobbys_' | i18n}}</h5>
     </div>
 </div>
