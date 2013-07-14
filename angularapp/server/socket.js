@@ -503,6 +503,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       socket.emit('lobby:leave', lobbys[data.id]);
     });
 
+
+    socket.on('lobby:start', function(data){
+      console.log('host started game');
+      lobbyStart(data.id, socket);
+      socket.emit('lobby:start', {});
+    });
+
   });
 
   /**
@@ -744,11 +751,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       //send left event to other players in lobby and leave socket room
       socket.leave(lobbys[id].name);
       io.sockets.in(lobbys[id].name).emit('lobby:player:left', {username: socket.session.username});
-
-
-
     }
-
   }
 
   /**
@@ -759,4 +762,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   function getLobbyOfUsername(name) {
     return lobbyForUsername[name];
   }
+
+
+  function lobbyStart(id, socket){
+    // check if really host started the game
+    if (lobbys[id].host === socket.session.username){
+      lobbys[id].status = "ingame";
+
+      // emit start to all players in lobby
+      io.sockets.in(lobbys[id].name).emit('lobby:started', {});
+    }
+  }
+
+
+
 };

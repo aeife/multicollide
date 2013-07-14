@@ -75,6 +75,8 @@ angular.module('games')
           flash.error(data.reason);
           self.onLeftLobby();
         });
+
+        this.onGameStarted();
       },
       onLeftLobby: function(){
         this.inLobby = false;
@@ -106,8 +108,15 @@ angular.module('games')
           callback(data);
         });
       },
+      onGameStarted: function(){
+        var self = this;
+        this.listeners.onGameStarted = socketgenapi.on.lobby.started(function(data){
+          self.status = "ingame";
+        });
+      },
       startGame: function(){
-        this.status = "ingame";
+        // @TODO: maybe get id from session on server?
+        socketgenapi.get.lobby.start({id: this.currentLobby.id}, function(){});
       }
     };
   });

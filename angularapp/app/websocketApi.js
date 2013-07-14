@@ -16,7 +16,8 @@ websocket = function(){
         player: {
           joined: {},
           left: {}
-        }
+        },
+        started: {}
       },
       successfullConnected: {},
       disconnect: {}
@@ -63,6 +64,11 @@ websocket = function(){
           }
         },
         leave: {
+          opts: {
+            emitData: "id"
+          }
+        },
+        start: {
           opts: {
             emitData: "id"
           }
