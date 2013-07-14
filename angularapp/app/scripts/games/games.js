@@ -112,4 +112,8 @@ angular.module('games', [])
       dialog.close();
       lobby.newLobby(lobbyName, maxplayers);
     }
+
+    $scope.cancel = function (){
+      dialog.close();
+    }
   });
