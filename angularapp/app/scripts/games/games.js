@@ -29,6 +29,11 @@ angular.module('games', [])
       });
     };
 
+    $scope.btnCreateGame = function(){
+      $scope.dialogCreateGame = $dialog.dialog({templateUrl: 'scripts/games/msgCreateGame.html', backdropClick: false, keyboard: false, controller: 'GamesCtrl'});
+      $scope.dialogCreateGame.open()
+    };
+
     $scope.createGame = function(){
       lobby.newLobby(function(data){
         console.log('successfull created lobby');
@@ -136,4 +141,10 @@ angular.module('games', [])
     });
 
     $scope.refresh();
+  })
+
+  .controller('CreateGameDialogCtrl', function ($scope, dialog) {
+    $scope.createGame = function (result){
+      dialog.close(result);
+    }
   });
