@@ -453,7 +453,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       console.log('client disconnected');
 
       // leave lobby if in lobby
-      if (lobbyForUsername[socket.session.username]){
+      if (typeof lobbyForUsername[socket.session.username] !== 'undefined'){
         leaveLobby(lobbyForUsername[socket.session.username], socket);
       }
 
