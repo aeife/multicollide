@@ -12,6 +12,7 @@ angular.module('games')
       currentLobby: null,
       games: {},
       maxplayers: 10,
+      status: "browser",
       getAvailableGames: function(){
         var self = this;
         socketgenapi.get.games(function(data){
@@ -56,6 +57,7 @@ angular.module('games')
         var self = this;
 
         this.inLobby = true;
+        this.status = "lobby";
         this.currentLobby = data;
 
         this.onPlayerJoined(function(data){
@@ -76,6 +78,7 @@ angular.module('games')
       },
       onLeftLobby: function(){
         this.inLobby = false;
+        this.status = "browser";
         this.currentLobby = null;
 
         this.getAvailableGames();
@@ -102,6 +105,9 @@ angular.module('games')
 
           callback(data);
         });
+      },
+      startGame: function(){
+        this.status = "ingame";
       }
     };
   });

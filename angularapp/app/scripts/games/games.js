@@ -45,6 +45,11 @@ angular.module('games', [])
       return username === lobby.currentLobby.host;
     };
 
+    $scope.btnReady = function(){
+      lobby.startGame();
+    };
+
+
     $scope.btnLeaveGame = function(){
       $dialog.messageBox($filter('i18n')('_LeaveLobby_'), $filter('i18n')('_LeaveLobbyReally_'), [{result:true, label: $filter('i18n')('_Yes_'), cssClass: 'btn-primary'}, {result:false, label: $filter('i18n')('_Cancel_')}])
         .open()
