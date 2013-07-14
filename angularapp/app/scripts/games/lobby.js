@@ -11,20 +11,22 @@ angular.module('games')
       inLobby: false,
       currentLobby: null,
       games: {},
+      maxplayers: 10,
       getAvailableGames: function(){
         var self = this;
         socketgenapi.get.games(function(data){
           self.games = data;
         });
       },
-      newLobby: function(lobbyName){
+      newLobby: function(lobbyName, maxplayers){
         var self = this;
         console.log('adding new lobby: ' + lobbyName);
-        socketgenapi.get.lobby.new({lobbyName: lobbyName}, function(data){
+        socketgenapi.get.lobby.new({lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
           self.onJoinedLobby(data);
         });
       },
       joinLobby: function(id){
+        // @TODO: only when lobby not full
         var self = this;
 
         console.log('joining lobby');

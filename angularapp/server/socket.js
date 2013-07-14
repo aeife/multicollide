@@ -479,7 +479,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     socket.on('lobby:new', function(data){
       console.log('client requested games info');
-      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: 'lobby', maxplayers: 10});
+      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: 'lobby', maxplayers: data.maxplayers});
       joinLobby(newLobby.id, socket);
       socket.emit('lobby:new', newLobby);
     });

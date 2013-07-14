@@ -54,7 +54,7 @@ websocket = function(){
       lobby: {
         new: {
           opts: {
-            emitData: "lobbyName"
+            emitData: ["lobbyName", "playerLimit"]
           }
         },
         join: {

@@ -97,8 +97,19 @@ angular.module('games', [])
   })
 
   .controller('CreateGameDialogCtrl', function ($scope, dialog, lobby) {
-    $scope.createGame = function (lobbyName){
+    $scope.lobby = lobby;
+
+    $scope.playerLimits = [];
+    // generate player limit array
+    for (var i = 2; i <= lobby.maxplayers; i++) {
+      $scope.playerLimits.push(i);
+    }
+
+    // set default player limit
+    $scope.maxplayers = 2;
+
+    $scope.createGame = function (lobbyName, maxplayers){
       dialog.close();
-      lobby.newLobby(lobbyName);
+      lobby.newLobby(lobbyName, maxplayers);
     }
   });
