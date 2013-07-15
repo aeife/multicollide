@@ -12,7 +12,7 @@ angular.module('games')
       currentLobby: null,
       games: {},
       maxplayers: 10,
-      status: "browser",
+      status: "ingame",
       getAvailableGames: function(){
         var self = this;
         socketgenapi.get.games(function(data){

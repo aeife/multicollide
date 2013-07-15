@@ -19,6 +19,8 @@ angular.module('multicollide', [])
     function resize(){
       // resize according to grid ratio
       $scope.canvasSize = {width: $('#canvasWrapper').width(), height: $('#canvasWrapper').width() * ($scope.gridSize.height / $scope.gridSize.width)};
+      $scope.tileSize = (1 / $scope.gridSize.width) * $scope.canvasSize.width;
+
       canvas.attr('width', $scope.canvasSize.width ); //max width
       canvas.attr('height', $scope.canvasSize.height ); //max height
 
@@ -26,25 +28,13 @@ angular.module('multicollide', [])
     }
 
     function redraw(){
-      // console.log("redraw");
-      // ctx.fillStyle = "red";
-      // ctx.fillRect(0.1*$scope.canvasSize.width * 0, 0.1*$scope.canvasSize.width * 0, 0.1*$scope.canvasSize.width, 0.1*$scope.canvasSize.width);
       printGrid();
     }
 
     function drawTile(x, y){
       // draw rects as squares and fill whole canvas
-
-      // console.log("draw tile " + x + ":" + y);
-      // console.log((1 / $scope.gridSize.width) * $scope.canvasSize.width * x);
-      // console.log((1 / $scope.gridSize.height) * $scope.canvasSize.height * y);
-
-
-      // ctx.fillStyle = "red";
-      // ctx.fillRect((1 / $scope.gridSize.width) * $scope.canvasSize.width * x, (1 / $scope.gridSize.height) * $scope.canvasSize.height * y, (1 / $scope.gridSize.width) * $scope.canvasSize.width, (1 / $scope.gridSize.height) * $scope.canvasSize.height);
-
       ctx.strokeStyle = "#F2F2F2";
-      ctx.strokeRect((1 / $scope.gridSize.width) * $scope.canvasSize.width * x, (1 / $scope.gridSize.height) * $scope.canvasSize.height * y, (1 / $scope.gridSize.width) * $scope.canvasSize.width, (1 / $scope.gridSize.height) * $scope.canvasSize.height);
+      ctx.strokeRect((1 / $scope.gridSize.width) * $scope.canvasSize.width * x, (1 / $scope.gridSize.height) * $scope.canvasSize.height * y, $scope.tileSize, $scope.tileSize);
     }
 
     function printGrid(){
