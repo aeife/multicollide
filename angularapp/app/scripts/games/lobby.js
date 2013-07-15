@@ -49,6 +49,7 @@ angular.module('games')
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
           self.listeners.onLobbyDeleted.stop();
+          self.listeners.onGameStarted.stop();
 
           self.onLeftLobby();
         });
@@ -104,6 +105,8 @@ angular.module('games')
           // once alternative
           // can't use once with parent function because whole processor object needs to be saved to listeners to stop in later
           self.listeners.onLobbyDeleted.stop();
+
+          self.listeners.onGameStarted.stop();
 
           callback(data);
         });
