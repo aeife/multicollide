@@ -69,6 +69,10 @@ angular.module('multicollide.level', [])
       },
       isInGrid: function(x, y){
         return !(x < 0 || x >= this.gridSize.width || y < 0 || y >= this.gridSize.height);
+      },
+      generateFood: function(x, y){
+        this.grid[x][y] = {food: 5};
+        this.drawTile(x, y, 'black');
       }
     };
   });
