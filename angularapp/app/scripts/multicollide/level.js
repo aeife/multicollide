@@ -13,6 +13,7 @@ angular.module('multicollide.level', [])
       gridSize: {width: 50, height: 30},
       canvasSize: null,
       tileSize: null,
+      grid: [],
       setAutoResize: function(){
         var self = this;
         $(window).resize(function(e) {
@@ -28,6 +29,8 @@ angular.module('multicollide.level', [])
 
         this.setAutoResize();
         this.resize();
+
+        this.initializeGrid();
       },
       resize: function(){
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (this.gridSize.height / this.gridSize.width)};
@@ -41,17 +44,31 @@ angular.module('multicollide.level', [])
       redraw: function(){
         this.drawGrid();
       },
-      drawTile: function(x,y){
+      drawTile: function(x, y, color){
         // draw rects as squares and fill whole canvas
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+
         this.ctx.strokeStyle = "#F2F2F2";
         this.ctx.strokeRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
       },
       drawGrid: function(){
         for (var i = 0; i < this.gridSize.width; i++){
           for (var j = 0; j < this.gridSize.height; j++){
-            this.drawTile(i,j);
+            this.drawTile(i, j, 'white');
           }
         }
+      },
+      initializeGrid: function(){
+        for (var i = 0; i < this.gridSize.width; i++) {
+          this.grid[i] = [];
+          for (var j = 0; j < this.gridSize.height; j++){
+              this.grid[i][j] = {food: 0, player: false};
+          }
+        }
+      },
+      isInGrid: function(x, y){
+        return !(x < 0 || x >= this.gridSize.width || y < 0 || y >= this.gridSize.height);
       }
     };
   });
