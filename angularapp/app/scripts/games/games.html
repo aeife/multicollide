@@ -1,7 +1,9 @@
 <div ng-switch="lobby.status">
   <div ng-switch-when="ingame" ng-controller="MulticollideCtrl">
-    {{test}}
-    <h1>INGAME</h1>
+    <div id="canvasWrapper">
+      <h1>INGAME</h1>
+      <canvas id="canvas" style="border: 1px gray solid;"></canvas>
+    </div>
   </div>
   <div ng-switch-when="lobby">
     <h1 class="text-center">Lobby: {{lobby.currentLobby.name}}</h1>
