@@ -17,7 +17,7 @@ angular.module('multicollide.player', [])
       },
       spawn: function(x, y){
         for (var i = 0; i < 5; i++){
-          this.fields.push({x: x + i, y: y});
+          this.fields.push({x: x + i, y: y, rotation: 0, image: this.image.linear});
 
           level.grid[x+i][y].player = true;
         }
@@ -27,7 +27,19 @@ angular.module('multicollide.player', [])
       draw: function(){
         for (var i = 0; i < this.fields.length; i++){
           // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
-          level.drawImageTile(this.fields[i].x, this.fields[i].y, this.image);
+          console.log(this.image.linear);
+          level.drawImageTile(this.fields[i].x, this.fields[i].y, this.image.linear);
+        }
+      },
+      getNextPlayerFieldDirection: function(index){
+        if (this.fields[index].x < this.fields[index+1].x){
+          return 'east';
+        } else if (this.fields[index].y < this.fields[index+1].y){
+          return 'south';
+        } else if (this.fields[index].x > this.fields[index+1].x){
+          return 'west';
+        }  else if (this.fields[index].y > this.fields[index+1].y){
+          return 'north';
         }
       },
       move: function(){
@@ -44,60 +56,129 @@ angular.module('multicollide.player', [])
             var newX = this.fields[this.fields.length-1].x;
             var newY = this.fields[this.fields.length-1].y-1;
             if (level.isInGrid(newX, newY)){
-              this.fields.push({x: newX, y: newY});
+              this.fields.push({x: newX, y: newY, rotation: -90, image: this.image.head});
             } else {
-              this.fields.push({x: newX, y: level.gridSize.height-1});
+              this.fields.push({x: newX, y: level.gridSize.height-1, rotation: -90, image: this.image.head});
             }
+            var rotation = -90;
             break;
           case "east":
             var newX = this.fields[this.fields.length-1].x+1;
             var newY = this.fields[this.fields.length-1].y;
             if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY});
+              this.fields.push({x: newX, y: newY, rotation: 0, image: this.image.head});
             } else {
-              this.fields.push({x: 0, y: newY});
+              this.fields.push({x: 0, y: newY, rotation: 0, image: this.image.head});
             }
+            var rotation = 0;
             break;
           case "south":
             var newX = this.fields[this.fields.length-1].x;
             var newY = this.fields[this.fields.length-1].y+1;
             if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY});
+              this.fields.push({x: newX, y: newY, rotation: 90, image: this.image.head});
             } else {
-              this.fields.push({x: newX, y: 0});
+              this.fields.push({x: newX, y: 0, rotation: 90, image: this.image.head});
             }
+            var rotation = 90;
             break;
           case "west":
             var newX = this.fields[this.fields.length-1].x-1;
             var newY = this.fields[this.fields.length-1].y;
             if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY});
+              this.fields.push({x: newX, y: newY, rotation: 180, image: this.image.head});
             } else {
-              this.fields.push({x: level.gridSize.width-1, y: newY});
+              this.fields.push({x: level.gridSize.width-1, y: newY, rotation: 180, image: this.image.head});
             }
+            var rotation = 180;
             break;
         }
 
+        var translate = {
+          north: -90,
+          east: 0,
+          south: 90,
+          west: 180
+        }
+
+        // draw new tail
+        // console.log(this.fields[0].rotation);
+        if (this.fields[0].image === this.image.linear){
+          level.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, this.fields[0].rotation);
+        } else {
+          level.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, translate[this.getNextPlayerFieldDirection(0)]);
+        }
+
+        // draw head
         // level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
-        level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image);
+        level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, rotation);
+
+        // redraw old head
+        // console.log(this.fields[this.fields.length-2].image);
+        // console.log(this.fields[this.fields.length-2].rotation);
+        if (this.fields[this.fields.length-2].image !== this.image.corner){
+          this.fields[this.fields.length-2].image = this.image.linear;
+          level.drawImageTile(this.fields[this.fields.length-2].x, this.fields[this.fields.length-2].y, this.fields[this.fields.length-2].image, this.fields[this.fields.length-2].rotation);
+        }
+
       },
       changeDirection: function(dir){
         switch (dir){
           case "north":
-            if (this.direction != "south")
+            if (this.direction != "south") {
+              if (this.direction === "west"){
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, -90);
+                this.fields[this.fields.length-1].rotation = -90;
+              } else if (this.direction === "east") {
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, 180);
+                this.fields[this.fields.length-1].rotation = 180;
+              }
+              this.fields[this.fields.length-1].image = this.image.corner;
+
               this.direction = dir;
+            }
             break;
           case "east":
-            if (this.direction != "west")
+            if (this.direction != "west") {
+              if (this.direction === "north"){
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner);
+                this.fields[this.fields.length-1].rotation = 0;
+              } else if (this.direction === "south") {
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, -90);
+                this.fields[this.fields.length-1].rotation = -90;
+              }
+              this.fields[this.fields.length-1].image = this.image.corner;
+
               this.direction = dir;
+            }
             break;
           case "south":
-            if (this.direction != "north")
+            if (this.direction != "north") {
+              if (this.direction === "west"){
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner);
+                this.fields[this.fields.length-1].rotation = 0;
+              } else if (this.direction === "east") {
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, 90);
+                this.fields[this.fields.length-1].rotation = 90;
+              }
+              this.fields[this.fields.length-1].image = this.image.corner;
+
               this.direction = dir;
+            }
             break;
           case "west":
-            if (this.direction != "east")
+            if (this.direction != "east") {
+              if (this.direction === "north"){
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, 90);
+                this.fields[this.fields.length-1].rotation = 90;
+              } else if (this.direction === "south") {
+                level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.corner, 180);
+                this.fields[this.fields.length-1].rotation = 180;
+              }
+              this.fields[this.fields.length-1].image = this.image.corner;
+
               this.direction = dir;
+            }
             break;
         }
       }

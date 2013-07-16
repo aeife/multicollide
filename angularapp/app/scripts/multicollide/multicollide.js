@@ -8,15 +8,26 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
 
     level.init({canvas: canvas, ctx: ctx, wrapper: wrapper});
 
-    var imageObj = new Image();
-    imageObj.src = 'images/p.png';
-    imageObj.onload = function() {
-      var p1 = new Player('red', "east", imageObj);
+    var imageLinear = new Image();
+    imageLinear.src = 'images/c-linear.png';
+
+    var imageHead = new Image();
+    imageHead.src = 'images/c-head.png';
+
+    var imageTail = new Image();
+    imageTail.src = 'images/c-tail.png';
+
+    var imageCorner = new Image();
+    imageCorner.src = 'images/c-corner.png';
+    imageCorner.onload = function() {
+      // console.log(imageObj);
+      // console.log(imageObj2);
+      var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
 
       p1.spawn(1,1);
       setInterval(function(){
         p1.move();
-      },50);
+      },1000);
 
       document.onkeydown = function(e) {
         switch(e.keyCode) {

@@ -10,7 +10,7 @@ angular.module('multicollide.level', [])
       canvas: null,
       ctx: null,
       wrapper: null,
-      gridSize: {width: 50, height: 30},
+      gridSize: {width: 20, height: 30},
       canvasSize: null,
       tileSize: null,
       grid: [],
@@ -52,8 +52,18 @@ angular.module('multicollide.level', [])
         this.ctx.strokeStyle = "#F2F2F2";
         this.ctx.strokeRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
       },
-      drawImageTile: function(x, y, image){
-        this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+      drawImageTile: function(x, y, image, rotation){
+        // console.log("rotation: " + rotation);
+        if (rotation){
+          this.ctx.save();
+          this.ctx.translate((1 / this.gridSize.width) * this.canvasSize.width * x + this.tileSize/2, (1 / this.gridSize.height) * this.canvasSize.height * y + this.tileSize/2);
+          this.ctx.rotate(rotation * Math.PI / 180);
+          this.ctx.translate(-(1 / this.gridSize.width) * this.canvasSize.width * x -this.tileSize/2, -(1 / this.gridSize.height) * this.canvasSize.height * y-this.tileSize/2);
+          this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+          this.ctx.restore();
+        } else {
+          this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+        }
       },
       drawGrid: function(){
         for (var i = 0; i < this.gridSize.width; i++){
