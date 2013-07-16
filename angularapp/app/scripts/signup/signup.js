@@ -2,6 +2,8 @@
 
 angular.module('signup', [])
   .controller('SignupCtrl', function ($scope, auth, flash) {
+    // because $rootScope.username is set and inherited:
+    $scope.username = undefined;
     $scope.signedup = false;
 
     $scope.signup = function(){
