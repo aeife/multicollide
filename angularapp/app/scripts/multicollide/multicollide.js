@@ -59,6 +59,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
     };
 
     $scope.fullscreen = function(){
+      // @TODO: check in other browsers (firefox: not centered, ie: not working, opera: ?, safari: ?)
       console.log("GO FULLSCREEN");
       var full = document.getElementById("canvasWrapper");
       // level.fullscreen = true;
