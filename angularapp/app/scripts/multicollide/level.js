@@ -52,6 +52,9 @@ angular.module('multicollide.level', [])
         this.ctx.strokeStyle = "#F2F2F2";
         this.ctx.strokeRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
       },
+      drawImageTile: function(x, y, image){
+        this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+      },
       drawGrid: function(){
         for (var i = 0; i < this.gridSize.width; i++){
           for (var j = 0; j < this.gridSize.height; j++){

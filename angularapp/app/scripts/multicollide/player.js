@@ -4,10 +4,11 @@ angular.module('multicollide.player', [])
   .factory('Player', function ($rootScope, level) {
     // Service logic
 
-    function Player(color, direction){
+    function Player(color, direction, image){
       this.color = color;
       this.direction = direction;
       this.fields = [];
+      this.image = image;
     }
 
     Player.prototype = {
@@ -25,7 +26,8 @@ angular.module('multicollide.player', [])
       },
       draw: function(){
         for (var i = 0; i < this.fields.length; i++){
-          level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
+          // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
+          level.drawImageTile(this.fields[i].x, this.fields[i].y, this.image);
         }
       },
       move: function(){
@@ -76,7 +78,8 @@ angular.module('multicollide.player', [])
             break;
         }
 
-        level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
+        // level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
+        level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image);
       },
       changeDirection: function(dir){
         switch (dir){
