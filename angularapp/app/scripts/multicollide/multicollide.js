@@ -19,10 +19,15 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
 
     var imageCorner = new Image();
     imageCorner.src = 'images/c-corner.png';
+
+    var imageA = new Image();
+    imageA.src = 'images/a-linear.png';
+
     imageCorner.onload = function() {
       // console.log(imageObj);
       // console.log(imageObj2);
-      var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
+      // var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
+      var p1 = new Player('red', "east", {linear: imageA, corner: imageA, head: imageA, tail: imageA});
 
       p1.spawn(1,1);
       setInterval(function(){
