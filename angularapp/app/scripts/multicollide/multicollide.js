@@ -4,9 +4,11 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
   .controller('MulticollideCtrl', function ($scope, level, Player) {
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
+    var bgCanvas = $('#bgCanvas');
+    var bgCtx = document.getElementById('bgCanvas').getContext('2d');
     var wrapper = $('#canvasWrapper');
 
-    level.init({canvas: canvas, ctx: ctx, wrapper: wrapper});
+    level.init({canvas: canvas, ctx: ctx, bgCanvas: bgCanvas, bgCtx: bgCtx, wrapper: wrapper});
 
     var imageLinear = new Image();
     imageLinear.src = 'images/c-linear.png';
@@ -55,9 +57,4 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
         };
       };
     };
-
-
-
-
-
   });

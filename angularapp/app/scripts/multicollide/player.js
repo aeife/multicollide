@@ -34,7 +34,7 @@ angular.module('multicollide.player', [])
       draw: function(){
         for (var i = 0; i < this.fields.length; i++){
           // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
-          console.log(this.image.linear);
+          // console.log(this.image.linear);
           level.drawImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation);
         }
       },
@@ -54,7 +54,8 @@ angular.module('multicollide.player', [])
 
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].player = false;
-        level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
+        level.clearTile(this.fields[0].x, this.fields[0].y, level.ctx)
+        // level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
         this.fields.shift();
 
         // add head
