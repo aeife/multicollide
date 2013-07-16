@@ -43,33 +43,36 @@ angular.module('multicollide.player', [])
             var newY = this.fields[this.fields.length-1].y-1;
             if (level.isInGrid(newX, newY)){
               this.fields.push({x: newX, y: newY});
+            } else {
+              this.fields.push({x: newX, y: level.gridSize.height-1});
             }
-            else
-              this.fields.push({x: newX, y: level.gridSize-1});
             break;
           case "east":
             var newX = this.fields[this.fields.length-1].x+1;
             var newY = this.fields[this.fields.length-1].y;
-            if (level.isInGrid(newX, newY))
+            if (level.isInGrid(newX, newY)) {
               this.fields.push({x: newX, y: newY});
-            else
+            } else {
               this.fields.push({x: 0, y: newY});
+            }
             break;
           case "south":
             var newX = this.fields[this.fields.length-1].x;
             var newY = this.fields[this.fields.length-1].y+1;
-            if (level.isInGrid(newX, newY))
+            if (level.isInGrid(newX, newY)) {
               this.fields.push({x: newX, y: newY});
-            else
+            } else {
               this.fields.push({x: newX, y: 0});
+            }
             break;
           case "west":
             var newX = this.fields[this.fields.length-1].x-1;
             var newY = this.fields[this.fields.length-1].y;
-            if (level.isInGrid(newX, newY))
+            if (level.isInGrid(newX, newY)) {
               this.fields.push({x: newX, y: newY});
-            else
-              this.fields.push({x: level.gridSize-1, y: newY});
+            } else {
+              this.fields.push({x: level.gridSize.width-1, y: newY});
+            }
             break;
         }
 
