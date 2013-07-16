@@ -50,7 +50,7 @@ angular.module('multicollide.player', [])
         }
       },
       move: function(){
-        console.log("move");
+        // console.log("move");
 
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].player = false;

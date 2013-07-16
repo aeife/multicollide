@@ -33,6 +33,9 @@ angular.module('multicollide.level', [])
         this.initializeGrid();
       },
       resize: function(){
+        console.log("resize");
+
+
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (this.gridSize.height / this.gridSize.width)};
         this.tileSize = (1 / this.gridSize.width) * this.canvasSize.width;
 
@@ -42,10 +45,40 @@ angular.module('multicollide.level', [])
         this.canvas.background.attr('width', this.canvasSize.width ); //max width
         this.canvas.background.attr('height', this.canvasSize.height ); //max height
 
+        // console.log(this.fullscreenSet);
+        // if (this.fullscreen){
+        //   this.setFullscreen();
+        // } else if (this.fullscreen !this.fullscreenSet){
+        //   console.log("fullscreen set");
+        //   this.fullscreenSet = true;
+        // } else {
+        //   console.log(this.fullscreenSet);
+        //   console.log("RESETTING");
+        //   this.wrapper.css("width", this.oldWidth);
+        //   this.wrapper.css("position", "relative");
+        //   this.wrapper.css("top", "");
+        //   this.wrapper.css("right", "");
+        // }
+
+
         // adjust wrapper div because of absolute position of canvas elements
-        this.wrapper.css("height", this.canvasSize.height + 100);
+        // this.wrapper.css("height", this.canvasSize.height + 100);
 
         this.redraw();
+      },
+      setFullscreen: function(){
+        this.wrapper.css("width", "100%");
+        this.wrapper.css("position", "absolute");
+        this.wrapper.css("top", "0");
+        this.wrapper.css("right", "50");
+        this.resize();
+      },
+      exitFullscreen: function(){
+        this.wrapper.css("width", "100%");
+        this.wrapper.css("position", "relative");
+        this.wrapper.css("top", "");
+        this.wrapper.css("right", "");
+        this.resize();
       },
       redraw: function(){
         this.drawBackground();
@@ -87,7 +120,8 @@ angular.module('multicollide.level', [])
         imageObj.onload = function(){
           for (var i = 0; i < self.gridSize.width; i++){
             for (var j = 0; j < self.gridSize.height; j++){
-              self.drawImage(i, j, imageObj, scale);
+              // self.drawImage(i, j, imageObj, scale);
+              self.drawTile(i, j, 'white', self.layer.background);
             }
           }
         };
