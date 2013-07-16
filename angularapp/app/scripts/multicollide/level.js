@@ -10,7 +10,7 @@ angular.module('multicollide.level', [])
       canvas: null,
       ctx: null,
       wrapper: null,
-      gridSize: {width: 20, height: 30},
+      gridSize: {width: 50, height: 30},
       canvasSize: null,
       tileSize: null,
       grid: [],

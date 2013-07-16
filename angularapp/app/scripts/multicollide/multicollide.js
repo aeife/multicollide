@@ -27,7 +27,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
       p1.spawn(1,1);
       setInterval(function(){
         p1.move();
-      },1000);
+      },50);
 
       document.onkeydown = function(e) {
         switch(e.keyCode) {
