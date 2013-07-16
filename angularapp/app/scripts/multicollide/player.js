@@ -128,6 +128,7 @@ angular.module('multicollide.player', [])
 
       },
       changeDirection: function(dir){
+        // @TODO: dont allow multiple direction changes during one tick
         var head = this.fields[this.fields.length-1];
         switch (dir){
           case "north":
