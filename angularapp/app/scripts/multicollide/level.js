@@ -62,6 +62,9 @@ angular.module('multicollide.level', [])
         ctx.strokeStyle = "#F2F2F2";
         ctx.strokeRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
       },
+      drawImage: function(x, y, image){
+        this.bgCtx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+      },
       drawImageTile: function(x, y, image, rotation){
         // console.log("rotation: " + rotation);
         if (rotation){
@@ -76,11 +79,17 @@ angular.module('multicollide.level', [])
         }
       },
       drawGrid: function(){
-        for (var i = 0; i < this.gridSize.width; i++){
-          for (var j = 0; j < this.gridSize.height; j++){
-            this.drawTile(i, j, 'green', this.bgCtx);
+        var imageObj = new Image();
+        imageObj.src = 'images/bg.png';
+
+        var self = this;
+        imageObj.onload = function(){
+          for (var i = 0; i < self.gridSize.width; i++){
+            for (var j = 0; j < self.gridSize.height; j++){
+              self.drawImage(i, j, imageObj);
+            }
           }
-        }
+        };
       },
       clearTile: function(x, y, ctx){
         ctx.clearRect((1 / this.gridSize.width) * this.canvasSize.width * x -1, (1 / this.gridSize.height) * this.canvasSize.height * y -1, this.tileSize +2, this.tileSize +2);
