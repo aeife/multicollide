@@ -61,8 +61,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
     $scope.fullscreen = function(){
       console.log("GO FULLSCREEN");
       var full = document.getElementById("canvasWrapper");
-      level.fullscreen = true;
-      level.setFullscreen();
+      // level.fullscreen = true;
+      // level.setFullscreen();
       // canvas.css("position", "relative");
       // bgCanvas.css("position", "relative");
       if(full.requestFullScreen)
@@ -80,7 +80,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
       $(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
         count++;
         if(count%2){
-          level.goFullscreen();
+          level.setFullscreen();
           console.log('Go to Full Screen mode');
         }else{
           level.exitFullscreen();

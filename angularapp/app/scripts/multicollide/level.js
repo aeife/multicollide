@@ -34,8 +34,7 @@ angular.module('multicollide.level', [])
       },
       resize: function(){
         console.log("resize");
-
-
+        // resize canvas and tiles
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (this.gridSize.height / this.gridSize.width)};
         this.tileSize = (1 / this.gridSize.width) * this.canvasSize.width;
 
@@ -45,42 +44,52 @@ angular.module('multicollide.level', [])
         this.canvas.background.attr('width', this.canvasSize.width ); //max width
         this.canvas.background.attr('height', this.canvasSize.height ); //max height
 
-        // console.log(this.fullscreenSet);
-        // if (this.fullscreen){
-        //   this.setFullscreen();
-        // } else if (this.fullscreen !this.fullscreenSet){
-        //   console.log("fullscreen set");
-        //   this.fullscreenSet = true;
-        // } else {
-        //   console.log(this.fullscreenSet);
-        //   console.log("RESETTING");
-        //   this.wrapper.css("width", this.oldWidth);
-        //   this.wrapper.css("position", "relative");
-        //   this.wrapper.css("top", "");
-        //   this.wrapper.css("right", "");
-        // }
-
-
         // adjust wrapper div because of absolute position of canvas elements
-        // this.wrapper.css("height", this.canvasSize.height + 100);
+        this.wrapper.css("height", this.canvasSize.height + 100);
 
         this.redraw();
       },
+      resizeHeight: function(){
+        // resize canvas based on wrapper height
+        // use for fullscreen view
+
+        // height of content above canvas
+        var topHeight = 100;
+
+        // resize canvas and tiles
+        this.canvasSize = {height: this.wrapper.height() - 100, width: (this.wrapper.height() - 100) * (this.gridSize.width / this.gridSize.height)};
+        this.tileSize = (1 / this.gridSize.width) * this.canvasSize.width;
+
+
+        this.canvas.game.attr('width', this.canvasSize.width );
+        this.canvas.game.attr('height', this.canvasSize.height );
+
+        this.canvas.background.attr('width', this.canvasSize.width );
+        this.canvas.background.attr('height', this.canvasSize.height );
+
+        // resize wrapper to canvas width and center
+        this.wrapper.css("width", this.canvasSize.width+10);
+        this.wrapper.css("left", window.innerWidth / 2 - (this.canvasSize.width+10)/2 + "px");
+
+      },
       setFullscreen: function(){
-        this.wrapper.css("width", "100%");
+        console.log("set fullscreen");
+        // workaround for fullscreen with absolute positioned elements
+        this.wrapper.css("height", window.innerHeight);
         this.wrapper.css("position", "absolute");
         this.wrapper.css("top", "0");
-        this.wrapper.css("right", "50");
-        this.resize();
+        this.resizeHeight();
       },
       exitFullscreen: function(){
+        // reset settings for normal view
         this.wrapper.css("width", "100%");
         this.wrapper.css("position", "relative");
         this.wrapper.css("top", "");
-        this.wrapper.css("right", "");
+        this.wrapper.css("left", "");
         this.resize();
       },
       redraw: function(){
+        console.log("REDRAW");
         this.drawBackground();
       },
       drawTile: function(x, y, color, ctx){

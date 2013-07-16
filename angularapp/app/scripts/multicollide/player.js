@@ -16,10 +16,11 @@ angular.module('multicollide.player', [])
         return this.color;
       },
       spawn: function(x, y){
-        for (var i = 0; i < 15; i++){
+        console.log("spawn player");
+        for (var i = 0; i < 5; i++){
           if (i === 0) {
             var image = this.image.tail;
-          } else if (i === 14) {
+          } else if (i === 4) {
             var image = this.image.head;
           } else {
             var image = this.image.linear;
@@ -32,6 +33,7 @@ angular.module('multicollide.player', [])
         this.draw();
       },
       draw: function(){
+        console.log("draw player");
         for (var i = 0; i < this.fields.length; i++){
           // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
           // console.log(this.image.linear);
