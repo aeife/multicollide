@@ -54,7 +54,7 @@ angular.module('multicollide.player', [])
 
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].player = false;
-        level.clearTile(this.fields[0].x, this.fields[0].y, level.ctx)
+        level.clearTile(this.fields[0].x, this.fields[0].y, level.layer.game)
         // level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
         this.fields.shift();
 

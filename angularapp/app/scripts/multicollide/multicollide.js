@@ -8,7 +8,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
     var bgCtx = document.getElementById('bgCanvas').getContext('2d');
     var wrapper = $('#canvasWrapper');
 
-    level.init({canvas: canvas, ctx: ctx, bgCanvas: bgCanvas, bgCtx: bgCtx, wrapper: wrapper});
+    level.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper});
 
     var imageLinear = new Image();
     imageLinear.src = 'images/c-linear.png';

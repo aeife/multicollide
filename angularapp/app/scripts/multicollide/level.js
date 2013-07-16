@@ -7,10 +7,8 @@ angular.module('multicollide.level', [])
 
     // Public API here
     return {
+      layer: null,
       canvas: null,
-      ctx: null,
-      bgCtx: null,
-      bgCanvas: null,
       wrapper: null,
       gridSize: {width: 50, height: 30},
       canvasSize: null,
@@ -26,9 +24,7 @@ angular.module('multicollide.level', [])
       },
       init: function(obj){
         this.canvas = obj.canvas;
-        this.ctx = obj.ctx;
-        this.bgCanvas = obj.bgCanvas;
-        this.bgCtx = obj.bgCtx;
+        this.layer = obj.layer;
         this.wrapper = obj.wrapper;
 
         this.setAutoResize();
@@ -40,11 +36,11 @@ angular.module('multicollide.level', [])
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (this.gridSize.height / this.gridSize.width)};
         this.tileSize = (1 / this.gridSize.width) * this.canvasSize.width;
 
-        this.canvas.attr('width', this.canvasSize.width ); //max width
-        this.canvas.attr('height', this.canvasSize.height ); //max height
+        this.canvas.game.attr('width', this.canvasSize.width ); //max width
+        this.canvas.game.attr('height', this.canvasSize.height ); //max height
 
-        this.bgCanvas.attr('width', this.canvasSize.width ); //max width
-        this.bgCanvas.attr('height', this.canvasSize.height ); //max height
+        this.canvas.background.attr('width', this.canvasSize.width ); //max width
+        this.canvas.background.attr('height', this.canvasSize.height ); //max height
 
         // adjust wrapper div because of absolute position of canvas elements
         this.wrapper.css("height", this.canvasSize.height + 100);
@@ -52,7 +48,7 @@ angular.module('multicollide.level', [])
         this.redraw();
       },
       redraw: function(){
-        this.drawGrid();
+        this.drawBackground();
       },
       drawTile: function(x, y, color, ctx){
         // draw rects as squares and fill whole canvas
@@ -62,23 +58,28 @@ angular.module('multicollide.level', [])
         ctx.strokeStyle = "#F2F2F2";
         ctx.strokeRect((1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
       },
-      drawImage: function(x, y, image){
-        this.bgCtx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+      // @TODO: merge with drawImageTile if possible
+      drawImage: function(x, y, image, scale){
+        this.layer.background.drawImage(image, (scale / this.gridSize.width) * this.canvasSize.width * x, (scale / this.gridSize.height) * this.canvasSize.height * y, scale * this.tileSize, scale * this.tileSize);
       },
       drawImageTile: function(x, y, image, rotation){
         // console.log("rotation: " + rotation);
         if (rotation){
-          this.ctx.save();
-          this.ctx.translate((1 / this.gridSize.width) * this.canvasSize.width * x + this.tileSize/2, (1 / this.gridSize.height) * this.canvasSize.height * y + this.tileSize/2);
-          this.ctx.rotate(rotation * Math.PI / 180);
-          this.ctx.translate(-(1 / this.gridSize.width) * this.canvasSize.width * x -this.tileSize/2, -(1 / this.gridSize.height) * this.canvasSize.height * y-this.tileSize/2);
-          this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
-          this.ctx.restore();
+          this.layer.game.save();
+          this.layer.game.translate((1 / this.gridSize.width) * this.canvasSize.width * x + this.tileSize/2, (1 / this.gridSize.height) * this.canvasSize.height * y + this.tileSize/2);
+          this.layer.game.rotate(rotation * Math.PI / 180);
+          this.layer.game.translate(-(1 / this.gridSize.width) * this.canvasSize.width * x -this.tileSize/2, -(1 / this.gridSize.height) * this.canvasSize.height * y-this.tileSize/2);
+          this.layer.game.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+          this.layer.game.restore();
         } else {
-          this.ctx.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+          this.layer.game.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
         }
       },
-      drawGrid: function(){
+      drawBackground: function(){
+        // scale of background
+        // bg-tile = 4 normal tiles
+        var scale = 2;
+
         var imageObj = new Image();
         imageObj.src = 'images/bg.png';
 
@@ -86,7 +87,7 @@ angular.module('multicollide.level', [])
         imageObj.onload = function(){
           for (var i = 0; i < self.gridSize.width; i++){
             for (var j = 0; j < self.gridSize.height; j++){
-              self.drawImage(i, j, imageObj);
+              self.drawImage(i, j, imageObj, scale);
             }
           }
         };
