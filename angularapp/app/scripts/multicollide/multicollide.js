@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
-  .controller('MulticollideCtrl', function ($scope, level, Player) {
+angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
+  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config) {
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
     var bgCanvas = $('#bgCanvas');
@@ -30,7 +30,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player'])
 
     spriteSheet.onload = function() {
 
-      level.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
+      level.init({gridSize: config.gridSize});
+      canvasRender.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
 
       // console.log(imageObj);
       // console.log(imageObj2);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide.player', [])
-  .factory('Player', function ($rootScope, level) {
+  .factory('Player', function ($rootScope, level, canvasRender) {
     // Service logic
 
     function Player(color, direction, imageRow){
@@ -44,7 +44,7 @@ angular.module('multicollide.player', [])
         for (var i = 0; i < this.fields.length; i++){
           // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
           // console.log(this.image.linear);
-          level.drawImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation);
+          canvasRender.drawImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation);
         }
       },
       getNextPlayerFieldDirection: function(index){
@@ -63,7 +63,7 @@ angular.module('multicollide.player', [])
 
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].player = false;
-        level.clearTile(this.fields[0].x, this.fields[0].y, level.layer.game)
+        canvasRender.clearTile(this.fields[0].x, this.fields[0].y, canvasRender.layer.game)
         // level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
         this.fields.shift();
 
@@ -124,16 +124,16 @@ angular.module('multicollide.player', [])
           this.fields[0].rotation =  translate[this.getNextPlayerFieldDirection(0)];
         }
         this.fields[0].image = this.image.tail;
-        level.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, this.fields[0].rotation);
+        canvasRender.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, this.fields[0].rotation);
 
         // draw head
         // level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
-        level.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, rotation);
+        canvasRender.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, rotation);
 
         // redraw old head
         if (this.fields[this.fields.length-2].image !== this.image.corner){
           this.fields[this.fields.length-2].image = this.image.linear;
-          level.drawImageTile(this.fields[this.fields.length-2].x, this.fields[this.fields.length-2].y, this.fields[this.fields.length-2].image, this.fields[this.fields.length-2].rotation);
+          canvasRender.drawImageTile(this.fields[this.fields.length-2].x, this.fields[this.fields.length-2].y, this.fields[this.fields.length-2].image, this.fields[this.fields.length-2].rotation);
         }
 
       },
@@ -149,7 +149,7 @@ angular.module('multicollide.player', [])
                 head.rotation = 180;
               }
               head.image = this.image.corner;
-              level.drawImageTile(head.x, head.y, head.image, head.rotation);
+              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
               this.direction = dir;
             }
@@ -162,7 +162,7 @@ angular.module('multicollide.player', [])
                 head.rotation = -90;
               }
               head.image = this.image.corner;
-              level.drawImageTile(head.x, head.y, head.image, head.rotation);
+              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
               this.direction = dir;
             }
@@ -175,7 +175,7 @@ angular.module('multicollide.player', [])
                 head.rotation = 90;
               }
               head.image = this.image.corner;
-              level.drawImageTile(head.x, head.y, head.image, head.rotation);
+              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
               this.direction = dir;
             }
@@ -188,7 +188,7 @@ angular.module('multicollide.player', [])
                 head.rotation = 180;
               }
               head.image = this.image.corner;
-              level.drawImageTile(head.x, head.y, this.image.corner, head.rotation);
+              canvasRender.drawImageTile(head.x, head.y, this.image.corner, head.rotation);
 
               this.direction = dir;
             }
