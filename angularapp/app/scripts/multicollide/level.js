@@ -26,7 +26,6 @@ angular.module('multicollide.level', [])
       },
       generateFood: function(x, y){
         this.grid[x][y] = {food: 5};
-        // @TODO: CIRCULAR DEPENDENCY
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);
       }
     };
