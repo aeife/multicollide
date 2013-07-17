@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide.player', [])
-  .factory('Player', function ($rootScope, level, canvasRender) {
+  .factory('Player', function ($rootScope, level, canvasRender, config) {
     // Service logic
 
     function Player(color, direction, imageRow){
@@ -24,10 +24,10 @@ angular.module('multicollide.player', [])
       },
       spawn: function(x, y){
         console.log("spawn player");
-        for (var i = 0; i < 5; i++){
+        for (var i = 0; i < config.player.startLength; i++){
           if (i === 0) {
             var image = this.image.tail;
-          } else if (i === 4) {
+          } else if (i === config.player.startLength-1) {
             var image = this.image.head;
           } else {
             var image = this.image.linear;
@@ -193,6 +193,28 @@ angular.module('multicollide.player', [])
               this.direction = dir;
             }
             break;
+        }
+      },
+      kill: function(){
+        var self = this;
+        this.blink(function(){
+          self.remove();
+        });
+      },
+      blink: function(callback){
+        for (var i = 0; i < this.fields.length; i++){
+          var times = 3;
+          var duration = 200;
+          var self = this;
+          canvasRender.blinkImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation, times, duration, function(){
+            callback();
+          });
+        }
+      },
+      remove: function(){
+        // delete displayed player
+        for (var i = 0; i < this.fields.length; i++){
+          canvasRender.clearTile(this.fields[i].x, this.fields[i].y, canvasRender.layer.game);
         }
       }
     };

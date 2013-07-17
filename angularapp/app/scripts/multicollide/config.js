@@ -6,6 +6,9 @@ angular.module('multicollide.config', [])
 
     // Public API here
     return {
-      gridSize: {width: 50, height: 30}
+      gridSize: {width: 50, height: 30},
+      player: {
+        startLength: 45
+      }
     };
   });

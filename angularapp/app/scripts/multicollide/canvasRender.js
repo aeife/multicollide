@@ -138,6 +138,22 @@ angular.module('multicollide.canvasRender', [])
           );
         }
       },
+      blinkImageTile: function(x, y, image, rotation, times, duration, callback){
+        this.clearTile(x, y, this.layer.game);
+        var self = this;
+
+        window.setTimeout(function(){
+          self.drawImageTile(x, y, image, rotation);
+          if (times > 1) {
+            window.setTimeout(function(){
+              self.blinkImageTile(x, y, image, rotation, times-1, duration, callback);
+            }, duration);
+          } else {
+            callback();
+          }
+        }, duration);
+
+      },
       drawBackground: function(){
         // scale of background
         // bg-tile = 4 normal tiles

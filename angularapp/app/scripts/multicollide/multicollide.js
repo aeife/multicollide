@@ -46,20 +46,25 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       document.onkeydown = function(e) {
         switch(e.keyCode) {
           case 87:
-            // entspricht Taste W
+            // key W
             p1.changeDirection("north");
             break;
           case 65:
-            // entspricht Taste A
+            // key A
             p1.changeDirection("west");
             break;
           case 83:
-            // entspricht Taste S
+            // key S
             p1.changeDirection("south");
             break;
           case 68:
-            // entspricht Taste D
+            // key D
             p1.changeDirection("east");
+            break;
+          case 84:
+            // key t
+            // for testing
+            p1.kill();
             break;
         };
       };
