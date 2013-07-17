@@ -88,10 +88,10 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       $(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
         count++;
         if(count%2){
-          level.setFullscreen();
+          canvasRender.setFullscreen();
           console.log('Go to Full Screen mode');
         }else{
-          level.exitFullscreen();
+          canvasRender.exitFullscreen();
          console.log('Exit Full Screen mode');
         }
       });
