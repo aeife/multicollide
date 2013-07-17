@@ -14,6 +14,9 @@ angular.module('multicollide.level', [])
       canvasSize: null,
       tileSize: null,
       grid: [],
+      spriteSheet: null,
+      spriteSheetPadding: 10,
+      playerTileSize: 50,
       setAutoResize: function(){
         var self = this;
         $(window).resize(function(e) {
@@ -31,6 +34,8 @@ angular.module('multicollide.level', [])
         this.resize();
 
         this.initializeGrid();
+
+        this.spriteSheet = obj.spriteSheet;
       },
       resize: function(){
         console.log("resize");
@@ -111,10 +116,30 @@ angular.module('multicollide.level', [])
           this.layer.game.translate((1 / this.gridSize.width) * this.canvasSize.width * x + this.tileSize/2, (1 / this.gridSize.height) * this.canvasSize.height * y + this.tileSize/2);
           this.layer.game.rotate(rotation * Math.PI / 180);
           this.layer.game.translate(-(1 / this.gridSize.width) * this.canvasSize.width * x -this.tileSize/2, -(1 / this.gridSize.height) * this.canvasSize.height * y-this.tileSize/2);
-          this.layer.game.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+          this.layer.game.drawImage(
+            this.spriteSheet,                                                             // spritesheet
+            image.nr * this.playerTileSize + (image.nr + 1) * this.spriteSheetPadding,    // x coordinate of tile dependend on nr in row with padding
+            image.row * this.playerTileSize + (image.row + 1) * this.spriteSheetPadding,  // y coordinate of tile dependend on row with passing
+            this.playerTileSize,                                                          // width of tile
+            this.playerTileSize,                                                          // height size of tile
+            (1 / this.gridSize.width) * this.canvasSize.width * x,                        // x coordinate to render image
+            (1 / this.gridSize.height) * this.canvasSize.height * y,                      // y coordinate to render image
+            this.tileSize,                                                                // width of displayed image
+            this.tileSize                                                                 // height of displayed image
+          );
           this.layer.game.restore();
         } else {
-          this.layer.game.drawImage(image, (1 / this.gridSize.width) * this.canvasSize.width * x, (1 / this.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+          this.layer.game.drawImage(
+            this.spriteSheet,
+            image.nr * this.playerTileSize + (image.nr + 1) * this.spriteSheetPadding,
+            image.row * this.playerTileSize + (image.row + 1) * this.spriteSheetPadding,
+            this.playerTileSize,
+            this.playerTileSize,
+            (1 / this.gridSize.width) * this.canvasSize.width * x,
+            (1 / this.gridSize.height) * this.canvasSize.height * y,
+            this.tileSize,
+            this.tileSize
+          );
         }
       },
       drawBackground: function(){

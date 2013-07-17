@@ -4,11 +4,18 @@ angular.module('multicollide.player', [])
   .factory('Player', function ($rootScope, level) {
     // Service logic
 
-    function Player(color, direction, image){
+    function Player(color, direction, imageRow){
       this.color = color;
       this.direction = direction;
       this.fields = [];
-      this.image = image;
+      // row in spritesheet
+      this.image = {
+        corner: {row: imageRow, nr: 0},
+        head: {row: imageRow, nr: 1},
+        linear: {row: imageRow, nr: 2},
+        tail: {row: imageRow, nr: 3}
+      }
+      // this.image = image;
     }
 
     Player.prototype = {
