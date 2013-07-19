@@ -36,7 +36,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // console.log(imageObj);
       // console.log(imageObj2);
       // var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
-      var p1 = new Player('red', "east", 1);
+      var p1 = new Player('red', "east", 0);
 
       p1.spawn(1,1);
       setInterval(function(){
