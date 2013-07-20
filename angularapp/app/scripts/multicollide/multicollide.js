@@ -8,22 +8,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var bgCtx = document.getElementById('bgCanvas').getContext('2d');
     var wrapper = $('#canvasWrapper');
 
-    // level.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper});
-
-    // var imageLinear = new Image();
-    // imageLinear.src = 'images/c-linear.png';
-
-    // var imageHead = new Image();
-    // imageHead.src = 'images/c-head.png';
-
-    // var imageTail = new Image();
-    // imageTail.src = 'images/c-tail.png';
-
-    // var imageCorner = new Image();
-    // imageCorner.src = 'images/c-corner.png';
-
-    // var imageA = new Image();
-    // imageA.src = 'images/a-linear.png';
+    var sound = new Howl({
+      urls: ['/sounds/beep.wav']
+    });
 
     var spriteSheet = new Image();
     spriteSheet.src = '/images/spritesheet.png';
@@ -48,18 +35,22 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           case 87:
             // key W
             p1.changeDirection("north");
+            sound.play();
             break;
           case 65:
             // key A
             p1.changeDirection("west");
+            sound.play();
             break;
           case 83:
             // key S
             p1.changeDirection("south");
+            sound.play();
             break;
           case 68:
             // key D
             p1.changeDirection("east");
+            sound.play();
             break;
           case 84:
             // key t
