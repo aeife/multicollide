@@ -13,7 +13,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     });
 
     var spriteSheet = new Image();
-    spriteSheet.src = '/images/spritesheet.png';
+    spriteSheet.src = '/images/spritesheetBordered.png';
 
     spriteSheet.onload = function() {
 
