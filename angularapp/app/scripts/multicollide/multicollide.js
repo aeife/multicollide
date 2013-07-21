@@ -22,13 +22,13 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     // });
 
     var spriteSheet = new Image();
-    spriteSheet.src = '/images/spritesheetBordered.png';
+    spriteSheet.src = '/images/spritesheet.png';
 
     spriteSheet.onload = function() {
 
       level.init({gridSize: config.gridSize});
       canvasRender.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
-      level.generateFood(15,5);
+      // level.generateFood(15,5);
       // console.log(imageObj);
       // console.log(imageObj2);
       // var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
