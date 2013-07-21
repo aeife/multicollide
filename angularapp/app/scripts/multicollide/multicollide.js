@@ -39,34 +39,45 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         p1.move();
       },50);
 
+      // @TODO: allow press different key while other is still pressed
+      var keyEventFired = false;
       document.onkeydown = function(e) {
-        switch(e.keyCode) {
-          case 87:
-            // key W
-            p1.changeDirection("north");
-            sound.play();
-            break;
-          case 65:
-            // key A
-            p1.changeDirection("west");
-            sound.play();
-            break;
-          case 83:
-            // key S
-            p1.changeDirection("south");
-            sound.play();
-            break;
-          case 68:
-            // key D
-            p1.changeDirection("east");
-            sound.play();
-            break;
-          case 84:
-            // key t
-            // for testing
-            p1.kill();
-            break;
-        };
+        console.log(keyEventFired);
+        if (!keyEventFired) {
+          keyEventFired = true;
+
+          switch(e.keyCode) {
+            case 87:
+              // key W
+              p1.changeDirection("north");
+              sound.play();
+              break;
+            case 65:
+              // key A
+              p1.changeDirection("west");
+              sound.play();
+              break;
+            case 83:
+              // key S
+              p1.changeDirection("south");
+              sound.play();
+              break;
+            case 68:
+              // key D
+              p1.changeDirection("east");
+              sound.play();
+              break;
+            case 84:
+              // key t
+              // for testing
+              p1.kill();
+              break;
+          };
+        }
+      };
+
+      document.onkeyup = function(e) {
+        keyEventFired = false;
       };
     };
 
