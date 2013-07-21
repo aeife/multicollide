@@ -9,8 +9,17 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var wrapper = $('#canvasWrapper');
 
     var sound = new Howl({
-      urls: ['/sounds/beep.wav']
+      urls: ['sounds/beep.ogg', 'sounds/beep.wav'],
+      autoplay: false,
+      loop: false,
+      volume: 0.5,
+      onend: function() {
+        console.log('Finished!');
+      }
     });
+    // var sound = new Howl({
+    //   urls: ['/sounds/beep.ogg']
+    // });
 
     var spriteSheet = new Image();
     spriteSheet.src = '/images/spritesheetBordered.png';
