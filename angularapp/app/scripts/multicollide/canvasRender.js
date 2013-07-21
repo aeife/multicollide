@@ -39,6 +39,9 @@ angular.module('multicollide.canvasRender', [])
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (config.gridSize.height / config.gridSize.width)};
         this.tileSize = Math.floor((1 / config.gridSize.width) * this.canvasSize.width);
 
+        // adjust canvasSize to rounded tileSize
+        this.canvasSize = {width: this.tileSize * config.gridSize.width, height: this.tileSize * config.gridSize.height};
+
         this.canvas.game.attr('width', this.canvasSize.width ); //max width
         this.canvas.game.attr('height', this.canvasSize.height ); //max height
 
@@ -59,8 +62,10 @@ angular.module('multicollide.canvasRender', [])
 
         // resize canvas and tiles
         this.canvasSize = {height: this.wrapper.height() - 100, width: (this.wrapper.height() - 100) * (config.gridSize.width / config.gridSize.height)};
-        this.tileSize = (1 / config.gridSize.width) * this.canvasSize.width;
+        this.tileSize = Math.floor((1 / config.gridSize.width) * this.canvasSize.width);
 
+        // adjust canvasSize to rounded tileSize
+        this.canvasSize = {width: this.tileSize * config.gridSize.width, height: this.tileSize * config.gridSize.height};
 
         this.canvas.game.attr('width', this.canvasSize.width );
         this.canvas.game.attr('height', this.canvasSize.height );
