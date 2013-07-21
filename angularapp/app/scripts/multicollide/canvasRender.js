@@ -37,7 +37,7 @@ angular.module('multicollide.canvasRender', [])
         console.log("resize");
         // resize canvas and tiles
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (config.gridSize.height / config.gridSize.width)};
-        this.tileSize = (1 / config.gridSize.width) * this.canvasSize.width;
+        this.tileSize = Math.floor((1 / config.gridSize.width) * this.canvasSize.width);
 
         this.canvas.game.attr('width', this.canvasSize.width ); //max width
         this.canvas.game.attr('height', this.canvasSize.height ); //max height
