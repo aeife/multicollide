@@ -96,10 +96,10 @@ angular.module('multicollide.canvasRender', [])
       drawTile: function(x, y, color, ctx){
         // draw rects as squares and fill whole canvas
         ctx.fillStyle = color;
-        ctx.fillRect((1 / config.gridSize.width) * this.canvasSize.width * x, (1 / config.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+        ctx.fillRect(this.tileSize * x, this.tileSize * y, this.tileSize, this.tileSize);
 
         ctx.strokeStyle = "#F2F2F2";
-        ctx.strokeRect((1 / config.gridSize.width) * this.canvasSize.width * x, (1 / config.gridSize.height) * this.canvasSize.height * y, this.tileSize, this.tileSize);
+        ctx.strokeRect(this.tileSize * x, this.tileSize * y, this.tileSize, this.tileSize);
       },
       // @TODO: merge with drawImageTile if possible
       drawImage: function(x, y, image, scale){
@@ -109,17 +109,17 @@ angular.module('multicollide.canvasRender', [])
         // console.log("rotation: " + rotation);
         if (rotation){
           this.layer.game.save();
-          this.layer.game.translate((1 / config.gridSize.width) * this.canvasSize.width * x + this.tileSize/2, (1 / config.gridSize.height) * this.canvasSize.height * y + this.tileSize/2);
+          this.layer.game.translate(this.tileSize * x + this.tileSize/2, this.tileSize * y + this.tileSize/2);
           this.layer.game.rotate(rotation * Math.PI / 180);
-          this.layer.game.translate(-(1 / config.gridSize.width) * this.canvasSize.width * x -this.tileSize/2, -(1 / config.gridSize.height) * this.canvasSize.height * y-this.tileSize/2);
+          this.layer.game.translate(-this.tileSize * x -this.tileSize/2, -this.tileSize * y-this.tileSize/2);
           this.layer.game.drawImage(
             this.spriteSheet,                                                             // spritesheet
             image.nr * this.playerTileSize + (image.nr + 1) * this.spriteSheetPadding,    // x coordinate of tile dependend on nr in row with padding
             image.row * this.playerTileSize + (image.row + 1) * this.spriteSheetPadding,  // y coordinate of tile dependend on row with passing
             this.playerTileSize,                                                          // width of tile
             this.playerTileSize,                                                          // height size of tile
-            (1 / config.gridSize.width) * this.canvasSize.width * x,                        // x coordinate to render image
-            (1 / config.gridSize.height) * this.canvasSize.height * y,                      // y coordinate to render image
+            this.tileSize * x,                        // x coordinate to render image
+            this.tileSize * y,                      // y coordinate to render image
             this.tileSize,                                                                // width of displayed image
             this.tileSize                                                                 // height of displayed image
           );
@@ -131,8 +131,8 @@ angular.module('multicollide.canvasRender', [])
             image.row * this.playerTileSize + (image.row + 1) * this.spriteSheetPadding,
             this.playerTileSize,
             this.playerTileSize,
-            (1 / config.gridSize.width) * this.canvasSize.width * x,
-            (1 / config.gridSize.height) * this.canvasSize.height * y,
+            this.tileSize * x,
+            this.tileSize * y,
             this.tileSize,
             this.tileSize
           );
@@ -173,7 +173,7 @@ angular.module('multicollide.canvasRender', [])
         };
       },
       clearTile: function(x, y, ctx){
-        ctx.clearRect((1 / config.gridSize.width) * this.canvasSize.width * x -1, (1 / config.gridSize.height) * this.canvasSize.height * y -1, this.tileSize +2, this.tileSize +2);
+        ctx.clearRect(this.tileSize * x -1, this.tileSize * y -1, this.tileSize +2, this.tileSize +2);
       },
     };
   });
