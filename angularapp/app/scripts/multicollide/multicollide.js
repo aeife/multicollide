@@ -43,36 +43,23 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       var keyEventFired = false;
       document.onkeydown = function(e) {
         console.log(keyEventFired);
+        console.log(e.keyCode);
         if (!keyEventFired) {
           keyEventFired = true;
 
-          switch(e.keyCode) {
-            case 87:
-              // key W
-              p1.changeDirection("north");
-              sound.play();
-              break;
-            case 65:
-              // key A
-              p1.changeDirection("west");
-              sound.play();
-              break;
-            case 83:
-              // key S
-              p1.changeDirection("south");
-              sound.play();
-              break;
-            case 68:
-              // key D
-              p1.changeDirection("east");
-              sound.play();
-              break;
-            case 84:
-              // key t
-              // for testing
-              p1.kill();
-              break;
-          };
+          if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
+            p1.changeDirection("north");
+            sound.play();
+          } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
+            p1.changeDirection("south");
+            sound.play();
+          } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
+            p1.changeDirection("west");
+            sound.play();
+          } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
+            p1.changeDirection("east");
+            sound.play();
+          }
         }
       };
 

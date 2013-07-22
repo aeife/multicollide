@@ -11,10 +11,18 @@ angular.module('multicollide.config', [])
         startLength: 45
       },
       controls: {
-        up: 87 || 38,
-        down: 83 || 40,
-        left: 65 || 37,
-        right: 68 || 39
+        default: {
+          up: 87,
+          down: 83,
+          left: 65,
+          right: 68
+        },
+        alternate: {
+          up:  38,
+          down: 40,
+          left: 37,
+          right:  39
+        }
       }
     };
   });
