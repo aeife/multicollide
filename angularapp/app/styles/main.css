@@ -20,7 +20,6 @@ body {
   background-color: #fafafa;
   background-repeat: repeat-x;
   border: 1px solid #d4d4d4;
-  border-radius: 1px;
 }
 
 #sidebar {
@@ -45,18 +44,13 @@ body {
   margin-bottom: 0px;
 }
 
-.navbar-inner {
-  border-radius:0px;
-}
-
 .col{
-margin-bottom: -99999px;
-padding-bottom: 99999px;
-
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
 }
 
 .col-wrap{
-    overflow: hidden;
+  overflow: hidden;
 }
 
 #profileBox {
