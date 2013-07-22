@@ -2,7 +2,7 @@
 
 angular.module('sockets', [])
   .factory('socket', function ($rootScope) {
-    var socket = io.connect();
+    var socket = io.connect("192.168.1.196:3000");
     // var socket = io.connect("http://localhost:3000");
     return {
       on: function (eventName, callback) {
