@@ -162,3 +162,12 @@ body {
 a {
   text-decoration: none !important;
 }
+
+.span-centered {
+  margin:0 auto;
+  float:none;
+}
+
+.table-centered td{
+  text-align: centered;
+}

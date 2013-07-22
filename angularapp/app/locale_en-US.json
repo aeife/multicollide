@@ -250,5 +250,69 @@
   "_ServerOffline_": {
     "message": "server is offline",
     "description": ""
+  },
+  "_Controls_": {
+    "message": "Controls",
+    "description": ""
+  },
+  "_Action_": {
+    "message": "action",
+    "description": ""
+  },
+  "_Control_": {
+    "message": "control",
+    "description": ""
+  },
+  "_AlternateControl_": {
+    "message": "alternate control",
+    "description": ""
+  },
+  "_MoveUp_": {
+    "message": "move up",
+    "description": ""
+  },
+  "_MoveDown_": {
+    "message": "move down",
+    "description": ""
+  },
+  "_MoveLeft_": {
+    "message": "move left",
+    "description": ""
+  },
+  "_MoveRight_": {
+    "message": "move right",
+    "description": ""
+  },
+  "_WKey_": {
+    "message": "W",
+    "description": ""
+  },
+  "_SKey_": {
+    "message": "S",
+    "description": ""
+  },
+  "_AKey_": {
+    "message": "A",
+    "description": ""
+  },
+  "_DKey_": {
+    "message": "D",
+    "description": ""
+  },
+  "_ArrowUp_": {
+    "message": "up arrow",
+    "description": ""
+  },
+  "_ArrowDown_": {
+    "message": "down array",
+    "description": ""
+  },
+  "_ArrowLeft_": {
+    "message": "left arrow",
+    "description": ""
+  },
+  "_ArrowRight_": {
+    "message": "right arrow",
+    "description": ""
   }
 }

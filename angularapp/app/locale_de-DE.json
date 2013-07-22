@@ -92,15 +92,15 @@
     "description": ""
   },
   "_Login_": {
-    "message": "Anmeldung",
+    "message": "Login",
     "description": ""
   },
   "_LogIn_": {
-    "message": "anmelden",
+    "message": "einloggen",
     "description": ""
   },
   "_Logout_": {
-    "message": "Ausloggen",
+    "message": "ausloggen",
     "description": ""
   },
   "_Signup_": {
@@ -249,6 +249,70 @@
   },
   "_ServerOffline_": {
     "message": "Server ist offline",
+    "description": ""
+  },
+  "_Controls_": {
+    "message": "Steuerung",
+    "description": ""
+  },
+  "_Action_": {
+    "message": "Aktion",
+    "description": ""
+  },
+  "_Control_": {
+    "message": "Tastenbelegung",
+    "description": ""
+  },
+  "_AlternateControl_": {
+    "message": "Alternativ",
+    "description": ""
+  },
+  "_MoveUp_": {
+    "message": "nach oben",
+    "description": ""
+  },
+  "_MoveDown_": {
+    "message": "nach unten",
+    "description": ""
+  },
+  "_MoveLeft_": {
+    "message": "nach links",
+    "description": ""
+  },
+  "_MoveRight_": {
+    "message": "nach rechts",
+    "description": ""
+  },
+  "_WKey_": {
+    "message": "W",
+    "description": ""
+  },
+  "_SKey_": {
+    "message": "S",
+    "description": ""
+  },
+  "_AKey_": {
+    "message": "A",
+    "description": ""
+  },
+  "_DKey_": {
+    "message": "D",
+    "description": ""
+  },
+  "_ArrowUp_": {
+    "message": "Pfeil hoch",
+    "description": ""
+  },
+  "_ArrowDown_": {
+    "message": "Pfeil runter",
+    "description": ""
+  },
+  "_ArrowLeft_": {
+    "message": "Pfeil links",
+    "description": ""
+  },
+  "_ArrowRight_": {
+    "message": "Pfeil rechts",
     "description": ""
   }
 }
