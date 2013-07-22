@@ -9,6 +9,12 @@ angular.module('multicollide.config', [])
       gridSize: {width: 50, height: 30},
       player: {
         startLength: 45
+      },
+      controls: {
+        up: 87 || 38,
+        down: 83 || 40,
+        left: 65 || 37,
+        right: 68 || 39
       }
     };
   });
