@@ -75,6 +75,10 @@
     "message": "ready",
     "description": ""
   },
+  "_Lobby_": {
+    "message": "Lobby",
+    "description": ""
+  },
   "_LeaveLobby_": {
     "message": "leave lobby",
     "description": ""

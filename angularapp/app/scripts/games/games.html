@@ -8,7 +8,7 @@
     </div>
   </div>
   <div ng-switch-when="lobby">
-    <h1 class="text-center">Lobby: {{lobby.currentLobby.name}}</h1>
+    <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">
         <a href="" class="btn" ng-click="btnLeaveGame()">{{'_LeaveLobby_' | i18n}}</a>
