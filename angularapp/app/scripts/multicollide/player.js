@@ -197,6 +197,7 @@ angular.module('multicollide.player', [])
       },
       kill: function(){
         var self = this;
+        // @TODO: change kill animation to support other players moving to the tiles
         this.blink(function(){
           self.remove();
         });
