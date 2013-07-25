@@ -43,19 +43,19 @@ angular.module('multicollide.player', [])
 
           switch (this.direction){
             case "north":
-              this.fields.push({x: x, y: y-i, rotation: translate[this.direction], image: image});
+              this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});
               level.grid[x][y-i].player = true;
               break;
             case "east":
-              this.fields.push({x: x+i, y: y, rotation: translate[this.direction], image: image});
+              this.fields.push({x: x+i, y: y, rotation: this.direction, image: image});
               level.grid[x+i][y].player = true;
               break;
             case "south":
-              this.fields.push({x: x, y: y+i, rotation: translate[this.direction], image: image});
+              this.fields.push({x: x, y: y+i, rotation: this.direction, image: image});
               level.grid[x][y+i].player = true;
               break;
             case "west":
-              this.fields.push({x: x-i, y: y, rotation: translate[this.direction], image: image});
+              this.fields.push({x: x-i, y: y, rotation: this.direction, image: image});
               level.grid[x-i][y].player = true;
               break;
           }
@@ -96,65 +96,46 @@ angular.module('multicollide.player', [])
           case "north":
             var newX = this.fields[this.fields.length-1].x;
             var newY = this.fields[this.fields.length-1].y-1;
-            if (level.isInGrid(newX, newY)){
-              this.fields.push({x: newX, y: newY, rotation: -90, image: this.image.head});
-            } else {
-              this.fields.push({x: newX, y: level.gridSize.height-1, rotation: -90, image: this.image.head});
+            if (!level.isInGrid(newX, newY)) {
+              newY = level.gridSize.height-1;
             }
-            var rotation = -90;
             break;
           case "east":
             var newX = this.fields[this.fields.length-1].x+1;
             var newY = this.fields[this.fields.length-1].y;
-            if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY, rotation: 0, image: this.image.head});
-            } else {
-              this.fields.push({x: 0, y: newY, rotation: 0, image: this.image.head});
+            if (!level.isInGrid(newX, newY)) {
+              newX = 0;
             }
-            var rotation = 0;
             break;
           case "south":
             var newX = this.fields[this.fields.length-1].x;
             var newY = this.fields[this.fields.length-1].y+1;
-            if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY, rotation: 90, image: this.image.head});
-            } else {
-              this.fields.push({x: newX, y: 0, rotation: 90, image: this.image.head});
+            if (!level.isInGrid(newX, newY)) {
+              newY = 0;
             }
-            var rotation = 90;
             break;
           case "west":
             var newX = this.fields[this.fields.length-1].x-1;
             var newY = this.fields[this.fields.length-1].y;
-            if (level.isInGrid(newX, newY)) {
-              this.fields.push({x: newX, y: newY, rotation: 180, image: this.image.head});
-            } else {
-              this.fields.push({x: level.gridSize.width-1, y: newY, rotation: 180, image: this.image.head});
+            if (!level.isInGrid(newX, newY)) {
+              newX = level.gridSize.width-1;
             }
-            var rotation = 180;
             break;
         }
-
-        var translate = {
-          north: -90,
-          east: 0,
-          south: 90,
-          west: 180
-        }
+        this.fields.push({x: newX, y: newY, rotation: this.direction, image: this.image.head});
 
         // draw new tail
-        // console.log(this.fields[0].rotation);
         if (this.fields[0].image !== this.image.linear){
-          this.fields[0].rotation =  translate[this.getNextPlayerFieldDirection(0)];
+          this.fields[0].rotation =  this.getNextPlayerFieldDirection(0);
         }
         this.fields[0].image = this.image.tail;
         canvasRender.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, this.fields[0].rotation);
 
         // draw head
-        // level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
-        canvasRender.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, rotation);
+        canvasRender.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, this.direction);
 
-        // redraw old head
+        // redraw old head as normal tile
+        // check if corner because corners are displayed before
         if (this.fields[this.fields.length-2].image !== this.image.corner){
           this.fields[this.fields.length-2].image = this.image.linear;
           canvasRender.drawImageTile(this.fields[this.fields.length-2].x, this.fields[this.fields.length-2].y, this.fields[this.fields.length-2].image, this.fields[this.fields.length-2].rotation);
