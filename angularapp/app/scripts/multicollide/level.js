@@ -29,17 +29,27 @@ angular.module('multicollide.level', [])
         this.grid[x][y] = {food: 5};
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);
       },
-      move: function(){
+      processTurn: function(){
         // moves all players
 
         // -------- step 1: move players --------
+        this.movePlayers();
+
+        // -------- step 2: analyse result  --------
+
+
+        // -------- step 3: process and draw  --------
+        this.drawPlayerMoves();
+
+
+
+      },
+      movePlayers: function(){
         for (var i = 0; i < this.players.length; i++){
           this.players[i].move();
         }
-          // -------- step 2: analyse result  --------
-
-
-          // -------- step 3: process and draw  --------
+      },
+      drawPlayerMoves: function(){
         for (var i = 0; i < this.players.length; i++){
           var player = this.players[i];
 
@@ -60,9 +70,6 @@ angular.module('multicollide.level', [])
             canvasRender.drawImageTile(player.fields[player.fields.length-2].x, player.fields[player.fields.length-2].y, player.fields[player.fields.length-2].image, player.fields[player.fields.length-2].rotation);
           }
         }
-
-
-
       }
     };
   });

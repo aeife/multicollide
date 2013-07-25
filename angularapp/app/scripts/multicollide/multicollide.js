@@ -37,7 +37,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       p1.spawn(1,1);
 
       setInterval(function(){
-        level.move();
+        level.processTurn();
       },500);
 
       // @TODO: allow press different key while other is still pressed
