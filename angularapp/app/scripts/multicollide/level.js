@@ -9,6 +9,7 @@ angular.module('multicollide.level', [])
     return {
       gridSize: {},
       grid: [],
+      players: [],
       init: function(obj){
         this.gridSize = obj.gridSize;
         this.initializeGrid();
@@ -27,6 +28,41 @@ angular.module('multicollide.level', [])
       generateFood: function(x, y){
         this.grid[x][y] = {food: 5};
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);
+      },
+      move: function(){
+        // moves all players
+
+        // -------- step 1: move players --------
+        for (var i = 0; i < this.players.length; i++){
+          this.players[i].move();
+        }
+          // -------- step 2: analyse result  --------
+
+
+          // -------- step 3: process and draw  --------
+        for (var i = 0; i < this.players.length; i++){
+          var player = this.players[i];
+
+          // draw new tail
+          if (player.fields[0].image !== player.image.linear){
+            player.fields[0].rotation =  player.getNextPlayerFieldDirection(0);
+          }
+          player.fields[0].image = player.image.tail;
+          canvasRender.drawImageTile(player.fields[0].x, player.fields[0].y, player.image.tail, player.fields[0].rotation);
+
+          // draw head
+          canvasRender.drawImageTile(player.fields[player.fields.length-1].x, player.fields[player.fields.length-1].y, player.image.head, player.direction);
+
+          // redraw old head as normal tile
+          // check if corner because corners are displayed before
+          if (player.fields[player.fields.length-2].image !== player.image.corner){
+            player.fields[player.fields.length-2].image = player.image.linear;
+            canvasRender.drawImageTile(player.fields[player.fields.length-2].x, player.fields[player.fields.length-2].y, player.fields[player.fields.length-2].image, player.fields[player.fields.length-2].rotation);
+          }
+        }
+
+
+
       }
     };
   });

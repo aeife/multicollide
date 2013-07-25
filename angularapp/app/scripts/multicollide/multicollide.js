@@ -33,10 +33,11 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // console.log(imageObj2);
       // var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
       var p1 = new Player('red', "south", 0);
-
+      level.players.push(p1);
       p1.spawn(1,1);
+
       setInterval(function(){
-        p1.move();
+        level.move();
       },500);
 
       // @TODO: allow press different key while other is still pressed

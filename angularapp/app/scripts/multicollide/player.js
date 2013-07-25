@@ -88,7 +88,7 @@ angular.module('multicollide.player', [])
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].player = false;
         canvasRender.clearTile(this.fields[0].x, this.fields[0].y, canvasRender.layer.game)
-        // level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
+
         this.fields.shift();
 
         // add head
@@ -123,24 +123,6 @@ angular.module('multicollide.player', [])
             break;
         }
         this.fields.push({x: newX, y: newY, rotation: this.direction, image: this.image.head});
-
-        // draw new tail
-        if (this.fields[0].image !== this.image.linear){
-          this.fields[0].rotation =  this.getNextPlayerFieldDirection(0);
-        }
-        this.fields[0].image = this.image.tail;
-        canvasRender.drawImageTile(this.fields[0].x, this.fields[0].y, this.image.tail, this.fields[0].rotation);
-
-        // draw head
-        canvasRender.drawImageTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.image.head, this.direction);
-
-        // redraw old head as normal tile
-        // check if corner because corners are displayed before
-        if (this.fields[this.fields.length-2].image !== this.image.corner){
-          this.fields[this.fields.length-2].image = this.image.linear;
-          canvasRender.drawImageTile(this.fields[this.fields.length-2].x, this.fields[this.fields.length-2].y, this.fields[this.fields.length-2].image, this.fields[this.fields.length-2].rotation);
-        }
-
       },
       changeDirection: function(dir){
         // @TODO: dont allow multiple direction changes during one tick
