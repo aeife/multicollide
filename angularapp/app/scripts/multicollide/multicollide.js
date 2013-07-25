@@ -49,16 +49,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
             p1.changeDirection("north");
-            sound.play();
+            // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
             p1.changeDirection("south");
-            sound.play();
+            // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
             p1.changeDirection("west");
-            sound.play();
+            // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
             p1.changeDirection("east");
-            sound.play();
+            // sound.play();
           }
         }
       };
