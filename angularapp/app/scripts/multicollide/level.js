@@ -18,7 +18,7 @@ angular.module('multicollide.level', [])
         for (var i = 0; i < this.gridSize.width; i++) {
           this.grid[i] = [];
           for (var j = 0; j < this.gridSize.height; j++){
-              this.grid[i][j] = {food: 0, player: false};
+              this.grid[i][j] = {food: 0, players: 0};
           }
         }
       },
@@ -36,7 +36,7 @@ angular.module('multicollide.level', [])
         this.movePlayers();
 
         // -------- step 2: analyse result  --------
-
+        this.analyseMoves();
 
         // -------- step 3: process and draw  --------
         this.drawPlayerMoves();
@@ -47,6 +47,16 @@ angular.module('multicollide.level', [])
       movePlayers: function(){
         for (var i = 0; i < this.players.length; i++){
           this.players[i].move();
+        }
+      },
+      analyseMoves: function(){
+        // check collisions for all new player heads
+        for (var i = 0; i < this.players.length; i++){
+          var head = this.players[i].getHead();
+          // console.log(this.grid[head.x][head.y].players);
+          if (this.grid[head.x][head.y].players > 1){
+            console.log("Collision");
+          }
         }
       },
       drawPlayerMoves: function(){
@@ -70,6 +80,6 @@ angular.module('multicollide.level', [])
             canvasRender.drawImageTile(player.fields[player.fields.length-2].x, player.fields[player.fields.length-2].y, player.fields[player.fields.length-2].image, player.fields[player.fields.length-2].rotation);
           }
         }
-      }
+      },
     };
   });

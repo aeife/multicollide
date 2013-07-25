@@ -19,6 +19,9 @@ angular.module('multicollide.player', [])
     }
 
     Player.prototype = {
+      getHead: function(){
+        return this.fields[this.fields.length-1];
+      },
       getColor: function(){
         return this.color;
       },
@@ -44,19 +47,19 @@ angular.module('multicollide.player', [])
           switch (this.direction){
             case "north":
               this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});
-              level.grid[x][y-i].player = true;
+              level.grid[x][y-i].players++;
               break;
             case "east":
               this.fields.push({x: x+i, y: y, rotation: this.direction, image: image});
-              level.grid[x+i][y].player = true;
+              level.grid[x+i][y].players++;
               break;
             case "south":
               this.fields.push({x: x, y: y+i, rotation: this.direction, image: image});
-              level.grid[x][y+i].player = true;
+              level.grid[x][y+i].players++;
               break;
             case "west":
               this.fields.push({x: x-i, y: y, rotation: this.direction, image: image});
-              level.grid[x-i][y].player = true;
+              level.grid[x-i][y].players++;
               break;
           }
         }
@@ -86,7 +89,7 @@ angular.module('multicollide.player', [])
         // console.log("move");
 
         // delete tail
-        level.grid[this.fields[0].x][this.fields[0].y].player = false;
+        level.grid[this.fields[0].x][this.fields[0].y].players--;
         canvasRender.clearTile(this.fields[0].x, this.fields[0].y, canvasRender.layer.game)
 
         this.fields.shift();
@@ -123,6 +126,7 @@ angular.module('multicollide.player', [])
             break;
         }
         this.fields.push({x: newX, y: newY, rotation: this.direction, image: this.image.head});
+        level.grid[newX][newY].players++;
       },
       changeDirection: function(dir){
         // @TODO: dont allow multiple direction changes during one tick
