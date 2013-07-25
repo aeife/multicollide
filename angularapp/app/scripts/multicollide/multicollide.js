@@ -38,7 +38,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       var p2 = new Player('red', "west", 0);
       level.players.push(p2);
-      p2.spawn(10,10);
+      p2.spawn(11,10);
 
       setInterval(function(){
         level.processTurn();

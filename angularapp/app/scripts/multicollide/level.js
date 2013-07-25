@@ -30,19 +30,16 @@ angular.module('multicollide.level', [])
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);
       },
       processTurn: function(){
-        // moves all players
+        // process one play turn
 
-        // -------- step 1: move players --------
+        // -------- step 1: move all players --------
         this.movePlayers();
 
-        // -------- step 2: analyse result  --------
+        // -------- step 2: analyse result of moves --------
         this.analyseMoves();
 
         // -------- step 3: process and draw  --------
         this.drawPlayerMoves();
-
-
-
       },
       movePlayers: function(){
         for (var i = 0; i < this.players.length; i++){
@@ -51,13 +48,26 @@ angular.module('multicollide.level', [])
       },
       analyseMoves: function(){
         // check collisions for all new player heads
+
+        //collisions with other player
+        var collidedPlayers = [];
+
         for (var i = 0; i < this.players.length; i++){
           var head = this.players[i].getHead();
           // console.log(this.grid[head.x][head.y].players);
           if (this.grid[head.x][head.y].players > 1){
             console.log("Collision");
+            collidedPlayers.push(this.players[i]);
           }
         }
+
+        // kill collides players
+        for (var i = 0; i < collidedPlayers.length; i++){
+          collidedPlayers[i].kill();
+        }
+
+
+        //collisions with items
       },
       drawPlayerMoves: function(){
         for (var i = 0; i < this.players.length; i++){
@@ -81,5 +91,14 @@ angular.module('multicollide.level', [])
           }
         }
       },
+      deletePlayer: function(player){
+        // adjust grid info
+        for (var i = 0; i < player.fields.length; i++){
+          this.grid[player.fields[i].x][player.fields[i].y].players--;
+        }
+
+        // delete player from players list
+        this.players.splice(this.players.indexOf(player),1);
+      }
     };
   });
