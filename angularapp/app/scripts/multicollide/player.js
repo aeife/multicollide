@@ -24,6 +24,14 @@ angular.module('multicollide.player', [])
       },
       spawn: function(x, y){
         console.log("spawn player");
+
+        var translate = {
+          north: -90,
+          east: 0,
+          south: 90,
+          west: 180
+        }
+
         for (var i = 0; i < config.player.startLength; i++){
           if (i === 0) {
             var image = this.image.tail;
@@ -32,9 +40,25 @@ angular.module('multicollide.player', [])
           } else {
             var image = this.image.linear;
           }
-          this.fields.push({x: x + i, y: y, rotation: 0, image: image});
 
-          level.grid[x+i][y].player = true;
+          switch (this.direction){
+            case "north":
+              this.fields.push({x: x, y: y-i, rotation: translate[this.direction], image: image});
+              level.grid[x][y-i].player = true;
+              break;
+            case "east":
+              this.fields.push({x: x+i, y: y, rotation: translate[this.direction], image: image});
+              level.grid[x+i][y].player = true;
+              break;
+            case "south":
+              this.fields.push({x: x, y: y+i, rotation: translate[this.direction], image: image});
+              level.grid[x][y+i].player = true;
+              break;
+            case "west":
+              this.fields.push({x: x-i, y: y, rotation: translate[this.direction], image: image});
+              level.grid[x-i][y].player = true;
+              break;
+          }
         }
 
         this.draw();

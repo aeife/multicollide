@@ -8,7 +8,7 @@ angular.module('multicollide.config', [])
     return {
       gridSize: {width: 50, height: 30},
       player: {
-        startLength: 45
+        startLength: 5
       },
       controls: {
         default: {
