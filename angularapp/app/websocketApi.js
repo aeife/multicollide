@@ -20,7 +20,11 @@ websocket = function(){
         started: {}
       },
       successfullConnected: {},
-      disconnect: {}
+      disconnect: {},
+      multicollide: {
+        start: {},
+        turn: {}
+      }
     },
     once: {
       lobby: {

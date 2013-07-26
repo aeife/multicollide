@@ -25,6 +25,11 @@ angular.module('multicollide.level', [])
       isInGrid: function(x, y){
         return !(x < 0 || x >= this.gridSize.width || y < 0 || y >= this.gridSize.height);
       },
+      spawnPlayers: function(){
+        for (var i = 0; i < this.players.length; i++){
+          this.players[i].spawn(10*i, 10*i);
+        }
+      },
       generateFood: function(x, y){
         this.grid[x][y] = {food: 5};
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);

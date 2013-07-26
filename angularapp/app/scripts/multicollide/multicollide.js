@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
-  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config) {
+  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope) {
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
     var bgCanvas = $('#bgCanvas');
@@ -28,18 +28,20 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       level.init({gridSize: config.gridSize});
       canvasRender.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
-      // level.generateFood(15,5);
-      // console.log(imageObj);
-      // console.log(imageObj2);
-      // var p1 = new Player('red', "east", {linear: imageLinear, corner: imageCorner, head: imageHead, tail: imageTail});
-      var p1 = new Player('red', "south", 0);
-      level.players.push(p1);
-      p1.spawn(1,1);
 
-      var p2 = new Player('red', "west", 0);
-      level.players.push(p2);
-      p2.spawn(11,10);
+      // initialize players
+      var players = lobby.currentLobby.players;
+      var ownPlayer = null;
+      for (var i = 0; i < players.length; i++){
+        var newPlayer = new Player('red', 'south', 0);
+        if (players[i] === $rootScope.username){
+          ownPlayer = newPlayer;
+        }
+        level.players.push(newPlayer);
+      }
+      level.spawnPlayers();
 
+      // game loop
       setInterval(function(){
         level.processTurn();
       },500);
@@ -53,16 +55,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            p1.changeDirection("north");
+            ownPlayer.changeDirection("north");
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
-            p1.changeDirection("south");
+            ownPlayer.changeDirection("south");
             // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
-            p1.changeDirection("west");
+            ownPlayer.changeDirection("west");
             // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
-            p1.changeDirection("east");
+            ownPlayer.changeDirection("east");
             // sound.play();
           }
         }
