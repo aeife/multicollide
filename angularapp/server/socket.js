@@ -511,8 +511,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
       // start game loop
+      // only for sockets in lobby
       setInterval(function(){
-        io.sockets.emit('multicollide:turn');
+        io.sockets.in(lobbys[data.id].name).emit('multicollide:turn');
       },50);
 
     });
