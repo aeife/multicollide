@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('games')
-  .factory('lobby', function ($rootScope, socketgenapi, flash) {
+  .factory('lobby', function ($rootScope, socketgenapi, flash, level) {
     // Service logic
     // ...
 
@@ -84,6 +84,8 @@ angular.module('games')
         this.status = "browser";
         this.currentLobby = null;
 
+        level.reset();
+
         this.getAvailableGames();
       },
       onPlayerJoined: function(callback){
@@ -107,6 +109,8 @@ angular.module('games')
           self.listeners.onLobbyDeleted.stop();
 
           self.listeners.onGameStarted.stop();
+
+          level.reset();
 
           callback(data);
         });

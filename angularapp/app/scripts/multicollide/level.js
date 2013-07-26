@@ -104,6 +104,9 @@ angular.module('multicollide.level', [])
 
         // delete player from players list
         this.players.splice(this.players.indexOf(player),1);
+      },
+      reset: function(){
+        this.players = [];
       }
     };
   });

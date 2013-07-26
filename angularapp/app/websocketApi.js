@@ -28,7 +28,8 @@ websocket = function(){
     },
     once: {
       lobby: {
-        deleted: {}
+        deleted: {},
+        leave: {}
       }
     },
     get: {
