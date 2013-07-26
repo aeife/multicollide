@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
-  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope) {
+  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi) {
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
     var bgCanvas = $('#bgCanvas');
@@ -42,9 +42,12 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       level.spawnPlayers();
 
       // game loop
-      setInterval(function(){
-        level.processTurn();
-      },500);
+      socketgenapi.on.multicollide.turn(function(){
+        level.processTurn()
+      });
+      // setInterval(function(){
+      //   level.processTurn();
+      // },500);
 
       // @TODO: allow press different key while other is still pressed
       var keyEventFired = false;

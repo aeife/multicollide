@@ -508,6 +508,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       console.log('host started game');
       lobbyStart(data.id, socket);
       socket.emit('lobby:start', {});
+
+
+      // start game loop
+      setInterval(function(){
+        io.sockets.emit('multicollide:turn');
+      },50);
+
     });
 
   });
