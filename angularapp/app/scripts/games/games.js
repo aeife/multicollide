@@ -62,6 +62,7 @@ angular.module('games', [])
     };
 
     // @TODO: Leave Lobby on F5 / refresh / tab close
+    // @TODO: Reset multicollide, lobby, players and so on
     $scope.leaveGame = function(){
       lobby.leaveLobby();
     };
