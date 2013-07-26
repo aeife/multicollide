@@ -32,6 +32,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // saves current lobby for each username
   var lobbyForUsername = {};
 
+  // turn interval
+  var turnLoop = {};
+
   // socket.io listens on server
   var io = require('socket.io').listen(server);
 
@@ -512,7 +515,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
       // start game loop
       // only for sockets in lobby
-      setInterval(function(){
+      turnLoop[data.id] = setInterval(function(){
         io.sockets.in(lobbys[data.id].name).emit('multicollide:turn');
       },50);
 
@@ -714,6 +717,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     console.log(lobbyForUsername);
 
     delete lobbys[id];
+
+    // remove turn interval for lobby if currently started
+    if (turnLoop[id]){
+      clearInterval(turnLoop[id]);
+    }
   }
 
   /**
