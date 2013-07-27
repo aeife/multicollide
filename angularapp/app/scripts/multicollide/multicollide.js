@@ -46,12 +46,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         level.processTurn()
       });
 
-      socketgenapi.lobby.leave.on(function(){
+
+
+      var lobbyDeleteListener = socketgenapi.lobby.deleted.on(function(){
         turnListener.stop();
+        lobbyLeaveListener.stop();
       }).once();
 
-      socketgenapi.lobby.deleted.on(function(){
+      var lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
         turnListener.stop();
+        lobbyDeleteListener.stop();
       }).once();
 
       // @TODO: allow press different key while other is still pressed

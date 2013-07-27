@@ -39,6 +39,8 @@ angular.module('sockets')
 
           // add once listener
           socket.once(msgname, callbackConverted);
+
+          return this;
         },
         whileLoggedIn: function() {
           var self = this;
