@@ -234,7 +234,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // req.session.destroy = true;
 
       // @TODO: send errors
-      socket.emit('user:logout');
+      // send new generated guest username
+      socket.emit('user:logout', {username: socket.session.username});
     });
 
     /**
