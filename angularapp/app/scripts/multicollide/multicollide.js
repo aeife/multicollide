@@ -42,17 +42,17 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       level.spawnPlayers();
 
       // game loop
-      var turnListener = socketgenapi.on.multicollide.turn(function(){
+      var turnListener = socketgenapi.multicollide.turn.on(function(){
         level.processTurn()
       });
 
-      socketgenapi.once.lobby.leave(function(){
+      socketgenapi.lobby.leave.on(function(){
         turnListener.stop();
-      });
+      }).once();
 
-      socketgenapi.once.lobby.deleted(function(){
+      socketgenapi.lobby.deleted.on(function(){
         turnListener.stop();
-      });
+      }).once();
 
       // @TODO: allow press different key while other is still pressed
       var keyEventFired = false;
