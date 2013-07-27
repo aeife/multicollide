@@ -85,7 +85,7 @@ angular.module('angularappAppBoot', ['angularappApp']).
     // check login status on start up
     // @TODO: Case that client has no cookie but still is logged in on the server
     // @TODO: Check if language is still account language on reconnect and logged in
-    socketgenapi.on.successfullConnected(function(data){
+    socketgenapi.successfullConnected.on(function(data){
 
       // @TODO: is not loaded before when directly opening route #/games
       $rootScope.username = data.username;

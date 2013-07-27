@@ -23,7 +23,7 @@ angular.module('profile', [])
       };
 
       $scope.refresh = function(){
-        socketgenapi.get.users.connected(function(err, data){
+        socketgenapi.users.connected.get(function(err, data){
           $rootScope.$apply(function(){
             $scope.users = $scope.convertUserLists(data);
             $scope.connectedUsers = data.length;
@@ -31,7 +31,7 @@ angular.module('profile', [])
         });
 
         if (!this.onlyConnected){
-          socketgenapi.get.users.all(function(err, data){
+          socketgenapi.users.all.get(function(err, data){
             $rootScope.$apply(function(){
               $scope.users = data;
             });
@@ -52,7 +52,7 @@ angular.module('profile', [])
           console.log('online status:');
           console.log(data.online);
 
-          socketgenapi.on.onlinestatus(data.name, function(data){
+          socketgenapi.onlinestatus.on(data.name, function(data){
             console.log(data);
             $scope.user.online = data.online;
           }).forRoute();
@@ -71,7 +71,7 @@ angular.module('profile', [])
                 }
 
                 // register listener when friend is added (his request is accepted) while visiting his profile
-                socketgenapi.on.friend.new(function(data){
+                socketgenapi.friend.new.on(function(data){
                   console.log(data);
                   if (data.user === $scope.user.name){
                     $scope.isFriend = data.online;
@@ -79,7 +79,7 @@ angular.module('profile', [])
                 }).forRoute();
 
                 // register listener when friend is deleted
-                socketgenapi.on.friend.deleted(function(data){
+                socketgenapi.friend.deleted.on(function(data){
                   console.log(data);
                   if (data.user === $scope.user.name){
                     $scope.isFriend = false;

@@ -5,36 +5,6 @@ websocket = function(){
         attach: "username"
       }
     },
-    friend: {
-      request: {
-        on: {}
-      },
-      new: {
-        on: {}
-      },
-      deleted: {
-        on: {}
-      }
-    },
-    lobby: {
-      deleted: {
-        on: {}
-      },
-      player: {
-        joined: {
-          on: {}
-        },
-        left: {
-          on: {}
-        }
-      },
-      started: {
-        on: {}
-      },
-      leave: {
-        on: {}
-      }
-    },
     successfullConnected: {
       on: {}
     },
@@ -95,12 +65,27 @@ websocket = function(){
       leave: {
         get: {
           emitData: "id"
-        }
+        },
+        on: {}
       },
       start: {
         get: {
           emitData: "id"
         }
+      },
+      deleted: {
+        on: {}
+      },
+      player: {
+        joined: {
+          on: {}
+        },
+        left: {
+          on: {}
+        }
+      },
+      started: {
+        on: {}
       }
     },
     friend: {
@@ -119,6 +104,15 @@ websocket = function(){
       },
       decline: {
         emit: {}
+      },
+      request: {
+        on: {}
+      },
+      new: {
+        on: {}
+      },
+      deleted: {
+        on: {}
       }
     },
     friends: {

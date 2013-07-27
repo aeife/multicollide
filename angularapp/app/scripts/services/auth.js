@@ -14,7 +14,7 @@ angular.module('angularappApp')
         });
       },
       login: function (username, password) {
-        socketgenapi.get.user.login({username: username, password: password}, function (data) {
+        socketgenapi.user.login.get({username: username, password: password}, function (data) {
           console.log(data);
           if (data.loggedin) {
             $rootScope.$apply(function() {
@@ -37,7 +37,7 @@ angular.module('angularappApp')
         // emit event so modules can make some things before logout
         // @TODO: is it secure that modules will be finished before logout?
         $rootScope.$emit('event:logout:before');
-        socketgenapi.get.user.logout(function () {
+        socketgenapi.user.logout.get(function () {
           console.log("successfully logged out");
         });
 

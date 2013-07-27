@@ -26,7 +26,7 @@ angular.module('friendslist', [])
       if (newValue) {
 
         //get friend requests
-        socketgenapi.on.friend.request(function(data){
+        socketgenapi.friend.request.on(function(data){
           console.log(data);
           $scope.requests = data.requests;
           // console.log(data.from + ' wants to add you!');
@@ -41,7 +41,7 @@ angular.module('friendslist', [])
           for (var friend in $scope.friends) {
             console.log(friend);
 
-            $scope.socketS[friend] = socketgenapi.on.onlinestatus(friend, function(sdata){
+            $scope.socketS[friend] = socketgenapi.onlinestatus.on(friend, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
 
@@ -51,7 +51,7 @@ angular.module('friendslist', [])
           }
 
           // new friend (= own or other user accepted friend request)
-          socketgenapi.on.friend.new(function(sdata){
+          socketgenapi.friend.new.on(function(sdata){
             // if accepted from own user delete according request
             if ($scope.requests && $scope.requests.indexOf(sdata.user) > -1){
               $scope.requests.splice($scope.requests.indexOf(sdata.user), 1);
@@ -63,7 +63,7 @@ angular.module('friendslist', [])
             console.log($scope.friends);
             // var friend = $scope.friends[sdata.user];
 
-            $scope.socketS[sdata.user] = socketgenapi.on.onlinestatus(sdata.user, function(sdata){
+            $scope.socketS[sdata.user] = socketgenapi.onlinestatus.on(sdata.user, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
 
@@ -73,7 +73,7 @@ angular.module('friendslist', [])
           }).whileLoggedIn();
 
           // deleted friend
-          socketgenapi.on.friend.deleted(function(sdata){
+          socketgenapi.friend.deleted.on(function(sdata){
             // delete friend from list and adjust friends count
             delete $scope.friends[sdata.user];
             $scope.friendCount = $scope.friendsOnline($scope.friends);
@@ -99,13 +99,13 @@ angular.module('friendslist', [])
     // user accepted friend request
     $scope.accept = function(username){
       console.log('accepting request from ' + username);
-      socketgenapi.emit.friend.accept({user: username});
+      socketgenapi.friend.accept.emit({user: username});
     };
 
     // user declined friend request
     $scope.decline = function(username){
       console.log('declining request from ' + username);
-      socketgenapi.emit.friend.decline({user: username});
+      socketgenapi.friend.decline.emit({user: username});
 
       // remove request
       $scope.requests.splice($scope.requests.indexOf(username), 1);

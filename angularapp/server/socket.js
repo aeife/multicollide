@@ -164,11 +164,12 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     /**
      * get list of all users
      */
-    socket.on(websocketApi.get.users.all.msgkey, function(data){
+    // socket.on(websocketApi.get.users.all.msgkey, function(data){
+    socket.on('users:all', function(data){
       console.log('GETTIN ALL USERS');
       User.find({}, {name : 1, _id : 0}, function(err, users){
         console.log(users);
-        socket.emit(websocketApi.get.users.all.msgkey, err, users);
+        socket.emit('users:all', err, users);
       });
       // socket.emit('users:connected', {users: connectedUsers});
     });

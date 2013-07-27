@@ -15,14 +15,14 @@ angular.module('games')
       status: "browser",
       getAvailableGames: function(){
         var self = this;
-        socketgenapi.get.games(function(data){
+        socketgenapi.games.get(function(data){
           self.games = data;
         });
       },
       newLobby: function(lobbyName, maxplayers){
         var self = this;
         console.log('adding new lobby: ' + lobbyName);
-        socketgenapi.get.lobby.new({lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
+        socketgenapi.lobby.new.get({lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
           self.onJoinedLobby(data);
         });
       },
@@ -31,7 +31,7 @@ angular.module('games')
         var self = this;
 
         console.log('joining lobby');
-        socketgenapi.get.lobby.join({id: id}, function(err, data){
+        socketgenapi.lobby.join.get({id: id}, function(err, data){
           if (err) {
             flash.error(err);
             self.getAvailableGames();
@@ -44,7 +44,7 @@ angular.module('games')
       leaveLobby: function(callback){
         console.log('leaving lobby');
         var self = this;
-        socketgenapi.get.lobby.leave({id: this.currentLobby.id}, function(data){
+        socketgenapi.lobby.leave.get({id: this.currentLobby.id}, function(data){
 
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
@@ -89,18 +89,18 @@ angular.module('games')
         this.getAvailableGames();
       },
       onPlayerJoined: function(callback){
-        this.listeners.onPlayerJoined = socketgenapi.on.lobby.player.joined(function(data){
+        this.listeners.onPlayerJoined = socketgenapi.lobby.player.joined.on(function(data){
           callback(data);
         });
       },
       onPlayerLeft: function(callback){
-        this.listeners.onPlayerLeft = socketgenapi.on.lobby.player.left(function(data){
+        this.listeners.onPlayerLeft = socketgenapi.lobby.player.left.on(function(data){
           callback(data);
         });
       },
       onLobbyDeleted: function(callback){
         var self = this;
-        this.listeners.onLobbyDeleted = socketgenapi.on.lobby.deleted(function(data){
+        this.listeners.onLobbyDeleted = socketgenapi.lobby.deleted.on(function(data){
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
 
@@ -117,13 +117,13 @@ angular.module('games')
       },
       onGameStarted: function(){
         var self = this;
-        this.listeners.onGameStarted = socketgenapi.on.lobby.started(function(data){
+        this.listeners.onGameStarted = socketgenapi.lobby.started.on(function(data){
           self.status = "ingame";
         });
       },
       startGame: function(){
         // @TODO: maybe get id from session on server?
-        socketgenapi.get.lobby.start({id: this.currentLobby.id}, function(){});
+        socketgenapi.lobby.start.get({id: this.currentLobby.id}, function(){});
       }
     };
   });
