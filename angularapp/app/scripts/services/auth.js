@@ -20,6 +20,9 @@ angular.module('angularappApp')
             $cookies.username = username;
             $cookies.loggedin = 'true';
 
+            // @TODO: use $rootScope OR cookie for username information
+            $rootScope.username = username;
+
             // change language to account language
             localization.changeLanguage(data.language);
 
