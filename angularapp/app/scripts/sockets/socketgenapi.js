@@ -66,17 +66,14 @@ angular.module('sockets')
         emit(msgname);
       }
 
+      var callbackConverted = convertCallback(callback);
       // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
       // @TODO: always send error as first parameter
       if (data && attach){
         // attach a string to the listener message
-        once(msgname + ':' + data[attach], function (err, data){
-          $rootScope.$apply(callback(err, data));
-        });
+        once(msgname + ':' + data[attach], callbackConverted);
       } else {
-        once(msgname, function (err, data){
-          $rootScope.$apply(callback(err, data));
-        });
+        once(msgname, callbackConverted);
       }
     }
 

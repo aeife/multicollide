@@ -10,26 +10,22 @@ angular.module('angularappApp')
       signup: function (userSignUp, callback) {
         console.log('signing up');
         user.newUser(userSignUp, function(data){
-          $rootScope.$apply(callback(data));
+          callback(data);
         });
       },
       login: function (username, password) {
         socketgenapi.user.login.get({username: username, password: password}, function (data) {
           console.log(data);
           if (data.loggedin) {
-            $rootScope.$apply(function() {
-              $cookies.username = username;
-              $cookies.loggedin = 'true';
+            $cookies.username = username;
+            $cookies.loggedin = 'true';
 
-              // change language to account language
-              localization.changeLanguage(data.language);
+            // change language to account language
+            localization.changeLanguage(data.language);
 
-              $location.path('/');
-            });
-
+            $location.path('/');
           } else {
-            $rootScope.$apply(flash.error($filter('i18n')('_WrongLoginCredentials_')));
-
+            flash.error($filter('i18n')('_WrongLoginCredentials_'));
           }
         });
       },

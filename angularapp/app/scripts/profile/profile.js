@@ -24,17 +24,13 @@ angular.module('profile', [])
 
       $scope.refresh = function(){
         socketgenapi.users.connected.get(function(err, data){
-          $rootScope.$apply(function(){
-            $scope.users = $scope.convertUserLists(data);
-            $scope.connectedUsers = data.length;
-          });
+          $scope.users = $scope.convertUserLists(data);
+          $scope.connectedUsers = data.length;
         });
 
         if (!this.onlyConnected){
           socketgenapi.users.all.get(function(err, data){
-            $rootScope.$apply(function(){
-              $scope.users = data;
-            });
+            $scope.users = data;
           });
         }
       };
