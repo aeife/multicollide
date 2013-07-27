@@ -45,9 +45,7 @@ angular.module('angularappApp')
             console.log(user);
             callback(user);
           } else {
-            // $rootScope.$apply(function() {
               $location.path('/404');
-            // });
           }
         });
       },
