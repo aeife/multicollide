@@ -1,114 +1,139 @@
 websocket = function(){
   var websocketApi = {
-    on: {
-      onlinestatus: {
-        opts: {
-          attach: "username"
-        }
-      },
-      friend: {
-        request: {},
-        new: {},
-        deleted: {}
-      },
-      lobby: {
-        deleted: {},
-        player: {
-          joined: {},
-          left: {}
-        },
-        started: {}
-      },
-      successfullConnected: {},
-      disconnect: {},
-      multicollide: {
-        start: {},
-        turn: {}
+    onlinestatus: {
+      on: {
+        attach: "username"
       }
     },
-    once: {
-      lobby: {
-        deleted: {},
-        leave: {}
+    friend: {
+      request: {
+        on: {}
+      },
+      new: {
+        on: {}
+      },
+      deleted: {
+        on: {}
       }
     },
-    get: {
-      users: {
-        connected: {},
-        all: {}
+    lobby: {
+      deleted: {
+        on: {}
       },
-      user: {
-        new: {
-          opts: {
-            emitData: ["username", "password", "email"]
-          }
+      player: {
+        joined: {
+          on: {}
         },
-        login: {
-          opts: {
-            emitData: ["username", "password"]
-          }
-        },
-        logout: {},
-        info: {
-          opts: {
-            emitData: "name",
-            attach: "name"
-          }
+        left: {
+          on: {}
         }
       },
-      games: {},
-      lobby: {
-        new: {
-          opts: {
-            emitData: ["lobbyName", "playerLimit"]
-          }
-        },
-        join: {
-          opts: {
-            emitData: "id"
-          }
-        },
-        leave: {
-          opts: {
-            emitData: "id"
-          }
-        },
-        start: {
-          opts: {
-            emitData: "id"
-          }
+      started: {
+        on: {}
+      },
+      leave: {
+        on: {}
+      }
+    },
+    successfullConnected: {
+      on: {}
+    },
+    disconnect: {
+      on: {}
+    },
+    multicollide: {
+      start: {
+        on: {}
+      },
+      turn: {
+        on: {}
+      }
+    },
+    users: {
+      connected: {
+        get: {}
+      },
+      all: {
+        get: {}
+      }
+    },
+    user: {
+      new: {
+        get: {
+          emitData: ["username", "password", "email"]
         }
       },
-      friend: {
-        add: {
-          opts: {
-            emitData: "username"
-          }
-        },
-        remove: {
-          opts: {
-            emitData: "username"
-          }
+      login: {
+        get: {
+          emitData: ["username", "password"]
         }
       },
-      friends: {
-        all: {}
+      logout: {
+        get: {}
       },
-      settings: {
-        changePassword: {
-          opts: {
-            emitData: ["username", "oldPassword", "newPassword"]
-          }
+      info: {
+        get: {
+          emitData: "name",
+          attach: "name"
         }
       }
     },
-    emit: {
-      friend: {
-        accept: {},
-        decline: {}
+    games: {
+      get: {}
+    },
+    lobby: {
+      new: {
+        get: {
+          emitData: ["lobbyName", "playerLimit"]
+        }
       },
-      settings: {
-        newLanguage: {}
+      join: {
+        get: {
+          emitData: "id"
+        }
+      },
+      leave: {
+        get: {
+          emitData: "id"
+        }
+      },
+      start: {
+        get: {
+          emitData: "id"
+        }
+      }
+    },
+    friend: {
+      add: {
+        get: {
+          emitData: "username"
+        }
+      },
+      remove: {
+        get: {
+          emitData: "username"
+        }
+      },
+      accept: {
+        emit: {}
+      },
+      decline: {
+        emit: {}
+      }
+    },
+    friends: {
+      all: {
+        get: {}
+      }
+    },
+    settings: {
+      changePassword: {
+        get: {
+          emitData: ["username", "oldPassword", "newPassword"]
+        }
+      },
+      newLanguag: {
+        emit: {}
       }
     }
   }
