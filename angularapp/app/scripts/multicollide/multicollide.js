@@ -48,6 +48,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
 
 
+      // listen for lobby leave or lobby deleted
+      // only one event can occur, delete the other listener on occurrence
       var lobbyDeleteListener = socketgenapi.lobby.deleted.on(function(){
         turnListener.stop();
         lobbyLeaveListener.stop();
@@ -57,6 +59,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         turnListener.stop();
         lobbyDeleteListener.stop();
       }).once();
+
 
       // @TODO: allow press different key while other is still pressed
       var keyEventFired = false;
