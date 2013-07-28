@@ -21,6 +21,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     //   urls: ['/sounds/beep.ogg']
     // });
 
+    var players = lobby.currentLobby.players;
+    var ownPlayer = null;
+
     var spriteSheet = new Image();
     spriteSheet.src = '/images/spritesheet.png';
 
@@ -30,20 +33,18 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       canvasRender.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
 
       // initialize players
-      var players = lobby.currentLobby.players;
-      var ownPlayer = null;
       for (var i = 0; i < players.length; i++){
-        var newPlayer = new Player('red', 'south', 0);
+        var newPlayer = new Player(players[i], 'red', 'south', 0);
         if (players[i] === $rootScope.username){
           ownPlayer = newPlayer;
         }
-        level.players.push(newPlayer);
+        level.addPlayer(newPlayer);
       }
       level.spawnPlayers();
 
       // game loop
-      var turnListener = socketgenapi.multicollide.turn.on(function(){
-        level.processTurn()
+      var turnListener = socketgenapi.multicollide.turn.on(function(data){
+        level.processTurn(data);
       });
 
 
@@ -70,16 +71,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            ownPlayer.changeDirection("north");
+            changeDirection("north");
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
-            ownPlayer.changeDirection("south");
+            changeDirection("south");
             // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
-            ownPlayer.changeDirection("west");
+            changeDirection("west");
             // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
-            ownPlayer.changeDirection("east");
+            changeDirection("east");
             // sound.play();
           }
         }
@@ -89,6 +90,12 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         keyEventFired = false;
       };
     };
+
+    function changeDirection(direction){
+      if (ownPlayer.direction !== direction) {
+        socketgenapi.multicollide.changeDirection.emit({direction: direction});
+      }
+    }
 
     $scope.fullscreen = function(){
       // @TODO: check in other browsers (firefox: not centered, ie: not working, opera: ?, safari: ?)

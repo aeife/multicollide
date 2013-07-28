@@ -35,6 +35,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // turn interval
   var turnLoop = {};
 
+  var directionChanges = [];
+
   // socket.io listens on server
   var io = require('socket.io').listen(server);
 
@@ -518,9 +520,17 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // start game loop
       // only for sockets in lobby
       turnLoop[data.id] = setInterval(function(){
-        io.sockets.in(lobbys[data.id].name).emit('multicollide:turn');
+        io.sockets.in(lobbys[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
+
+        // reset information
+        directionChanges = [];
       },50);
 
+    });
+
+    socket.on('multicollide:changeDirection', function(data){
+      // console.log(socket.session.username + ' changed direction to ' + data.direction);
+      directionChanges.push({player: socket.session.username, direction: data.direction});
     });
 
   });

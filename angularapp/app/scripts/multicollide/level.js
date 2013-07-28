@@ -10,6 +10,7 @@ angular.module('multicollide.level', [])
       gridSize: {},
       grid: [],
       players: [],
+      playerForUsername: {},
       init: function(obj){
         this.gridSize = obj.gridSize;
         this.initializeGrid();
@@ -21,6 +22,13 @@ angular.module('multicollide.level', [])
               this.grid[i][j] = {food: 0, players: 0};
           }
         }
+      },
+      addPlayer: function(player){
+        console.log(player);
+        this.players.push(player);
+
+        // link player with username
+        this.playerForUsername[player.username] = this.players[this.players.length-1];
       },
       isInGrid: function(x, y){
         return !(x < 0 || x >= this.gridSize.width || y < 0 || y >= this.gridSize.height);
@@ -34,10 +42,19 @@ angular.module('multicollide.level', [])
         this.grid[x][y] = {food: 5};
         canvasRender.drawTile(x, y, 'black', canvasRender.layer.game);
       },
-      processTurn: function(){
+      processTurn: function(data){
         // process one play turn
 
-        // -------- step 1: move all players --------
+        // -------- step 1: player movement --------
+
+        // apply direction changes
+        if (data.directionChanges.length > 0){
+          for (var i = 0; i < data.directionChanges.length; i++){
+            this.playerForUsername[data.directionChanges[i].player].changeDirection(data.directionChanges[i].direction);
+          }
+        }
+
+        // move players
         this.movePlayers();
 
         // -------- step 2: analyse result of moves --------

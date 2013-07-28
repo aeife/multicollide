@@ -4,7 +4,8 @@ angular.module('multicollide.player', [])
   .factory('Player', function ($rootScope, level, canvasRender, config) {
     // Service logic
 
-    function Player(color, direction, imageRow){
+    function Player(username, color, direction, imageRow){
+      this.username = username;
       this.color = color;
       this.direction = direction;
       this.fields = [];

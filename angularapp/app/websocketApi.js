@@ -17,6 +17,9 @@ websocket = function(){
       },
       turn: {
         on: {}
+      },
+      changeDirection: {
+        emit: {}
       }
     },
     users: {
