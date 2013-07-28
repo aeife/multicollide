@@ -6,6 +6,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var ctx = document.getElementById('canvas').getContext('2d');
     var bgCanvas = $('#bgCanvas');
     var bgCtx = document.getElementById('bgCanvas').getContext('2d');
+    var textCanvas = $('#textCanvas');
+    var textCtx = document.getElementById('textCanvas').getContext('2d');
     var wrapper = $('#canvasWrapper');
 
     var sound = new Howl({
@@ -30,7 +32,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     spriteSheet.onload = function() {
 
       level.init({gridSize: config.gridSize});
-      canvasRender.init({canvas: {background: bgCanvas, game: canvas}, layer: {background: bgCtx, game: ctx}, wrapper: wrapper, spriteSheet: spriteSheet});
+      canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
 
       // initialize players
       for (var i = 0; i < players.length; i++){
@@ -71,7 +73,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            changeDirection("north");
+            changeDirection("north");canvasRender.
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
             changeDirection("south");

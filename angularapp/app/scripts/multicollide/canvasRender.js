@@ -48,6 +48,9 @@ angular.module('multicollide.canvasRender', [])
         this.canvas.background.attr('width', this.canvasSize.width ); //max width
         this.canvas.background.attr('height', this.canvasSize.height ); //max height
 
+        this.canvas.text.attr('width', this.canvasSize.width ); //max width
+        this.canvas.text.attr('height', this.canvasSize.height ); //max height
+
         // adjust wrapper div because of absolute position of canvas elements
         this.wrapper.css("height", this.canvasSize.height + 100);
 
@@ -189,6 +192,14 @@ angular.module('multicollide.canvasRender', [])
         east: 0,
         south: 90,
         west: 180
+      },
+      drawText: function(text, layer){
+        console.log("DRAW TEXT");
+        layer.fillStyle = '#f00';
+        layer.font = 'bold 30px sans-serif';
+        layer.textBaseline = 'bottom';
+        layer.textAlign = 'center';
+        layer.fillText(text, this.canvasSize.width/2, this.canvasSize.height/2);
       }
     };
   });
