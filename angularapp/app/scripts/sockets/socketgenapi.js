@@ -130,101 +130,64 @@ angular.module('sockets')
     // }
 
     function processSocketApi (obj){
-      // t.get.user.connected = function()....
       var msg = "";
       iterate(obj, msg);
-      // Object.keys(obj).forEach(function(key) {
-      //     var msg = "";
-      //     iterate(obj[key], msg, key);
-      // });
-
       return obj;
+    }
+
+    function generateOn(m, opts){
+      if (opts && opts.attach){
+        return function(msg, callback){
+          return on(m + ':' + msg, callback);
+        };
+      } else {
+        return function(callback){
+          return on(m, callback);
+        };
+      }
+    }
+
+    function generateGet(m, opts){
+      if (opts && opts.emitData) {
+        return function(data, callback){
+          get(m, callback, data, opts.attach);
+        };
+      } else {
+        return function(callback){
+          get(m, callback);
+        };
+      }
+    }
+
+    function generateEmit(m){
+      return function(data){
+        emit(m, data);
+      };
     }
 
     function iterate(obj, msg) {
       for (var property in obj) {
         if (obj.hasOwnProperty(property)) {
           if (typeof obj[property] == "object" && property !== 'emit' && property !== 'get' && property !== 'on' && Object.keys(obj[property]).length != 0) {
-            // continue iterating till at the deepest level
+            // continue iterating till at the deepest message level
             iterate(obj[property], msg ? msg + ":" + property : property);
           } else {
             // process found end attribute
-            console.log(property);
-            console.log(msg);
-            var m = msg;
-            // var m = msg ? msg + ":" + property : property;
-
             if (property === "get"){
 
-              obj[property] = function(m, opts){
-
-                if (opts && opts.emitData) {
-
-                  return function(data, callback){
-                    get(m, callback, data, opts.attach);
-                  };
-
-                } else {
-
-                  return function(callback){
-                    get(m, callback);
-                  };
-
-                }
-              }(m, obj[property]);
+              obj[property] = generateGet(msg, obj[property]);
 
               // every get also includes single on
-              var prop = 'on';
-
-              obj[prop] = function(m, opts){
-
-                if (opts && opts.emitData) {
-
-                  return function(data, callback){
-                    get(m, callback, data, opts.attach);
-                  };
-
-                } else {
-
-                  return function(callback){
-                    get(m, callback);
-                  };
-
-                }
-              }(m, obj[prop]);
+              obj['on'] = generateOn(msg, obj['on']);
 
             } else if (property === "on"){
 
-              obj[property] = function(m, opts){
-                if (opts && opts.attach){
-
-                  return function(msg, callback){
-                    return on(m + ':' + msg, callback);
-                  };
-
-                } else {
-
-                  return function(callback){
-                    return on(m, callback);
-                  };
-
-                }
-              }(m, obj[property]);
+              obj[property] = generateOn(msg, obj[property]);
 
             } else if (property === "emit"){
 
-              obj[property] = function(m){
-                return function(data){
-                  emit(m, data);
-                };
-              }(m);
+              obj[property] = generateEmit(msg);
 
-            } else if (property === "once"){
-              obj[property] = function(m){
-                return function(data){
-                  once(m, data);
-                };
-              }(m);
             }
           }
         }
