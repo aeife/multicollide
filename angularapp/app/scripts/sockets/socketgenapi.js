@@ -173,6 +173,26 @@ angular.module('sockets')
                 }
               }(m, obj[property]);
 
+              // every get also includes single on
+              var prop = 'on';
+
+              obj[prop] = function(m, opts){
+
+                if (opts && opts.emitData) {
+
+                  return function(data, callback){
+                    get(m, callback, data, opts.attach);
+                  };
+
+                } else {
+
+                  return function(callback){
+                    get(m, callback);
+                  };
+
+                }
+              }(m, obj[prop]);
+
             } else if (property === "on"){
 
               obj[property] = function(m, opts){

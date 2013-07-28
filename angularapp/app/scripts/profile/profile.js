@@ -23,6 +23,10 @@ angular.module('profile', [])
       };
 
       $scope.refresh = function(){
+        socketgenapi.users.connected.on(function(){
+          console.log("got connected users");
+        });
+
         socketgenapi.users.connected.get(function(err, data){
           $scope.users = $scope.convertUserLists(data);
           $scope.connectedUsers = data.length;
