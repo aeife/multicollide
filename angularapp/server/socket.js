@@ -35,6 +35,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // turn interval
   var turnLoop = {};
 
+  // direction changes of player during a turn
   var directionChanges = [];
 
   // socket.io listens on server
