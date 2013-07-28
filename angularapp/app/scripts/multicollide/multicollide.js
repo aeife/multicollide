@@ -67,8 +67,6 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // @TODO: allow press different key while other is still pressed
       var keyEventFired = false;
       document.onkeydown = function(e) {
-        console.log(keyEventFired);
-        console.log(e.keyCode);
         if (!keyEventFired) {
           keyEventFired = true;
 
