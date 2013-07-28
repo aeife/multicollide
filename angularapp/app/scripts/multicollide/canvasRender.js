@@ -193,13 +193,16 @@ angular.module('multicollide.canvasRender', [])
         south: 90,
         west: 180
       },
-      drawText: function(text, layer){
+      drawText: function(text){
         console.log("DRAW TEXT");
-        layer.fillStyle = '#f00';
-        layer.font = 'bold 30px sans-serif';
-        layer.textBaseline = 'bottom';
-        layer.textAlign = 'center';
-        layer.fillText(text, this.canvasSize.width/2, this.canvasSize.height/2);
+        this.layer.text.fillStyle = '#f00';
+        this.layer.text.font = 'bold 30px sans-serif';
+        this.layer.text.textBaseline = 'bottom';
+        this.layer.text.textAlign = 'center';
+        this.layer.text.fillText(text, this.canvasSize.width/2, this.canvasSize.height/2);
+      },
+      clearText: function(){
+        this.layer.text.clearRect(1, 1, this.canvasSize.width, this.canvasSize.height);
       }
     };
   });

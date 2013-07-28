@@ -44,6 +44,24 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       }
       level.spawnPlayers();
 
+
+      // start signal
+      socketgenapi.multicollide.start.on(function(){
+        canvasRender.drawText(3);
+        setTimeout(function(){
+          canvasRender.clearText();
+          canvasRender.drawText(2);
+          setTimeout(function(){
+            canvasRender.clearText();
+            canvasRender.drawText(1);
+            setTimeout(function(){
+              canvasRender.clearText();
+            }, 1000);
+          }, 1000);
+        }, 1000);
+      }).once();
+
+
       // game loop
       var turnListener = socketgenapi.multicollide.turn.on(function(data){
         level.processTurn(data);
