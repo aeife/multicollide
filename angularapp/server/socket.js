@@ -497,7 +497,12 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // checking if lobby still exists
       var err = null;
       if (lobbys[data.id]){
-        joinLobby(data.id, socket);
+        // check if max players reached
+        if (lobbys[data.id].players.length === lobbys[data.id].maxplayers){
+          err = 'lobby is full';
+        } else {
+          joinLobby(data.id, socket);
+        }
       } else {
         err = 'lobby was deleted';
       }
