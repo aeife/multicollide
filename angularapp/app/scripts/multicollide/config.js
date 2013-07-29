@@ -12,6 +12,7 @@ angular.module('multicollide.config', [])
       },
       spawnLocations: {
         solo: function(){
+          // @TODO: more spawn locations, up to 10
           return [
             {x: 1, y: Math.floor(config.gridSize.height/2), direction: 'east'},
             {x: config.gridSize.width - 2, y: Math.floor(config.gridSize.height/2), direction: 'west'},
