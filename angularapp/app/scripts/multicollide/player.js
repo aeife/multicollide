@@ -26,8 +26,10 @@ angular.module('multicollide.player', [])
       getColor: function(){
         return this.color;
       },
-      spawn: function(x, y){
+      spawn: function(x, y, direction){
         console.log("spawn player");
+
+        this.direction = direction;
 
         var translate = {
           north: -90,

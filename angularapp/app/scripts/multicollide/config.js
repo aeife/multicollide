@@ -5,10 +5,20 @@ angular.module('multicollide.config', [])
     // Service logic
 
     // Public API here
-    return {
+    var config = {
       gridSize: {width: 50, height: 30},
       player: {
         startLength: 5
+      },
+      spawnLocations: {
+        solo: function(){
+          return [
+            {x: 1, y: Math.floor(config.gridSize.height/2), direction: 'east'},
+            {x: config.gridSize.width - 2, y: Math.floor(config.gridSize.height/2), direction: 'west'},
+            {x: Math.floor(config.gridSize.width/2), y: 1, direction: 'south'},
+            {x: Math.floor(config.gridSize.width/2), y: config.gridSize.height - 1, direction: 'north'}
+          ]
+        }
       },
       controls: {
         default: {
@@ -25,4 +35,5 @@ angular.module('multicollide.config', [])
         }
       }
     };
+    return config;
   });

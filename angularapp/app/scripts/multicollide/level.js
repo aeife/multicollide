@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide.level', [])
-  .factory('level', function ($rootScope, canvasRender) {
+  .factory('level', function ($rootScope, canvasRender, config) {
     // Service logic
 
 
@@ -34,8 +34,10 @@ angular.module('multicollide.level', [])
         return !(x < 0 || x >= this.gridSize.width || y < 0 || y >= this.gridSize.height);
       },
       spawnPlayers: function(){
+        var spawnLocations = config.spawnLocations.solo();
         for (var i = 0; i < this.players.length; i++){
-          this.players[i].spawn(10*i, 10*i);
+          this.players[i].spawn(spawnLocations[i].x, spawnLocations[i].y, spawnLocations[i].direction);
+          // this.players[i].spawn(10*i, 10*i);
         }
       },
       generateFood: function(x, y){
