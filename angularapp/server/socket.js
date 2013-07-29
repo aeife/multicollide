@@ -16,13 +16,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // saves ids for usernames
   var clientUsernames = {};
 
-  // saves all current available lobbys
-  var lobbys = {};
+  // saves all current available lobbies
+  var lobbies = {};
   // highest current lobby id for continues counting
   var lobbyHighestCount = -1;
 
   // mock data
-  // lobbys = {
+  // lobbies = {
   //   0: {id: 0, name: 'game nr. 1', status: 'lobby', players: [], maxplayers: 10},
   //   1: {id: 1, name: 'fine game', status: 'playing', players: [], maxplayers: 10},
   //   2: {id: 2, name: 'another game', status: 'lobby', players: [], maxplayers: 10}
@@ -477,11 +477,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
     /**
-     * client requested list of open lobbys
+     * client requested list of open lobbies
      */
     socket.on('games', function(data){
       console.log('client requested games info');
-      socket.emit('games', lobbys);
+      socket.emit('games', lobbies);
     });
 
 
@@ -496,9 +496,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       console.log('client wants to join lobby');
       // checking if lobby still exists
       var err = null;
-      if (lobbys[data.id]){
+      if (lobbies[data.id]){
         // check if max players reached
-        if (lobbys[data.id].players.length === lobbys[data.id].maxplayers){
+        if (lobbies[data.id].players.length === lobbies[data.id].maxplayers){
           err = 'lobby is full';
         } else {
           joinLobby(data.id, socket);
@@ -506,14 +506,14 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       } else {
         err = 'lobby was deleted';
       }
-      socket.emit('lobby:join', err, lobbys[data.id]);
+      socket.emit('lobby:join', err, lobbies[data.id]);
     });
 
     socket.on('lobby:leave', function(data){
       console.log('client wants to leave lobby');
       console.log(socket.session.username);
       leaveLobby(data.id, socket);
-      socket.emit('lobby:leave', lobbys[data.id]);
+      socket.emit('lobby:leave', lobbies[data.id]);
     });
 
 
@@ -526,14 +526,14 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // wait a bit and then send game start
       // @TODO: something better then waiting?
       setTimeout(function(){
-        io.sockets.in(lobbys[data.id].name).emit('multicollide:start', {});
+        io.sockets.in(lobbies[data.id].name).emit('multicollide:start', {});
 
         // now wait countdown and then start
         setTimeout(function(){
           // start game loop
           // only for sockets in lobby
           turnLoop[data.id] = setInterval(function(){
-            io.sockets.in(lobbys[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
+            io.sockets.in(lobbies[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
 
             // reset information
             directionChanges = [];
@@ -716,7 +716,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     // add lobby
     // add player who opened lobby as first player to lobby
-    lobbys[lobbyHighestCount] = {
+    lobbies[lobbyHighestCount] = {
       id: lobbyHighestCount,
       name: (data.name) ? data.name  : "new game " + lobbyHighestCount,
       host: data.host,
@@ -725,7 +725,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       maxplayers: data.maxplayers
     };
 
-    return lobbys[lobbyHighestCount];
+    return lobbies[lobbyHighestCount];
   }
 
   /**
@@ -736,18 +736,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     console.log('REMOVING LOBBY');
     // for each user connected: delete reference to username and leave socket room
     console.log(lobbyForUsername);
-    for (var i = 0; i < lobbys[id].players.length; i++){
-      var player = lobbys[id].players[i];
+    for (var i = 0; i < lobbies[id].players.length; i++){
+      var player = lobbies[id].players[i];
       delete lobbyForUsername[player];
 
-      clients[getIdForUsername(player)].leave(lobbys[id].name);
+      clients[getIdForUsername(player)].leave(lobbies[id].name);
 
-      console.log(player + ' leaves room ' + lobbys[id].name);
+      console.log(player + ' leaves room ' + lobbies[id].name);
     }
 
     console.log(lobbyForUsername);
 
-    delete lobbys[id];
+    delete lobbies[id];
 
     // remove turn interval for lobby if currently started
     if (turnLoop[id]){
@@ -761,16 +761,16 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param  {object} socket Socket object of the joining user
    */
   function joinLobby(id, socket){
-    if (!lobbys[id].players){
-      lobbys[id].players = [];
+    if (!lobbies[id].players){
+      lobbies[id].players = [];
     }
-    lobbys[id].players.push(socket.session.username);
-    // lobbys[id].players++;
+    lobbies[id].players.push(socket.session.username);
+    // lobbies[id].players++;
     lobbyForUsername[socket.session.username] = id;
 
     //join socket room and send join event to other players in lobby
-    socket.join(lobbys[id].name);
-    io.sockets.in(lobbys[id].name).emit('lobby:player:joined', {username: socket.session.username});
+    socket.join(lobbies[id].name);
+    io.sockets.in(lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
   }
 
   /**
@@ -780,24 +780,24 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param  {object} socket Socket object of the leaving user
    */
   function leaveLobby(id, socket){
-    if (lobbys[id].host === socket.session.username){
+    if (lobbies[id].host === socket.session.username){
       // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
-      socket.leave(lobbys[id].name);
-      io.sockets.in(lobbys[id].name).emit('lobby:deleted', {reason: 'host left'});
+      socket.leave(lobbies[id].name);
+      io.sockets.in(lobbies[id].name).emit('lobby:deleted', {reason: 'host left'});
 
       removeLobby(id);
     } else {
 
-      if (lobbys[id].players.indexOf(socket.session.username) > -1){
-        lobbys[id].players.splice(lobbys[id].players.indexOf(socket.session.username),1);
-        // lobbys[id].players--;
+      if (lobbies[id].players.indexOf(socket.session.username) > -1){
+        lobbies[id].players.splice(lobbies[id].players.indexOf(socket.session.username),1);
+        // lobbies[id].players--;
       }
 
       delete lobbyForUsername[socket.session.username];
 
       //send left event to other players in lobby and leave socket room
-      socket.leave(lobbys[id].name);
-      io.sockets.in(lobbys[id].name).emit('lobby:player:left', {username: socket.session.username});
+      socket.leave(lobbies[id].name);
+      io.sockets.in(lobbies[id].name).emit('lobby:player:left', {username: socket.session.username});
     }
   }
 
@@ -813,11 +813,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   function lobbyStart(id, socket){
     // check if really host started the game
-    if (lobbys[id].host === socket.session.username){
-      lobbys[id].status = "ingame";
+    if (lobbies[id].host === socket.session.username){
+      lobbies[id].status = "ingame";
 
       // emit start to all players in lobby
-      io.sockets.in(lobbys[id].name).emit('lobby:started', {});
+      io.sockets.in(lobbies[id].name).emit('lobby:started', {});
     }
   }
 
