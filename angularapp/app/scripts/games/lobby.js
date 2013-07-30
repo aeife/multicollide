@@ -27,7 +27,6 @@ angular.module('games')
         });
       },
       joinLobby: function(id){
-        // @TODO: only when lobby not full
         var self = this;
 
         console.log('joining lobby');
