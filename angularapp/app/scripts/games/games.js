@@ -23,7 +23,7 @@ angular.module('games', [])
 
     $scope.btnCreateGame = function(){
       $scope.dialogCreateGame = $dialog.dialog({templateUrl: 'scripts/games/msgCreateGame.html', backdropClick: false, keyboard: false, controller: 'CreateGameDialogCtrl'});
-      $scope.dialogCreateGame.open()
+      $scope.dialogCreateGame.open();
     };
 
     $scope.createGame = function(){
