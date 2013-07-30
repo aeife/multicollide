@@ -66,36 +66,35 @@ angular.module('games', [])
       lobby.leaveLobby();
     };
 
-    // only process first of the two events below
-    var eventProcessed = false;
+    // flag if logout event is triggered
+    var gotLogout = false;
 
     // leave lobby on location change
     // @TODO: weird behavior when changing to START btn
-    $scope.$on('$locationChangeStart', function(event, next, current) {
-      // if user was in lobby, leave
-      console.log(lobby.inLobby);
-      if (!eventProcessed && lobby.inLobby){
+    var locationChangeStartListener = $scope.$on('$locationChangeStart', function(event, next, current) {
+      // if user was in lobby and not logged out before: leave
+      if (!gotLogout && lobby.inLobby){
         event.preventDefault();
         $dialog.messageBox($filter('i18n')('_LeaveLobby_'), $filter('i18n')('_LeaveLobbyReally_'), [{result:true, label: $filter('i18n')('_Yes_'), cssClass: 'btn-primary'}, {result:false, label: $filter('i18n')('_Cancel_')}])
         .open()
         .then(function(result){
           if (result) {
             $scope.leaveGame();
-            eventProcessed = true;
             // @TODO: redirect location to clicked location
             // $location.path('/about');
             // $location.url(next).hash();
           }
         });
+      } else {
+        // if not in lobby and location change: remove listeners
       }
     });
 
     // leave lobby on logout
-    $rootScope.$on('event:logout:before', function(){
-      if (!eventProcessed && lobby.inLobby){
+    var logoutBeforeListener = $rootScope.$on('event:logout:before', function(){
+      if (lobby.inLobby){
+        gotLogout = true;
         $scope.leaveGame();
-
-        eventProcessed = true;
       }
     });
 
