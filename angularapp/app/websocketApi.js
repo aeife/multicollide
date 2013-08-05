@@ -13,7 +13,8 @@ websocket = function(){
     },
     multicollide: {
       start: {
-        on: {}
+        on: {},
+        emit: {}
       },
       turn: {
         on: {}

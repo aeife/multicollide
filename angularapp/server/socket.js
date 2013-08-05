@@ -527,24 +527,19 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // @TODO: something better then waiting?
       setTimeout(function(){
         io.sockets.in(lobbies[data.id].name).emit('multicollide:start', {});
-
-        // now wait countdown and then start
-        setTimeout(function(){
-          // start game loop
-          // only for sockets in lobby
-          turnLoop[data.id] = setInterval(function(){
-            io.sockets.in(lobbies[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
-
-            // reset information
-            directionChanges = [];
-          },50);
-        }, 3000);
-
-
       }, 500);
 
 
 
+    });
+
+    socket.on('multicollide:start', function(data){
+      turnLoop[data.id] = setInterval(function(){
+        io.sockets.in(lobbies[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
+
+        // reset information
+        directionChanges = [];
+      },50);
     });
 
     socket.on('multicollide:changeDirection', function(data){
