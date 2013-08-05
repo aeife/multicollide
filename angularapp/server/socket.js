@@ -32,11 +32,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // saves current lobby for each username
   var lobbyForUsername = {};
 
-  // turn interval
+  // turn intervals for each lobby
   var turnLoop = {};
 
-  // direction changes of player during a turn
-  var directionChanges = [];
+  // direction changes of player during a turnfor each lobby
+  var directionChanges = {};
 
   // socket.io listens on server
   var io = require('socket.io').listen(server);
@@ -510,23 +510,27 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
     socket.on('lobby:leave', function(data){
+      var lobbyId = lobbyForUsername[socket.session.username];
+
       console.log('client wants to leave lobby');
       console.log(socket.session.username);
-      leaveLobby(data.id, socket);
-      socket.emit('lobby:leave', lobbies[data.id]);
+      leaveLobby(lobbyId, socket);
+      socket.emit('lobby:leave', lobbies[lobbyId]);
     });
 
 
     socket.on('lobby:start', function(data){
+      var lobbyId = lobbyForUsername[socket.session.username];
+
       console.log('host started game');
-      lobbyStart(data.id, socket);
+      lobbyStart(lobbyId, socket);
       socket.emit('lobby:start', {});
 
 
       // wait a bit and then send game start
       // @TODO: something better then waiting?
       setTimeout(function(){
-        io.sockets.in(lobbies[data.id].name).emit('multicollide:start', {});
+        io.sockets.in(lobbies[lobbyId].name).emit('multicollide:start', {});
       }, 500);
 
 
@@ -534,17 +538,26 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
     socket.on('multicollide:start', function(data){
-      turnLoop[data.id] = setInterval(function(){
-        io.sockets.in(lobbies[data.id].name).emit('multicollide:turn', {directionChanges: directionChanges});
+      var lobbyId = lobbyForUsername[socket.session.username];
+      // reset or initialize for start
+      directionChanges[lobbyId] = [];
+
+      turnLoop[lobbyId] = setInterval(function(){
+        io.sockets.in(lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
 
         // reset information
-        directionChanges = [];
+        directionChanges[lobbyId] = [];
       },50);
     });
 
     socket.on('multicollide:changeDirection', function(data){
+      var lobbyId = lobbyForUsername[socket.session.username];
+
+      if (!directionChanges[lobbyId]) {
+        directionChanges[lobbyId] = [];
+      }
       // console.log(socket.session.username + ' changed direction to ' + data.direction);
-      directionChanges.push({player: socket.session.username, direction: data.direction});
+      directionChanges[lobbyId].push({player: socket.session.username, direction: data.direction});
     });
 
   });

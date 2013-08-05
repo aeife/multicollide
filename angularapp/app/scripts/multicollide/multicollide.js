@@ -58,7 +58,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
               canvasRender.clearText();
               // if host, send start signal to server
               if (ownPlayer.username === lobby.currentLobby.host){
-                socketgenapi.multicollide.start.emit({id: lobby.currentLobby.id});
+                socketgenapi.multicollide.start.emit();
               }
             }, 1000);
           }, 1000);

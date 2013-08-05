@@ -43,7 +43,7 @@ angular.module('games')
       leaveLobby: function(callback){
         console.log('leaving lobby');
         var self = this;
-        socketgenapi.lobby.leave.get({id: this.currentLobby.id}, function(data){
+        socketgenapi.lobby.leave.get({}, function(data){
 
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
