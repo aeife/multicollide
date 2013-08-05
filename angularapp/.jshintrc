@@ -27,6 +27,7 @@
     "inject": false,
     "_":false,
     "it": false,
-    "io": false
+    "io": false,
+    "$": false
   }
 }

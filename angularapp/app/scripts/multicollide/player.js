@@ -15,7 +15,7 @@ angular.module('multicollide.player', [])
         head: {row: imageRow, nr: 1},
         linear: {row: imageRow, nr: 2},
         tail: {row: imageRow, nr: 3}
-      }
+      };
       // this.image = image;
     }
 
@@ -27,7 +27,7 @@ angular.module('multicollide.player', [])
         return this.color;
       },
       spawn: function(x, y, direction){
-        console.log("spawn player");
+        console.log('spawn player');
 
         this.direction = direction;
 
@@ -36,41 +36,42 @@ angular.module('multicollide.player', [])
           east: 0,
           south: 90,
           west: 180
-        }
+        };
 
         for (var i = 0; i < config.player.startLength; i++){
+          var image;
           if (i === 0) {
-            var image = this.image.tail;
+            image = this.image.tail;
           } else if (i === config.player.startLength-1) {
-            var image = this.image.head;
+            image = this.image.head;
           } else {
-            var image = this.image.linear;
+            image = this.image.linear;
           }
 
           switch (this.direction){
-            case "north":
-              this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});
-              level.grid[x][y-i].players++;
-              break;
-            case "east":
-              this.fields.push({x: x+i, y: y, rotation: this.direction, image: image});
-              level.grid[x+i][y].players++;
-              break;
-            case "south":
-              this.fields.push({x: x, y: y+i, rotation: this.direction, image: image});
-              level.grid[x][y+i].players++;
-              break;
-            case "west":
-              this.fields.push({x: x-i, y: y, rotation: this.direction, image: image});
-              level.grid[x-i][y].players++;
-              break;
+          case 'north':
+            this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});
+            level.grid[x][y-i].players++;
+            break;
+          case 'east':
+            this.fields.push({x: x+i, y: y, rotation: this.direction, image: image});
+            level.grid[x+i][y].players++;
+            break;
+          case 'south':
+            this.fields.push({x: x, y: y+i, rotation: this.direction, image: image});
+            level.grid[x][y+i].players++;
+            break;
+          case 'west':
+            this.fields.push({x: x-i, y: y, rotation: this.direction, image: image});
+            level.grid[x-i][y].players++;
+            break;
           }
         }
 
         this.draw();
       },
       draw: function(){
-        console.log("draw player");
+        console.log('draw player');
         for (var i = 0; i < this.fields.length; i++){
           // level.drawTile(this.fields[i].x, this.fields[i].y, this.color);
           // console.log(this.image.linear);
@@ -89,44 +90,46 @@ angular.module('multicollide.player', [])
         }
       },
       move: function(){
-        // console.log("move");
+        // console.log('move');
 
         // delete tail
         level.grid[this.fields[0].x][this.fields[0].y].players--;
-        canvasRender.clearTile(this.fields[0].x, this.fields[0].y, canvasRender.layer.game)
+        canvasRender.clearTile(this.fields[0].x, this.fields[0].y, canvasRender.layer.game);
 
         this.fields.shift();
 
         // add head
+        var newX;
+        var newY;
         switch (this.direction){
-          case "north":
-            var newX = this.fields[this.fields.length-1].x;
-            var newY = this.fields[this.fields.length-1].y-1;
-            if (!level.isInGrid(newX, newY)) {
-              newY = level.gridSize.height-1;
-            }
-            break;
-          case "east":
-            var newX = this.fields[this.fields.length-1].x+1;
-            var newY = this.fields[this.fields.length-1].y;
-            if (!level.isInGrid(newX, newY)) {
-              newX = 0;
-            }
-            break;
-          case "south":
-            var newX = this.fields[this.fields.length-1].x;
-            var newY = this.fields[this.fields.length-1].y+1;
-            if (!level.isInGrid(newX, newY)) {
-              newY = 0;
-            }
-            break;
-          case "west":
-            var newX = this.fields[this.fields.length-1].x-1;
-            var newY = this.fields[this.fields.length-1].y;
-            if (!level.isInGrid(newX, newY)) {
-              newX = level.gridSize.width-1;
-            }
-            break;
+        case 'north':
+          newX = this.fields[this.fields.length-1].x;
+          newY = this.fields[this.fields.length-1].y-1;
+          if (!level.isInGrid(newX, newY)) {
+            newY = level.gridSize.height-1;
+          }
+          break;
+        case 'east':
+          newX = this.fields[this.fields.length-1].x+1;
+          newY = this.fields[this.fields.length-1].y;
+          if (!level.isInGrid(newX, newY)) {
+            newX = 0;
+          }
+          break;
+        case 'south':
+          newX = this.fields[this.fields.length-1].x;
+          newY = this.fields[this.fields.length-1].y+1;
+          if (!level.isInGrid(newX, newY)) {
+            newY = 0;
+          }
+          break;
+        case 'west':
+          newX = this.fields[this.fields.length-1].x-1;
+          newY = this.fields[this.fields.length-1].y;
+          if (!level.isInGrid(newX, newY)) {
+            newX = level.gridSize.width-1;
+          }
+          break;
         }
         this.fields.push({x: newX, y: newY, rotation: this.direction, image: this.image.head});
         level.grid[newX][newY].players++;
@@ -135,58 +138,58 @@ angular.module('multicollide.player', [])
         // @TODO: dont allow multiple direction changes during one tick
         var head = this.fields[this.fields.length-1];
         switch (dir){
-          case "north":
-            if (this.direction != "south" && this.direction != "north") {
-              if (this.direction === "west"){
-                head.rotation = -90;
-              } else if (this.direction === "east") {
-                head.rotation = 180;
-              }
-              head.image = this.image.corner;
-              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
-
-              this.direction = dir;
+        case 'north':
+          if (this.direction !== 'south' && this.direction !== 'north') {
+            if (this.direction === 'west'){
+              head.rotation = -90;
+            } else if (this.direction === 'east') {
+              head.rotation = 180;
             }
-            break;
-          case "east":
-            if (this.direction != "west" && this.direction != "east") {
-              if (this.direction === "north"){
-                head.rotation = 0;
-              } else if (this.direction === "south") {
-                head.rotation = -90;
-              }
-              head.image = this.image.corner;
-              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
+            head.image = this.image.corner;
+            canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
-              this.direction = dir;
+            this.direction = dir;
+          }
+          break;
+        case 'east':
+          if (this.direction !== 'west' && this.direction !== 'east') {
+            if (this.direction === 'north'){
+              head.rotation = 0;
+            } else if (this.direction === 'south') {
+              head.rotation = -90;
             }
-            break;
-          case "south":
-            if (this.direction != "north" && this.direction != "south") {
-              if (this.direction === "west"){
-                head.rotation = 0;
-              } else if (this.direction === "east") {
-                head.rotation = 90;
-              }
-              head.image = this.image.corner;
-              canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
+            head.image = this.image.corner;
+            canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
-              this.direction = dir;
+            this.direction = dir;
+          }
+          break;
+        case 'south':
+          if (this.direction !== 'north' && this.direction !== 'south') {
+            if (this.direction === 'west'){
+              head.rotation = 0;
+            } else if (this.direction === 'east') {
+              head.rotation = 90;
             }
-            break;
-          case "west":
-            if (this.direction != "east" && this.direction != "west") {
-              if (this.direction === "north"){
-                head.rotation = 90;
-              } else if (this.direction === "south") {
-                head.rotation = 180;
-              }
-              head.image = this.image.corner;
-              canvasRender.drawImageTile(head.x, head.y, this.image.corner, head.rotation);
+            head.image = this.image.corner;
+            canvasRender.drawImageTile(head.x, head.y, head.image, head.rotation);
 
-              this.direction = dir;
+            this.direction = dir;
+          }
+          break;
+        case 'west':
+          if (this.direction !== 'east' && this.direction !== 'west') {
+            if (this.direction === 'north'){
+              head.rotation = 90;
+            } else if (this.direction === 'south') {
+              head.rotation = 180;
             }
-            break;
+            head.image = this.image.corner;
+            canvasRender.drawImageTile(head.x, head.y, this.image.corner, head.rotation);
+
+            this.direction = dir;
+          }
+          break;
         }
       },
       kill: function(){
@@ -203,10 +206,7 @@ angular.module('multicollide.player', [])
         for (var i = 0; i < this.fields.length; i++){
           var times = 3;
           var duration = 200;
-          var self = this;
-          canvasRender.blinkImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation, times, duration, function(){
-            callback();
-          });
+          canvasRender.blinkImageTile(this.fields[i].x, this.fields[i].y, this.fields[i].image, this.fields[i].rotation, times, duration, callback);
         }
       },
       remove: function(){

@@ -1,8 +1,10 @@
-websocket = function(){
+'use strict';
+
+var websocket = function(){
   var websocketApi = {
     onlinestatus: {
       on: {
-        attach: "username"
+        attach: 'username'
       }
     },
     successfullConnected: {
@@ -34,12 +36,12 @@ websocket = function(){
     user: {
       new: {
         get: {
-          emitData: ["username", "password", "email"]
+          emitData: ['username', 'password', 'email']
         }
       },
       login: {
         get: {
-          emitData: ["username", "password"]
+          emitData: ['username', 'password']
         }
       },
       logout: {
@@ -47,8 +49,8 @@ websocket = function(){
       },
       info: {
         get: {
-          emitData: "name",
-          attach: "name"
+          emitData: 'name',
+          attach: 'name'
         }
       }
     },
@@ -58,23 +60,23 @@ websocket = function(){
     lobby: {
       new: {
         get: {
-          emitData: ["lobbyName", "playerLimit"]
+          emitData: ['lobbyName', 'playerLimit']
         }
       },
       join: {
         get: {
-          emitData: "id"
+          emitData: 'id'
         }
       },
       leave: {
         get: {
-          emitData: "id"
+          emitData: 'id'
         },
         on: {}
       },
       start: {
         get: {
-          emitData: "id"
+          emitData: 'id'
         }
       },
       deleted: {
@@ -95,12 +97,12 @@ websocket = function(){
     friend: {
       add: {
         get: {
-          emitData: "username"
+          emitData: 'username'
         }
       },
       remove: {
         get: {
-          emitData: "username"
+          emitData: 'username'
         }
       },
       accept: {
@@ -127,19 +129,19 @@ websocket = function(){
     settings: {
       changePassword: {
         get: {
-          emitData: ["username", "oldPassword", "newPassword"]
+          emitData: ['username', 'oldPassword', 'newPassword']
         }
       },
       newLanguag: {
         emit: {}
       }
     }
-  }
+  };
 
   function generateStringObject(obj){
-    console.log("generate");
+    console.log('generate');
     Object.keys(obj).forEach(function(key) {
-      var msg = "";
+      var msg = '';
       iterate(obj[key], msg, key);
     });
 
@@ -147,16 +149,16 @@ websocket = function(){
   }
 
   function iterate(obj, msg, type) {
-    console.log("iterate");
+    console.log('iterate');
     for (var property in obj) {
       if (obj.hasOwnProperty(property)) {
-        if (typeof obj[property] == "object" && !obj[property].opts && Object.keys(obj[property]).length != 0) {
+        if (typeof obj[property] === 'object' && !obj[property].opts && Object.keys(obj[property]).length !== 0) {
           // continue iterating till at the deepest level
-          iterate(obj[property], msg ? msg + ":" + property : property, type);
+          iterate(obj[property], msg ? msg + ':' + property : property, type);
         } else {
           // process found end attribute
-          var m = msg ? msg + ":" + property : property;
-          console.log("---");
+          var m = msg ? msg + ':' + property : property;
+          console.log('---');
           console.log(obj[property]);
           console.log(m);
           obj[property].msgkey = m;
@@ -166,10 +168,10 @@ websocket = function(){
   }
 
   return {api: websocketApi, generateStringObject: generateStringObject};
-}
+};
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
-    module.exports = websocket;
+  module.exports = websocket;
 } else {
   angular.module('websocketApi', [])
   .factory('websocketApi', websocket);

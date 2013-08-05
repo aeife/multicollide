@@ -116,9 +116,9 @@ angular.module('games', [])
     $scope.createGame = function (lobbyName, maxplayers){
       dialog.close();
       lobby.newLobby(lobbyName, maxplayers);
-    }
+    };
 
     $scope.cancel = function (){
       dialog.close();
-    }
+    };
   });

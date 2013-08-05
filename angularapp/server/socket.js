@@ -116,16 +116,16 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
      */
     socket.on('user:new', function(data){
       var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
-        user.save(function (err, user) {
-          var error = null;
-          if (err) {
-            console.log(err);
-            if (err.code === 11000) {
-              error = 'duplicate name';
-            }
+      user.save(function (err, user) {
+        var error = null;
+        if (err) {
+          console.log(err);
+          if (err.code === 11000) {
+            error = 'duplicate name';
           }
-          socket.emit('user:new', {error: error});
-        });
+        }
+        socket.emit('user:new', {error: error});
+      });
     });
 
     /**
@@ -133,34 +133,34 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
      * @param  {object} data {name}
      */
     socket.on('user:info', function(data){
-        // console.log(socket.session.username);
-        console.log(socket.session);
+      // console.log(socket.session.username);
+      console.log(socket.session);
 
-        User.findOne({ name: data.name }, {password : 0}, function(err, user){
-          console.log(user);
-          if (user) {
-            var userobj = user.toObject();
+      User.findOne({ name: data.name }, {password : 0}, function(err, user){
+        console.log(user);
+        if (user) {
+          var userobj = user.toObject();
 
-            //check if own user
-            if (user.name === socket.session.username) {
-              // own user only data
-              userobj.own = true;
-            } else {
-              // delete own user only data
-              delete userobj.friends;
-            }
-
-            //check if currently online
-            if (connectedUsers.indexOf(user.name) > -1) {
-              userobj.online = true;
-            }
-
-             socket.emit('user:info:'+data.name, userobj);
+          //check if own user
+          if (user.name === socket.session.username) {
+            // own user only data
+            userobj.own = true;
           } else {
-            socket.emit('user:info:'+data.name);
+            // delete own user only data
+            delete userobj.friends;
           }
 
-        });
+          //check if currently online
+          if (connectedUsers.indexOf(user.name) > -1) {
+            userobj.online = true;
+          }
+
+          socket.emit('user:info:'+data.name, userobj);
+        } else {
+          socket.emit('user:info:'+data.name);
+        }
+
+      });
 
     });
 
@@ -684,8 +684,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
       // only request if not already requested (so no multiple requests are possible)
       if (user && user.requests.length > 0){
-        console.log("REQUESTS");
-        console.log(user.requests);
         clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
       }
     });
@@ -698,7 +696,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @param  {string} friend Name of user which sent the request
    */
   function removeFriendRequest(username, friend){
-    console.log("SEARCHING " + username);
     User.findOne({ name: username }, {password : 0}, function(err, user){
 
       if (user && user.requests.indexOf(friend) > -1){
@@ -706,7 +703,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         console.log(user);
         user.save(function (err) {
           if (err) {
-            console.log("ERR");
             console.log(err);
           }
         });
@@ -726,7 +722,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     // add player who opened lobby as first player to lobby
     lobbies[lobbyHighestCount] = {
       id: lobbyHighestCount,
-      name: (data.name) ? data.name  : "new game " + lobbyHighestCount,
+      name: (data.name) ? data.name  : 'new game ' + lobbyHighestCount,
       host: data.host,
       status: data.status,
       players: [],
@@ -822,7 +818,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   function lobbyStart(id, socket){
     // check if really host started the game
     if (lobbies[id].host === socket.session.username){
-      lobbies[id].status = "ingame";
+      lobbies[id].status = 'ingame';
 
       // emit start to all players in lobby
       io.sockets.in(lobbies[id].name).emit('lobby:started', {});

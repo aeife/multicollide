@@ -24,7 +24,7 @@ angular.module('multicollide.config', [])
             {x: Math.floor(config.gridSize.width/2) + playerDistance, y: config.gridSize.height - 2, direction: 'north'},
             {x: 1, y: Math.floor(config.gridSize.height/2), direction: 'east'},
             {x: config.gridSize.width - 2, y: Math.floor(config.gridSize.height/2), direction: 'west'},
-          ]
+          ];
         }
       },
       controls: {

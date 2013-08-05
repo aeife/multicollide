@@ -34,7 +34,7 @@ angular.module('multicollide.canvasRender', [])
         this.spriteSheet = obj.spriteSheet;
       },
       resize: function(){
-        console.log("resize");
+        console.log('resize');
         // resize canvas and tiles
         this.canvasSize = {width: this.wrapper.width(), height: this.wrapper.width() * (config.gridSize.height / config.gridSize.width)};
         this.tileSize = Math.floor((1 / config.gridSize.width) * this.canvasSize.width);
@@ -52,7 +52,7 @@ angular.module('multicollide.canvasRender', [])
         this.canvas.text.attr('height', this.canvasSize.height ); //max height
 
         // adjust wrapper div because of absolute position of canvas elements
-        this.wrapper.css("height", this.canvasSize.height + 100);
+        this.wrapper.css('height', this.canvasSize.height + 100);
 
         this.redraw();
       },
@@ -77,28 +77,28 @@ angular.module('multicollide.canvasRender', [])
         this.canvas.background.attr('height', this.canvasSize.height );
 
         // resize wrapper to canvas width and center
-        this.wrapper.css("width", this.canvasSize.width+10);
-        this.wrapper.css("left", window.innerWidth / 2 - (this.canvasSize.width+10)/2 + "px");
+        this.wrapper.css('width', this.canvasSize.width+10);
+        this.wrapper.css('left', window.innerWidth / 2 - (this.canvasSize.width+10)/2 + 'px');
 
       },
       setFullscreen: function(){
-        console.log("set fullscreen");
+        console.log('set fullscreen');
         // workaround for fullscreen with absolute positioned elements
-        this.wrapper.css("height", window.innerHeight);
-        this.wrapper.css("position", "absolute");
-        this.wrapper.css("top", "0");
+        this.wrapper.css('height', window.innerHeight);
+        this.wrapper.css('position', 'absolute');
+        this.wrapper.css('top', '0');
         this.resizeHeight();
       },
       exitFullscreen: function(){
         // reset settings for normal view
-        this.wrapper.css("width", "100%");
-        this.wrapper.css("position", "relative");
-        this.wrapper.css("top", "");
-        this.wrapper.css("left", "");
+        this.wrapper.css('width', '100%');
+        this.wrapper.css('position', 'relative');
+        this.wrapper.css('top', '');
+        this.wrapper.css('left', '');
         this.resize();
       },
       redraw: function(){
-        console.log("REDRAW");
+        console.log('REDRAW');
         this.drawBackground();
       },
       drawTile: function(x, y, color, ctx){
@@ -106,7 +106,7 @@ angular.module('multicollide.canvasRender', [])
         ctx.fillStyle = color;
         ctx.fillRect(this.tileSize * x, this.tileSize * y, this.tileSize, this.tileSize);
 
-        ctx.strokeStyle = "#F2F2F2";
+        ctx.strokeStyle = '#F2F2F2';
         ctx.strokeRect(this.tileSize * x, this.tileSize * y, this.tileSize, this.tileSize);
       },
       // @TODO: merge with drawImageTile if possible
@@ -118,7 +118,7 @@ angular.module('multicollide.canvasRender', [])
           rotation = this.translateRotation[rotation];
         }
 
-        // console.log("rotation: " + rotation);
+        // console.log('rotation: ' + rotation);
         if (rotation){
           this.layer.game.save();
           this.layer.game.translate(this.tileSize * x + this.tileSize/2, this.tileSize * y + this.tileSize/2);
@@ -194,7 +194,7 @@ angular.module('multicollide.canvasRender', [])
         west: 180
       },
       drawText: function(text){
-        console.log("DRAW TEXT");
+        console.log('DRAW TEXT');
         this.layer.text.fillStyle = '#f00';
         this.layer.text.font = 'bold 30px sans-serif';
         this.layer.text.textBaseline = 'bottom';

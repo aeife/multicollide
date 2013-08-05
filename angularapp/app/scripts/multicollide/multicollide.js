@@ -93,16 +93,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            changeDirection("north");
+            changeDirection('north');
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
-            changeDirection("south");
+            changeDirection('south');
             // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
-            changeDirection("west");
+            changeDirection('west');
             // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
-            changeDirection("east");
+            changeDirection('east');
             // sound.play();
           }
         }
@@ -121,22 +121,19 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
     $scope.fullscreen = function(){
       // @TODO: check in other browsers (firefox: not centered, ie: not working, opera: ?, safari: ?)
-      console.log("GO FULLSCREEN");
-      var full = document.getElementById("canvasWrapper");
-      // level.fullscreen = true;
-      // level.setFullscreen();
-      // canvas.css("position", "relative");
-      // bgCanvas.css("position", "relative");
-      if(full.requestFullScreen)
-          full.requestFullScreen();
-      else if(full.webkitRequestFullScreen)
-          full.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-      else if(full.mozRequestFullScreen)
-          full.mozRequestFullScreen();
+      console.log('GO FULLSCREEN');
+      var full = document.getElementById('canvasWrapper');
+      if (full.requestFullScreen) {
+        full.requestFullScreen();
+      } else if (full.webkitRequestFullScreen) {
+        full.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      } else if (full.mozRequestFullScreen) {
+        full.mozRequestFullScreen();
+      }
 
       document.fullScreen = function (e){
-        console.log("EE");
-      }
+        console.log('EE');
+      };
 
       var count = 0;
       $(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
@@ -144,15 +141,10 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         if(count%2){
           canvasRender.setFullscreen();
           console.log('Go to Full Screen mode');
-        }else{
+        } else {
           canvasRender.exitFullscreen();
-         console.log('Exit Full Screen mode');
+          console.log('Exit Full Screen mode');
         }
       });
-
-        // window.setTimeout(function(){canvas.css("position", "absolute");bgCanvas.css("position", "absolute");}, 1000);
-        // canvas.css("position", "absolute");
-      // bgCanvas.css("position", "absolute");
-
-    }
+    };
   });

@@ -19,7 +19,7 @@ angular.module('multicollide.level', [])
         for (var i = 0; i < this.gridSize.width; i++) {
           this.grid[i] = [];
           for (var j = 0; j < this.gridSize.height; j++){
-              this.grid[i][j] = {food: 0, players: 0};
+            this.grid[i][j] = {food: 0, players: 0};
           }
         }
       },
@@ -80,7 +80,7 @@ angular.module('multicollide.level', [])
           var head = this.players[i].getHead();
           // console.log(this.grid[head.x][head.y].players);
           if (this.grid[head.x][head.y].players > 1){
-            console.log("Collision");
+            console.log('Collision');
             collidedPlayers.push(this.players[i]);
           }
         }
