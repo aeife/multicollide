@@ -89,13 +89,13 @@ angular.module('angularappAppBoot', ['angularappApp']).
 
       // @TODO: is not loaded before when directly opening route #/games
       $rootScope.username = data.username;
-      if (data.username != $cookies.username){
-        console.log("not logged in anymore!");
+      if (data.username !== $cookies.username){
+        console.log('not logged in anymore!');
         // $cookies = {};
         delete $cookies.username;
         delete $cookies.loggedin;
       } else {
-        console.log("still logged in!");
+        console.log('still logged in!');
       }
     }).once();
 

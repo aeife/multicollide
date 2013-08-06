@@ -21,10 +21,6 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         console.log('Finished!');
       }
     });
-    var sound = new Howl({
-      urls: ['/sounds/beep.ogg']
-    });
-
 
 
     var spriteSheet = new Image();

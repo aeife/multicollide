@@ -12,7 +12,7 @@ angular.module('games')
       currentLobby: null,
       games: {},
       maxplayers: 10,
-      status: "browser",
+      status: 'browser',
       getAvailableGames: function(){
         var self = this;
         socketgenapi.games.get(function(data){
@@ -57,7 +57,7 @@ angular.module('games')
         var self = this;
 
         this.inLobby = true;
-        this.status = "lobby";
+        this.status = 'lobby';
         this.currentLobby = data;
 
         this.onPlayerJoined(function(data){
@@ -71,7 +71,7 @@ angular.module('games')
         });
 
         this.onLobbyDeleted(function(data){
-          console.log("onLobbyDeleted Listener");
+          console.log('onLobbyDeleted Listener');
           flash.error(data.reason);
           self.onLeftLobby();
         });
@@ -80,7 +80,7 @@ angular.module('games')
       },
       onLeftLobby: function(){
         this.inLobby = false;
-        this.status = "browser";
+        this.status = 'browser';
         this.currentLobby = null;
 
         level.reset();
@@ -117,7 +117,7 @@ angular.module('games')
       onGameStarted: function(){
         var self = this;
         this.listeners.onGameStarted = socketgenapi.lobby.started.on(function(data){
-          self.status = "ingame";
+          self.status = 'ingame';
         });
       },
       startGame: function(){
