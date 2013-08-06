@@ -2,13 +2,15 @@
 
 angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
   .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi) {
+    // initialization
+    // already happens when opening server browser
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
     var bgCanvas = $('#bgCanvas');
     var bgCtx = document.getElementById('bgCanvas').getContext('2d');
     var textCanvas = $('#textCanvas');
     var textCtx = document.getElementById('textCanvas').getContext('2d');
-    var wrapper = $('#canvasWrapper');
+    var wrapper = $('#wrapper');
 
     var sound = new Howl({
       urls: ['sounds/beep.ogg', 'sounds/beep.wav'],
@@ -19,22 +21,31 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         console.log('Finished!');
       }
     });
-    // var sound = new Howl({
-    //   urls: ['/sounds/beep.ogg']
-    // });
+    var sound = new Howl({
+      urls: ['/sounds/beep.ogg']
+    });
 
-    var players = lobby.currentLobby.players;
-    var ownPlayer = null;
+
 
     var spriteSheet = new Image();
     spriteSheet.src = '/images/spritesheet.png';
 
     spriteSheet.onload = function() {
-
       level.init({gridSize: config.gridSize});
       canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
+    };
 
+
+    var players;
+    var ownPlayer;
+
+
+    // initalize the rest when game starts
+    socketgenapi.lobby.started.on(function(){
       // initialize players
+      players = lobby.currentLobby.players;
+      ownPlayer = null;
+
       for (var i = 0; i < players.length; i++){
         var newPlayer = new Player(players[i], 'red', 'south', 0);
         if (players[i] === $rootScope.username){
@@ -111,7 +122,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       document.onkeyup = function(e) {
         keyEventFired = false;
       };
-    };
+    });
+
+
 
     function changeDirection(direction){
       if (ownPlayer.direction !== direction) {
@@ -146,5 +159,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           console.log('Exit Full Screen mode');
         }
       });
+    };
+
+    $scope.showGame = function(){
+      return lobby.status === 'ingame';
     };
   });

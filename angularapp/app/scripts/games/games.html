@@ -1,13 +1,4 @@
-<div ng-switch="lobby.status">
-  <div ng-switch-when="ingame" ng-controller="MulticollideCtrl">
-    <div id="canvasWrapper" style="positon: absolute;">
-      <h1>INGAME</h1>
-      <p><button ng-click="fullscreen()">Go Fullscreen</button></p>
-      <canvas id="bgCanvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
-      <canvas id="canvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
-      <canvas id="textCanvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
-    </div>
-  </div>
+<div ng-hide="lobby.status == 'ingame'" ng-switch="lobby.status">
   <div ng-switch-when="lobby">
     <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
     <div class="btn-toolbar text-center">
@@ -48,4 +39,12 @@
     </table>
     <h5 class="text-center" ng-hide="getLobbyCount()!=0">{{'_NoLobbys_' | i18n}}</h5>
   </div>
+</div>
+
+<div ng-show="showGame()"  ng-controller="MulticollideCtrl">
+  <h1>INGAME</h1>
+  <p><button ng-click="fullscreen()">Go Fullscreen</button></p>
+  <canvas id="bgCanvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
+  <canvas id="canvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
+  <canvas id="textCanvas" style="position: absolute; border: 1px #E5E5E5 solid;"></canvas>
 </div>
