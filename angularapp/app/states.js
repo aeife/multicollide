@@ -5,8 +5,8 @@ var states = function(){
   return {
     GAME: {
       BROWSER: 'browser',
-      LOBBY: 'lobby',
-      INGAME: 'ingame'
+      LOBBY: '_GameLobby_',
+      INGAME: '_GameIngame_'
     }
   };
 };

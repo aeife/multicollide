@@ -318,5 +318,13 @@
   "_ArrowRight_": {
     "message": "Pfeil rechts",
     "description": ""
+  },
+  "_GameLobby_": {
+    "message": "lobby",
+    "description": ""
+  },
+  "_GameIngame_": {
+    "message": "im Spiel",
+    "description": ""
   }
 }
