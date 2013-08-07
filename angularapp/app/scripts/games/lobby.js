@@ -12,7 +12,7 @@ angular.module('games')
       currentLobby: null,
       games: {},
       maxplayers: 10,
-      status: STATES.GAME.BROWSER,
+      status: null,
       getAvailableGames: function(){
         var self = this;
         socketgenapi.games.get(function(data){
@@ -80,7 +80,7 @@ angular.module('games')
       },
       onLeftLobby: function(){
         this.inLobby = false;
-        this.status = STATES.GAME.BROWSER;
+        this.status = {};
         this.currentLobby = null;
 
         level.reset();

@@ -13,7 +13,7 @@
       <li ng-repeat="player in lobby.currentLobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
     </ul>
   </div>
-  <div ng-show="lobby.status == STATES.GAME.BROWSER">
+  <div ng-show="!lobby.inLobby">
     <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">
