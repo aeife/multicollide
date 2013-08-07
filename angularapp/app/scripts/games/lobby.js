@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('games')
-  .factory('lobby', function ($rootScope, socketgenapi, flash, level) {
+  .factory('lobby', function ($rootScope, socketgenapi, flash, level, STATES) {
     // Service logic
     // ...
 
@@ -12,7 +12,7 @@ angular.module('games')
       currentLobby: null,
       games: {},
       maxplayers: 10,
-      status: 'browser',
+      status: STATES.GAME.BROWSER,
       getAvailableGames: function(){
         var self = this;
         socketgenapi.games.get(function(data){
@@ -57,7 +57,7 @@ angular.module('games')
         var self = this;
 
         this.inLobby = true;
-        this.status = 'lobby';
+        this.status = STATES.GAME.LOBBY;
         this.currentLobby = data;
 
         this.onPlayerJoined(function(data){
@@ -80,7 +80,7 @@ angular.module('games')
       },
       onLeftLobby: function(){
         this.inLobby = false;
-        this.status = 'browser';
+        this.status = STATES.GAME.BROWSER;
         this.currentLobby = null;
 
         level.reset();
@@ -117,7 +117,7 @@ angular.module('games')
       onGameStarted: function(){
         var self = this;
         this.listeners.onGameStarted = socketgenapi.lobby.started.on(function(data){
-          self.status = 'ingame';
+          self.status = STATES.GAME.INGAME;
         });
       },
       startGame: function(){

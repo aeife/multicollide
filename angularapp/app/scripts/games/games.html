@@ -1,5 +1,5 @@
-<div ng-hide="lobby.status == 'ingame'" ng-switch="lobby.status">
-  <div ng-switch-when="lobby">
+<div ng-hide="lobby.status == STATES.GAME.INGAME">
+  <div ng-show="lobby.status == STATES.GAME.LOBBY">
     <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">
@@ -13,7 +13,7 @@
       <li ng-repeat="player in lobby.currentLobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
     </ul>
   </div>
-  <div ng-switch-default>
+  <div ng-show="lobby.status == STATES.GAME.BROWSER">
     <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">

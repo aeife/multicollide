@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('games', [])
-  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter, user) {
+  .controller('GamesCtrl', function ($scope, lobby, flash, $dialog, $location, $rootScope, $filter, user, STATES) {
     $scope.order = 'name';
     $scope.reverse = false;
     $scope.lobby = lobby;
     $scope.user = user;
+    $scope.STATES = STATES;
 
     $scope.reorder = function(attr){
       if (attr === $scope.order){
@@ -43,7 +44,10 @@ angular.module('games', [])
     };
 
     $scope.isHost = function(username){
-      return username === lobby.currentLobby.host;
+      // only if in lobby, necessary because ng-show renders instantly
+      if (lobby.currentLobby) {
+        return username === lobby.currentLobby.host;
+      }
     };
 
     $scope.btnReady = function(){

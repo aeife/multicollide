@@ -46,6 +46,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   websocketApi = websocketApi.generateStringObject(websocketApi.api);
   // websocketApi.generateStringObject();
 
+  var STATES = require('../app/states.js')();
+
 
   /*
   ******************************************************
@@ -487,7 +489,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
     socket.on('lobby:new', function(data){
       console.log('client requested games info');
-      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: 'lobby', maxplayers: data.maxplayers});
+      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: STATES.GAME.LOBBY, maxplayers: data.maxplayers});
       joinLobby(newLobby.id, socket);
       socket.emit('lobby:new', newLobby);
     });
@@ -818,7 +820,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   function lobbyStart(id, socket){
     // check if really host started the game
     if (lobbies[id].host === socket.session.username){
-      lobbies[id].status = 'ingame';
+      lobbies[id].status = STATES.GAME.INGAME;
 
       // emit start to all players in lobby
       io.sockets.in(lobbies[id].name).emit('lobby:started', {});

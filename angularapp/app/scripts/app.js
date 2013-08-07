@@ -24,7 +24,8 @@ angular.module('angularappApp',
   'profile',
   'games',
   'websocketApi',
-  'multicollide'])
+  'multicollide',
+  'STATES'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

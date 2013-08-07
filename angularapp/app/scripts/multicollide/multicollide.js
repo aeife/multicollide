@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
-  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi) {
+  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES) {
     // initialization
     // already happens when opening server browser
     var canvas = $('#canvas');
@@ -158,6 +158,6 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     };
 
     $scope.showGame = function(){
-      return lobby.status === 'ingame';
+      return lobby.status === STATES.GAME.INGAME;
     };
   });
