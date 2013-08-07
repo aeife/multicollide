@@ -4,9 +4,9 @@ var states = function(){
 
   return {
     GAME: {
-      BROWSER: 'browser',
-      LOBBY: '_GameLobby_',
-      INGAME: '_GameIngame_'
+      BROWSER: {value: 'game.browser', toString: '_ServerBrowser_'},
+      LOBBY: {value: 'game.lobby', toString: '_Lobby_'},
+      INGAME: {value: 'game.ingame', toString: '_GameIngame_'}
     }
   };
 };

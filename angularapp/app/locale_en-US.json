@@ -319,11 +319,7 @@
     "message": "right arrow",
     "description": ""
   },
-  "_GameLobby_": {
-    "message": "lobby",
-    "description": ""
-  },
-  "_GameIngame_": {
+  "_Ingame_": {
     "message": "ingame",
     "description": ""
   }

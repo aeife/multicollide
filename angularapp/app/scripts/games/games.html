@@ -33,7 +33,7 @@
       <tr ng-repeat="game in lobby.games | toArray | orderBy:order:reverse">
         <td>{{game.name}}</td>
         <td>{{game.players.length}} / {{game.maxplayers}}</td>
-        <td>{{game.status | i18n}}</td>
+        <td>{{game.status.toString | i18n}}</td>
         <td><a href="" class="btn btn-small" ng-click="joinGame(game.$key)">{{'_Join_' | i18n}}</a></td>
       </tr>
     </table>

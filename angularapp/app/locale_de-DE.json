@@ -319,11 +319,7 @@
     "message": "Pfeil rechts",
     "description": ""
   },
-  "_GameLobby_": {
-    "message": "lobby",
-    "description": ""
-  },
-  "_GameIngame_": {
+  "_Ingame_": {
     "message": "im Spiel",
     "description": ""
   }
