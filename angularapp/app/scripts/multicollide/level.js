@@ -126,6 +126,7 @@ angular.module('multicollide.level', [])
       },
       reset: function(){
         this.players = [];
+        // this.grid = [];
       }
     };
   });

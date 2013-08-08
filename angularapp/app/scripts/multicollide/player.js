@@ -40,7 +40,6 @@ angular.module('multicollide.player', [])
           } else {
             image = this.image.linear;
           }
-
           switch (this.direction.value){
           case STATES.MULTICOLLIDE.DIRECTION.NORTH.value:
             this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});

@@ -26,15 +26,26 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var spriteSheet = new Image();
     spriteSheet.src = '/images/spritesheet.png';
 
-    spriteSheet.onload = function() {
-      level.init({gridSize: config.gridSize});
-      canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
-    };
-
-
     var players;
     var ownPlayer;
 
+    spriteSheet.onload = function() {
+      initalize();
+    };
+
+    // reinitialize on lobby leave
+    socketgenapi.lobby.leave.on(function(){
+      console.log("RE INIT");
+      initalize();
+    }).forRoute();
+
+    function initalize(){
+      players = null;
+      ownPlayer = null;
+
+      level.init({gridSize: config.gridSize});
+      canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
+    }
 
     // initalize the rest when game starts
     socketgenapi.lobby.start.on(function(){
@@ -118,7 +129,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       document.onkeyup = function(e) {
         keyEventFired = false;
       };
-    });
+    }).forRoute();
 
 
 
