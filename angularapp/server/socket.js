@@ -789,7 +789,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     if (lobbies[id].host === socket.session.username){
       // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
       socket.leave(lobbies[id].name);
-      io.sockets.in(lobbies[id].name).emit('lobby:deleted', {reason: 'host left'});
+      io.sockets.in(lobbies[id].name).emit('lobby:leave', {reason: 'host left'});
 
       removeLobby(id);
     } else {

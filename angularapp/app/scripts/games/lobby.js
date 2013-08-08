@@ -45,10 +45,10 @@ angular.module('games')
         var self = this;
         socketgenapi.lobby.leave.get({}, function(data){
 
-          self.listeners.onPlayerJoined.stop();
-          self.listeners.onPlayerLeft.stop();
-          self.listeners.onLobbyDeleted.stop();
-          self.listeners.onGameStart.stop();
+          // self.listeners.onPlayerJoined.stop();
+          // self.listeners.onPlayerLeft.stop();
+          // self.listeners.onLobbyDeleted.stop();
+          // self.listeners.onGameStart.stop();
 
           self.onLeftLobby();
         });
@@ -70,15 +70,22 @@ angular.module('games')
           }
         });
 
-        this.onLobbyDeleted(function(data){
-          console.log('onLobbyDeleted Listener');
-          flash.error(data.reason);
-          self.onLeftLobby();
+        this.listeners.onLobbyLeave = socketgenapi.lobby.leave.on(function(data){
+          self.onLeftLobby(data);
         });
 
         this.onGameStart();
       },
-      onLeftLobby: function(){
+      onLeftLobby: function(data){
+        this.listeners.onPlayerJoined.stop();
+        this.listeners.onPlayerLeft.stop();
+        this.listeners.onGameStart.stop();
+        this.listeners.onLobbyLeave.stop();
+
+        if (data && data.reason) {
+          flash.error(data.reason);
+        }
+
         this.inLobby = false;
         this.status = {};
         this.currentLobby = null;
@@ -94,23 +101,6 @@ angular.module('games')
       },
       onPlayerLeft: function(callback){
         this.listeners.onPlayerLeft = socketgenapi.lobby.player.left.on(function(data){
-          callback(data);
-        });
-      },
-      onLobbyDeleted: function(callback){
-        var self = this;
-        this.listeners.onLobbyDeleted = socketgenapi.lobby.deleted.on(function(data){
-          self.listeners.onPlayerJoined.stop();
-          self.listeners.onPlayerLeft.stop();
-
-          // once alternative
-          // can't use once with parent function because whole processor object needs to be saved to listeners to stop in later
-          self.listeners.onLobbyDeleted.stop();
-
-          self.listeners.onGameStart.stop();
-
-          level.reset();
-
           callback(data);
         });
       },

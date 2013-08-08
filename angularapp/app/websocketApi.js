@@ -80,9 +80,6 @@ var websocket = function(){
         },
         on: {}
       },
-      deleted: {
-        on: {}
-      },
       player: {
         joined: {
           on: {}

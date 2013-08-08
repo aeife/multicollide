@@ -89,18 +89,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         level.processTurn(data);
       });
 
-
-
-      // listen for lobby leave or lobby deleted
-      // only one event can occur, delete the other listener on occurrence
-      var lobbyDeleteListener = socketgenapi.lobby.deleted.on(function(){
-        turnListener.stop();
-        lobbyLeaveListener.stop();
-      }).once();
-
+      // listen for lobby leave (includes lobby deleted)
       var lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
         turnListener.stop();
-        lobbyDeleteListener.stop();
       }).once();
 
 
