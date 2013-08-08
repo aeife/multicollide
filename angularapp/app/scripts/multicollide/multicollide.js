@@ -91,6 +91,10 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       }).once();
 
+      // kill player on lobby leave
+      var lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
+        level.playerForUsername[data.username].kill();
+      });
 
       // game loop
       var turnListener = socketgenapi.multicollide.turn.on(function(data){
@@ -100,6 +104,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // listen for lobby leave (includes lobby deleted)
       var lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
         turnListener.stop();
+        lobbyPlayerLeftListener.stop();
       }).once();
 
 
