@@ -28,6 +28,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
     var players;
     var ownPlayer;
+    var countdownInterval;
 
     spriteSheet.onload = function() {
       initalize();
@@ -35,7 +36,12 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
     // reinitialize on lobby leave
     socketgenapi.lobby.leave.on(function(){
-      console.log("RE INIT");
+
+      // if player left during countdown, clear countdown
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+
       initalize();
     }).forRoute();
 
@@ -63,24 +69,26 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       level.spawnPlayers();
 
 
-      // start signal
+      // start signal and countdown
       socketgenapi.multicollide.start.on(function(){
-        canvasRender.drawText(3);
-        setTimeout(function(){
+
+        var countdown = 3;
+        canvasRender.drawText(countdown);
+        countdownInterval = setInterval(function(){
+          countdown--;
           canvasRender.clearText();
-          canvasRender.drawText(2);
-          setTimeout(function(){
-            canvasRender.clearText();
-            canvasRender.drawText(1);
-            setTimeout(function(){
-              canvasRender.clearText();
-              // if host, send start signal to server
-              if (ownPlayer.username === lobby.currentLobby.host){
-                socketgenapi.multicollide.start.emit();
-              }
-            }, 1000);
-          }, 1000);
-        }, 1000);
+
+          if (countdown > 0) {
+            canvasRender.drawText(countdown);
+          } else {
+            clearInterval(countdownInterval);
+            // if host send game start
+            if (ownPlayer.username === lobby.currentLobby.host){
+              socketgenapi.multicollide.start.emit();
+            }
+          }
+        },1000);
+
       }).once();
 
 
