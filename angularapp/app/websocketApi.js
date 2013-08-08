@@ -77,7 +77,8 @@ var websocket = function(){
       start: {
         get: {
           emitData: 'id'
-        }
+        },
+        on: {}
       },
       deleted: {
         on: {}
@@ -89,9 +90,6 @@ var websocket = function(){
         left: {
           on: {}
         }
-      },
-      started: {
-        on: {}
       }
     },
     friend: {

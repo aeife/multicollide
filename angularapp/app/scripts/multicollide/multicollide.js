@@ -37,7 +37,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
 
     // initalize the rest when game starts
-    socketgenapi.lobby.started.on(function(){
+    socketgenapi.lobby.start.on(function(){
       // initialize players
       players = lobby.currentLobby.players;
       ownPlayer = null;

@@ -526,7 +526,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
       console.log('host started game');
       lobbyStart(lobbyId, socket);
-      socket.emit('lobby:start', {});
+      // socket.emit('lobby:start', {});
 
 
       // wait a bit and then send game start
@@ -823,7 +823,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       lobbies[id].status = STATES.GAME.INGAME;
 
       // emit start to all players in lobby
-      io.sockets.in(lobbies[id].name).emit('lobby:started', {});
+      io.sockets.in(lobbies[id].name).emit('lobby:start', {});
     }
   }
 

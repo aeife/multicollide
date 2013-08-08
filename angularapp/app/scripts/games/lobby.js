@@ -48,7 +48,7 @@ angular.module('games')
           self.listeners.onPlayerJoined.stop();
           self.listeners.onPlayerLeft.stop();
           self.listeners.onLobbyDeleted.stop();
-          self.listeners.onGameStarted.stop();
+          self.listeners.onGameStart.stop();
 
           self.onLeftLobby();
         });
@@ -76,7 +76,7 @@ angular.module('games')
           self.onLeftLobby();
         });
 
-        this.onGameStarted();
+        this.onGameStart();
       },
       onLeftLobby: function(){
         this.inLobby = false;
@@ -107,16 +107,16 @@ angular.module('games')
           // can't use once with parent function because whole processor object needs to be saved to listeners to stop in later
           self.listeners.onLobbyDeleted.stop();
 
-          self.listeners.onGameStarted.stop();
+          self.listeners.onGameStart.stop();
 
           level.reset();
 
           callback(data);
         });
       },
-      onGameStarted: function(){
+      onGameStart: function(){
         var self = this;
-        this.listeners.onGameStarted = socketgenapi.lobby.started.on(function(data){
+        this.listeners.onGameStart = socketgenapi.lobby.start.on(function(data){
           self.status = STATES.GAME.INGAME;
         });
       },
