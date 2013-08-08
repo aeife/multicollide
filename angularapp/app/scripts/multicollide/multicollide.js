@@ -123,9 +123,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
 
     function changeDirection(direction){
-      if (ownPlayer.direction !== direction) {
+
+      if (validDirectionChange(direction)) {
+        // console.log("change to " + direction.value);
         socketgenapi.multicollide.changeDirection.emit({direction: direction});
       }
+    }
+
+    function validDirectionChange(direction){
+      // valid direction change: not current direction and not opposite direction
+      return ((ownPlayer.direction.value !== direction.value) && (direction.value !== STATES.MULTICOLLIDE.DIRECTION[ownPlayer.direction.opposite].value));
     }
 
     $scope.fullscreen = function(){
