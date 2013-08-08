@@ -43,7 +43,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       ownPlayer = null;
 
       for (var i = 0; i < players.length; i++){
-        var newPlayer = new Player(players[i], 'red', 'south', 0);
+        var newPlayer = new Player(players[i], 'red', STATES.MULTICOLLIDE.DIRECTION.SOUTH, 0);
         if (players[i] === $rootScope.username){
           ownPlayer = newPlayer;
         }
@@ -100,16 +100,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            changeDirection('north');
+            changeDirection(STATES.MULTICOLLIDE.DIRECTION.NORTH);
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
-            changeDirection('south');
+            changeDirection(STATES.MULTICOLLIDE.DIRECTION.SOUTH);
             // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
-            changeDirection('west');
+            changeDirection(STATES.MULTICOLLIDE.DIRECTION.WEST);
             // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
-            changeDirection('east');
+            changeDirection(STATES.MULTICOLLIDE.DIRECTION.EAST);
             // sound.play();
           }
         }

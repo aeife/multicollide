@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide.player', [])
-  .factory('Player', function ($rootScope, level, canvasRender, config) {
+  .factory('Player', function ($rootScope, level, canvasRender, config, STATES) {
     // Service logic
 
     function Player(username, color, direction, imageRow){
@@ -31,13 +31,6 @@ angular.module('multicollide.player', [])
 
         this.direction = direction;
 
-        var translate = {
-          north: -90,
-          east: 0,
-          south: 90,
-          west: 180
-        };
-
         for (var i = 0; i < config.player.startLength; i++){
           var image;
           if (i === 0) {
@@ -48,20 +41,20 @@ angular.module('multicollide.player', [])
             image = this.image.linear;
           }
 
-          switch (this.direction){
-          case 'north':
+          switch (this.direction.value){
+          case STATES.MULTICOLLIDE.DIRECTION.NORTH.value:
             this.fields.push({x: x, y: y-i, rotation: this.direction, image: image});
             level.grid[x][y-i].players++;
             break;
-          case 'east':
+          case STATES.MULTICOLLIDE.DIRECTION.EAST.value:
             this.fields.push({x: x+i, y: y, rotation: this.direction, image: image});
             level.grid[x+i][y].players++;
             break;
-          case 'south':
+          case STATES.MULTICOLLIDE.DIRECTION.SOUTH.value:
             this.fields.push({x: x, y: y+i, rotation: this.direction, image: image});
             level.grid[x][y+i].players++;
             break;
-          case 'west':
+          case STATES.MULTICOLLIDE.DIRECTION.WEST.value:
             this.fields.push({x: x-i, y: y, rotation: this.direction, image: image});
             level.grid[x-i][y].players++;
             break;
@@ -80,13 +73,13 @@ angular.module('multicollide.player', [])
       },
       getNextPlayerFieldDirection: function(index){
         if (this.fields[index].x < this.fields[index+1].x){
-          return 'east';
+          return STATES.MULTICOLLIDE.DIRECTION.EAST;
         } else if (this.fields[index].y < this.fields[index+1].y){
-          return 'south';
+          return STATES.MULTICOLLIDE.DIRECTION.SOUTH;
         } else if (this.fields[index].x > this.fields[index+1].x){
-          return 'west';
+          return STATES.MULTICOLLIDE.DIRECTION.WEST;
         }  else if (this.fields[index].y > this.fields[index+1].y){
-          return 'north';
+          return STATES.MULTICOLLIDE.DIRECTION.NORTH;
         }
       },
       move: function(){
@@ -101,29 +94,29 @@ angular.module('multicollide.player', [])
         // add head
         var newX;
         var newY;
-        switch (this.direction){
-        case 'north':
+        switch (this.direction.value){
+        case STATES.MULTICOLLIDE.DIRECTION.NORTH.value:
           newX = this.fields[this.fields.length-1].x;
           newY = this.fields[this.fields.length-1].y-1;
           if (!level.isInGrid(newX, newY)) {
             newY = level.gridSize.height-1;
           }
           break;
-        case 'east':
+        case STATES.MULTICOLLIDE.DIRECTION.EAST.value:
           newX = this.fields[this.fields.length-1].x+1;
           newY = this.fields[this.fields.length-1].y;
           if (!level.isInGrid(newX, newY)) {
             newX = 0;
           }
           break;
-        case 'south':
+        case STATES.MULTICOLLIDE.DIRECTION.SOUTH.value:
           newX = this.fields[this.fields.length-1].x;
           newY = this.fields[this.fields.length-1].y+1;
           if (!level.isInGrid(newX, newY)) {
             newY = 0;
           }
           break;
-        case 'west':
+        case STATES.MULTICOLLIDE.DIRECTION.WEST.value:
           newX = this.fields[this.fields.length-1].x-1;
           newY = this.fields[this.fields.length-1].y;
           if (!level.isInGrid(newX, newY)) {
@@ -137,12 +130,12 @@ angular.module('multicollide.player', [])
       changeDirection: function(dir){
         // @TODO: dont allow multiple direction changes during one tick
         var head = this.fields[this.fields.length-1];
-        switch (dir){
-        case 'north':
-          if (this.direction !== 'south' && this.direction !== 'north') {
-            if (this.direction === 'west'){
+        switch (dir.value){
+        case STATES.MULTICOLLIDE.DIRECTION.NORTH.value:
+          if (this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.SOUTH.value && this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.NORTH.value) {
+            if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.WEST.value){
               head.rotation = -90;
-            } else if (this.direction === 'east') {
+            } else if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.EAST.value) {
               head.rotation = 180;
             }
             head.image = this.image.corner;
@@ -151,11 +144,11 @@ angular.module('multicollide.player', [])
             this.direction = dir;
           }
           break;
-        case 'east':
-          if (this.direction !== 'west' && this.direction !== 'east') {
-            if (this.direction === 'north'){
+        case STATES.MULTICOLLIDE.DIRECTION.EAST.value:
+          if (this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.WEST.value && this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.EAST.value) {
+            if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.NORTH.value){
               head.rotation = 0;
-            } else if (this.direction === 'south') {
+            } else if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.SOUTH.value) {
               head.rotation = -90;
             }
             head.image = this.image.corner;
@@ -164,11 +157,11 @@ angular.module('multicollide.player', [])
             this.direction = dir;
           }
           break;
-        case 'south':
-          if (this.direction !== 'north' && this.direction !== 'south') {
-            if (this.direction === 'west'){
+        case STATES.MULTICOLLIDE.DIRECTION.SOUTH.value:
+          if (this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.NORTH.value && this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.SOUTH.value) {
+            if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.WEST.value){
               head.rotation = 0;
-            } else if (this.direction === 'east') {
+            } else if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.EAST.value) {
               head.rotation = 90;
             }
             head.image = this.image.corner;
@@ -177,11 +170,11 @@ angular.module('multicollide.player', [])
             this.direction = dir;
           }
           break;
-        case 'west':
-          if (this.direction !== 'east' && this.direction !== 'west') {
-            if (this.direction === 'north'){
+        case STATES.MULTICOLLIDE.DIRECTION.WEST.value:
+          if (this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.EAST.value && this.direction.value !== STATES.MULTICOLLIDE.DIRECTION.WEST.value) {
+            if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.NORTH.value){
               head.rotation = 90;
-            } else if (this.direction === 'south') {
+            } else if (this.direction.value === STATES.MULTICOLLIDE.DIRECTION.SOUTH.value) {
               head.rotation = 180;
             }
             head.image = this.image.corner;

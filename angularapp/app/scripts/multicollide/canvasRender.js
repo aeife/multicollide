@@ -114,10 +114,9 @@ angular.module('multicollide.canvasRender', [])
         this.layer.background.drawImage(image, (scale / config.gridSize.width) * this.canvasSize.width * x, (scale / config.gridSize.height) * this.canvasSize.height * y, scale * this.tileSize, scale * this.tileSize);
       },
       drawImageTile: function(x, y, image, rotation){
-        if (typeof rotation === 'string' || rotation instanceof String){
-          rotation = this.translateRotation[rotation];
+        if (rotation instanceof Object){
+          rotation = rotation.toDegree;
         }
-
         // console.log('rotation: ' + rotation);
         if (rotation){
           this.layer.game.save();
@@ -186,12 +185,6 @@ angular.module('multicollide.canvasRender', [])
       },
       clearTile: function(x, y, ctx){
         ctx.clearRect(this.tileSize * x -1, this.tileSize * y -1, this.tileSize +2, this.tileSize +2);
-      },
-      translateRotation: {
-        north: -90,
-        east: 0,
-        south: 90,
-        west: 180
       },
       drawText: function(text){
         console.log('DRAW TEXT');
