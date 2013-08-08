@@ -13,7 +13,7 @@
           </ul>
 
           <div id="profileBoxLower" class="clear">
-             <a class="btn btn-medium" ng-click="logout()">{{'_Logout_' | i18n}}</a>
+             <button class="btn btn-medium" ng-disabled="lobby.inLobby" ng-click="logout()" >{{'_Logout_' | i18n}}</button>
           </div>
 
         </div>
