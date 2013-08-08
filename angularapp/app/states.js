@@ -4,7 +4,7 @@ var states = function(){
   return {
     GAME: {
       LOBBY: {value: 'game.lobby', toString: '_Lobby_'},
-      INGAME: {value: 'game.ingame', toString: '_GameIngame_'}
+      INGAME: {value: 'game.ingame', toString: '_Ingame_'}
     },
     MULTICOLLIDE: {
       DIRECTION: {
