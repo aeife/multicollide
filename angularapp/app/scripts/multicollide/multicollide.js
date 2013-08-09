@@ -115,8 +115,9 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       if (!turnListener){
         turnListener = socketgenapi.multicollide.turn.on(function(data){
           level.processTurn(data);
-          // if host and game ended: wait a bit and then emit game ending once
+          // if host and game ended: save standings, wait a bit and then emit game ending once
           if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
+            lobby.lastStandings = level.standings;
             setTimeout(function(){
               socketgenapi.multicollide.end.emit({});
             }, 1000);
@@ -129,7 +130,6 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       if (!gameEndListener){
         gameEndListener = socketgenapi.multicollide.end.on(function(){
           lobby.status = STATES.GAME.LOBBY;
-          lobby.lastStandings = level.standings;
         });
       }
 
