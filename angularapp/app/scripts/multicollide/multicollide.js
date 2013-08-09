@@ -115,9 +115,13 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       if (!turnListener){
         turnListener = socketgenapi.multicollide.turn.on(function(data){
           level.processTurn(data);
-          // if host and game ended: save standings, wait a bit and then emit game ending once
+
+          // save last standings
+          lobby.lastStandings = level.standings;
+
+          // if host and game ended: wait a bit and then emit game ending once
           if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
-            lobby.lastStandings = level.standings;
+
             setTimeout(function(){
               socketgenapi.multicollide.end.emit({});
             }, 1000);
