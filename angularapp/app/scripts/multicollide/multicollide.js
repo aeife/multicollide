@@ -118,6 +118,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
           // save last standings
           lobby.lastStandings = level.standings;
+          lobby.lastStandings.reverse();
 
           // if host and game ended: wait a bit and then emit game ending once
           if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
