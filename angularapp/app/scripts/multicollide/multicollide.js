@@ -106,13 +106,15 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       // game loop
       if (!turnListener){
+        var endEmitted = false;
         turnListener = socketgenapi.multicollide.turn.on(function(data){
           level.processTurn(data);
-          // if host and game ended: wait a bit and then emit game ending
-          if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
+          // if host and game ended: wait a bit and then emit game ending once
+          if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
             setTimeout(function(){
               socketgenapi.multicollide.end.emit({});
             }, 1000);
+            endEmitted = true;
           }
         });
       }
