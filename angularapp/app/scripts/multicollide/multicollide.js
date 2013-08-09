@@ -145,6 +145,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
           turnListener = null;
           lobbyPlayerLeftListener.stop();
           lobbyPlayerLeftListener = null;
+          gameEndListener.stop();
+          gameEndListener = null;
           lobbyLeaveListener = null;
         }).once();
       }
