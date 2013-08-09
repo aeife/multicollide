@@ -6,7 +6,7 @@
         <a href="" class="btn" ng-click="btnLeaveGame()">{{'_LeaveLobby_' | i18n}}</a>
       </div>
       <div class="btn-group" ng-hide="!isHost(user.ownUsername())">
-        <a href="" class="btn" ng-click="btnReady()">{{'_Ready_' | i18n}}</a>
+        <button class="btn" ng-disabled="lobby.currentLobby.players.length <= 1" ng-click="btnReady()">{{'_Ready_' | i18n}}</button>
       </div>
     </div>
     <!-- last game standings if available -->
