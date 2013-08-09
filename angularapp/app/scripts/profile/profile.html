@@ -11,6 +11,10 @@
                 <li>{{'_Won_' | i18n}}: {{user.won}}</li>
                 <li>{{'_Score_' | i18n}}: {{user.score}}</li>
             </ul>
+            <h5>{{'_Ratio_' | i18n}}</h5>
+            <div class="progress">
+              <div class="bar" style="width: {{user.ratio}}%;"></div>
+            </div>
         </div>
         <!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
                 <h4>Friends</h4>
