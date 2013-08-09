@@ -90,6 +90,7 @@ angular.module('games')
         this.inLobby = false;
         this.status = {};
         this.currentLobby = null;
+        this.lastStandings = null;
 
         this.getAvailableGames();
       },
