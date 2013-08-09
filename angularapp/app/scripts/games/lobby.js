@@ -90,8 +90,6 @@ angular.module('games')
         this.status = {};
         this.currentLobby = null;
 
-        level.reset();
-
         this.getAvailableGames();
       },
       onPlayerJoined: function(callback){

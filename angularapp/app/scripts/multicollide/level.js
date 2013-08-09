@@ -11,7 +11,15 @@ angular.module('multicollide.level', [])
       grid: [],
       players: [],
       playerForUsername: {},
+      standings: [],
+      gameEnded: false,
       init: function(obj){
+        // reset to standard values
+        this.players = [];
+        this.standings = [];
+        this.gameEnded = false;
+        this.playerForUsername = {};
+
         this.gridSize = obj.gridSize;
         this.initializeGrid();
       },
@@ -61,6 +69,7 @@ angular.module('multicollide.level', [])
 
         // -------- step 2: analyse result of moves --------
         this.analyseMoves();
+        this.checkGameEnding();
 
         // -------- step 3: process and draw  --------
         this.drawPlayerMoves();
@@ -85,13 +94,36 @@ angular.module('multicollide.level', [])
           }
         }
 
-        // kill collides players
+        // kill collides players and add to standings
+
+        // save current standing count for multiple player deaths on same turn
+        var currentRank = this.standings.length;
         for (var i = 0; i < collidedPlayers.length; i++){
           collidedPlayers[i].kill();
+          this.addStanding(currentRank, collidedPlayers[i]);
         }
 
 
         //collisions with items
+      },
+      addStanding: function(currentRank, player){
+        if (!this.standings[currentRank]) {
+          this.standings[currentRank] = [];
+        }
+        this.standings[currentRank].push(player);
+      },
+      checkGameEnding: function(){
+        if (!this.gameEnded && this.players.length <= 1){
+          // add remaining player if one is remaining
+          if (this.players.length === 1) {
+            this.addStanding(this.standings.length, this.players[0]);
+          }
+
+          this.gameEnded = true;
+
+          console.log('GAME END');
+          console.log(this.standings);
+        }
       },
       drawPlayerMoves: function(){
         for (var i = 0; i < this.players.length; i++){
