@@ -5,8 +5,9 @@ angular.module('profileBox', [])
     return {
       restrict: 'E',
       templateUrl: 'scripts/profileBox/profileBox.html',
-      controller: function($scope, auth, user, $dialog, lobby){
+      controller: function($scope, auth, user, $dialog, lobby, $rootScope){
         $scope.lobby = lobby;
+        $scope.username = $rootScope.username;
 
         $scope.logout = function(){
           auth.logout();
