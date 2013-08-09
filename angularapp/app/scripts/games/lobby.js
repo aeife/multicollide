@@ -13,6 +13,7 @@ angular.module('games')
       games: {},
       maxplayers: 10,
       status: null,
+      lastStandings: null,
       getAvailableGames: function(){
         var self = this;
         socketgenapi.games.get(function(data){
@@ -106,6 +107,7 @@ angular.module('games')
         var self = this;
         this.listeners.onGameStart = socketgenapi.lobby.start.on(function(data){
           self.status = STATES.GAME.INGAME;
+          self.lastStandings = null;
         });
       },
       startGame: function(){

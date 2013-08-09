@@ -9,6 +9,18 @@
         <a href="" class="btn" ng-click="btnReady()">{{'_Ready_' | i18n}}</a>
       </div>
     </div>
+    <!-- last game standings if available -->
+    <div id="lastStandings" ng-hide="!lobby.lastStandings">
+      <h4>{{'_LastStandings_' | i18n}}</h4>
+      <ol>
+        <li ng-repeat="standing in lobby.lastStandings">
+          <ul>
+            <li ng-repeat="player in standing">{{player.username}}</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    <h4>{{'_Players_' | i18n}}</h4>
     <ul>
       <li ng-repeat="player in lobby.currentLobby.players" ng-class="{ red: isHost(player) }">{{player}}</li>
     </ul>

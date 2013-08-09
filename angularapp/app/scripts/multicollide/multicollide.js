@@ -109,6 +109,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // listen for game ending
       var gameEndListener = socketgenapi.multicollide.end.on(function(){
         lobby.status = STATES.GAME.LOBBY;
+        lobby.lastStandings = level.standings;
       });
 
       // listen for lobby leave (includes lobby deleted)
