@@ -110,7 +110,7 @@ angular.module('multicollide.level', [])
         if (!this.standings[currentRank]) {
           this.standings[currentRank] = [];
         }
-        this.standings[currentRank].push(player);
+        this.standings[currentRank].push(player.username);
       },
       checkGameEnding: function(){
         if (!this.gameEnded && this.players.length <= 1){
