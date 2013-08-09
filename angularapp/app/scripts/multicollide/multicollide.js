@@ -29,6 +29,10 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var players;
     var ownPlayer;
     var countdownInterval;
+    var turnListener;
+    var gameEndListener;
+    var lobbyLeaveListener;
+    var lobbyPlayerLeftListener;
 
     spriteSheet.onload = function() {
       initalize();
@@ -91,33 +95,43 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       }).once();
 
+      // set listeners if not exist
+
       // kill player on lobby leave
-      var lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
-        level.playerForUsername[data.username].kill();
-      });
+      if (!lobbyPlayerLeftListener){
+        lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
+          level.playerForUsername[data.username].kill();
+        });
+      }
 
       // game loop
-      var turnListener = socketgenapi.multicollide.turn.on(function(data){
-        level.processTurn(data);
-        // if host and game ended: wait a bit and then emit game ending
-        if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
-          setTimeout(function(){
-            socketgenapi.multicollide.end.emit({});
-          }, 1000);
-        }
-      });
+      if (!turnListener){
+        turnListener = socketgenapi.multicollide.turn.on(function(data){
+          level.processTurn(data);
+          // if host and game ended: wait a bit and then emit game ending
+          if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
+            setTimeout(function(){
+              socketgenapi.multicollide.end.emit({});
+            }, 1000);
+          }
+        });
+      }
 
       // listen for game ending
-      var gameEndListener = socketgenapi.multicollide.end.on(function(){
-        lobby.status = STATES.GAME.LOBBY;
-        lobby.lastStandings = level.standings;
-      });
+      if (!gameEndListener){
+        gameEndListener = socketgenapi.multicollide.end.on(function(){
+          lobby.status = STATES.GAME.LOBBY;
+          lobby.lastStandings = level.standings;
+        });
+      }
 
       // listen for lobby leave (includes lobby deleted)
-      var lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
-        turnListener.stop();
-        lobbyPlayerLeftListener.stop();
-      }).once();
+      if (!lobbyLeaveListener){
+        lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
+          turnListener.stop();
+          lobbyPlayerLeftListener.stop();
+        }).once();
+      }
 
 
       // @TODO: allow press different key while other is still pressed
