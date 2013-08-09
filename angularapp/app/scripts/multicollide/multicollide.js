@@ -99,6 +99,16 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       // game loop
       var turnListener = socketgenapi.multicollide.turn.on(function(data){
         level.processTurn(data);
+        // if host and game ended: emit game ending
+        if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
+          socketgenapi.multicollide.end.emit({});
+        }
+
+      });
+
+      // listen for game ending
+      var gameEndListener = socketgenapi.multicollide.end.on(function(){
+        lobby.status = STATES.GAME.LOBBY;
       });
 
       // listen for lobby leave (includes lobby deleted)

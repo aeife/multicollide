@@ -562,6 +562,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       directionChanges[lobbyId].push({player: socket.session.username, direction: data.direction});
     });
 
+    socket.on('multicollide:end', function(data){
+      var lobbyId = lobbyForUsername[socket.session.username];
+      // change lobby status
+      lobbies[lobbyId].status = STATES.GAME.LOBBY;
+
+      // clear turn interval vor lobby
+      clearInterval(turnLoop[lobbyId]);
+
+      // emit game ending to all players
+      io.sockets.in(lobbies[lobbyId].name).emit('multicollide:end', {});
+    });
+
   });
 
   /**

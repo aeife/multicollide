@@ -18,6 +18,10 @@ var websocket = function(){
         on: {},
         emit: {}
       },
+      end: {
+        on: {},
+        emit: {}
+      },
       turn: {
         on: {}
       },
