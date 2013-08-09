@@ -33,7 +33,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var gameEndListener;
     var lobbyLeaveListener;
     var lobbyPlayerLeftListener;
-    var endEmitted;
+    var endProcessed;
 
     spriteSheet.onload = function() {
       initalize();
@@ -58,7 +58,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     function initalize(){
       players = null;
       ownPlayer = null;
-      endEmitted = false;
+      endProcessed = false;
 
       level.init({gridSize: config.gridSize});
       canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
@@ -116,17 +116,23 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         turnListener = socketgenapi.multicollide.turn.on(function(data){
           level.processTurn(data);
 
-          // save last standings
-          lobby.lastStandings = level.standings;
-          lobby.lastStandings.reverse();
+          // process end if not done
+          if (!endProcessed) {
+            lobby.lastStandings = level.standings;
+            lobby.lastStandings.reverse();
 
-          // if host and game ended: wait a bit and then emit game ending once
-          if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
+            // if host and game ended: wait a bit and then emit game ending with standings
+            if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
 
-            setTimeout(function(){
-              socketgenapi.multicollide.end.emit({});
-            }, 1000);
-            endEmitted = true;
+              setTimeout(function(){
+
+                var standings = level.standings;
+                console.log("##standings:");
+                console.log(standings);
+                socketgenapi.multicollide.end.emit({standings: standings});
+              }, 1000);
+              endProcessed = true;
+            }
           }
         });
       }

@@ -570,11 +570,44 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // clear turn interval vor lobby
       clearInterval(turnLoop[lobbyId]);
 
+      // adjust player stats with new standings
+      var standingsCount = data.standings.length;
+
+      for (var i = 0; i < data.standings.length; i++){
+        console.log("LOOP " + i);
+        for (var j = 0; j < data.standings[i].length; j++){
+          updatePlayerStatistics(data.standings[i][j], i + 1, data.standings.length);
+        }
+      }
+
       // emit game ending to all players
       io.sockets.in(lobbies[lobbyId].name).emit('multicollide:end', {});
     });
 
   });
+
+  function updatePlayerStatistics(player, standing, standingsCount){
+    var stepLength = 100 / (standingsCount - 1);
+    User.findOne({ name: player}, function(err, user){
+      if (err) {
+        console.log(err);
+      }
+      if (user) {
+
+        // adjust player ratio
+        user.ratio = ((user.ratio * user.games) + (stepLength * (standingsCount - standing))) / (user.games + 1);
+
+        // add game to game count
+        user.games++;
+
+        user.save(function(err){
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
 
   /**
    * helper function to generate a random guest name
