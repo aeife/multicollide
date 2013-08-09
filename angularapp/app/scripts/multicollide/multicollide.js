@@ -142,7 +142,10 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       if (!lobbyLeaveListener){
         lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
           turnListener.stop();
+          turnListener = null;
           lobbyPlayerLeftListener.stop();
+          lobbyPlayerLeftListener = null;
+          lobbyLeaveListener = null;
         }).once();
       }
 
