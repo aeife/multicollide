@@ -33,6 +33,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     var gameEndListener;
     var lobbyLeaveListener;
     var lobbyPlayerLeftListener;
+    var endEmitted;
 
     spriteSheet.onload = function() {
       initalize();
@@ -52,6 +53,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
     function initalize(){
       players = null;
       ownPlayer = null;
+      endEmitted = false;
 
       level.init({gridSize: config.gridSize});
       canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
@@ -106,11 +108,12 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       // game loop
       if (!turnListener){
-        var endEmitted = false;
         turnListener = socketgenapi.multicollide.turn.on(function(data){
           level.processTurn(data);
+          console.log("BOOL: " + endEmitted);
           // if host and game ended: wait a bit and then emit game ending once
           if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded && !endEmitted){
+            console.log("EMITTING END");
             setTimeout(function(){
               socketgenapi.multicollide.end.emit({});
             }, 1000);
@@ -124,6 +127,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
         gameEndListener = socketgenapi.multicollide.end.on(function(){
           lobby.status = STATES.GAME.LOBBY;
           lobby.lastStandings = level.standings;
+          endEmitted = false;
         });
       }
 
