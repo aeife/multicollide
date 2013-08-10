@@ -71,8 +71,8 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       ownPlayer = null;
 
       for (var i = 0; i < players.length; i++){
-        var newPlayer = new Player(players[i], 'red', STATES.MULTICOLLIDE.DIRECTION.SOUTH, 0);
-        if (players[i] === $rootScope.username){
+        var newPlayer = new Player(players[i].name, 'red', STATES.MULTICOLLIDE.DIRECTION.SOUTH, 0);
+        if (players[i].name === $rootScope.username){
           ownPlayer = newPlayer;
         }
         level.addPlayer(newPlayer);
