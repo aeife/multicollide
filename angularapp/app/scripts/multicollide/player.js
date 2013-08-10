@@ -125,6 +125,12 @@ angular.module('multicollide.player', [])
         }
         this.fields.push({x: newX, y: newY, rotation: this.direction, image: this.image.head});
         level.grid[newX][newY].players++;
+
+        // replace image of old head
+        // check if corner because corners are displayed before
+        if (this.fields[this.fields.length-2].image !== this.image.corner){
+          this.fields[this.fields.length-2].image = this.image.linear;
+        }
       },
       changeDirection: function(dir){
         // @TODO: dont allow multiple direction changes during one tick

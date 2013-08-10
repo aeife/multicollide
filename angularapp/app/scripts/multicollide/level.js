@@ -152,7 +152,6 @@ angular.module('multicollide.level', [])
           // redraw old head as normal tile
           // check if corner because corners are displayed before
           if (player.fields[player.fields.length-2].image !== player.image.corner){
-            player.fields[player.fields.length-2].image = player.image.linear;
             canvasRender.drawImageTile(player.fields[player.fields.length-2].x, player.fields[player.fields.length-2].y, player.fields[player.fields.length-2].image, player.fields[player.fields.length-2].rotation);
           }
         }
