@@ -588,6 +588,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   function updatePlayerStatistics(player, standing, standingsCount){
     var stepLength = 100 / (standingsCount - 1);
+    console.log("updating player " + player + " for place " + standing + " of " + standingsCount);
     User.findOne({ name: player}, function(err, user){
       if (err) {
         console.log(err);
@@ -596,7 +597,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
         // adjust player ratio
         user.ratio = ((user.ratio * user.games) + (stepLength * (standingsCount - standing))) / (user.games + 1);
-
+        console.log("NEW RATIO: " + user.ratio);
         // add game to game count
         user.games++;
 
