@@ -7,7 +7,7 @@ angular.module('games')
 
     // Public API here
     return {
-      listeners: {},
+      listeners: {statsUpdate: {}},
       inLobby: false,
       currentLobby: null,
       games: {},
@@ -60,8 +60,12 @@ angular.module('games')
         // @TODO: better way
         user.getUserInfo(this.currentLobby.players[index], function(data){
           if (data){
-            console.log("saving user " + index);
             self.currentLobby.players[index] = data;
+
+            // listen for stats updates
+            self.listeners.statsUpdate[self.currentLobby.players[index].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[index].name, function(data){
+              self.currentLobby.players[index] = data;
+            });
           } else {
             // guest
             self.currentLobby.players[index] = {name: self.currentLobby.players[index]};
@@ -75,7 +79,7 @@ angular.module('games')
         this.status = STATES.GAME.LOBBY;
         this.currentLobby = data;
 
-        // get infos for all players
+        // get infos for all players and listen for stats updates
         for (var i = 0; i < this.currentLobby.players.length; i++){
           self.savePlayerInfo(i);
         }
@@ -85,12 +89,22 @@ angular.module('games')
         this.onPlayerJoined(function(data){
           console.log(data);
           self.currentLobby.players.push(data);
+
+          // listen for stat updates
+          self.listeners.statsUpdate[self.currentLobby.players[self.currentLobby.players.length-1].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[self.currentLobby.players.length-1].name, function(data){
+            self.currentLobby.players[self.currentLobby.players.length-1] = data;
+          });
         });
 
         this.onPlayerLeft(function(data){
-          if (self.currentLobby.players.indexOf(data.username) > -1){
-            self.currentLobby.players.splice(self.currentLobby.players.indexOf(data.username), 1);
+          for (var i = 0; i < self.currentLobby.players.length; i++){
+            if (self.currentLobby.players[i].name === data.username){
+              self.currentLobby.players.splice(i, 1);
+              break;
+            }
           }
+
+          self.listeners.statsUpdate[data.username].stop();
         });
 
         this.listeners.onLobbyLeave = socketgenapi.lobby.leave.on(function(data){
@@ -104,6 +118,9 @@ angular.module('games')
         this.listeners.onPlayerLeft.stop();
         this.listeners.onGameStart.stop();
         this.listeners.onLobbyLeave.stop();
+        for (var i in this.listeners.statsUpdate){
+          this.listeners.statsUpdate[i].stop();
+        }
 
         if (data && data.reason) {
           flash.error(data.reason);
