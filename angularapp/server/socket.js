@@ -149,7 +149,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             userobj.own = true;
           } else {
             // delete own user only data
-            delete userobj.friends;
+            // delete userobj.friends;
           }
 
           //check if currently online

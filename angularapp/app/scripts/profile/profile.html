@@ -37,11 +37,9 @@
 
 
             <div class="clearfix"></div>
-            <h4>{{'_LastGames_' | i18n}}</h4>
+            <h4>{{'_Friends_' | i18n}}</h4>
             <ul>
-                <li>Game 123</li>
-                <li>Game 421</li>
-                <li>Game 423</li>
+                <li ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
             </ul>
         </div>
     </div>

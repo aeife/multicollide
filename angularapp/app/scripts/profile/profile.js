@@ -47,6 +47,7 @@ angular.module('profile', [])
           $scope.user = data;
           console.log('online status:');
           console.log(data.online);
+          console.log(data);
 
           socketgenapi.onlinestatus.on(data.name, function(data){
             console.log(data);
