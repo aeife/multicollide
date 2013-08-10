@@ -109,6 +109,10 @@ angular.module('multicollide.level', [])
       addStanding: function(currentRank, player){
         if (!this.standings[currentRank]) {
           this.standings[currentRank] = [];
+        } else {
+          // already player at same rank: add rank above
+          this.standings[currentRank+1] = [];
+          this.standings[currentRank+1].push('');
         }
         this.standings[currentRank].push(player.username);
       },
