@@ -853,7 +853,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     User.findOne({name: socket.session.username}, function(err, user){
       if (user) {
         var userObj = user.toObject();
-        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
+        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', removeSensibleData(userObj));
       } else {
         // user is guest, just send name
         socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});

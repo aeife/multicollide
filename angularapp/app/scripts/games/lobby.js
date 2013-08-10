@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('games')
-  .factory('lobby', function ($rootScope, socketgenapi, flash, level, STATES) {
+  .factory('lobby', function ($rootScope, socketgenapi, flash, level, STATES, user) {
     // Service logic
     // ...
 
@@ -54,6 +54,20 @@ angular.module('games')
           self.onLeftLobby();
         });
       },
+      savePlayerInfo: function(index){
+
+        var self = this;
+        // @TODO: better way
+        user.getUserInfo(this.currentLobby.players[index], function(data){
+          if (data){
+            console.log("saving user " + index);
+            self.currentLobby.players[index] = data;
+          } else {
+            // guest
+            self.currentLobby.players[index] = {name: self.currentLobby.players[index]};
+          }
+        });
+      },
       onJoinedLobby: function (data){
         var self = this;
 
@@ -61,8 +75,16 @@ angular.module('games')
         this.status = STATES.GAME.LOBBY;
         this.currentLobby = data;
 
+        // get infos for all players
+        for (var i = 0; i < this.currentLobby.players.length; i++){
+          self.savePlayerInfo(i);
+        }
+
+        console.log(this.currentLobby.players);
+
         this.onPlayerJoined(function(data){
-          self.currentLobby.players.push(data.name);
+          console.log(data);
+          self.currentLobby.players.push(data);
         });
 
         this.onPlayerLeft(function(data){
