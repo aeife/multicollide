@@ -104,10 +104,12 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
 
       // set listeners if not exist
 
-      // kill player on lobby leave
+      // kill player during game on lobby leave
       if (!lobbyPlayerLeftListener){
         lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
-          level.playerForUsername[data.username].kill();
+          if (lobby.status && lobby.status.value === STATES.GAME.INGAME.value) {
+            level.playerForUsername[data.username].kill();
+          }
         });
       }
 
