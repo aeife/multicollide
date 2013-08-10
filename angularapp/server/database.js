@@ -18,7 +18,7 @@ var userSchema = mongoose.Schema({
   language: {type: String, default: 'en-US'},
   games: {type: Number, default: 0},
   ratio: {type: Number, default: 50},
-  won: {type: Number, default: 0},
+  wins: {type: Number, default: 0},
   friends: [String],
   requests: [String]
 });

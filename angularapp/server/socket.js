@@ -600,6 +600,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         // add game to game count
         user.games++;
 
+        // add win if user has won
+        if (standing === 1) {
+          user.wins++;
+        }
+
         user.save(function(err){
           if (err) {
             console.log(err);
