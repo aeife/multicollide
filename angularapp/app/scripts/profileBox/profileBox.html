@@ -4,13 +4,15 @@
 
         <div id="profileBox" class="box" style="height:200px;">
           <h4><a href="/#/profile/{{user.name}}">{{user.name}}</a></h4>
-          <img ph-img="100x100"/>
+          <div id="elo" class="boxedNumber">
+            {{user.elo | number:0}}
+            <div style="font-size: 8px; padding-bottom: 2px; line-height: 8px;">Elo</div>
+          </div>
 
           <ul>
             <li>{{'_Games_' | i18n}}: <span  ng-model="user.games"> </span> {{user.games}}</li>
             <li>{{'_Wins_' | i18n}}: {{user.wins}}</li>
             <li>{{'_Ratio_' | i18n}}: {{user.ratio | number:2}}</li>
-            <li>{{'_Elo_' | i18n}}: {{user.elo | number:2}}</li>
           </ul>
 
           <div id="profileBoxLower" class="clear">

@@ -2,8 +2,11 @@
     <div ng-switch-when="false">
         <div id="profile">
             <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
-            <div class="span3">
-                <img ph-img="160x160" />
+            <div class="span2">
+              <div class="boxedNumber">
+                {{user.elo | number:0}}
+                <div style="font-size: 8px; padding-bottom: 2px; line-height: 8px;">Elo</div>
+              </div>
             </div>
             <div class="span3">
             <ul>
@@ -15,11 +18,6 @@
             <div class="progress">
               <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
-            <h5>{{'_Elo_' | i18n}}</h5>
-            <div class="progress">
-              <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.elo}}%;">{{user.elo | number:2}}</div>
-            </div>
-
         </div>
         <!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
                 <h4>Friends</h4>

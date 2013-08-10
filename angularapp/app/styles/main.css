@@ -67,7 +67,7 @@ body {
   text-align: center;
 }
 
-#profileBox img {
+#profileBox #elo {
   float:left;
 }
 
@@ -176,4 +176,16 @@ a {
 
 .table-centered td{
   text-align: centered;
+}
+
+.boxedNumber {
+  display: inline-block;
+  padding: 10px;
+  padding-bottom: 0px;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
+  font-size: 50px;
+  line-height:45px;
+  font-weight:bold;
 }
