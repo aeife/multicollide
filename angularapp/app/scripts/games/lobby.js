@@ -105,7 +105,7 @@ angular.module('games')
             self.currentLobby.players[self.currentLobby.players.length-1] = data;
 
             // adjust link to username
-            self.playerForUsername[data.name] = self.currentLobby.players[index];
+            self.playerForUsername[data.name] = self.currentLobby.players[self.currentLobby.players.length-1];
           });
         });
 
