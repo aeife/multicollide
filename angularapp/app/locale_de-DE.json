@@ -322,5 +322,21 @@
   "_Ingame_": {
     "message": "im Spiel",
     "description": ""
+  },
+  "_Wins_": {
+    "message": "Siege",
+    "description": ""
+  },
+  "_Ratio_": {
+    "message": "Ratio",
+    "description": ""
+  },
+  "_SignedUpSince_": {
+    "message": "angemeldet seit",
+    "description": ""
+  },
+  "_Elo_": {
+    "message": "Elo",
+    "description": ""
   }
 }

@@ -67,10 +67,6 @@ body {
   text-align: center;
 }
 
-#profileBox #elo {
-  float:left;
-}
-
 #profileBox ul {
   float:left;
   list-style:none;
