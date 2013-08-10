@@ -608,6 +608,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         user.save(function(err){
           if (err) {
             console.log(err);
+          } else {
+            // emit stats update
+            io.sockets.emit('user:statsUpdate:'+player, user);
           }
         });
       }

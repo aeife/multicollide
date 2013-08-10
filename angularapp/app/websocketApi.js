@@ -56,6 +56,11 @@ var websocket = function(){
           emitData: 'name',
           attach: 'name'
         }
+      },
+      statsUpdate: {
+        on: {
+          attach: 'username'
+        }
       }
     },
     games: {

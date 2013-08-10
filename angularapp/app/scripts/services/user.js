@@ -45,8 +45,13 @@ angular.module('angularappApp')
             console.log(user);
             callback(user);
           } else {
-              $location.path('/404');
+            $location.path('/404');
           }
+        });
+      },
+      getStatsUpdate: function(username, callback){
+        return socketgenapi.user.statsUpdate.on(username, function(data){
+          callback(data);
         });
       },
       changeLanguageSetting: function(newLanguage){

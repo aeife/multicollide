@@ -29,6 +29,11 @@ angular.module('profileBox', [])
             // user.getUserInfo(auth.key).then(function(data) {
             //   $scope.user = data;
             // });
+
+            // get stats updates
+            user.getStatsUpdate(auth.key(), function(data){
+              $scope.user = data;
+            }).whileLoggedIn();
           }
         }, true);
 
