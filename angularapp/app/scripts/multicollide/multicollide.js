@@ -108,7 +108,7 @@ angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'mu
       if (!lobbyPlayerLeftListener){
         lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
           if (lobby.status && lobby.status.value === STATES.GAME.INGAME.value) {
-            level.playerForUsername[data.username].kill();
+            level.processPlayerLeave(data.username);
           }
         });
       }

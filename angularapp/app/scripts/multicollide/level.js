@@ -116,6 +116,12 @@ angular.module('multicollide.level', [])
         }
         this.standings[currentRank].push(player.username);
       },
+      processPlayerLeave: function(username){
+        var currentRank = this.standings.length;
+        var player = this.playerForUsername[username];
+        player.kill();
+        this.addStanding(currentRank, player);
+      },
       checkGameEnding: function(){
         if (!this.gameEnded && this.players.length <= 1){
           // add remaining player if one is remaining
