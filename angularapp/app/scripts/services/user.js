@@ -40,13 +40,9 @@ angular.module('angularappApp')
         console.log('getting user info for ' + username);
 
         socketgenapi.user.info.get({name: username}, function(user){
-          if (user){
-            console.log('got user info');
-            console.log(user);
-            callback(user);
-          } else {
-            $location.path('/404');
-          }
+          console.log('got user info');
+          console.log(user);
+          callback(user);
         });
       },
       getStatsUpdate: function(username, callback){
