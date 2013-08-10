@@ -1,1 +1,47 @@
-<h1 class="text-center">Help</h1>
+<h1 class="text-center">{{'_Help_' | i18n}}</h1>
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-pills">
+    <li class="active"><a href="#theGame" data-toggle="tab">{{'_TheGame_' | i18n}}</a></li>
+    <li><a href="#controls" data-toggle="tab">{{'_Controls_' | i18n}}</a></li>
+    <li><a href="#ratio" data-toggle="tab">{{'_Ratio_' | i18n}}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="theGame">
+      <h4>How the game works</h4>
+    </div>
+    <div class="tab-pane" id="controls">
+      <div class="text-center span5 span-centered">
+        <table class="table table-striped text-center">
+          <tr>
+            <th>{{'_Action_' | i18n}}</th>
+            <th>{{'_Control_' | i18n}}</th>
+            <th>{{'_AlternateControl_' | i18n}}</th>
+          </tr>
+          <tr>
+            <td>{{'_MoveUp_' | i18n}}</td>
+            <td>{{'_WKey_' | i18n}}</td>
+            <td>{{'_ArrowUp_' | i18n}}</td>
+          </tr>
+          <tr>
+            <td>{{'_MoveDown_' | i18n}}</td>
+            <td>{{'_SKey_' | i18n}}</td>
+            <td>{{'_ArrowDown_' | i18n}}</td>
+          </tr>
+          <tr>
+            <td>{{'_MoveLeft_' | i18n}}</td>
+            <td>{{'_AKey_' | i18n}}</td>
+            <td>{{'_ArrowLeft_' | i18n}}</td>
+          </tr>
+          <tr>
+            <td>{{'_MoveRight_' | i18n}}</td>
+            <td>{{'_DKey_' | i18n}}</td>
+            <td>{{'_ArrowRight_' | i18n}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane" id="ratio">
+      <h4>How does the ratio work?</h4>
+    </div>
+  </div>
+</div>

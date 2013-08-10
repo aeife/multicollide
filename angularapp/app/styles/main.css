@@ -1,5 +1,11 @@
 /* Will be compiled down to a single stylesheet with your sass files */
 
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
+
 body {
   overflow-y: scroll;
 }
