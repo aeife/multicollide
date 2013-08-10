@@ -11,7 +11,7 @@ angular.module('angularappApp',
   'friendslist',
   'settings',
   'about',
-  'blog',
+  'help',
   'error',
   'login',
   'signup',
@@ -56,9 +56,9 @@ angular.module('angularappApp',
         templateUrl: 'scripts/games/games.html',
         controller: 'GamesCtrl'
       })
-      .when('/blog', {
-        templateUrl: 'scripts/blog/blog.html',
-        controller: 'BlogCtrl'
+      .when('/help', {
+        templateUrl: 'scripts/help/help.html',
+        controller: 'HelpCtrl'
       })
       .when('/settings', {
         templateUrl: 'scripts/settings/settings.html',
