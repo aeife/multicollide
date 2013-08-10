@@ -1,0 +1,17 @@
+<div style="
+  display: inline-block;
+  padding: {{size * 0.1}}px;
+  border: {{borderSize}}px solid #666;
+  color: #666;
+  text-align: center;
+  font-size: {{size}}px;
+  line-height:{{size}}px;
+  height: {{size}}px;
+  width: {{size + size * 0.3}}px;
+  font-weight:bold;">
+  {{number | number:0}}
+  <span ng-show="!number">{{guest}}</span>
+  <!-- <div style="font-size: {{size * 0.2}}px; padding-bottom: {{size * 0.04}}px; line-height: {{size * 0.2}}px;">{{'_Elo_' | i18n}}</div> -->
+</div>
+
+

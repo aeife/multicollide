@@ -4,10 +4,7 @@
 
         <div id="profileBox" class="box text-center">
           <h4><a href="/#/profile/{{user.name}}">{{user.name}}</a></h4>
-          <div class="boxedNumber">
-            {{user.elo | number:0}}
-            <div style="font-size: 8px; padding-bottom: 2px; line-height: 8px;">{{'_Elo_' | i18n}}</div>
-          </div>
+          <elo-box number="user.elo" size="50"></elo-box>
           <table style="width: 100%; table-layout: fixed;" class="text-center">
             <tr>
               <th>{{'_Games_' | i18n}}</th>

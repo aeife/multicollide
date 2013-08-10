@@ -3,10 +3,7 @@
         <div id="profile">
             <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
             <div class="span2">
-              <div class="boxedNumber">
-                {{user.elo | number:0}}
-                <div style="font-size: 8px; padding-bottom: 2px; line-height: 8px;">{{'_Elo_' | i18n}}</div>
-              </div>
+              <elo-box number="user.elo" size="50"></elo-box>
             </div>
             <div class="span3">
             <ul>
