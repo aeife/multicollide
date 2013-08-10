@@ -610,7 +610,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             console.log(err);
           } else {
             // emit stats update
-            io.sockets.emit('user:statsUpdate:'+player, user);
+            io.sockets.emit('user:statsUpdate:'+player, {name: user.name, wins: user.wins, games: user.games, ratio: user.ratio});
           }
         });
       }
