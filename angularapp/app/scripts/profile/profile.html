@@ -15,6 +15,11 @@
             <div class="progress">
               <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
+            <h5>{{'_Elo_' | i18n}}</h5>
+            <div class="progress">
+              <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.elo}}%;">{{user.elo | number:2}}</div>
+            </div>
+
         </div>
         <!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
                 <h4>Friends</h4>

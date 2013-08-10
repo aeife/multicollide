@@ -614,6 +614,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         // add game to game count
         user.games++;
 
+        // adjust elo
+        user.elo = ((user.ratio * user.games) + (50 * 500)) / (user.games + 500);
+
         // add win if user has won
         if (standing === 1) {
           user.wins++;
