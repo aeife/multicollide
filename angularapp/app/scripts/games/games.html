@@ -22,9 +22,17 @@
       </ol>
     </div>
     <h4>{{'_Players_' | i18n}}</h4>
-    <ul>
-      <li ng-repeat="player in lobby.currentLobby.players" ng-class="{ red: isHost(player.name) }">{{player.name}}<elo-box number="player.elo" size="20"></elo-box>{{player.ratio | number:2}}</li>
-    </ul>
+    <table class="table table-striped text-center">
+      <tr ng-repeat="player in lobby.currentLobby.players" >
+        <td class="span1"><elo-box number="player.elo" size="20"></elo-box></td>
+        <td ng-class="{ red: isHost(player.name) }">{{player.name}}</td>
+        <td>
+          <div class="progress" style="margin-bottom: 0px;">
+            <div class="bar" ng-class="{'bar-warning': player.ratio > 33.34 && player.ratio < 66.65, 'bar-danger': player.ratio <= 33.34, 'bar-success': player.ratio >= 66.65}" style="width: {{player.ratio}}%;">{{player.ratio | number:2}}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
   <div ng-show="!lobby.inLobby">
     <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
