@@ -138,7 +138,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // console.log(socket.session.username);
       console.log(socket.session);
 
-      User.findOne({ name: data.name }, {password : 0}, function(err, user){
+      User.findOne({ name: data.name }, function(err, user){
         console.log(user);
         if (user) {
           var userobj = user.toObject();
@@ -624,7 +624,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             console.log(err);
           } else {
             // emit stats update
-            io.sockets.emit('user:statsUpdate:'+player, {name: user.name, wins: user.wins, games: user.games, ratio: user.ratio});
+            io.sockets.emit('user:statsUpdate:'+player, removeSensibleData(user.toObject()));
           }
         });
       }
