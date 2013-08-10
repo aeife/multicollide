@@ -9,7 +9,7 @@
           <ul>
             <li>{{'_Games_' | i18n}}: <span  ng-model="user.games"> </span> {{user.games}}</li>
             <li>{{'_Won_' | i18n}}: {{user.won}}</li>
-            <li>{{'_Score_' | i18n}}: {{user.score}}</li>
+            <li>{{'_Ratio_' | i18n}}: {{user.ratio | number:2}}</li>
           </ul>
 
           <div id="profileBoxLower" class="clear">
