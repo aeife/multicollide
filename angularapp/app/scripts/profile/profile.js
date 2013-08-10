@@ -53,6 +53,13 @@ angular.module('profile', [])
             $scope.user.online = data.online;
           }).forRoute();
 
+          user.getStatsUpdate(data.name, function(data){
+            var online = $scope.user.online;
+            console.log(data);
+            $scope.user = data;
+            $scope.user.online = online;
+          }).forRoute();
+
           // check if already a friend
           if (auth.key()){
             user.getUserInfo(auth.key(), function(data){
