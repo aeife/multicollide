@@ -15,6 +15,7 @@ var userSchema = mongoose.Schema({
   name: {type: String, index: {unique: true}},
   password: String,
   email: String,
+  signupDate: { type: Date, default: Date.now },
   language: {type: String, default: 'en-US'},
   games: {type: Number, default: 0},
   ratio: {type: Number, default: 50},
