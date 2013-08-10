@@ -157,7 +157,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             userobj.online = true;
           }
 
-          socket.emit('user:info:'+data.name, userobj);
+          socket.emit('user:info:'+data.name, removeSensibleData(userobj));
         } else {
           socket.emit('user:info:'+data.name);
         }
@@ -585,6 +585,19 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
   });
+
+  function removeSensibleData(userObj){
+    var user = userObj;
+
+    delete user.requests;
+    delete user.language;
+    delete user.password;
+    delete user.email;
+    delete user._id;
+    delete user.__v;
+
+    return user;
+  }
 
   function updatePlayerStatistics(player, standing, standingsCount){
     var stepLength = 100 / (standingsCount - 1);
