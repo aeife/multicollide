@@ -609,13 +609,17 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       if (user) {
 
         // adjust player ratio
+        var ratioDiff = user.ratio;
         user.ratio = ((user.ratio * user.games) + (stepLength * (standingsCount - standing))) / (user.games + 1);
+        ratioDiff = user.ratio - ratioDiff;
 
         // add game to game count
         user.games++;
 
         // adjust elo
+        var eloDiff = user.elo;
         user.elo = ((user.ratio * user.games) + (50 * 500)) / (user.games + 500);
+        eloDiff = user.elo - eloDiff;
 
         // add win if user has won
         if (standing === 1) {
@@ -627,7 +631,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             console.log(err);
           } else {
             // emit stats update
-            io.sockets.emit('user:statsUpdate:'+player, removeSensibleData(user.toObject()));
+            var userObj = user.toObject();
+            userObj.ratioDiff = ratioDiff;
+            userObj.eloDiff = eloDiff;
+            io.sockets.emit('user:statsUpdate:'+player, removeSensibleData(userObj));
           }
         });
       }

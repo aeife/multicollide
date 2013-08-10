@@ -13,13 +13,33 @@
 
     <div id="lastStandings" ng-hide="!lobby.lastStandings">
       <h4>{{'_LastStandings_' | i18n}}</h4>
-      <ol>
+      <table class="table text-center" style="table-layout: fixed;">
+        <tr>
+          <th>Place</th>
+          <th>User</th>
+          <th>Ratio Diff</th>
+          <th>Elo Diff</th>
+        </tr>
+        <tr ng-repeat="standing in lobby.lastStandings">
+          <td rowspan="standing.length" style="vertical-align:middle;">{{$index + 1}}</td>
+          <td colspan="3">
+            <table class="table" style="table-layout: fixed; margin-bottom: 0px;">
+              <tr ng-repeat="player in standing">
+                <td style="border-top: 0px;">{{player}}</td>
+                <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].ratioDiff > 0">+</span>{{lobby.playerForUsername[player].ratioDiff | number:2}}</td>
+                <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].eloDiff > 0">+</span>{{lobby.playerForUsername[player].eloDiff | number:2}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- <ol>
         <li ng-repeat="standing in lobby.lastStandings">
           <ul>
-            <li ng-repeat="player in standing" ng-hide="player == ''">{{player}}</li>
+            <li ng-repeat="player in standing" ng-hide="player == ''">{{player}} {{lobby.playerForUsername[player].ratioDiff}}</li>
           </ul>
         </li>
-      </ol>
+      </ol> -->
     </div>
     <h4>{{'_Players_' | i18n}}</h4>
     <table class="table table-striped text-center">

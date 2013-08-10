@@ -10,6 +10,7 @@ angular.module('games')
       listeners: {statsUpdate: {}},
       inLobby: false,
       currentLobby: null,
+      playerForUsername: {},
       games: {},
       maxplayers: 10,
       status: null,
@@ -65,11 +66,17 @@ angular.module('games')
             // listen for stats updates
             self.listeners.statsUpdate[self.currentLobby.players[index].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[index].name, function(data){
               self.currentLobby.players[index] = data;
+
+              // adjust link to username
+              self.playerForUsername[data.name] = self.currentLobby.players[index];
             });
           } else {
             // guest
             self.currentLobby.players[index] = {name: self.currentLobby.players[index]};
           }
+
+          // link with username
+          self.playerForUsername[self.currentLobby.players[index].name] = self.currentLobby.players[index];
         });
       },
       onJoinedLobby: function (data){
@@ -90,9 +97,15 @@ angular.module('games')
           console.log(data);
           self.currentLobby.players.push(data);
 
+          // link with username
+          self.playerForUsername[data.name] = self.currentLobby.players[self.currentLobby.players.length-1];
+
           // listen for stat updates
           self.listeners.statsUpdate[self.currentLobby.players[self.currentLobby.players.length-1].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[self.currentLobby.players.length-1].name, function(data){
             self.currentLobby.players[self.currentLobby.players.length-1] = data;
+
+            // adjust link to username
+            self.playerForUsername[data.name] = self.currentLobby.players[index];
           });
         });
 
@@ -102,6 +115,9 @@ angular.module('games')
               self.currentLobby.players.splice(i, 1);
               break;
             }
+
+            // remove link
+            delete self.playerForUsername[data.username];
           }
 
           self.listeners.statsUpdate[data.username].stop();
@@ -130,6 +146,7 @@ angular.module('games')
         this.status = {};
         this.currentLobby = null;
         this.lastStandings = null;
+        this.playerForUsername = {};
 
         this.getAvailableGames();
       },
