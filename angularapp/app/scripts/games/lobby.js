@@ -62,7 +62,7 @@ angular.module('games')
         this.currentLobby = data;
 
         this.onPlayerJoined(function(data){
-          self.currentLobby.players.push(data.username);
+          self.currentLobby.players.push(data.name);
         });
 
         this.onPlayerLeft(function(data){

@@ -845,8 +845,20 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     lobbyForUsername[socket.session.username] = id;
 
     //join socket room and send join event to other players in lobby
+    //io.sockets.in(lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
     socket.join(lobbies[id].name);
-    io.sockets.in(lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
+
+
+    // send user info when joining
+    User.findOne({name: socket.session.username}, function(err, user){
+      if (user) {
+        var userObj = user.toObject();
+        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
+      } else {
+        // user is guest, just send name
+        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
+      }
+    });
   }
 
   /**
