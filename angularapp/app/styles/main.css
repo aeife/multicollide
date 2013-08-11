@@ -45,30 +45,9 @@ th {
   margin-bottom: 0px;
 }
 
-.col{
-  margin-bottom: -99999px;
-  padding-bottom: 99999px;
-}
 
-.col-wrap{
-  overflow: hidden;
-}
 
 #profileBox {
-  padding: 5px;
-}
-
-#profileBox h4 {
-  text-align: center;
-}
-
-#profileBox ul {
-  float:left;
-  list-style:none;
-  margin-left: 10px;
-}
-
-#profileBox ul li {
   padding: 5px;
 }
 
@@ -82,7 +61,7 @@ th {
   list-style: none;
 }
 
-#friendslist ul a {
+#friendslist table a {
   color: grey;
   text-decoration: none;
   font-weight: bold;
@@ -98,10 +77,6 @@ th {
 
 .newsItem h4, .newsItem h5 {
   text-align: center;
-}
-
-.clear {
-  clear: both;
 }
 
 /* FLASH MESSAGES */
@@ -124,33 +99,9 @@ th {
   color: black;
 }
 
-
-/* PROFILE */
-/*
-#profile {
-  padding: 0px 50px 50px 50px;
-}
-
-#profile img {
-  float:left;
-  margin-right: 100px;
-}
-
-#profile ul {
-  list-style: none;
-  margin: 0px;
-  float:left;
-}
-
-#profile ul li {
-  margin: 10px 10px 10px 0px;
-}
-*/
-
 .dataTable th {
   cursor: pointer;
 }
-
 
 .red {
   color:red;
@@ -163,20 +114,4 @@ a {
 .span-centered {
   margin:0 auto;
   float:none;
-}
-
-.table-centered td{
-  text-align: centered;
-}
-
-.boxedNumber {
-  display: inline-block;
-  padding: 10px;
-  padding-bottom: 0px;
-  border: 2px solid #666;
-  color: #666;
-  text-align: center;
-  font-size: 50px;
-  line-height:45px;
-  font-weight:bold;
 }
