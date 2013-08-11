@@ -1,7 +1,7 @@
 <div ng-switch="playerlist">
     <div ng-switch-when="false">
         <div id="profile">
-          <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
+          <h1 class="text-center">{{user.name}}</h1>
           <div class="col-lg-4 text-center">
             <elo-box number="user.elo" size="80"></elo-box>
           </div>
@@ -30,9 +30,10 @@
           </div>
 
           <div class="clearfix"></div>
+          <hr/>
           <h4>{{'_Friends_' | i18n}} ({{user.friends.length}})</h4>
-          <ul>
-            <li ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
+          <ul class="list-unstyled">
+            <li class="col-lg-4" ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
           </ul>
         </div>
     </div>
