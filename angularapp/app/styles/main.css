@@ -54,7 +54,8 @@ td {
 }
 
 .navbar-nav .active a, .navbar-nav .active a:hover, .navbar-nav .active a:focus {
-  background-color: #f1f1f1;
+  background-color: #555555;
+  color: #f1f1f1;
 }
 
 
@@ -65,6 +66,10 @@ td {
 
 .navbar .nav .quickPlay a{
   font-size:20px;
+}
+
+.navbar-toggle:hover, .navbar-toggle:focus  {
+  background-color: black;
 }
 
 .accordion {
