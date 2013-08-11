@@ -1,33 +1,37 @@
 <div id="friendslist" ng-hide="!friends">
-  <accordion>
-    <accordion-group class="box">
-      <accordion-heading class="text-center">
-        <h4 class="text-center">{{'_FriendsList_' | i18n}} ({{friendCount}})</h4>
-        <table style="width: 100%; table-layout: fixed;" class="text-center">
-          <tr>
-            <th>{{'_Online_'| i18n}}</th>
-            <th>{{'_Requests_' | i18n}}</th>
-          </tr>
-          <tr>
-            <td><span class="badge badge-info">{{friendsOnlineCount}}</span></td>
-            <td><span class="badge badge-info">{{requests.length}}</span></td>
-          </tr>
-        </table>
-      </accordion-heading>
-      <accordion-body>
-        <ul>
+  <div class="accordion box" id="accordion-friendslist">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle row text-center" data-toggle="collapse" data-parent="#accordion-friendslist" href="#collapse-friendslist">
+          <h4 class="text-center">{{'_FriendsList_' | i18n}} ({{friendCount}})</h4>
+          <table style="width: 100%; table-layout: fixed;" class="text-center">
+            <tr>
+              <th>{{'_Online_'| i18n}}</th>
+              <th>{{'_Requests_' | i18n}}</th>
+            </tr>
+            <tr>
+              <td><span class="badge badge-info">{{friendsOnlineCount}}</span></td>
+              <td><span class="badge badge-info">{{requests.length}}</span></td>
+            </tr>
+          </table>
+        </a>
+      </div>
+      <div id="collapse-friendslist" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <ul>
             <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-                <a href="/#/profile/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
+              <a href="/#/profile/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
             </li>
-        </ul>
-        <ul>
+          </ul>
+          <ul>
             <li ng-repeat="request in requests">
-                <a href="/#/profile/{{request}}">{{request}}</a> <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
+              <a href="/#/profile/{{request}}">{{request}}</a> <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
             </li>
-        </ul>
-      </accordion-body>
-    </accordion-group>
-  </accordion>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
