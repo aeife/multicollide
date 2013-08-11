@@ -22,6 +22,11 @@ body {
   font-size:20px;
 }
 
+.navbar-inner {
+  background-color: #f2f2f2;
+  background-image: none;
+}
+
 .box {
   background-color: #fafafa;
   background-repeat: repeat-x;
