@@ -589,13 +589,17 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   function removeSensibleData(userObj, caller){
     var user = userObj;
 
-    if (caller === user.name) {
+    if (caller && caller === user.name) {
       // if own infos dont delete some private information
       delete user.requests;
       delete user.password;
       delete user._id;
       delete user.__v;
     } else {
+      delete user.requests;
+      delete user.password;
+      delete user._id;
+      delete user.__v;
       delete user.language;
       delete user.email;
     }
@@ -638,7 +642,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             var userObj = user.toObject();
             userObj.ratioDiff = ratioDiff;
             userObj.eloDiff = eloDiff;
-            io.sockets.emit('user:statsUpdate:'+player, removeSensibleData(userObj, socket.session.username));
+            io.sockets.emit('user:statsUpdate:'+player, removeSensibleData(userObj));
           }
         });
       }
@@ -864,7 +868,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     User.findOne({name: socket.session.username}, function(err, user){
       if (user) {
         var userObj = user.toObject();
-        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', removeSensibleData(userObj, socket.session.username));
+        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', removeSensibleData(userObj));
       } else {
         // user is guest, just send name
         socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
