@@ -173,5 +173,26 @@
       }).get());
       boxes.height(maxHeight);
     </script>
+
+
+    <!-- server offline modal -->
+    <div class="modal fade" id="serverOfflineModal" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>{{"_Error_" | i18n}}</h3>
+          </div>
+          <div class="modal-body">
+            <p>{{"_ServerOffline_" | i18n}}</p>
+              <pimg src="images/error.png"/>
+          </div>
+          <div class="modal-footer">
+
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
   </body>
 </html>

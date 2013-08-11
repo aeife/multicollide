@@ -1,9 +1,51 @@
+<!-- Modals -->
+<div class="modal fade" id="createGameModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{"_CreateGame_" | i18n}}</h3>
+      </div>
+      <div class="modal-body">
+        <p>{{"_LobbyName_" | i18n}}: <input ng-model="lobbyName" /></p>
+        <p>{{"_PlayerLimit_" | i18n}}:
+          <select ng-model="maxplayers">
+            <option ng-repeat="limit in playerLimits">{{limit}}</option>
+          </select>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" ng-click="createGame(lobbyName, maxplayers)" class="btn btn-primary">{{"_CreateGame_" | i18n}}</button>
+        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="leaveGameModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{"_LeaveLobby_" | i18n}}</h3>
+      </div>
+      <div class="modal-body">
+        <p>{{"_LeaveLobbyReally_" | i18n}}</p>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" ng-click="leaveGame()" class="btn btn-primary">{{"_Yes_" | i18n}}</button>
+        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div ng-hide="lobby.status == STATES.GAME.INGAME">
   <div ng-show="lobby.status == STATES.GAME.LOBBY">
     <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-click="btnLeaveGame()">{{'_LeaveLobby_' | i18n}}</a>
+        <button data-toggle="modal" href="#leaveGameModal" class="btn btn-primary btn-lg">{{'_LeaveLobby_' | i18n}}</button>
       </div>
       <div class="btn-group" ng-hide="!isHost(user.ownUsername())">
         <button type="button" class="btn btn-primary" ng-disabled="lobby.currentLobby.players.length <= 1" ng-click="btnReady()">{{'_Ready_' | i18n}}</button>
@@ -63,7 +105,7 @@
     <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
     <div class="btn-toolbar text-center">
       <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-click="btnCreateGame()">{{'_CreateGame_' | i18n}}</button>
+        <button data-toggle="modal" href="#createGameModal" class="btn btn-primary btn-lg">{{'_CreateGame_' | i18n}}</button>
       </div>
       <div class="btn-group">
         <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>

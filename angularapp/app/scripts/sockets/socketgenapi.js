@@ -201,8 +201,11 @@ angular.module('sockets')
 
     // initialization
     websocketApi.disconnect.on(function(){
-      var d = $dialog.dialog({templateUrl: 'views/msgServerOffline.html', backdropClick: false, keyboard: false});
-      d.open();
+      console.log("SHOW MODAL");
+      $('#serverOfflineModal').modal('show');
+      // <a data-toggle="modal" href="#serverOfflineModal" class="btn btn-primary btn-large">Launch demo modal</a>
+      // var d = $dialog.dialog({templateUrl: 'views/msgServerOffline.html', backdropClick: false, keyboard: false});
+      // d.open();
     });
 
     return websocketApi;
