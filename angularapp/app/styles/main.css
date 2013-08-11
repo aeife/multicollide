@@ -7,7 +7,7 @@
 }
 
 body {
-  background-image: url("../images/grey.png");
+  background-image: url("../images/grey.png"); /* www.subtlepatterns.com */
   background-repeat: repeat;
   background-color: #f7f7f9;
   overflow-y: scroll;
