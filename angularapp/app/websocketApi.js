@@ -136,7 +136,7 @@ var websocket = function(){
           emitData: ['username', 'oldPassword', 'newPassword']
         }
       },
-      newLanguag: {
+      newLanguage: {
         emit: {}
       }
     }
