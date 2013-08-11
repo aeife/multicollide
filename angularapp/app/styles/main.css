@@ -54,7 +54,7 @@ td {
   color: #A2A2A2;
 }
 
-.navbar-nav li a:hover {
+.navbar-nav li a:hover, .navbar-brand:hover {
   color: #f1f1f1;
 }
 
