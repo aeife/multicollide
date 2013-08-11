@@ -1,31 +1,45 @@
 <h1 class="text-center">{{'_Settings_' | i18n}}</h1>
-<div class="newpassword-form text-center" ng-hide="!isLoggedIn()">
-  <h4>{{'_ChangePassword_' | i18n}}</h4>
-  <form name="newpasswordForm" action="" novalidate>
+<div class="newpassword-form" ng-hide="!isLoggedIn()">
+  <h4 class="text-center">{{'_ChangePassword_' | i18n}}</h4>
+  <form class="col-lg-5 span-centered" name="newpasswordForm" action="" novalidate>
     <fieldset>
-      <div class="clearfix">
-        <input name="oldPassword" type="password" ng-model="oldPassword" placeholder="{{'_PasswordOld_' | i18n}}" required>
+      <div class="form-group">
+        <label for="oldPassword">{{'_PasswordOld_' | i18n}}</label>
+        <input class="form-control" name="oldPassword" type="password" ng-model="oldPassword" placeholder="{{'_PasswordOld_' | i18n}}" required>
       </div>
-      <div class="clearfix">
-        <input name = "newPassword" type="password" ng-model="newPassword" placeholder="{{'_PasswordNew_' | i18n}}" required>
+      <div class="form-group">
+        <label for="newPassword">{{'_PasswordNew_' | i18n}}</label>
+        <input class="form-control" name = "newPassword" type="password" ng-model="newPassword" placeholder="{{'_PasswordNew_' | i18n}}" required>
       </div>
         <!-- <div ng-show="form.password.$error.required">
           Field required</div>
         </div> -->
-      <div class="clearfix">
-        <input name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
+      <div class="form-group">
+        <label for="newPasswordconfirm">{{'_PasswordConfirm_' | i18n}}</label>
+        <input class="form-control" name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
         <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
       </div>
-      <button type="submit" class="btn btn-primary" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
-      <!-- <button ng-click="test()" ng-disabled="form.$invalid">SAVE</button> -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
+      </div>
     </fieldset>
   </form>
-  <h5>{{'_EmailCurrent_' | i18n}}: {{user.email}}</h5>
+  <h5 class="text-center">{{'_EmailCurrent_' | i18n}}: {{user.email}}</h5>
 
 
 </div>
 <div class="text-center">
   <h5>{{'_ChangeLanguage_' | i18n}}</h5>
-  <select style="margin-top:10px; width: 150px;" class="controls" ng-model="language" ng-options="item.key as item.value for item in languages"></select>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      {{language.value}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-repeat="item in languages"><a ng-click="setLanguage(item)">{{item.value}}</a></li>
+    </ul>
+  </div>
   <button type="button" class="btn btn-primary" ng-click="changeLanguage()">{{'_ChangeLanguage_' | i18n}}</button>
 </div>
+
+

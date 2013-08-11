@@ -33,14 +33,19 @@ angular.module('settings', [])
     };
 
     $scope.languages = localization.getAvailableLanguages();
-    $scope.language = localization.getCurrentLanguage();
+    $scope.language = {key: localization.getCurrentLanguage(), value: localization.getLanguageValueForKey(localization.getCurrentLanguage())};
+
+    $scope.setLanguage = function(language){
+      $scope.language = language;
+    };
+
     $scope.changeLanguage = function(){
-      console.log('changing language to ' + $scope.language);
-      localization.changeLanguage($scope.language);
+      console.log('changing language to ' + $scope.language.key);
+      localization.changeLanguage($scope.language.key);
 
       // save change on server if logged in
       if ($scope.isLoggedIn()){
-        user.changeLanguageSetting({newLanguage: $scope.language});
+        user.changeLanguageSetting({newLanguage: $scope.language.key});
       }
     };
   });

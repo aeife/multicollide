@@ -26,6 +26,14 @@ angular.module('localization', [])
         }
         return this.keys;
       },
+      getLanguageValueForKey: function(key){
+        var languages = this.getAvailableLanguages();
+        for (var i = 0; i < languages.length; i++){
+          if (languages[i].key === key){
+            return languages[i].value;
+          }
+        }
+      },
       changeLanguage: function(newLanguage) {
         this.language = newLanguage;
 
