@@ -7,23 +7,56 @@
 }
 
 body {
-  background-image: url("../images/mooning.png");
+  background-image: url("../images/grey.png");
   background-repeat: repeat;
-  background-color: #d5d5d5;
+  background-color: #f7f7f9;
   overflow-y: scroll;
 }
 
+table-striped tbody tr:nth-child(even) td, .table-striped tbody tr:nth-child(even) th,  .table-striped tbody tr:nth-child(even) td  {
+  background-color: white;
+}
+
+table-striped tbody tr:nth-child(odd) td, .table-striped tbody tr:nth-child(odd) th,  .table-striped tbody tr:nth-child(odd) td  {
+  background-color: #f1f1f1;
+}
 
 th {
   text-align: center;
 }
 
+td {
+  vertical-align: middle !important;
+}
+
+.btn-mini {
+    padding: 3px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.navbar {
+  background-color: #353535;
+}
+
 .navbar .nav a {
   font-size:16px;
+
 }
+
+.navbar-nav li a {
+  color: #A2A2A2;
+}
+
+.navbar-nav .active a, .navbar-nav .active a:hover, .navbar-nav .active a:focus {
+  background-color: #f1f1f1;
+}
+
 
 .navbar-brand {
   font-size:24px;
+  color: #A2A2A2;
 }
 
 .navbar .nav .quickPlay a{
@@ -35,9 +68,9 @@ th {
 }
 
 .box {
-  background-color: #eeeeee;
+  background-color: #f1f1f1;
   background-repeat: repeat;
-  border: 1px solid #c1c1c1;
+  border: 1px solid #dddddd;
 }
 
 #sidebar {
