@@ -13,7 +13,7 @@
             </ul>
             <h5>{{'_Ratio_' | i18n}}</h5>
             <div class="progress">
-              <div class="progress-bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
+              <div class="progress-bar" ng-class="{'progress-bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'progress-bar-danger': user.ratio <= 33.34, 'progress-bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
           </div>
 
