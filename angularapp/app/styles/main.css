@@ -29,6 +29,11 @@ td {
   vertical-align: middle !important;
 }
 
+.progress {
+  /*border: 1px #dddddd solid;*/
+  background-color: #e0e0e0;
+}
+
 .btn-mini {
     padding: 3px 5px;
     font-size: 12px;

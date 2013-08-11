@@ -92,7 +92,7 @@
     <table class="table table-striped text-center">
       <tr ng-repeat="player in lobby.currentLobby.players" >
         <td class="col-lg-1"><elo-box number="player.elo" size="20"></elo-box></td>
-        <td ng-class="{ red: isHost(player.name) }">{{player.name}}</td>
+        <td ng-class="{ red: isHost(player.name) }"><strong>{{player.name}}</strong></td>
         <td>
           <div class="progress" style="margin-bottom: 0px;">
             <div class="progress-bar" ng-class="{'progress-bar-warning': player.ratio > 33.34 && player.ratio < 66.65, 'progress-bar-danger': player.ratio <= 33.34, 'progress-bar-success': player.ratio >= 66.65}" style="width: {{player.ratio}}%;">{{player.ratio | number:2}}</div>
