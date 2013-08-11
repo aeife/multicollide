@@ -2,10 +2,10 @@
     <div ng-switch-when="false">
         <div id="profile">
           <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
-          <div class="col-lg-2">
-            <elo-box number="user.elo" size="50"></elo-box>
+          <div class="col-lg-4 text-center">
+            <elo-box number="user.elo" size="80"></elo-box>
           </div>
-          <div class="col-lg-3">
+          <div class="col-lg-6">
             <ul>
               <li>{{'_SignedUpSince_' | i18n}}: {{user.signupDate | date}}</li>
               <li>{{'_Games_' | i18n}}: {{user.games}}</li>
@@ -13,7 +13,7 @@
             </ul>
             <h5>{{'_Ratio_' | i18n}}</h5>
             <div class="progress">
-              <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
+              <div class="progress-bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
           </div>
 
