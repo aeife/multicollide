@@ -21,7 +21,11 @@ th {
 .navbar .brand {
   font-size:24px;
 }
-
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
 .navbar .nav .quickPlay a{
   font-size:20px;
 }
