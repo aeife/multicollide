@@ -30,7 +30,7 @@ angular.module('flash', [])
         console.log(messages);
       },
       error: function(message){
-        messages.push({msg: message, type: 'error'});
+        messages.push({msg: message, type: 'danger'});
         $rootScope.$emit('event:added');
       },
       remove: function(nr){
