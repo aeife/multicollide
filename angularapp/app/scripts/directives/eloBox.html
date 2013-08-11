@@ -4,9 +4,10 @@
   color: #666;
   text-align: center;
   font-size: {{size}}px;
-  line-height:{{size}}px;
-  height: {{size}}px;
-  width: {{size + size * 0.3}}px;
+  line-height:{{size - size * 0.2}}px;
+  padding: {{size * 0.2}}px;
+  height: {{size + size * 0.2}}px;
+  width: {{size + size * 0.3 + size * 0.2}}px;
   font-weight:bold;">
   {{number | number:0}}
   <span ng-show="!number">{{guest}}</span>
