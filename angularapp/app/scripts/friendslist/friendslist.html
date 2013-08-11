@@ -18,16 +18,30 @@
       </div>
       <div id="collapse-friendslist" class="accordion-body collapse">
         <div class="accordion-inner">
-          <ul>
-            <li ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true">
-              <a href="/#/profile/{{friend.$key}}" ng-class="{online: friend.online}"><i class=" icon-circle"></i> {{friend.$key}}</a>
-            </li>
-          </ul>
-          <ul>
-            <li ng-repeat="request in requests">
-              <a href="/#/profile/{{request}}">{{request}}</a> <a href="" ng-click="accept(request)"><i class=" icon-ok-sign"></i></a><a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
-            </li>
-          </ul>
+          <div class="row">
+            <table class="text-center" style="width: 100%; table-layout: fixed;">
+              <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}">
+                <td><i class=" icon-circle"></i></td>
+                <td class="text-left"><a href="/#/profile/{{friend.$key}}">{{friend.$key}}</a></td>
+                <td></td>
+              </tr>
+              <tr ng-hide="!requests.length">
+                <td colspan="3">
+                  <hr/>
+                </td>
+              </tr>
+              <tr ng-repeat="request in requests">
+                <td><i class=" icon-question-sign"></i></td>
+                <td class="text-left"><a href="/#/profile/{{request}}">{{request}}</a></td>
+                <td>
+                  <div class="btn-group">
+                    <a href="" ng-click="accept(request)"><i class="icon-ok-sign"></i></a>
+                    <a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>
