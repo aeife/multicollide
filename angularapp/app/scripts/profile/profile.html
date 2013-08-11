@@ -1,56 +1,44 @@
 <div ng-switch="playerlist">
     <div ng-switch-when="false">
         <div id="profile">
-            <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
-            <div class="span2">
-              <elo-box number="user.elo" size="50"></elo-box>
-            </div>
-            <div class="span3">
+          <h1 class="text-center">{{'_Profile_' | i18n}}: {{user.name}}</h1>
+          <div class="col-lg-2">
+            <elo-box number="user.elo" size="50"></elo-box>
+          </div>
+          <div class="col-lg-3">
             <ul>
-                <li>{{'_SignedUpSince_' | i18n}}: {{user.signupDate | date}}</li>
-                <li>{{'_Games_' | i18n}}: {{user.games}}</li>
-                <li>{{'_Wins_' | i18n}}: {{user.wins}}</li>
+              <li>{{'_SignedUpSince_' | i18n}}: {{user.signupDate | date}}</li>
+              <li>{{'_Games_' | i18n}}: {{user.games}}</li>
+              <li>{{'_Wins_' | i18n}}: {{user.wins}}</li>
             </ul>
             <h5>{{'_Ratio_' | i18n}}</h5>
             <div class="progress">
               <div class="bar" ng-class="{'bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'bar-danger': user.ratio <= 33.34, 'bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
-        </div>
-        <!--     <div id="profileFriendsList" class="span2" ng-hide="!user.friends">
-                <h4>Friends</h4>
-                <ul>
-                    <li ng-repeat="friend in user.friends"><a ng-href="#/user/{{friend}}">{{friend}}</a></li>
-                </ul>
-            </div> -->
+          </div>
 
-            <div ng-switch="isFriend" ng-hide="user.own">
-                <div ng-switch-when="true">
-                    <a href="" ng-click="deleteFriend()" class="btn btn-danger">{{'_DeleteFriend_' | i18n}}</a>
-                </div>
-                <div ng-switch-when="false">
-                    <a href="" ng-click="addAsFriend()" class="btn">{{'_AddFriend_' | i18n}}</a>
-                </div>
-                <div ng-hide="!user.online">
-                     <i class="icon-circle online"> {{'_Online_' | i18n}}</i>
-                </div>
+          <div ng-switch="isFriend" ng-hide="user.own">
+            <div ng-switch-when="true">
+                <a href="" ng-click="deleteFriend()" class="btn btn-danger">{{'_DeleteFriend_' | i18n}}</a>
             </div>
+            <div ng-switch-when="false">
+                <a href="" ng-click="addAsFriend()" class="btn">{{'_AddFriend_' | i18n}}</a>
+            </div>
+            <div ng-hide="!user.online">
+                 <i class="icon-circle online"> {{'_Online_' | i18n}}</i>
+            </div>
+          </div>
 
-
-            <div class="clearfix"></div>
-            <h4>{{'_Friends_' | i18n}} ({{user.friends.length}})</h4>
-            <ul>
-                <li ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
-            </ul>
+          <div class="clearfix"></div>
+          <h4>{{'_Friends_' | i18n}} ({{user.friends.length}})</h4>
+          <ul>
+            <li ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
+          </ul>
         </div>
     </div>
     <div ng-switch-default>
         <h1 class="text-center">{{'_Playerlist_' | i18n}}</h1>
         <h5 class="text-center">
-          <!-- <ng-pluralize count="connectedUsers"
-            when="{'0': 'Nobody is online.',
-              'one': '1 user is online.',
-              'other': '{} users are online.'}">
-          </ng-pluralize> -->
           <ng-pluralize count="connectedUsers"
             when="{0: '{{locale._NoOnline_ | i18n}}',
               one: '{{locale._OneOnline_ | i18n}}',
@@ -58,12 +46,12 @@
           </ng-pluralize>
         </h5>
         <div class="text-center">
-            <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</a>
-            <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
-            <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
+          <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</a>
+          <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
+          <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
         <ul class="unstyled text-center ">
-            <li class="span2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/profile/{{user.name}}">{{user.name}}</a></li>
+          <li class="col-lg-2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/profile/{{user.name}}">{{user.name}}</a></li>
         </ul>
     </div>
 </div>

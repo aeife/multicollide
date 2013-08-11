@@ -56,20 +56,13 @@
 
         <div class="row col-wrap">
 
-
-
-          <!--  <div class="span9 sameHeight"> -->
-          <div class="span9" id="wrapper">
+          <div class="col-lg-9" id="wrapper">
               <flashbox></flashbox>
               <div ng-view></div>
-
           </div>
 
-          <div class="span3">
-            <!--  <div id="sidebar" class="box sameHeight"> -->
+          <div class="col-lg-3">
             <div id="sidebar" class="box">
-              <!-- offset9 not working in ie7 -->
-
               <profile-box></profile-box>
               <friendslist></friendslist>
               <socket-logger-box></socket-logger-box>
@@ -88,10 +81,13 @@
               </div>
             </div>
           </div>
+
         </div>
 
-        <div id="footer" class="text-center">
-          <i>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos e</i>
+        <div class="row">
+          <div class="col-lg-12" id="footer" class="text-center">
+            <i>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos e</i>
+          </div>
         </div>
 
       </div><!-- /.container -->

@@ -2,7 +2,7 @@
   <accordion-group class="box">
     <accordion-heading>
       <div class="row">
-        <span class="span2">Socket Logger</span>
+        <span class="col-lg-2">Socket Logger</span>
         <span>
           <i class="icon-link"></i>
           <span ng-switch="totalListenerCount()">
@@ -13,7 +13,7 @@
       </div>
     </accordion-heading>
     <accordion-body>
-      <a class="span2 text-center" href="" ng-click="printToConsole()">print to console</a>
+      <a class="col-lg-2 text-center" href="" ng-click="printToConsole()">print to console</a>
       <div>
         <table>
           <tr>
@@ -21,8 +21,8 @@
             <th>Count</th>
           </tr>
           <tr ng-repeat="(key, event) in events">
-            <td ng-class="{hide: event == null}" class="span2">{{key}}</td>
-            <td ng-class="{hide: event == null}" class="span1 text-center">
+            <td ng-class="{hide: event == null}" class="col-lg-2">{{key}}</td>
+            <td ng-class="{hide: event == null}" class="col-lg-1 text-center">
               <span ng-switch="event.length">
                 <span ng-switch-when="0">1</span>
                 <span ng-switch-when="null">null</span>

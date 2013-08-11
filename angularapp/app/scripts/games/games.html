@@ -49,7 +49,7 @@
     <h4>{{'_Players_' | i18n}}</h4>
     <table class="table table-striped text-center">
       <tr ng-repeat="player in lobby.currentLobby.players" >
-        <td class="span1"><elo-box number="player.elo" size="20"></elo-box></td>
+        <td class="col-lg-1"><elo-box number="player.elo" size="20"></elo-box></td>
         <td ng-class="{ red: isHost(player.name) }">{{player.name}}</td>
         <td>
           <div class="progress" style="margin-bottom: 0px;">
