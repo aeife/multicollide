@@ -32,24 +32,24 @@
 
     <!-- Add your site or application content here -->
 
-      <div class="container" ng-cloak>
-        <div class="navbar">
-            <div class="container" ng-controller="MenuCtrl">
-              <a class="nav navbar-brand" href="#">MultiCollide</a>
-                <ul class="nav navbar-nav">
-                  <li ng-class="{ active: activePath=='/' }"><a href="#"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
-                  <li ng-class="{ active: activePath=='/games' }"><a href="#/games"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
-                  <li ng-class="{ active: activePath=='/profile/' }"><a href="#/profile/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
-                  <li ng-class="{ active: activePath=='/help' }"><a href="#/help"><i class="icon-question-sign"></i> {{'_Help_' | i18n}}</a></li>
-                  <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
-                </ul>
-                <ul class="nav navbar-nav pull-right">
-                  <li class="quickPlay"><a href="#">{{'_QuickPlay_' | i18n}}</a></li>
-                  <li><a href="#/settings"><i class="icon-wrench icon-large"></i></a></li>
-                </ul>
-            </div><!-- /.container -->
-        </div><!-- /.navbar -->
 
+      <div class="navbar bs-docs-nav">
+          <div class="container" ng-controller="MenuCtrl">
+            <a class="nav navbar-brand" href="#">MultiCollide</a>
+              <ul class="nav navbar-nav">
+                <li ng-class="{ active: activePath=='/' }"><a href="#"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
+                <li ng-class="{ active: activePath=='/games' }"><a href="#/games"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
+                <li ng-class="{ active: activePath=='/profile/' }"><a href="#/profile/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
+                <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
+              </ul>
+              <ul class="nav navbar-nav pull-right">
+                <li ng-class="{ active: activePath=='/help' }"><a href="#/help"><i class="icon-question-sign"></i> {{'_Help_' | i18n}}</a></li>
+                <li><a href="#/settings"><i class="icon-wrench icon-large"></i> {{'_Settings_' | i18n}}</a></li>
+              </ul>
+          </div><!-- /.container -->
+      </div><!-- /.navbar -->
+
+      <div class="container" ng-cloak>
         <div class="row">
 
           <div class="col-lg-9 col-sm-9" id="wrapper">
@@ -58,22 +58,25 @@
           </div>
 
           <div class="col-lg-3 col-sm-3">
-            <div id="sidebar" class="box">
-              <profile-box></profile-box>
-              <friendslist></friendslist>
-              <socket-logger-box></socket-logger-box>
 
-              <div id="newsFeed">
-                <div class="newsItem">
-                  <h4>New Patch 0.1.12</h4>
-                  <h5>12.07.2013</h5>
-                  The new version 0.1.12 adds some new features and fixes a lot of bugs.
-                </div>
-                <div class="newsItem">
-                  <h4>Server Downtime</h4>
-                  <h5>01.07.2013</h5>
-                  Servers will be shut down for maintenance. Downtime is expected to be from 9 till 11 pm GMT.
-                </div>
+            <div class="box text-center" style="margin-top: 20px; margin-bottom: 20px;">
+              <a href="#" class="btn btn-primary btn-large btn-block">{{'_QuickPlay_' | i18n}}</a>
+            </div>
+
+            <profile-box></profile-box>
+            <friendslist></friendslist>
+            <socket-logger-box></socket-logger-box>
+
+            <div id="newsFeed" class="box">
+              <div class="newsItem">
+                <h4>New Patch 0.1.12</h4>
+                <h5>12.07.2013</h5>
+                The new version 0.1.12 adds some new features and fixes a lot of bugs.
+              </div>
+              <div class="newsItem">
+                <h4>Server Downtime</h4>
+                <h5>01.07.2013</h5>
+                Servers will be shut down for maintenance. Downtime is expected to be from 9 till 11 pm GMT.
               </div>
             </div>
           </div>

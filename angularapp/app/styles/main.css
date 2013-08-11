@@ -7,8 +7,12 @@
 }
 
 body {
+  background-image: url("../images/mooning.png");
+  background-repeat: repeat;
+  background-color: #d5d5d5;
   overflow-y: scroll;
 }
+
 
 th {
   text-align: center;
@@ -26,15 +30,20 @@ th {
   font-size:20px;
 }
 
+.accordion {
+  margin-bottom: 0px;
+}
+
 .box {
-  background-color: #fafafa;
-  background-repeat: repeat-x;
-  border: 1px solid #d4d4d4;
+  background-color: #eeeeee;
+  background-repeat: repeat;
+  border: 1px solid #c1c1c1;
 }
 
 #sidebar {
   border-top: 0px;
   padding:2px;
+  margin-top: 20px;
 }
 
 .jumbotron {
