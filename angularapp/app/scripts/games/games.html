@@ -21,7 +21,7 @@
           </div>
           <div id="collapseOne" class="accordion-body collapse in">
             <div class="accordion-inner">
-              <table class="table text-center" style="table-layout: fixed;">
+              <table class="table text-center table-condensed" style="table-layout: fixed;">
                 <tr>
                   <th>Place</th>
                   <th>User</th>
@@ -31,7 +31,7 @@
                 <tr ng-repeat="standing in lobby.lastStandings">
                   <td rowspan="standing.length" style="vertical-align:middle;">{{$index + 1}}</td>
                   <td colspan="3">
-                    <table class="table" style="table-layout: fixed; margin-bottom: 0px;">
+                    <table class="table table-condensed" style="table-layout: fixed; margin-bottom: 0px;">
                       <tr ng-repeat="player in standing">
                         <td style="border-top: 0px;">{{player}}</td>
                         <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].ratioDiff > 0">+</span>{{lobby.playerForUsername[player].ratioDiff | number:2}}</td>

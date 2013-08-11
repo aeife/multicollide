@@ -11,6 +11,7 @@ angular.module('friendslist', [])
 
     // list of friends
     $scope.friends = {};
+    $scope.friendsOnlineCount = {};
 
     // list of socket objects for each friend
     $scope.socketS = {};
@@ -35,7 +36,8 @@ angular.module('friendslist', [])
         // on log in: get friends and there online status
         user.getFriendsStatus(function(data){
           $scope.friends = data;
-          $scope.friendCount = $scope.friendsOnline($scope.friends);
+          $scope.friendCount = Object.keys($scope.friends).length;
+          $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
 
           // open a socket handler for each friend
           for (var friend in $scope.friends) {
@@ -45,7 +47,7 @@ angular.module('friendslist', [])
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
 
-              $scope.friendCount = $scope.friendsOnline($scope.friends);
+              $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
             });
 
           }
@@ -59,7 +61,8 @@ angular.module('friendslist', [])
 
             // add friend to list, adjust friend count and add socket handler
             $scope.friends[sdata.user] = {online: sdata.online};
-            $scope.friendCount = $scope.friendsOnline($scope.friends);
+            $scope.friendCount = Object.keys($scope.friends).length;
+            $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
             console.log($scope.friends);
             // var friend = $scope.friends[sdata.user];
 
@@ -67,7 +70,7 @@ angular.module('friendslist', [])
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
 
-              $scope.friendCount = $scope.friendsOnline($scope.friends);
+              $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
             });
 
           }).whileLoggedIn();
@@ -76,7 +79,8 @@ angular.module('friendslist', [])
           socketgenapi.friend.deleted.on(function(sdata){
             // delete friend from list and adjust friends count
             delete $scope.friends[sdata.user];
-            $scope.friendCount = $scope.friendsOnline($scope.friends);
+            $scope.friendCount = Object.keys($scope.friends).length;
+            $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
 
             // remove Listener onlinestatus:sdata.user
             console.log('stopping listener for ' + sdata.user);

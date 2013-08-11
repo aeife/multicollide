@@ -2,11 +2,17 @@
   <accordion>
     <accordion-group class="box">
       <accordion-heading class="text-center">
-        <h4 class="text-center">{{'_FriendsList_' | i18n}}</h4>
-        <div class="row-fluid text-center">
-          <i class="icon-user icon-large span6" title="{{'_FriendsOnline_'| i18n}}"> {{friendCount}}</i>
-          <i class="icon-question-sign icon-large span6" title="{{'_Requests_' | i18n}}"> {{requests.length}}</i>
-        </div>
+        <h4 class="text-center">{{'_FriendsList_' | i18n}} ({{friendCount}})</h4>
+        <table style="width: 100%; table-layout: fixed;" class="text-center">
+          <tr>
+            <th>{{'_Online_'| i18n}}</th>
+            <th>{{'_Requests_' | i18n}}</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-info">{{friendsOnlineCount}}</span></td>
+            <td><span class="badge badge-info">{{requests.length}}</span></td>
+          </tr>
+        </table>
       </accordion-heading>
       <accordion-body>
         <ul>
