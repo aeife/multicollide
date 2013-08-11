@@ -128,11 +128,11 @@
     "description": ""
   },
   "_Password_": {
-    "message": "password",
+    "message": "Password",
     "description": ""
   },
   "_PasswordConfirm_": {
-    "message": "confirm password",
+    "message": "Confirm Password",
     "description": ""
   },
   "_Email_": {
@@ -337,6 +337,18 @@
   },
   "_Elo_": {
     "message": "Elo",
+    "description": ""
+  },
+  "_Help_": {
+    "message": "Help",
+    "description": ""
+  },
+  "_General_": {
+    "message": "General",
+    "description": ""
+  },
+  "_Language_": {
+    "message": "Language",
     "description": ""
   }
 }

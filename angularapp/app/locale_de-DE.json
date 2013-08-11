@@ -338,5 +338,17 @@
   "_Elo_": {
     "message": "Elo",
     "description": ""
+  },
+  "_Help_": {
+    "message": "Hilfe",
+    "description": ""
+  },
+  "_General_": {
+    "message": "Allgemein",
+    "description": ""
+  },
+  "_Language_": {
+    "message": "Sprache",
+    "description": ""
   }
 }

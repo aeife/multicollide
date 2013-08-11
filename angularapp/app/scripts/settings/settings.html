@@ -1,45 +1,53 @@
 <h1 class="text-center">{{'_Settings_' | i18n}}</h1>
-<div class="newpassword-form" ng-hide="!isLoggedIn()">
-  <h4 class="text-center">{{'_ChangePassword_' | i18n}}</h4>
-  <form class="col-lg-5 span-centered" name="newpasswordForm" action="" novalidate>
-    <fieldset>
-      <div class="form-group">
-        <label for="oldPassword">{{'_PasswordOld_' | i18n}}</label>
-        <input class="form-control" name="oldPassword" type="password" ng-model="oldPassword" placeholder="{{'_PasswordOld_' | i18n}}" required>
+<div class="tabbable text-center"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-pills" style="display: inline-block;">
+    <li class="active"><a href="#general" data-toggle="tab">{{'_General_' | i18n}}</a></li>
+    <li><a href="#password" data-toggle="tab">{{'_Password_' | i18n}}</a></li>
+    <li><a href="#language" data-toggle="tab">{{'_Language_' | i18n}}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="general">
+      <h4 class="text-center">{{'_EmailCurrent_' | i18n}}</h4>
+      {{user.email}}
+    </div>
+    <div class="tab-pane" id="password">
+      <h4 class="text-center">{{'_ChangePassword_' | i18n}}</h4>
+      <form class="col-lg-5 span-centered" name="newpasswordForm" action="" novalidate>
+        <fieldset>
+          <div class="form-group">
+            <label class="pull-left" for="oldPassword">{{'_PasswordOld_' | i18n}}</label>
+            <input class="form-control" name="oldPassword" type="password" ng-model="oldPassword" placeholder="{{'_PasswordOld_' | i18n}}" required>
+          </div>
+          <div class="form-group">
+            <label class="pull-left" for="newPassword">{{'_PasswordNew_' | i18n}}</label>
+            <input class="form-control" name = "newPassword" type="password" ng-model="newPassword" placeholder="{{'_PasswordNew_' | i18n}}" required>
+          </div>
+            <!-- <div ng-show="form.password.$error.required">
+              Field required</div>
+            </div> -->
+          <div class="form-group">
+            <label class="pull-left" for="newPasswordconfirm">{{'_PasswordConfirm_' | i18n}}</label>
+            <input class="form-control" name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
+            <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="tab-pane" id="language">
+      <h4>{{'_ChangeLanguage_' | i18n}}</h4>
+      <div class="btn-group text-center">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          {{language.value}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li ng-repeat="item in languages"><a ng-click="setLanguage(item)">{{item.value}}</a></li>
+        </ul>
       </div>
-      <div class="form-group">
-        <label for="newPassword">{{'_PasswordNew_' | i18n}}</label>
-        <input class="form-control" name = "newPassword" type="password" ng-model="newPassword" placeholder="{{'_PasswordNew_' | i18n}}" required>
-      </div>
-        <!-- <div ng-show="form.password.$error.required">
-          Field required</div>
-        </div> -->
-      <div class="form-group">
-        <label for="newPasswordconfirm">{{'_PasswordConfirm_' | i18n}}</label>
-        <input class="form-control" name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
-        <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
-      </div>
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
-      </div>
-    </fieldset>
-  </form>
-  <h5 class="text-center">{{'_EmailCurrent_' | i18n}}: {{user.email}}</h5>
-
-
-</div>
-<div class="text-center">
-  <h5>{{'_ChangeLanguage_' | i18n}}</h5>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      {{language.value}}
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li ng-repeat="item in languages"><a ng-click="setLanguage(item)">{{item.value}}</a></li>
-    </ul>
+      <button type="button" class="btn btn-primary" ng-click="changeLanguage()">{{'_ChangeLanguage_' | i18n}}</button>
+    </div>
   </div>
-  <button type="button" class="btn btn-primary" ng-click="changeLanguage()">{{'_ChangeLanguage_' | i18n}}</button>
 </div>
-
-
