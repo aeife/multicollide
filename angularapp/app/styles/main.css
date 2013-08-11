@@ -18,21 +18,12 @@ th {
   font-size:16px;
 }
 
-.navbar .brand {
+.navbar-brand {
   font-size:24px;
 }
-.center {
-     float: none;
-     margin-left: auto;
-     margin-right: auto;
-}
+
 .navbar .nav .quickPlay a{
   font-size:20px;
-}
-
-.navbar-inner {
-  background-color: #f2f2f2;
-  background-image: none;
 }
 
 .box {
