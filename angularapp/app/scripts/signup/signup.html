@@ -1,29 +1,34 @@
-<div class="signup-form text-center">
-  <h1>{{'_Signup_' | i18n}}</h1>
-  <div ng-show="signedup">
+<div class="signup-form">
+  <h1 class="text-center">{{'_Signup_' | i18n}}</h1>
+  <div class="text-center" ng-show="signedup">
     <h2>{{'_SignupSuccess_' | i18n}}</h2>
   </div>
   <div ng-hide="signedup">
-    <form name="signupForm" action="" novalidate>
+    <form class="col-lg-5 span-centered" name="signupForm" action="" novalidate>
       <fieldset>
-        <div class="clearfix">
-          <input type="text" ng-model="username" placeholder="{{'_Username_' | i18n}}" required>
+        <div class="form-group">
+          <label for="username">{{'_Username_' | i18n}}</label>
+          <input class="form-control" type="text" name="username" ng-model="username" placeholder="{{'_Username_' | i18n}}" required>
         </div>
-        <div class="clearfix">
-          <input name = "password" type="password" ng-model="password" placeholder="{{'_Password_' | i18n}}" required>
+        <div class="form-group">
+          <label for="password">{{'_Password_' | i18n}}</label>
+          <input class="form-control" name = "password" name="password" type="password" ng-model="password" placeholder="{{'_Password_' | i18n}}" required>
         </div>
           <!-- <div ng-show="form.password.$error.required">
             Field required</div>
           </div> -->
-        <div class="clearfix">
-          <input name="passwordconfirm" type="password" ng-model="passwordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
+        <div class="form-group">
+          <label for="passwordConfirm">{{'_PasswordConfirm_' | i18n}}</label>
+          <input class="form-control" name="passwordconfirm" name="passwordConfirm" type="password" ng-model="passwordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
           <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
         </div>
-        <div class="clearfix">
-          <input type="email" ng-model="email" placeholder="{{'_Email_' | i18n}}"  required>
+        <div class="form-group">
+          <label for="email">{{'_Email_' | i18n}}</label>
+          <input class="form-control" type="email" name="email" ng-model="email" placeholder="{{'_Email_' | i18n}}"  required>
         </div>
-        <button class="btn primary" type="submit" ng-click="signup()">{{'_SignUp_' | i18n}}</button>
-        <!-- <button ng-click="test()" ng-disabled="form.$invalid">SAVE</button> -->
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" ng-click="signup()">{{'_SignUp_' | i18n}}</button>
+        </div>
       </fieldset>
     </form>
   </div>

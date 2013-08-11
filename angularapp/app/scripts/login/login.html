@@ -1,14 +1,18 @@
-<div class="login-form text-center">
-  <h1>{{'_Login_' | i18n}}</h1>
-  <form action="">
+<div class="login-form">
+  <h1 class="text-center">{{'_Login_' | i18n}}</h1>
+  <form class="col-lg-5 span-centered" action="">
     <fieldset>
-      <div class="clearfix">
-        <input type="text" ng-model="username" placeholder="{{'_Username_' | i18n}}">
+      <div class="form-group">
+        <label for="username">{{'_Username_' | i18n}}</label>
+        <input class="form-control" type="text" name="username" ng-model="username" placeholder="{{'_Username_' | i18n}}">
       </div>
-      <div class="clearfix">
-        <input type="password" ng-model="password" placeholder="{{'_Password_' | i18n}}">
+      <div class="form-group">
+        <label for="password">{{'_Password_' | i18n}}</label>
+        <input class="form-control" type="password" name="password" ng-model="password" placeholder="{{'_Password_' | i18n}}">
       </div>
-      <button type="submit" class="btn btn-primary" ng-click="login()">{{'_LogIn_' | i18n}}</button>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" ng-click="login()">{{'_LogIn_' | i18n}}</button>
+      </div>
     </fieldset>
   </form>
 </div>
