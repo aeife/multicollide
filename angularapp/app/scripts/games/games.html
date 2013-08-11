@@ -43,7 +43,7 @@
 <div ng-hide="lobby.status == STATES.GAME.INGAME">
   <div ng-show="lobby.status == STATES.GAME.LOBBY">
     <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
-    <div class="btn-toolbar text-center">
+    <div class="text-center">
       <div class="btn-group">
         <button data-toggle="modal" href="#leaveGameModal" class="btn btn-primary btn-lg">{{'_LeaveLobby_' | i18n}}</button>
       </div>
@@ -103,7 +103,7 @@
   </div>
   <div ng-show="!lobby.inLobby">
     <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
-    <div class="btn-toolbar text-center">
+    <div class="text-center">
       <div class="btn-group">
         <button data-toggle="modal" href="#createGameModal" class="btn btn-primary btn-lg">{{'_CreateGame_' | i18n}}</button>
       </div>
