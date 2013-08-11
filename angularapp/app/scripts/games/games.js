@@ -8,6 +8,9 @@ angular.module('games', [])
     $scope.user = user;
     $scope.STATES = STATES;
 
+    //MOCK
+    // $scope.lobby.lastStandings = [['Player1'], ['Player2'], [], ['Player3A', 'Player3B'], ['Player4']]
+
     $scope.playerLimits = [];
     // generate player limit array
     for (var i = 2; i <= lobby.maxplayers; i++) {
