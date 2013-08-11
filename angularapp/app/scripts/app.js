@@ -78,10 +78,6 @@ angular.module('angularappAppBoot', ['angularappApp']).
     // reason: user controller needs localization keys for pluralize
     // when direct accessing user route localization is not loaded before
 
-    // load server shutdown template so it can be shown once the server is offline
-    $http.get('views/msgServerOffline.html', { cache: $templateCache }).then(function (response) {
-    });
-
     imagePreload.preload(['images/error.png']);
 
     // check login status on start up
