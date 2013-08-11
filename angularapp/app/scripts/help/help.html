@@ -1,12 +1,17 @@
 <h1 class="text-center">{{'_Help_' | i18n}}</h1>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-pills">
-    <li class="active"><a href="#theGame" data-toggle="tab">{{'_TheGame_' | i18n}}</a></li>
+    <li class="active"><a href="#general" data-toggle="tab">{{'_General_' | i18n}}</a></li>
+    <li><a href="#theGame" data-toggle="tab">{{'_TheGame_' | i18n}}</a></li>
     <li><a href="#controls" data-toggle="tab">{{'_Controls_' | i18n}}</a></li>
     <li><a href="#ratio" data-toggle="tab">{{'_Ratio_' | i18n}}</a></li>
+    <li><a href="#elo" data-toggle="tab">{{'_Elo_' | i18n}}</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="theGame">
+    <div class="tab-pane active" id="general">
+      <h4>Some general information</h4>
+    </div>
+    <div class="tab-pane" id="theGame">
       <h4>How the game works</h4>
     </div>
     <div class="tab-pane" id="controls">
@@ -42,6 +47,9 @@
     </div>
     <div class="tab-pane" id="ratio">
       <h4>How does the ratio work?</h4>
+    </div>
+    <div class="tab-pane" id="elo">
+      <h4>Elo and Ranking</h4>
     </div>
   </div>
 </div>
