@@ -18,7 +18,7 @@
             </tr>
           </table>
           <div id="profileBoxLower" class="clear">
-             <button class="btn btn-medium" ng-disabled="lobby.inLobby" ng-click="logout()" >{{'_Logout_' | i18n}}</button>
+             <button type="button" class="btn btn-primary" ng-disabled="lobby.inLobby" ng-click="logout()" >{{'_Logout_' | i18n}}</button>
           </div>
 
         </div>
@@ -35,10 +35,10 @@
           </ul>
           <div class="btn-toolbar text-center">
             <div class="btn-group">
-              <a href="#/signup" class="btn btn-medium">{{'_SignUp_' | i18n}}</a>
+              <button type="button" href="#/signup" class="btn btn-primary">{{'_SignUp_' | i18n}}</button>
             </div>
             <div class="btn-group">
-              <a href="#/login" class="btn btn-medium">{{'_LogIn_' | i18n}}</a>
+              <button type="button" href="#/login" class="btn btn-primary">{{'_LogIn_' | i18n}}</button>
             </div>
           </div>
         </div>

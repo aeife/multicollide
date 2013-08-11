@@ -19,10 +19,10 @@
 
           <div ng-switch="isFriend" ng-hide="user.own">
             <div ng-switch-when="true">
-                <a href="" ng-click="deleteFriend()" class="btn btn-danger">{{'_DeleteFriend_' | i18n}}</a>
+                <button type="button" ng-click="deleteFriend()" class="btn btn-danger btn-primary">{{'_DeleteFriend_' | i18n}}</button>
             </div>
             <div ng-switch-when="false">
-                <a href="" ng-click="addAsFriend()" class="btn">{{'_AddFriend_' | i18n}}</a>
+                <button type="button" ng-click="addAsFriend()" class="btn btn-primary">{{'_AddFriend_' | i18n}}</button>
             </div>
             <div ng-hide="!user.online">
                  <i class="icon-circle online"> {{'_Online_' | i18n}}</i>
@@ -46,7 +46,7 @@
           </ng-pluralize>
         </h5>
         <div class="text-center">
-          <a href="" class="btn" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</a>
+          <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>
           <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
           <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>

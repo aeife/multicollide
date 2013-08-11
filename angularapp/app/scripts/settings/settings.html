@@ -16,7 +16,7 @@
         <input name="newPasswordconfirm" type="password" ng-model="newPasswordConfirm" placeholder="{{'_PasswordConfirm_' | i18n}}" required>
         <!-- <span ng-show="!form.passwordconfirm.$error.required && form.passwordconfirm.$error.noMatch && form.password.$dirty">Passwords do not match.</span> -->
       </div>
-      <button class="btn primary" type="submit" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
+      <button type="submit" class="btn btn-primary" ng-click="changePassword()">{{'_ChangePassword_' | i18n}}</button>
       <!-- <button ng-click="test()" ng-disabled="form.$invalid">SAVE</button> -->
     </fieldset>
   </form>
@@ -27,5 +27,5 @@
 <div class="text-center">
   <h5>{{'_ChangeLanguage_' | i18n}}</h5>
   <select style="margin-top:10px; width: 150px;" class="controls" ng-model="language" ng-options="item.key as item.value for item in languages"></select>
-  <a href="" class="btn" ng-click="changeLanguage()">{{'_ChangeLanguage_' | i18n}}</a>
+  <button type="button" class="btn btn-primary" ng-click="changeLanguage()">{{'_ChangeLanguage_' | i18n}}</button>
 </div>
