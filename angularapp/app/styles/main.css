@@ -39,16 +39,7 @@ body {
 }
 
 .jumbotron {
-  margin: 40px 0;
-  text-align: center;
-}
-.jumbotron h1 {
-  font-size: 100px;
-  line-height: 1;
-}
-.jumbotron h2 {
-  font-size: 80px;
-  line-height: 1;
+  background-color: transparent;
 }
 
 .navbar {
