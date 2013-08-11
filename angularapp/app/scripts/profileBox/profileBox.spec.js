@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Directive: profileBox', function () {
-  beforeEach(module('angularappApp'));
+  beforeEach(module('multicollide'));
 
   // var element;
 

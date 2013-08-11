@@ -3,7 +3,7 @@
 describe('Controller: MenuCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('multicollide'));
 
   var MenuCtrl,
     scope;

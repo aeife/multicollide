@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('multicollide.config', ['STATES'])
+angular.module('multicollideGame.config', ['STATES'])
   .factory('config', function ($rootScope, STATES) {
     // Service logic
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappAppMock.socket', [])
+angular.module('multicollideMock.socket', [])
 
  .factory('socket', function($rootScope){
   this.events = {};

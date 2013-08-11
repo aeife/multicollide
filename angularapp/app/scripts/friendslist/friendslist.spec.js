@@ -1,9 +1,9 @@
 'use strict';
 
 describe('Directive: friendslist', function () {
-  beforeEach(module('angularappApp'));
-  beforeEach(module('angularappAppMock.socket'));
-  beforeEach(module('angularappAppMock.localization'));
+  beforeEach(module('multicollide'));
+  beforeEach(module('multicollideMock.socket'));
+  beforeEach(module('multicollideMock.localization'));
 
   var FriendslistCtrl,
       scope,

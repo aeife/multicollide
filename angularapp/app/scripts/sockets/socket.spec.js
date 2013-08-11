@@ -3,7 +3,7 @@
 describe('Service: socket', function () {
 
   // load the service's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('multicollide'));
 
   // instantiate service
   var socket;

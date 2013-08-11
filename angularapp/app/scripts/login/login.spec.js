@@ -3,7 +3,7 @@
 describe('Controller: LoginCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('angularappApp'));
+  beforeEach(module('multicollide'));
 
   var LoginCtrl,
     scope;

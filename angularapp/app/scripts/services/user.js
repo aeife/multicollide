@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp')
+angular.module('multicollide')
   .factory('user', function ($resource, $location, $rootScope, socketgenapi) {
     // Service logic
 

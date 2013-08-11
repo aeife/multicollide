@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('multicollide', ['multicollide.level', 'multicollide.player', 'multicollide.canvasRender', 'multicollide.config'])
-  .controller('MulticollideCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES) {
+angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.player', 'multicollideGame.canvasRender', 'multicollideGame.config'])
+  .controller('MulticollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES) {
     // initialization
     // already happens when opening server browser
     var canvas = $('#canvas');

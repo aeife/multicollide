@@ -1,5 +1,5 @@
 {
-  "name": "angularapp",
+  "name": "multicollide",
   "version": "0.0.0",
   "dependencies": {
     "socket.io": "~0.9.14",

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularappApp',
+angular.module('multicollide',
   ['ngResource',
   'ngCookies',
   'ui.bootstrap',
@@ -25,7 +25,7 @@ angular.module('angularappApp',
   'profile',
   'games',
   'websocketApi',
-  'multicollide',
+  'multicollideGame',
   'STATES'])
   .config(function ($routeProvider) {
     $routeProvider
@@ -71,7 +71,7 @@ angular.module('angularappApp',
   });
 
 
-angular.module('angularappAppBoot', ['angularappApp']).
+angular.module('multicollideBoot', ['multicollide']).
 
   run(function(localization, $templateCache, $http, imagePreload, socketgenapi, $cookies, $rootScope) { // instance-injector
     // initialize localization service

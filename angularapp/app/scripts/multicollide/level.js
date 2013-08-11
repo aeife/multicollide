@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('multicollide.level', [])
+angular.module('multicollideGame.level', [])
   .factory('level', function ($rootScope, canvasRender, config) {
     // Service logic
 
