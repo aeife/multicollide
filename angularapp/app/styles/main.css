@@ -18,7 +18,7 @@ body {
 }
 
 .table-striped tbody tr:nth-child(odd) td, .table-striped tbody tr:nth-child(odd) th,  .table-striped tbody tr:nth-child(odd) td  {
-  background-color: #f1f1f1;
+  background-color: #f1f1f9;
 }
 
 th {
@@ -55,12 +55,12 @@ td {
 }
 
 .navbar-nav li a:hover, .navbar-brand:hover {
-  color: #f1f1f1;
+  color: #f1f1f9;
 }
 
 .navbar-nav .active a, .navbar-nav .active a:hover, .navbar-nav .active a:focus {
   background-color: #555555;
-  color: #f1f1f1;
+  color: #f1f1f9;
 }
 
 
@@ -82,7 +82,7 @@ td {
 }
 
 .box {
-  background-color: #f1f1f1;
+  background-color: #f1f1f9;
   background-repeat: repeat;
   border: 1px solid #dddddd;
 }
