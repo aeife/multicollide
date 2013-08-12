@@ -39,7 +39,7 @@
               <th>{{'_Id_' | i18n}}</th>
               <th></th>
             </tr>
-            <tbody ng-repeat="game in user.gamesParticipated | startFrom:page*pageSize | limitTo:pageSize" style="border-top:0px;">
+            <tbody ng-repeat="game in user.gamesParticipated | startFrom:gamesPaginate.page*gamesPaginate.pageSize | limitTo:gamesPaginate.pageSize" style="border-top:0px;">
               <tr class="text-center">
                 <td>{{getStanding(user.name, game.standings)}}</td>
                 <td>{{game.date | date}}</td>
@@ -73,14 +73,14 @@
 
           <div class="text-center">
             <ul class="pagination">
-                <li ng-class="{disabled: page == 0}">
-                    <a href ng-click="previousPage()">« Prev</a>
+                <li ng-class="{disabled: gamesPaginate.page == 0}">
+                    <a href ng-click="gamesPaginate.previousPage()">« Prev</a>
                 </li>
-                <li ng-repeat="item in pageArray" ng-class="{active: $index == page}">
-                    <a href="" ng-click="changePage($index)">{{$index+1}}</a>
+                <li ng-repeat="item in pageArray" ng-class="{active: $index == gamesPaginate.page}">
+                    <a href="" ng-click="gamesPaginate.changePage($index)">{{$index+1}}</a>
                 </li>
-                <li ng-class="{disabled: page+1 == maxPages}">
-                    <a href ng-click="nextPage()">Next »</a>
+                <li ng-class="{disabled: gamesPaginate.page+1 == gamesPaginate.maxPage}" ng-click="gamesPaginate.nextPage()">
+                  <a href="">Next »</a>
                 </li>
             </ul>
           </div>

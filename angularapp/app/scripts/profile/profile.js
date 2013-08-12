@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('profile', [])
-  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi) {
+  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
 
     $scope.locale = localization.getLocalizationKeys();
 
@@ -49,8 +49,7 @@ angular.module('profile', [])
           console.log(data.online);
           console.log(data);
 
-          $scope.pageArray = new Array(Math.ceil($scope.user.gamesParticipated.length / $scope.pageSize));
-          $scope.maxPages = Math.ceil(($scope.user.gamesParticipated.length - 1) / $scope.pageSize);
+          $scope.gamesPaginate = new Paginate($scope.user.gamesParticipated, 2);
 
           socketgenapi.onlinestatus.on(data.name, function(data){
             console.log(data);
@@ -129,23 +128,6 @@ angular.module('profile', [])
           return i + 1;
         }
       }
-    };
-
-    $scope.pageSize = 2;
-    $scope.page = 0;
-    $scope.pageArray = [];
-    $scope.maxPages = 0;
-
-    $scope.changePage = function(newPage){
-      $scope.page = newPage;
-    };
-
-    $scope.nextPage = function(){
-      $scope.page++;
-    };
-
-    $scope.previousPage = function(){
-      $scope.page--;
     };
 
   });
