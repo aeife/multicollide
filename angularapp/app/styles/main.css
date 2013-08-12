@@ -33,6 +33,13 @@ td {
   vertical-align: middle !important;
 }
 
+.imitateTable {
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  background-color: #f1f1f9;
+  padding: 8px;
+}
+
 .progress {
   /*border: 1px #dddddd solid;*/
   background-color: #e0e0e0;

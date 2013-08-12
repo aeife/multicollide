@@ -52,8 +52,8 @@ angular.module('profile', [])
 
           $scope.user.friends= ['Mock1', 'Mock1', 'Mock11', 'Mock1', 'Mock1', 'Mock12', 'Mock1', 'Mock13', 'Mock1', 'Mock1', 'Mock1', 'Mock15', 'Mock1', 'Mock1', 'Mock16', 'Mock1', 'Mock1', 'Mock17', 'Mock1', 'Mock19'];
 
-          $scope.gamesPaginate = new Paginate($scope.user.gamesParticipated, 2);
-          $scope.friendsPaginate = new Paginate($scope.user.friends, 5);
+          $scope.gamesPaginate = new Paginate($scope.user.gamesParticipated, 5);
+          $scope.friendsPaginate = new Paginate($scope.user.friends, 6);
 
           socketgenapi.onlinestatus.on(data.name, function(data){
             console.log(data);
