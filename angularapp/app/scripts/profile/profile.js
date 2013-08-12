@@ -120,4 +120,12 @@ angular.module('profile', [])
       });
     };
 
+    $scope.getStanding = function(user, standings){
+      for (var i = 0; i < standings.length; i++){
+        if (standings[i].indexOf(user) >= 0) {
+          return i + 1;
+        }
+      }
+    };
+
   });

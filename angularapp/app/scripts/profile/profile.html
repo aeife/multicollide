@@ -39,7 +39,7 @@
               <th>{{'_Id_' | i18n}}</th>
             </tr>
             <tr class="text-center" ng-repeat="game in user.gamesParticipated">
-              <td>{{game.standings}}</td>
+              <td>{{getStanding(user.name, game.standings)}}</td>
               <td>{{game.date | date}}</td>
               <td>{{game._id}}</td>
             </tr>
