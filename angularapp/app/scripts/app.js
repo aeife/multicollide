@@ -26,7 +26,8 @@ angular.module('multicollide',
   'games',
   'websocketApi',
   'multicollideGame',
-  'STATES'])
+  'STATES',
+  'paginate'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
