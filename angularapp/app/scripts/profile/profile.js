@@ -47,9 +47,8 @@ angular.module('profile', [])
           console.log('setting data');
 
           $scope.user = data;
-          console.log('online status:');
-          console.log(data.online);
-          console.log(data);
+          // bring games in correct time order: newest first
+          $scope.user.gamesParticipated.reverse();
 
           $scope.user.friends= ['Mock1', 'Mock1', 'Mock11', 'Mock1', 'Mock1', 'Mock12', 'Mock1', 'Mock13', 'Mock1', 'Mock1', 'Mock1', 'Mock15', 'Mock1', 'Mock1', 'Mock16', 'Mock1', 'Mock1', 'Mock17', 'Mock1', 'Mock19'];
 

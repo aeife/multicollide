@@ -47,7 +47,7 @@
               <tbody ng-repeat="game in user.gamesParticipated | startFrom:gamesPaginate.startFrom | limitTo:gamesPaginate.limitTo" style="border-top:0px;">
                 <tr class="text-center">
                   <td>{{getStanding(user.name, game.standings)}}</td>
-                  <td>{{game.date | date}}</td>
+                  <td>{{game.date | date:'short'}}</td>
                   <td><a data-toggle="collapse" data-target="#gamesParticipated{{$index}}" href="">info</a></td>
                 </tr>
                 <tr>
