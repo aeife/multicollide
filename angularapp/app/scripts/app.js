@@ -27,7 +27,8 @@ angular.module('multicollide',
   'websocketApi',
   'multicollideGame',
   'STATES',
-  'paginate'])
+  'paginate',
+  'tmh.dynamicLocale'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

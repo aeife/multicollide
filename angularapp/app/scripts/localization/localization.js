@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('localization', [])
-  .factory('localization', function ($http, $cookies) {
+  .factory('localization', function ($http, $cookies, tmhDynamicLocale) {
     // Service logic
     // ...
 
@@ -36,6 +36,7 @@ angular.module('localization', [])
       },
       changeLanguage: function(newLanguage) {
         this.language = newLanguage;
+        tmhDynamicLocale.set(newLanguage);
 
         // set cookie to new language, if english just delete
         if (newLanguage == 'en-US' && $cookies.language){
@@ -79,6 +80,7 @@ angular.module('localization', [])
 
     // inital loading of localization
     localization.loadLocalization();
+    tmhDynamicLocale.set(localization.language);
     return localization;
   })
   .filter('i18n', function (localization) {
