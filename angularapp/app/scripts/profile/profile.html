@@ -74,14 +74,14 @@
           <div class="text-center">
             <ul class="pagination">
                 <li ng-class="{disabled: gamesPaginate.page == 0}">
-                    <a href ng-click="gamesPaginate.previousPage()">« Prev</a>
+                    <a href ng-click="gamesPaginate.previousPage()">&laquo;</a>
                 </li>
 
                 <li ng-repeat="item in gamesPaginate.pageArray" ng-class="{active: $index == gamesPaginate.page}">
                     <a href="" ng-click="gamesPaginate.changePage($index)">{{$index+1}}</a>
                 </li>
                 <li ng-class="{disabled: gamesPaginate.page+1 == gamesPaginate.maxPage}" ng-click="gamesPaginate.nextPage()">
-                  <a href="">Next »</a>
+                  <a href="">&raquo;</a>
                 </li>
             </ul>
           </div>
