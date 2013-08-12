@@ -138,8 +138,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     socket.on('user:info', function(data){
       // console.log(socket.session.username);
       console.log(socket.session);
-
-      User.findOne({ name: data.name }, function(err, user){
+      console.log("###POPULATE");
+      User.findOne({ name: data.name }).populate('gamesParticipated').exec(function(err, user){
         console.log(user);
         if (user) {
           var userobj = user.toObject();
