@@ -5,8 +5,6 @@ angular.module('profile', [])
 
     $scope.locale = localization.getLocalizationKeys();
 
-    $scope.gamesPaginate = "sdf";
-
     if (!$routeParams.name){
       $scope.playerlist = true;
       $scope.onlyConnected = true;

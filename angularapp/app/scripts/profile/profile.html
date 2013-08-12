@@ -5,13 +5,23 @@
           <div class="col-lg-4 text-center">
             <elo-box number="user.elo" size="80"></elo-box>
           </div>
-          <div class="col-lg-6">
-            <ul>
-              <li>{{'_SignedUpSince_' | i18n}}: {{user.signupDate | date}}</li>
-              <li>{{'_Games_' | i18n}}: {{user.games}}</li>
-              <li>{{'_Wins_' | i18n}}: {{user.wins}}</li>
-            </ul>
-            <h5>{{'_Ratio_' | i18n}}</h5>
+          <div class="col-lg-5">
+            <table class="col-lg-12" style="font-size: 16px;">
+              <tr>
+                <td>{{'_SignedUpSince_' | i18n}}:</td>
+                <td>{{user.signupDate | date}}</td>
+              </tr>
+              <tr>
+                <td>{{'_Games_' | i18n}}:</td>
+                <td>{{user.games}}</td>
+              </tr>
+              <tr>
+                <td>{{'_Wins_' | i18n}}:</td>
+                <td>{{user.wins}}</td>
+              </tr>
+            </table>
+
+            <h4>{{'_Ratio_' | i18n}}</h4>
             <div class="progress">
               <div class="progress-bar" ng-class="{'progress-bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'progress-bar-danger': user.ratio <= 33.34, 'progress-bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
             </div>
