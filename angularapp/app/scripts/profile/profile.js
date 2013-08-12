@@ -49,6 +49,9 @@ angular.module('profile', [])
           console.log(data.online);
           console.log(data);
 
+          $scope.pageArray = new Array(Math.ceil($scope.user.gamesParticipated.length / $scope.pageSize));
+          $scope.maxPages = Math.ceil(($scope.user.gamesParticipated.length - 1) / $scope.pageSize);
+
           socketgenapi.onlinestatus.on(data.name, function(data){
             console.log(data);
             $scope.user.online = data.online;
@@ -128,4 +131,23 @@ angular.module('profile', [])
       }
     };
 
+    $scope.pageSize = 2;
+    $scope.page = 0;
+    $scope.pageArray = [];
+    $scope.maxPages = 0;
+
+    $scope.changePage = function(newPage){
+      $scope.page = newPage;
+    };
+
+    $scope.nextPage = function(){
+      $scope.page++;
+    };
+
+    $scope.previousPage = function(){
+      $scope.page--;
+    };
+
   });
+
+
