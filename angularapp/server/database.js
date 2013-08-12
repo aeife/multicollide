@@ -18,7 +18,7 @@ var userSchema = mongoose.Schema({
   signupDate: { type: Date, default: Date.now },
   language: {type: String, default: 'en-US'},
   games: {type: Number, default: 0},
-  gamesParticipated: [],
+  gamesParticipated: [{type: mongoose.Schema.ObjectId, ref: 'Game'}],
   ratio: {type: Number, default: 50},
   elo: {type: Number, default: 50},
   wins: {type: Number, default: 0},
