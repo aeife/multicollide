@@ -1,0 +1,12 @@
+<ul class="pagination">
+  <li ng-class="{disabled: paginate.page == 0}">
+      <a href ng-click="paginate.previousPage()">&laquo;</a>
+  </li>
+
+  <li ng-repeat="item in paginate.pageArray" ng-class="{active: $index == paginate.page}">
+      <a href="" ng-click="paginate.changePage($index)">{{$index+1}}</a>
+  </li>
+  <li ng-class="{disabled: paginate.page+1 == paginate.maxPage}" ng-click="paginate.nextPage()">
+    <a href="">&raquo;</a>
+  </li>
+</ul>
