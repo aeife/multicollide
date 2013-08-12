@@ -6,6 +6,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   // database
   var User = require('./database').User;
+  var Game = require('./database').Game;
 
   // names of current connected users
   var connectedUsers = [];
@@ -573,10 +574,18 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       // adjust player stats with new standings
       var standingsCount = data.standings.length;
 
+      // add new game to database
+      var game = new Game({standings: data.standings});
+      game.save(function (err, game) {
+        if (err) {
+          console.log(err);
+        }
+      });
+
       for (var i = 0; i < data.standings.length; i++){
         console.log("LOOP " + i);
         for (var j = 0; j < data.standings[i].length; j++){
-          updatePlayerStatistics(data.standings[i][j], i + 1, data.standings.length);
+          updatePlayerStatistics(data.standings[i][j], i + 1, data.standings.length, game.id);
         }
       }
 
@@ -607,7 +616,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     return user;
   }
 
-  function updatePlayerStatistics(player, standing, standingsCount){
+  function updatePlayerStatistics(player, standing, standingsCount, gameId){
     var stepLength = 100 / (standingsCount - 1);
 
     User.findOne({ name: player}, function(err, user){
@@ -615,6 +624,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
         console.log(err);
       }
       if (user) {
+        // add game id as reference
+        user.gamesParticipated.push(gameId);
 
         // adjust player ratio
         var ratioDiff = user.ratio;

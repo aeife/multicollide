@@ -18,6 +18,7 @@ var userSchema = mongoose.Schema({
   signupDate: { type: Date, default: Date.now },
   language: {type: String, default: 'en-US'},
   games: {type: Number, default: 0},
+  gamesParticipated: [],
   ratio: {type: Number, default: 50},
   elo: {type: Number, default: 50},
   wins: {type: Number, default: 0},
@@ -26,5 +27,12 @@ var userSchema = mongoose.Schema({
 });
 userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);
-
 module.exports.User = User;
+
+var gameSchema = mongoose.Schema({
+  standings: [],
+  date: { type: Date, default: Date.now }
+});
+var Game = mongoose.model('Game', gameSchema);
+module.exports.Game = Game;
+

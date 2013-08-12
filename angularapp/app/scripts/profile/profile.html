@@ -35,6 +35,11 @@
           <ul class="list-unstyled">
             <li class="col-lg-4" ng-repeat="friend in user.friends"><a href="#/profile/{{friend}}">{{friend}}</a></li>
           </ul>
+
+          <h4>{{'_Games_' | i18n}} ({{user.gamesParticipated.length}})</h4>
+          <ul class="list-unstyled">
+            <li class="col-lg-4" ng-repeat="game in user.gamesParticipated"><a href="">{{game}}</a></li>
+          </ul>
         </div>
     </div>
     <div ng-switch-default>
