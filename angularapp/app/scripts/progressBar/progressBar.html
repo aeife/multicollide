@@ -1,3 +1,3 @@
-<div class="progress">
-  <div class="progress-bar" ng-class="{'progress-bar-warning': progress > 33.34 && progress < 66.65, 'progress-bar-danger': progress <= 33.34, 'progress-bar-success': progress >= 66.65}" ng-style="getStyle()">{{progress | number:2}}</div>
+<div class="progress" style="margin-bottom: 0;">
+  <div class="progress-bar" ng-class="{'progress-bar-warning': progress > 33.34 && progress < 66.65, 'progress-bar-danger': progress <= 33.34, 'progress-bar-success': progress >= 66.65}" ng-style="getStyle()"><span ng-hide="!progress">{{progress | number:2}}</span></div>
 </div>
