@@ -1,5 +1,3 @@
-<progress-bar progress="{{user.ratio}}"></progress-bar>
-
 <div ng-switch="playerlist">
     <div ng-switch-when="false">
         <div id="profile">
@@ -24,9 +22,7 @@
             </table>
 
             <h4>{{'_Ratio_' | i18n}}</h4>
-            <div class="progress">
-              <div class="progress-bar" ng-class="{'progress-bar-warning': user.ratio > 33.34 && user.ratio < 66.65, 'progress-bar-danger': user.ratio <= 33.34, 'progress-bar-success': user.ratio >= 66.65}" style="width: {{user.ratio}}%;">{{user.ratio | number:2}}</div>
-            </div>
+            <progress-bar progress="{{user.ratio}}"></progress-bar>
           </div>
 
           <div ng-switch="isFriend" ng-hide="user.own">
