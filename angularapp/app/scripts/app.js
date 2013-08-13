@@ -3,9 +3,7 @@
 angular.module('multicollide',
   ['ngResource',
   'ngCookies',
-  'ui.bootstrap',
-  'placeholders.img',
-  'placeholders.txt',
+
   'main',
   'menu',
   'friendslist',
@@ -28,7 +26,8 @@ angular.module('multicollide',
   'multicollideGame',
   'STATES',
   'paginate',
-  'tmh.dynamicLocale'])
+  'tmh.dynamicLocale',
+  'progressBar'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

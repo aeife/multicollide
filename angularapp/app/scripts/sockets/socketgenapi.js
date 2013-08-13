@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sockets')
-  .factory('socketgenapi', function ($rootScope, socket, $dialog, websocketApi) {
+  .factory('socketgenapi', function ($rootScope, socket, websocketApi) {
     // Service logic
 
     function convertCallback(callback){
