@@ -8,7 +8,7 @@ angular.module('paginate', [])
     function Paginate(data, pageSize){
       this.data = data;
       this.pageSize = pageSize;
-      this.maxPage = Math.ceil((this.data.length - 1) / this.pageSize);
+      this.maxPage = Math.ceil((this.data.length) / this.pageSize);
       this.pageArray = new Array(Math.ceil(this.data.length / this.pageSize));
       this.update();
     }
