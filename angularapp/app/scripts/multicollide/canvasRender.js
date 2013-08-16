@@ -52,7 +52,7 @@ angular.module('multicollideGame.canvasRender', [])
         this.canvas.text.attr('height', this.canvasSize.height ); //max height
 
         // adjust wrapper div because of absolute position of canvas elements
-        this.wrapper.css('height', this.canvasSize.height + 100);
+        this.wrapper.css('height', this.canvasSize.height + 120);
 
         this.redraw();
       },
