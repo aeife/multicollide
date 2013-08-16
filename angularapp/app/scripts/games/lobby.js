@@ -7,6 +7,7 @@ angular.module('games')
 
     // Public API here
     return {
+      game: null,
       listeners: {statsUpdate: {}},
       inLobby: false,
       currentLobby: null,
@@ -15,6 +16,11 @@ angular.module('games')
       maxplayers: 10,
       status: null,
       lastStandings: null,
+      changeGame: function(game){
+        this.game = game;
+
+        this.getAvailableGames();
+      },
       getAvailableGames: function(){
         var self = this;
         socketgenapi.games.get(function(data){

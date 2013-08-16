@@ -1,44 +1,26 @@
-<!-- Modals -->
-<div class="modal fade" id="createGameModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>{{"_CreateGame_" | i18n}}</h3>
+<div class="tabbable text-center">
+  <ul class="nav nav-pills" style="display: inline-block;">
+    <li><a href="#multicollide" data-toggle="tab" ng-click="lobby.changeGame('multicollide')">Multicollide</a></li>
+    <li><a href="#mockGame1" data-toggle="tab" ng-click="lobby.changeGame('mockGame1')">MockGame1</a></li>
+    <li><a href="#mockGame2" data-toggle="tab" ng-click="lobby.changeGame('mockGame2')">MockGame2</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane" id="multicollide">
+      <!-- use ng-switch so game object is only included when selected -->
+      <div ng-switch="lobby.game">
+        <div ng-switch-when="multicollide">
+          <multicollide-game></multicollide-game>
+        </div>
       </div>
-      <div class="modal-body">
-        <p>{{"_LobbyName_" | i18n}}: <input ng-model="lobbyName" /></p>
-        <p>{{"_PlayerLimit_" | i18n}}:
-          <select ng-model="maxplayers">
-            <option ng-repeat="limit in playerLimits">{{limit}}</option>
-          </select>
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button data-dismiss="modal" ng-click="createGame(lobbyName, maxplayers)" class="btn btn-primary">{{"_CreateGame_" | i18n}}</button>
-        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div class="modal fade" id="leaveGameModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>{{"_LeaveLobby_" | i18n}}</h3>
-      </div>
-      <div class="modal-body">
-        <p>{{"_LeaveLobbyReally_" | i18n}}</p>
-      </div>
-      <div class="modal-footer">
-        <button data-dismiss="modal" ng-click="leaveGame()" class="btn btn-primary">{{"_Yes_" | i18n}}</button>
-        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+    <div class="tab-pane" id="mockGame1">
+      MockGame1
+    </div>
+    <div class="tab-pane" id="mockGame2">
+      MockGame2
+    </div>
+  </div>
+</div>
 
 <div ng-hide="lobby.status == STATES.GAME.INGAME">
   <div ng-show="lobby.status == STATES.GAME.LOBBY">
@@ -127,4 +109,46 @@
   </div>
 </div>
 
-<multicollide-game></multicollide-game>
+
+
+<!-- Modals -->
+<div class="modal fade" id="createGameModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{"_CreateGame_" | i18n}}</h3>
+      </div>
+      <div class="modal-body">
+        <p>{{"_LobbyName_" | i18n}}: <input ng-model="lobbyName" /></p>
+        <p>{{"_PlayerLimit_" | i18n}}:
+          <select ng-model="maxplayers">
+            <option ng-repeat="limit in playerLimits">{{limit}}</option>
+          </select>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" ng-click="createGame(lobbyName, maxplayers)" class="btn btn-primary">{{"_CreateGame_" | i18n}}</button>
+        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="leaveGameModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{"_LeaveLobby_" | i18n}}</h3>
+      </div>
+      <div class="modal-body">
+        <p>{{"_LeaveLobbyReally_" | i18n}}</p>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" ng-click="leaveGame()" class="btn btn-primary">{{"_Yes_" | i18n}}</button>
+        <button data-dismiss="modal" ng-click="cancel()" class="btn">{{"_Cancel_" | i18n}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
