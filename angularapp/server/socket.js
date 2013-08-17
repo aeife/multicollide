@@ -4,6 +4,105 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   var crypto = require('crypto');
 
+  var socketApp = {
+    User: require('./database').User,
+    Game: require('./database').Game,
+    connectedUsers: [],
+    clients: {},
+    clientUsernames: {},
+    lobbies: {},
+    lobbyForUsername: {},
+    turnLoop: {},
+    directionChanges: {},
+    generateRandomGuestName: function(){
+      //generate random number until not already in use
+      var randNr;
+      do{
+        randNr = Math.floor((Math.random()*900)+100);
+      } while (connectedUsers.indexOf('Guest'+randNr) > -1);
+
+      return 'Guest'+randNr;
+    },
+    addConnectedUser: function(username, socket){
+      // if no username, generate random and save
+      if (!username){
+        username = generateRandomGuestName();
+        setSession('username', username, socket);
+        // socket.session.username = username;
+      } else if (socket.session.username.indexOf('Guest') > -1 && connectedUsers.indexOf(socket.session.username) > -1){
+        // user was guest before he logged in (= he is already connected in as a guest)
+        deleteConnectedUser(socket.session.username, socket);
+        // socket.session.username = username;
+        setSession('username', username, socket);
+      }
+      // socket.session.save();
+      connectedUsers.push(username);
+      clientUsernames[username] = socket.id;
+      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
+
+      sendFriendRequestsIfExist(username);
+    },
+    setSession: function(attr, val, socket){
+      socket.session[attr] = val;
+      socket.session.save();
+    },
+    deleteConnectedUser: function(username, socket){
+      connectedUsers.splice(connectedUsers.indexOf(username),1);
+      delete clientUsernames[username];
+      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
+    },
+    getIdForUsername: function(username){
+      return clientUsernames[username];
+    },
+    addFriendRequest: function(username, friend){
+      User.findOne({ name: username }, {password : 0}, function(err, user){
+        console.log(user);
+
+        // only request if not already requested (so no multiple requests are possible)
+        if (user && user.requests.indexOf(friend) === -1){
+          user.requests.push(friend);
+          user.save(function (err) {
+            if (err) {
+              console.log(err);
+            }
+
+            // send friend request if user is online
+            if (connectedUsers.indexOf(username) > -1){
+
+              socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+            }
+          });
+        }
+      });
+    },
+    sendFriendRequestsIfExist: function(username){
+      // @TODO: no db queries for guests
+      User.findOne({ name: username }, {password : 0}, function(err, user){
+        // console.log(user);
+
+        // only request if not already requested (so no multiple requests are possible)
+        if (user && user.requests.length > 0){
+          socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+        }
+      });
+
+    },
+    removeFriendRequest: function(username, friend){
+      User.findOne({ name: username }, {password : 0}, function(err, user){
+
+        if (user && user.requests.indexOf(friend) > -1){
+          user.requests.splice(user.requests.indexOf(friend), 1);
+          console.log(user);
+          user.save(function (err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      });
+    }
+  };
+
   // database
   var User = require('./database').User;
   var Game = require('./database').Game;
@@ -17,13 +116,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // saves ids for usernames
   var clientUsernames = {};
 
-  // saves all current available lobbies
+  // saves all current available socketApp.lobbies
   var lobbies = {};
   // highest current lobby id for continues counting
   var lobbyHighestCount = -1;
 
   // mock data
-  // lobbies = {
+  // socketApp.lobbies = {
   //   0: {id: 0, name: 'game nr. 1', status: 'lobby', players: [], maxplayers: 10},
   //   1: {id: 1, name: 'fine game', status: 'playing', players: [], maxplayers: 10},
   //   2: {id: 2, name: 'another game', status: 'lobby', players: [], maxplayers: 10}
@@ -48,6 +147,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   // websocketApi.generateStringObject();
 
   var STATES = require('../app/states.js')();
+
+
+
+  // INCLUDE
+  var lobbyHandler = require('./lobby.js')(io, socketApp);
 
 
   /*
@@ -95,7 +199,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
     // save sockets for all clients ordered with socket id
-    clients[socket.id] = socket;
+    socketApp.clients[socket.id] = socket;
     console.log('client connected as ' + socket.session.usernamey);
     // console.log(socket.session.username);
 
@@ -287,11 +391,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
           }
 
           // if other user is online: send deletion
-          if (clients[getIdForUsername(data.name)]) {
-            clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
+          if (socketApp.clients[getIdForUsername(data.name)]) {
+            socketApp.clients[getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
 
             // emit deleted friend
-            clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+            socketApp.clients[getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
           }
         });
       });
@@ -341,7 +445,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
                     // only emit to other user when he is online
                     if (connectedUsers.indexOf(data.user) > -1){
-                      // clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+                      // socketApp.clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
 
                       // emit new friend and his status
                       if (!error) {
@@ -349,7 +453,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
                         if (connectedUsers.indexOf(socket.session.username) > -1){
                           online = true;
                         }
-                        clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
+                        socketApp.clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
                       }
                     }
                   });
@@ -463,13 +567,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     socket.on('disconnect', function(data){
       console.log('client disconnected');
 
-      // leave lobby if in lobby
-      if (typeof lobbyForUsername[socket.session.username] !== 'undefined'){
-        leaveLobby(lobbyForUsername[socket.session.username], socket);
-      }
-
-
-      delete clients[socket.id];
+      delete socketApp.clients[socket.id];
       if (socket.session.username){
         // if user was logged in: delete user from connected user list
         if (connectedUsers.indexOf(socket.session.username) > -1){
@@ -480,65 +578,15 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
     /**
-     * client requested list of open lobbies
+     * client requested list of open socketApp.lobbies
      */
     socket.on('games', function(data){
       console.log('client requested games info');
-      socket.emit('games', lobbies);
+      socket.emit('games', socketApp.lobbies);
     });
 
 
-    socket.on('lobby:new', function(data){
-      console.log('client requested games info');
-      var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: STATES.GAME.LOBBY, maxplayers: data.maxplayers});
-      joinLobby(newLobby.id, socket);
-      socket.emit('lobby:new', newLobby);
-    });
 
-    socket.on('lobby:join', function(data){
-      console.log('client wants to join lobby');
-      // checking if lobby still exists
-      var err = null;
-      if (lobbies[data.id]){
-        // check if max players reached
-        if (lobbies[data.id].players.length === lobbies[data.id].maxplayers){
-          err = 'lobby is full';
-        } else {
-          joinLobby(data.id, socket);
-        }
-      } else {
-        err = 'lobby was deleted';
-      }
-      socket.emit('lobby:join', err, lobbies[data.id]);
-    });
-
-    socket.on('lobby:leave', function(data){
-      var lobbyId = lobbyForUsername[socket.session.username];
-
-      console.log('client wants to leave lobby');
-      console.log(socket.session.username);
-      leaveLobby(lobbyId, socket);
-      socket.emit('lobby:leave', lobbies[lobbyId]);
-    });
-
-
-    socket.on('lobby:start', function(data){
-      var lobbyId = lobbyForUsername[socket.session.username];
-
-      console.log('host started game');
-      lobbyStart(lobbyId, socket);
-      // socket.emit('lobby:start', {});
-
-
-      // wait a bit and then send game start
-      // @TODO: something better then waiting?
-      setTimeout(function(){
-        io.sockets.in(lobbies[lobbyId].name).emit('multicollide:start', {});
-      }, 500);
-
-
-
-    });
 
     socket.on('multicollide:start', function(data){
       var lobbyId = lobbyForUsername[socket.session.username];
@@ -546,7 +594,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       directionChanges[lobbyId] = [];
 
       turnLoop[lobbyId] = setInterval(function(){
-        io.sockets.in(lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
+        io.sockets.in(socketApp.lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
 
         // reset information
         directionChanges[lobbyId] = [];
@@ -566,7 +614,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     socket.on('multicollide:end', function(data){
       var lobbyId = lobbyForUsername[socket.session.username];
       // change lobby status
-      lobbies[lobbyId].status = STATES.GAME.LOBBY;
+      socketApp.lobbies[lobbyId].status = STATES.GAME.LOBBY;
 
       // clear turn interval vor lobby
       clearInterval(turnLoop[lobbyId]);
@@ -590,7 +638,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       }
 
       // emit game ending to all players
-      io.sockets.in(lobbies[lobbyId].name).emit('multicollide:end', {});
+      io.sockets.in(socketApp.lobbies[lobbyId].name).emit('multicollide:end', {});
     });
 
   });
@@ -761,7 +809,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
           // send friend request if user is online
           if (connectedUsers.indexOf(username) > -1){
 
-            clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+            socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
           }
         });
       }
@@ -782,7 +830,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
       // only request if not already requested (so no multiple requests are possible)
       if (user && user.requests.length > 0){
-        clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+        socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
       }
     });
 
@@ -807,134 +855,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       }
     });
   }
-
-  /**
-   * add a lobby to the collection
-   * @param {object} data Attributes for new lobby
-   * @return {object} object of new created lobby
-   */
-  function addLobby(data){
-    lobbyHighestCount++;
-
-    // add lobby
-    // add player who opened lobby as first player to lobby
-    lobbies[lobbyHighestCount] = {
-      id: lobbyHighestCount,
-      name: (data.name) ? data.name  : 'new game ' + lobbyHighestCount,
-      host: data.host,
-      status: data.status,
-      players: [],
-      maxplayers: data.maxplayers
-    };
-
-    return lobbies[lobbyHighestCount];
-  }
-
-  /**
-   * remove a lobby from the collection
-   * @param  {int} id Id of the corresponding lobby
-   */
-  function removeLobby(id){
-    console.log('REMOVING LOBBY');
-    // for each user connected: delete reference to username and leave socket room
-    console.log(lobbyForUsername);
-    for (var i = 0; i < lobbies[id].players.length; i++){
-      var player = lobbies[id].players[i];
-      delete lobbyForUsername[player];
-
-      clients[getIdForUsername(player)].leave(lobbies[id].name);
-
-      console.log(player + ' leaves room ' + lobbies[id].name);
-    }
-
-    console.log(lobbyForUsername);
-
-    delete lobbies[id];
-
-    // remove turn interval for lobby if currently started
-    if (turnLoop[id]){
-      clearInterval(turnLoop[id]);
-    }
-  }
-
-  /**
-   * user joins lobby
-   * @param  {int} id Id of corresponding lobby
-   * @param  {object} socket Socket object of the joining user
-   */
-  function joinLobby(id, socket){
-    if (!lobbies[id].players){
-      lobbies[id].players = [];
-    }
-    lobbies[id].players.push(socket.session.username);
-    // lobbies[id].players++;
-    lobbyForUsername[socket.session.username] = id;
-
-    //join socket room and send join event to other players in lobby
-    //io.sockets.in(lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
-    socket.join(lobbies[id].name);
-
-
-    // send user info when joining
-    User.findOne({name: socket.session.username}, function(err, user){
-      if (user) {
-        var userObj = user.toObject();
-        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', removeSensibleData(userObj));
-      } else {
-        // user is guest, just send name
-        socket.broadcast.to(lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
-      }
-    });
-  }
-
-  /**
-   * user left lobby
-   *
-   * @param  {int} id Id of the corresponding lobby
-   * @param  {object} socket Socket object of the leaving user
-   */
-  function leaveLobby(id, socket){
-    if (lobbies[id].host === socket.session.username){
-      // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
-      socket.leave(lobbies[id].name);
-      io.sockets.in(lobbies[id].name).emit('lobby:leave', {reason: 'host left'});
-
-      removeLobby(id);
-    } else {
-
-      if (lobbies[id].players.indexOf(socket.session.username) > -1){
-        lobbies[id].players.splice(lobbies[id].players.indexOf(socket.session.username),1);
-        // lobbies[id].players--;
-      }
-
-      delete lobbyForUsername[socket.session.username];
-
-      //send left event to other players in lobby and leave socket room
-      socket.leave(lobbies[id].name);
-      io.sockets.in(lobbies[id].name).emit('lobby:player:left', {username: socket.session.username});
-    }
-  }
-
-  /**
-   * get Lobby in which player with given name is
-   * @param  {string} name
-   * @return {int} id of lobby
-   */
-  function getLobbyOfUsername(name) {
-    return lobbyForUsername[name];
-  }
-
-
-  function lobbyStart(id, socket){
-    // check if really host started the game
-    if (lobbies[id].host === socket.session.username){
-      lobbies[id].status = STATES.GAME.INGAME;
-
-      // emit start to all players in lobby
-      io.sockets.in(lobbies[id].name).emit('lobby:start', {});
-    }
-  }
-
 
 
 };
