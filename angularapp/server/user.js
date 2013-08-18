@@ -5,6 +5,7 @@
 module.exports = {
   listen: function(io, socketApp){
     var crypto = require('crypto');
+    var db = require('./database');
 
     /**
      * helper function to set a session variable and save the session
@@ -84,7 +85,7 @@ module.exports = {
      */
     function sendFriendRequestsIfExist(username){
       // @TODO: no db queries for guests
-      socketApp.User.findOne({ name: username }, {password : 0}, function(err, user){
+      db.User.findOne({ name: username }, {password : 0}, function(err, user){
         // console.log(user);
 
         // only request if not already requested (so no multiple requests are possible)
@@ -115,7 +116,7 @@ module.exports = {
        * @param  {object} data {username, password, email}
        */
       socket.on('user:new', function(data){
-        var user = new socketApp.User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
+        var user = new db.User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
         user.save(function (err, user) {
           var error = null;
           if (err) {
@@ -135,7 +136,7 @@ module.exports = {
       socket.on('user:info', function(data){
         // console.log(socket.session.username);
         console.log(socket.session);
-        socketApp.User.findOne({ name: data.name }).populate('gamesParticipated').exec(function(err, user){
+        db.User.findOne({ name: data.name }).populate('gamesParticipated').exec(function(err, user){
           console.log(user);
           if (user) {
             var userobj = user.toObject();
@@ -154,7 +155,7 @@ module.exports = {
               userobj.online = true;
             }
 
-            socket.emit('user:info:'+data.name, socketApp.removeSensibleData(userobj, socket.session.username));
+            socket.emit('user:info:'+data.name, db.removeSensibleData(userobj, socket.session.username));
           } else {
             socket.emit('user:info:'+data.name);
           }
@@ -169,7 +170,7 @@ module.exports = {
       // socket.on(websocketApi.get.users.all.msgkey, function(data){
       socket.on('users:all', function(data){
         console.log('GETTIN ALL USERS');
-        socketApp.User.find({}, {name : 1, _id : 0}, function(err, users){
+        db.User.find({}, {name : 1, _id : 0}, function(err, users){
           console.log(users);
           socket.emit('users:all', err, users);
         });
@@ -190,7 +191,7 @@ module.exports = {
        */
       socket.on('user:login', function(data){
         console.log("GOT LOGIN");
-        socketApp.User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
+        db.User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
           if (err) {
             console.log(err);
           }

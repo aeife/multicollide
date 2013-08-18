@@ -3,8 +3,9 @@
 
 
 module.exports = {
-  listen: function(io, socketApp){
+  listen: function(io){
     var STATES = require('../app/states.js')();
+    var db = require('./database');
     var lobby = require('./lobby.js');
 
     var turnLoop = {};
@@ -24,7 +25,7 @@ module.exports = {
     function updatePlayerStatistics(player, standing, standingsCount, gameId){
       var stepLength = 100 / (standingsCount - 1);
 
-      socketApp.User.findOne({ name: player}, function(err, user){
+      db.User.findOne({ name: player}, function(err, user){
         if (err) {
           console.log(err);
         }
@@ -58,7 +59,7 @@ module.exports = {
               var userObj = user.toObject();
               userObj.ratioDiff = ratioDiff;
               userObj.eloDiff = eloDiff;
-              io.sockets.emit('user:statsUpdate:'+player, socketApp.removeSensibleData(userObj));
+              io.sockets.emit('user:statsUpdate:'+player, db.removeSensibleData(userObj));
             }
           });
         }
@@ -68,7 +69,7 @@ module.exports = {
     io.sockets.on('connection', function(socket){
 
       socket.on('multicollide:start', function(data){
-        var lobbyId = socketApp.lobbyForUsername[socket.session.username];
+        var lobbyId = lobby.lobbyForUsername[socket.session.username];
         // reset or initialize for start
         directionChanges[lobbyId] = [];
 
@@ -81,7 +82,7 @@ module.exports = {
       });
 
       socket.on('multicollide:changeDirection', function(data){
-        var lobbyId = socketApp.lobbyForUsername[socket.session.username];
+        var lobbyId = lobby.lobbyForUsername[socket.session.username];
 
         if (!directionChanges[lobbyId]) {
           directionChanges[lobbyId] = [];
@@ -91,7 +92,7 @@ module.exports = {
       });
 
       socket.on('multicollide:end', function(data){
-        var lobbyId = socketApp.lobbyForUsername[socket.session.username];
+        var lobbyId = lobby.lobbyForUsername[socket.session.username];
         // change lobby status
         lobby.lobbies[lobbyId].status = STATES.GAME.LOBBY;
 
@@ -102,7 +103,7 @@ module.exports = {
         var standingsCount = data.standings.length;
 
         // add new game to database
-        var game = new socketApp.Game({standings: data.standings});
+        var game = new db.Game({standings: data.standings});
         game.save(function (err, game) {
           if (err) {
             console.log(err);

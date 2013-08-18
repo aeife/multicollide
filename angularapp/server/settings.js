@@ -3,8 +3,9 @@
 
 
 module.exports = {
-  listen: function(io, socketApp){
+  listen: function(io){
     var crypto = require('crypto');
+    var db = require('./database');
 
     io.sockets.on('connection', function(socket){
       /**
@@ -17,7 +18,7 @@ module.exports = {
         //check if user is logged in
         if (socket.session.loggedin) {
           //check if correct old password, then change
-          socketApp.User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
+          db.User.findOne({ name: data.name, password: crypto.createHash('sha512').update(data.oldPassword).digest('hex')}, function(err, user){
             if (err) {
               console.log(err);
             }
@@ -48,7 +49,7 @@ module.exports = {
        */
       socket.on('settings:newLanguage', function(data){
         if (socket.session.loggedin) {
-          socketApp.User.findOne({ name: socket.session.username}, function(err, user){
+          db.User.findOne({ name: socket.session.username}, function(err, user){
             if (err) {
               console.log(err);
             }

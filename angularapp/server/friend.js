@@ -4,6 +4,7 @@
 
 module.exports = {
   listen: function(io, socketApp){
+    var db = require('./database');
 
     /**
      * adds a friend request for username from friend
@@ -11,7 +12,7 @@ module.exports = {
      * @param {string} friend Name of the user which sent the request
      */
     function addFriendRequest(username, friend){
-      socketApp.User.findOne({ name: username }, {password : 0}, function(err, user){
+      db.User.findOne({ name: username }, {password : 0}, function(err, user){
         console.log(user);
 
         // only request if not already requested (so no multiple requests are possible)
@@ -38,7 +39,7 @@ module.exports = {
      * @param  {string} friend Name of user which sent the request
      */
     function removeFriendRequest(username, friend){
-      socketApp.User.findOne({ name: username }, {password : 0}, function(err, user){
+      db.User.findOne({ name: username }, {password : 0}, function(err, user){
 
         if (user && user.requests.indexOf(friend) > -1){
           user.requests.splice(user.requests.indexOf(friend), 1);
@@ -71,7 +72,7 @@ module.exports = {
         console.log(socket.session.username + ' wants to delete ' + data.name);
 
         // delete friend for both users
-        socketApp.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        db.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
           user.friends.remove(data.name);
           user.save(function (err, user) {
             var error = false;
@@ -86,7 +87,7 @@ module.exports = {
           });
         });
 
-        socketApp.User.findOne({ name: data.name }, {password : 0}, function(err, user){
+        db.User.findOne({ name: data.name }, {password : 0}, function(err, user){
           user.friends.remove(socket.session.username);
           user.save(function (err, user) {
             var error = false;
@@ -114,7 +115,7 @@ module.exports = {
         console.log(socket.session.username + ' accepts request from ' + data.user);
 
         // add friend for both users
-        socketApp.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        db.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
           if (user.friends.indexOf(data.user) < 0){
             user.friends.push(data.user);
             user.save(function (err, user) {
@@ -135,7 +136,7 @@ module.exports = {
 
                 // add to other user
                 // @TODO: do parallel
-                socketApp.User.findOne({ name: data.user }, {password : 0}, function(err, user){
+                db.User.findOne({ name: data.user }, {password : 0}, function(err, user){
                   if (user.friends.indexOf(socket.session.username) < 0){
                     user.friends.push(socket.session.username);
                     user.save(function (err, user) {
@@ -189,7 +190,7 @@ module.exports = {
 
         var result = {};
         //getting all friends and check their status
-        socketApp.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
+        db.User.findOne({ name: socket.session.username }, {password : 0}, function(err, user){
           if (err) {
             console.log(err);
           }

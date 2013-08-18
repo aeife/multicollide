@@ -27,12 +27,34 @@ var userSchema = mongoose.Schema({
 });
 userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);
-module.exports.User = User;
 
 var gameSchema = mongoose.Schema({
   standings: [],
   date: { type: Date, default: Date.now }
 });
 var Game = mongoose.model('Game', gameSchema);
-module.exports.Game = Game;
 
+module.exports = {
+  User: User,
+  Game: Game,
+  removeSensibleData: function(userObj, caller){
+    var user = userObj;
+
+    if (caller && caller === user.name) {
+      // if own infos dont delete some private information
+      delete user.requests;
+      delete user.password;
+      delete user._id;
+      delete user.__v;
+    } else {
+      delete user.requests;
+      delete user.password;
+      delete user._id;
+      delete user.__v;
+      delete user.language;
+      delete user.email;
+    }
+
+    return user;
+  }
+};

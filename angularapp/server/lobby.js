@@ -13,6 +13,7 @@ module.exports = {
   listen: function(io, socketApp){
     var self = this;
 
+    var db = require('./database');
     var STATES = require('../app/states.js')();
 
     // highest current lobby id for continues counting
@@ -86,10 +87,10 @@ module.exports = {
 
 
       // send user info when joining
-      socketApp.User.findOne({name: socket.session.username}, function(err, user){
+      db.User.findOne({name: socket.session.username}, function(err, user){
         if (user) {
           var userObj = user.toObject();
-          socket.broadcast.to(self.lobbies[id].name).emit('lobby:player:joined', socketApp.removeSensibleData(userObj));
+          socket.broadcast.to(self.lobbies[id].name).emit('lobby:player:joined', db.removeSensibleData(userObj));
         } else {
           // user is guest, just send name
           socket.broadcast.to(self.lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});

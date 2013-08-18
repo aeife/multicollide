@@ -3,8 +3,6 @@
 module.exports.startServer = function(server, cookieParser, sessionStore,sessionKey){
 
   var socketApp = {
-    User: require('./database').User,
-    Game: require('./database').Game,
     // names of current connected users
     connectedUsers: [],
     // sockets for all connected clients ordered with socket ids
@@ -18,26 +16,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
      */
     getIdForUsername: function(username){
       return socketApp.clientUsernames[username];
-    },
-    removeSensibleData: function(userObj, caller){
-      var user = userObj;
-
-      if (caller && caller === user.name) {
-        // if own infos dont delete some private information
-        delete user.requests;
-        delete user.password;
-        delete user._id;
-        delete user.__v;
-      } else {
-        delete user.requests;
-        delete user.password;
-        delete user._id;
-        delete user.__v;
-        delete user.language;
-        delete user.email;
-      }
-
-      return user;
     }
   };
 
@@ -57,7 +35,8 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   lobby.listen(io, socketApp);
   require('./user.js').listen(io, socketApp);
   require('./friend.js').listen(io, socketApp);
-  require('./multicollide.js').listen(io, socketApp);
+  require('./multicollide.js').listen(io);
+  require('./settings.js').listen(io);
 
   /*
   ******************************************************
