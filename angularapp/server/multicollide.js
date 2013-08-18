@@ -10,15 +10,6 @@ module.exports = {
 
     var turnLoop = {};
 
-    // register hook in lobby
-
-    // remove turn interval for lobby if currently started
-    lobby.hooks.removeLobbyAfter = function(id){
-      if (turnLoop[id]){
-        clearInterval(turnLoop[id]);
-      }
-    };
-
     // direction changes of player during a turnfor each lobby
     var directionChanges = {};
 
@@ -65,6 +56,16 @@ module.exports = {
         }
       });
     }
+
+     /**
+     * Register Hooks
+     */
+    // remove turn interval for lobby if currently started
+    lobby.hooks.removeLobbyAfter = function(id){
+      if (turnLoop[id]){
+        clearInterval(turnLoop[id]);
+      }
+    };
 
     io.sockets.on('connection', function(socket){
 

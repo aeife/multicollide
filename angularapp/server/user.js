@@ -97,10 +97,12 @@ module.exports = {
 
     }
 
-    io.sockets.on('connection', function(socket){
-      socket.session = socket.handshake.session;
-      console.log("GOT USER CONNECTION");
 
+    /**
+     * Register Hooks
+     */
+    socketServer.hooks.connectionAfter = function(socket){
+      console.log("GOT USER CONNECTION");
       // if user is already logged in: add to connected user list
       // if (socket.session.username && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
       // if (socket.session.username && socket.session.loggedin && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
@@ -111,7 +113,10 @@ module.exports = {
       // send success message with username
       // @TODO: Sessions for Guest or delete on exit?
       socket.emit('successfullConnected', {username: socket.session.username});
+    };
 
+
+    io.sockets.on('connection', function(socket){
       /**
        * sign up a new account
        * @param  {object} data {username, password, email}

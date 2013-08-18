@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = {
+  hooks: {
+    connectionAfter: undefined
+  },
   // names of current connected users
   connectedUsers: [],
   // sockets for all connected clients ordered with socket ids
@@ -74,12 +77,18 @@ module.exports = {
      * @param  {object} socket socket object for client
      */
     io.sockets.on('connection', function(socket){
+      console.log("GOT MAIN CONNECTION");
       socket.session = socket.handshake.session;
       console.log(socket.session);
 
       // save sockets for all clients ordered with socket id
       self.clients[socket.id] = socket;
       console.log('client connected as ' + socket.session.username);
+
+      // hook
+      if (self.hooks.connectionAfter){
+        self.hooks.connectionAfter(socket);
+      }
 
       /**
        * client requested list of open self.lobbies
