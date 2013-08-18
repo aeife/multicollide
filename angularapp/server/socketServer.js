@@ -8,7 +8,7 @@ module.exports = {
     hook.push(functionToHook);
   },
   includeHook: function(hook, params){
-    if (hook){
+    if (hook.length > 0){
       for (var i = 0; i < hook.length; i++){
         hook[i](params);
       }
