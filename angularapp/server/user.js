@@ -3,9 +3,10 @@
 
 
 module.exports = {
-  listen: function(io, socketApp){
+  listen: function(io, socketServer){
     var crypto = require('crypto');
     var db = require('./database');
+    var socketServer = require('./socketServer');
 
     /**
      * helper function to set a session variable and save the session
@@ -34,15 +35,15 @@ module.exports = {
         username = generateRandomGuestName();
         setSession('username', username, socket);
         // socket.session.username = username;
-      } else if (socket.session.username.indexOf('Guest') > -1 && socketApp.connectedUsers.indexOf(socket.session.username) > -1){
+      } else if (socket.session.username.indexOf('Guest') > -1 && socketServer.connectedUsers.indexOf(socket.session.username) > -1){
         // user was guest before he logged in (= he is already connected in as a guest)
         deleteConnectedUser(socket.session.username, socket);
         // socket.session.username = username;
         setSession('username', username, socket);
       }
       // socket.session.save();
-      socketApp.connectedUsers.push(username);
-      socketApp.clientUsernames[username] = socket.id;
+      socketServer.connectedUsers.push(username);
+      socketServer.clientUsernames[username] = socket.id;
       socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
 
       sendFriendRequestsIfExist(username);
@@ -58,8 +59,8 @@ module.exports = {
      * @param  {object} socket Socket object of the user
      */
     function deleteConnectedUser(username, socket){
-      socketApp.connectedUsers.splice(socketApp.connectedUsers.indexOf(username),1);
-      delete socketApp.clientUsernames[username];
+      socketServer.connectedUsers.splice(socketServer.connectedUsers.indexOf(username),1);
+      delete socketServer.clientUsernames[username];
       socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
     }
 
@@ -74,7 +75,7 @@ module.exports = {
       var randNr;
       do{
         randNr = Math.floor((Math.random()*900)+100);
-      } while (socketApp.connectedUsers.indexOf('Guest'+randNr) > -1);
+      } while (socketServer.connectedUsers.indexOf('Guest'+randNr) > -1);
 
       return 'Guest'+randNr;
     }
@@ -90,7 +91,7 @@ module.exports = {
 
         // only request if not already requested (so no multiple requests are possible)
         if (user && user.requests.length > 0){
-          socketApp.clients[socketApp.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+          socketServer.clients[socketServer.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
         }
       });
 
@@ -101,9 +102,9 @@ module.exports = {
       console.log("GOT USER CONNECTION");
 
       // if user is already logged in: add to connected user list
-      // if (socket.session.username && socketApp.connectedUsers.indexOf(socket.session.username) === -1){
-      // if (socket.session.username && socket.session.loggedin && socketApp.connectedUsers.indexOf(socket.session.username) === -1){
-      if (socketApp.connectedUsers.indexOf(socket.session.username) === -1){
+      // if (socket.session.username && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
+      // if (socket.session.username && socket.session.loggedin && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
+      if (socketServer.connectedUsers.indexOf(socket.session.username) === -1){
         addConnectedUser(socket.session.username, socket);
       }
 
@@ -151,7 +152,7 @@ module.exports = {
             }
 
             //check if currently online
-            if (socketApp.connectedUsers.indexOf(user.name) > -1) {
+            if (socketServer.connectedUsers.indexOf(user.name) > -1) {
               userobj.online = true;
             }
 
@@ -174,7 +175,7 @@ module.exports = {
           console.log(users);
           socket.emit('users:all', err, users);
         });
-        // socket.emit('users:connected', {users: socketApp.connectedUsers});
+        // socket.emit('users:connected', {users: socketServer.connectedUsers});
       });
 
       /**
@@ -182,7 +183,7 @@ module.exports = {
        */
       socket.on('users:connected', function(data){
         var err = null;
-        socket.emit('users:connected', err, socketApp.connectedUsers);
+        socket.emit('users:connected', err, socketServer.connectedUsers);
       });
 
       /**
@@ -203,7 +204,7 @@ module.exports = {
 
             addConnectedUser(data.username, socket);
             console.log('ID FOR USER: ' + data.username);
-            console.log(socketApp.getIdForUsername(data.username));
+            console.log(socketServer.getIdForUsername(data.username));
             socket.emit('user:login', {loggedin: true, language: user.language});
           } else {
             socket.emit('user:login', {loggedin: false});
@@ -218,7 +219,7 @@ module.exports = {
         console.log('LOGGING USER OUT');
 
         // delete user from connected user list
-        if (socketApp.connectedUsers.indexOf(socket.session.username) > -1){
+        if (socketServer.connectedUsers.indexOf(socket.session.username) > -1){
           deleteConnectedUser(socket.session.username, socket);
         }
 
@@ -245,7 +246,7 @@ module.exports = {
       socket.on('disconnect', function(data){
         if (socket.session.username){
           // if user was logged in: delete user from connected user list
-          if (socketApp.connectedUsers.indexOf(socket.session.username) > -1){
+          if (socketServer.connectedUsers.indexOf(socket.session.username) > -1){
             deleteConnectedUser(socket.session.username, socket);
           }
         }

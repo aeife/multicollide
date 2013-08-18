@@ -10,10 +10,11 @@ module.exports = {
   lobbies: {},
   // saves current lobby for each username
   lobbyForUsername: {},
-  listen: function(io, socketApp){
+  listen: function(io, socketServer){
     var self = this;
 
     var db = require('./database');
+    var socketServer = require('./socketServer');
     var STATES = require('../app/states.js')();
 
     // highest current lobby id for continues counting
@@ -53,7 +54,7 @@ module.exports = {
         var player = self.lobbies[id].players[i];
         delete self.lobbyForUsername[player];
 
-        socketApp.clients[socketApp.getIdForUsername(player)].leave(self.lobbies[id].name);
+        socketServer.clients[socketServer.getIdForUsername(player)].leave(self.lobbies[id].name);
 
         console.log(player + ' leaves room ' + self.lobbies[id].name);
       }

@@ -45,8 +45,8 @@ var server = http.createServer(app)
 });
 
 // socket server
-var socket = require('./socket.js');
-socket.startServer(server, cookieParser, sessionStore, sessionKey);
+var socketServer = require('./socketServer.js');
+socketServer.startServer(server, cookieParser, sessionStore, sessionKey);
 
 // for grunt
 exports = module.exports = server;

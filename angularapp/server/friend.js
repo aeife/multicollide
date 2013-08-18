@@ -3,8 +3,9 @@
 
 
 module.exports = {
-  listen: function(io, socketApp){
+  listen: function(io){
     var db = require('./database');
+    var socketServer = require('./socketServer');
 
     /**
      * adds a friend request for username from friend
@@ -24,9 +25,9 @@ module.exports = {
             }
 
             // send friend request if user is online
-            if (socketApp.connectedUsers.indexOf(username) > -1){
+            if (socketServer.connectedUsers.indexOf(username) > -1){
 
-              socketApp.clients[socketApp.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+              socketServer.clients[socketServer.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
             }
           });
         }
@@ -97,11 +98,11 @@ module.exports = {
             }
 
             // if other user is online: send deletion
-            if (socketApp.clients[socketApp.getIdForUsername(data.name)]) {
-              socketApp.clients[socketApp.getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
+            if (socketServer.clients[socketServer.getIdForUsername(data.name)]) {
+              socketServer.clients[socketServer.getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
 
               // emit deleted friend
-              socketApp.clients[socketApp.getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+              socketServer.clients[socketServer.getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
             }
           });
         });
@@ -129,7 +130,7 @@ module.exports = {
               // emit new friend and his status
               if (!error) {
                 var online = false;
-                if (socketApp.connectedUsers.indexOf(data.user) > -1){
+                if (socketServer.connectedUsers.indexOf(data.user) > -1){
                   online = true;
                 }
                 socket.emit('friend:new', {user: data.user, online: online});
@@ -150,16 +151,16 @@ module.exports = {
                       removeFriendRequest(socket.session.username, data.user);
 
                       // only emit to other user when he is online
-                      if (socketApp.connectedUsers.indexOf(data.user) > -1){
-                        // socketApp.clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
+                      if (socketServer.connectedUsers.indexOf(data.user) > -1){
+                        // socketServer.clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
 
                         // emit new friend and his status
                         if (!error) {
                           var online = false;
-                          if (socketApp.connectedUsers.indexOf(socket.session.username) > -1){
+                          if (socketServer.connectedUsers.indexOf(socket.session.username) > -1){
                             online = true;
                           }
-                          socketApp.clients[socketApp.getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
+                          socketServer.clients[socketServer.getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
                         }
                       }
                     });
@@ -199,7 +200,7 @@ module.exports = {
             console.log(user);
             for (var i = 0; i < user.friends.length; i++){
               var online = false;
-              if (socketApp.connectedUsers.indexOf(user.friends[i]) > -1){
+              if (socketServer.connectedUsers.indexOf(user.friends[i]) > -1){
                 online = true;
               }
               result[user.friends[i]] = {online: online};
