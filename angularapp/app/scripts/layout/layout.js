@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('layout', [])
-  .controller('LayoutCtrl', function ($scope) {
+  .controller('LayoutCtrl', function ($scope, $rootScope) {
     $scope.mainGridSize = 9;
-    $scope.showSidebar = true;
+    $rootScope.showSidebar = true;
     $scope.sidebarToggleBtnContent = "&laquo;";
 
     $scope.toggleSideBar = function(){
-      $scope.showSidebar = !$scope.showSidebar;
+      $rootScope.showSidebar = !$rootScope.showSidebar;
 
       if ($scope.showSidebar){
         $scope.mainGridSize = 9;
