@@ -3,7 +3,7 @@
 describe('Service: lobby', function () {
 
   // load the service's module
-  beforeEach(module('games'));
+  beforeEach(module('games.lobby'));
 
   // instantiate service
   var lobby;

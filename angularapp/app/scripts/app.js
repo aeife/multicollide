@@ -21,7 +21,6 @@ angular.module('multicollide',
   'imagePreload',
   'users',
   'games',
-  'gameChoice',
   'websocketApi',
   'multicollideGame',
   'STATES',
@@ -60,12 +59,12 @@ angular.module('multicollide',
         controller: 'AboutCtrl'
       })
       .when('/games', {
-        templateUrl: 'scripts/games/gameChoice.html',
-        controller: 'GameChoiceCtrl'
+        templateUrl: 'scripts/games/gameList.html',
+        controller: 'GameListCtrl'
       })
       .when('/games/:game', {
-        templateUrl: 'scripts/games/games.html',
-        controller: 'GamesCtrl'
+        templateUrl: 'scripts/games/game.html',
+        controller: 'GameCtrl'
       })
       .when('/help', {
         templateUrl: 'scripts/help/help.html',

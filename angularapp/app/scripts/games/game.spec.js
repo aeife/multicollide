@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Controller: GamesCtrl', function () {
+describe('Controller: GameCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('games'));
+  beforeEach(module('games.game'));
 
   var GamesCtrl,
     scope;
@@ -11,7 +11,7 @@ describe('Controller: GamesCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    GamesCtrl = $controller('GamesCtrl', {
+    GameCtrl = $controller('GameCtrl', {
       $scope: scope
     });
   }));
