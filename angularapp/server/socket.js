@@ -12,7 +12,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     clientUsernames: {},
     lobbies: {},
     lobbyForUsername: {},
-    turnLoop: {},
     getIdForUsername: function(username){
       return socketApp.clientUsernames[username];
     },
@@ -80,11 +79,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   var STATES = require('../app/states.js')();
 
 
-// INCLUDE
-var lobbyHandler = require('./lobby.js')(io, socketApp);
-var userHandler = require('./user.js')(io, socketApp);
-var friendHandler = require('./friend.js')(io, socketApp);
-var multicollideHandler = require('./multicollide.js')(io, socketApp);
+  // INCLUDE
+  require('./lobby.js').listen(io, socketApp);
+  var userHandler = require('./user.js')(io, socketApp);
+  var friendHandler = require('./friend.js')(io, socketApp);
+  var multicollideHandler = require('./multicollide.js')(io, socketApp);
 
 
   /*

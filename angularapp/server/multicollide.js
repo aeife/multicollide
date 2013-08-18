@@ -4,6 +4,18 @@
 
 module.exports = function(io, socketApp){
   var STATES = require('../app/states.js')();
+  var lobbyModule = require('./lobby.js');
+
+  var turnLoop = {};
+
+  // register hook in lobby
+
+  // remove turn interval for lobby if currently started
+  lobbyModule.hooks.removeLobbyAfter = function(id){
+    if (turnLoop[id]){
+      clearInterval(turnLoop[id]);
+    }
+  };
 
   // direction changes of player during a turnfor each lobby
   var directionChanges = {};
@@ -59,7 +71,7 @@ module.exports = function(io, socketApp){
       // reset or initialize for start
       directionChanges[lobbyId] = [];
 
-      socketApp.turnLoop[lobbyId] = setInterval(function(){
+      turnLoop[lobbyId] = setInterval(function(){
         io.sockets.in(socketApp.lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
 
         // reset information
@@ -83,7 +95,7 @@ module.exports = function(io, socketApp){
       socketApp.lobbies[lobbyId].status = STATES.GAME.LOBBY;
 
       // clear turn interval vor lobby
-      clearInterval(socketApp.turnLoop[lobbyId]);
+      clearInterval(turnLoop[lobbyId]);
 
       // adjust player stats with new standings
       var standingsCount = data.standings.length;
