@@ -1,9 +1,9 @@
 'use strict';
 
-var hooksystem = require('./hooksystem');
-hooksystem.registerHook('lobby', 'removeLobbyAfter');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = {
+  events: new EventEmitter(),
   // saves all current available self.lobbies
   lobbies: {},
   // saves current lobby for each username
@@ -61,7 +61,8 @@ module.exports = {
 
       delete self.lobbies[id];
 
-      hooksystem.includeHook(hooksystem.hooks.lobby.removeLobbyAfter, {lobbyId: id});
+      // emit internal event
+      self.events.emit('removeLobbyAfter', {lobbyId: id});
     }
 
     /**

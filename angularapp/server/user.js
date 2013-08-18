@@ -7,7 +7,6 @@ module.exports = {
     var crypto = require('crypto');
     var db = require('./database');
     var socketServer = require('./socketServer');
-    var hooksystem = require('./hooksystem');
 
     /**
      * helper function to set a session variable and save the session
@@ -100,9 +99,9 @@ module.exports = {
 
 
     /**
-     * Register Hooks
+     * Register internal listeners
      */
-    hooksystem.addHook(hooksystem.hooks.socketServer.connectionAfter, function(params){
+    socketServer.events.on('connectionAfter', function(params){
       // if user is already logged in: add to connected user list
       // if (socket.session.username && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
       // if (socket.session.username && socket.session.loggedin && socketServer.connectedUsers.indexOf(socket.session.username) === -1){

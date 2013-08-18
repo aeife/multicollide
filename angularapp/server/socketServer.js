@@ -1,9 +1,9 @@
 'use strict';
 
-var hooksystem = require('./hooksystem');
-hooksystem.registerHook('socketServer', 'connectionAfter');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = {
+  events: new EventEmitter(),
   // names of current connected users
   connectedUsers: [],
   // sockets for all connected clients ordered with socket ids
@@ -84,8 +84,8 @@ module.exports = {
       self.clients[socket.id] = socket;
       console.log('client connected as ' + socket.session.username);
 
-      // hook
-      hooksystem.includeHook(hooksystem.hooks.socketServer.connectionAfter, {socket: socket});
+      // internal event
+      self.events.emit('connectionAfter', {socket: socket});
 
       /**
        * client requested list of open self.lobbies

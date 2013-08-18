@@ -7,7 +7,6 @@ module.exports = {
     var STATES = require('../app/states.js')();
     var db = require('./database');
     var lobby = require('./lobby.js');
-    var hooksystem = require('./hooksystem');
 
     var turnLoop = {};
 
@@ -59,10 +58,11 @@ module.exports = {
     }
 
      /**
-     * Register Hooks
+     * Register internal listeners
      */
     // remove turn interval for lobby if currently started
-    hooksystem.addHook(hooksystem.hooks.lobby.removeLobbyAfter, function(params){
+    lobby.events.on('removeLobbyAfter', function(params){
+      console.log("##########REMOVE LOBBY AFTER");
       if (turnLoop[params.lobbyId]){
         clearInterval(turnLoop[params.lobbyId]);
       }
