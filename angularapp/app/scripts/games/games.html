@@ -1,105 +1,102 @@
-<div ng-hide="lobby.status == STATES.GAME.INGAME">
-  <div ng-show="lobby.status == STATES.GAME.LOBBY">
-    <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
-    <div class="text-center">
-      <div class="btn-group">
-        <button data-toggle="modal" href="#leaveGameModal" class="btn btn-primary">{{'_LeaveLobby_' | i18n}}</button>
-      </div>
-      <div class="btn-group" ng-hide="!isHost(user.ownUsername())">
-        <button type="button" class="btn btn-primary" ng-disabled="lobby.currentLobby.players.length <= 1" ng-click="btnReady()">{{'_Ready_' | i18n}}</button>
-      </div>
-    </div>
-    <!-- last game standings if available -->
+<!-- prerender game in background -->
+<div ng-switch="lobby.game">
+  <div ng-switch-when="multicollide">
+    <multicollide-game></multicollide-game>
+  </div>
+</div>
 
-    <div id="lastStandings" ng-hide="!lobby.lastStandings">
-      <div class="accordion" style="background-color: #f1f1f1; margin-top: 10px;">
-        <div class="accordion-group">
-          <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-              <h4 class="text-center">{{'_LastStandings_' | i18n}}</h4>
-            </a>
-          </div>
-          <div id="collapseOne" class="accordion-body collapse in">
-            <div class="accordion-inner">
-              <table class="table text-center table-condensed" style="table-layout: fixed; background-color:white;">
-                <tr>
-                  <th>Place</th>
-                  <th>User</th>
-                  <th>Ratio Diff</th>
-                  <th>Elo Diff</th>
-                </tr>
-                <tr ng-repeat="standing in lobby.lastStandings">
-                  <td rowspan="standing.length" style="vertical-align:middle;">{{$index + 1}}</td>
-                  <td colspan="3">
-                    <table class="table table-condensed" style="table-layout: fixed; margin-bottom: 0px;">
-                      <tr ng-repeat="player in standing">
-                        <td style="border-top: 0px;">{{player}}</td>
-                        <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].ratioDiff > 0">+</span>{{lobby.playerForUsername[player].ratioDiff | number:2}}</td>
-                        <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].eloDiff > 0">+</span>{{lobby.playerForUsername[player].eloDiff | number:2}}</td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+<!-- hide when ingame -->
+<div ng-hide="lobby.status == STATES.GAME.INGAME">
+  <div ng-switch="lobby.inLobby">
+    <div ng-switch-when="true">
+      <!-- Lobby View -->
+      <h1 class="text-center">{{'_Lobby_' | i18n}}: {{lobby.currentLobby.name}}</h1>
+      <div class="text-center">
+        <div class="btn-group">
+          <button data-toggle="modal" href="#leaveGameModal" class="btn btn-primary">{{'_LeaveLobby_' | i18n}}</button>
+        </div>
+        <div class="btn-group" ng-hide="!isHost(user.ownUsername())">
+          <button type="button" class="btn btn-primary" ng-disabled="lobby.currentLobby.players.length <= 1" ng-click="btnReady()">{{'_Ready_' | i18n}}</button>
+        </div>
+      </div>
+
+      <!-- last game standings if available -->
+      <div id="lastStandings" ng-hide="!lobby.lastStandings">
+        <div class="accordion" style="background-color: #f1f1f1; margin-top: 10px;">
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+                <h4 class="text-center">{{'_LastStandings_' | i18n}}</h4>
+              </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+              <div class="accordion-inner">
+                <table class="table text-center table-condensed" style="table-layout: fixed; background-color:white;">
+                  <tr>
+                    <th>Place</th>
+                    <th>User</th>
+                    <th>Ratio Diff</th>
+                    <th>Elo Diff</th>
+                  </tr>
+                  <tr ng-repeat="standing in lobby.lastStandings">
+                    <td rowspan="standing.length" style="vertical-align:middle;">{{$index + 1}}</td>
+                    <td colspan="3">
+                      <table class="table table-condensed" style="table-layout: fixed; margin-bottom: 0px;">
+                        <tr ng-repeat="player in standing">
+                          <td style="border-top: 0px;">{{player}}</td>
+                          <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].ratioDiff > 0">+</span>{{lobby.playerForUsername[player].ratioDiff | number:2}}</td>
+                          <td style="border-top: 0px;"><span ng-show="lobby.playerForUsername[player].eloDiff > 0">+</span>{{lobby.playerForUsername[player].eloDiff | number:2}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <h4>{{'_Players_' | i18n}}</h4>
+      <table class="table table-striped text-center">
+        <tr ng-repeat="player in lobby.currentLobby.players" >
+          <td class="col-lg-1"><elo-box number="player.elo" size="20"></elo-box></td>
+          <td ng-class="{ red: isHost(player.name) }"><strong>{{player.name}}</strong></td>
+          <td>
+            <progress-bar progress="{{player.ratio}}"></progress-bar>
+          </td>
+        </tr>
+      </table>
     </div>
-    <h4>{{'_Players_' | i18n}}</h4>
-    <table class="table table-striped text-center">
-      <tr ng-repeat="player in lobby.currentLobby.players" >
-        <td class="col-lg-1"><elo-box number="player.elo" size="20"></elo-box></td>
-        <td ng-class="{ red: isHost(player.name) }"><strong>{{player.name}}</strong></td>
-        <td>
-          <progress-bar progress="{{player.ratio}}"></progress-bar>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div ng-show="!lobby.inLobby">
-    <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
-    <div class="text-center">
-      <div class="btn-group">
-        <button data-toggle="modal" href="#createGameModal" class="btn btn-primary">{{'_CreateGame_' | i18n}}</button>
+
+    <div ng-switch-default>
+      <!-- Server Browser -->
+      <h1 class="text-center">{{'_ServerBrowser_' | i18n}}</h1>
+      <div class="text-center">
+        <div class="btn-group">
+          <button data-toggle="modal" href="#createGameModal" class="btn btn-primary">{{'_CreateGame_' | i18n}}</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>
+        </div>
       </div>
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>
-      </div>
+      <table class="dataTable table table-striped table-hover" style="margin-top: 10px">
+        <tr>
+          <th ng-click="reorder('name')">{{'_GameName_' | i18n}}</th>
+          <th ng-click="reorder('players')">{{'_Players_' | i18n}}</th>
+          <th ng-click="reorder('status')">{{'_Status_' | i18n}}</th>
+          <th></th>
+        </tr>
+        <tr class="text-center"ng-repeat="game in lobby.games | toArray | orderBy:order:reverse">
+          <td>{{game.name}}</td>
+          <td>{{game.players.length}} / {{game.maxplayers}}</td>
+          <td>{{game.status.toString | i18n}}</td>
+          <td><button type="button" class="btn btn-primary btn-small" ng-click="joinGame(game.$key)">{{'_Join_' | i18n}}</button></td>
+        </tr>
+      </table>
+      <h5 class="text-center" ng-hide="getLobbyCount()!=0">{{'_NoLobbys_' | i18n}}</h5>
     </div>
-    <table class="dataTable table table-striped table-hover" style="margin-top: 10px">
-      <tr>
-        <th ng-click="reorder('name')">{{'_GameName_' | i18n}}</th>
-        <th ng-click="reorder('players')">{{'_Players_' | i18n}}</th>
-        <th ng-click="reorder('status')">{{'_Status_' | i18n}}</th>
-        <th></th>
-      </tr>
-      <tr class="text-center"ng-repeat="game in lobby.games | toArray | orderBy:order:reverse">
-        <td>{{game.name}}</td>
-        <td>{{game.players.length}} / {{game.maxplayers}}</td>
-        <td>{{game.status.toString | i18n}}</td>
-        <td><button type="button" class="btn btn-primary btn-small" ng-click="joinGame(game.$key)">{{'_Join_' | i18n}}</button></td>
-      </tr>
-    </table>
-    <h5 class="text-center" ng-hide="getLobbyCount()!=0">{{'_NoLobbys_' | i18n}}</h5>
   </div>
 </div>
-
-
-
-<!-- <div class="text-center">
-  <ul class="nav nav-pills" style="display: inline-block;">
-    <li ng-class="{active: lobby.game == 'multicollide'}"><a href="#/games/multicollide" ng-click="lobby.changeGame('multicollide')">Multicollide</a></li>
-    <li ng-class="{active: lobby.game == 'mockGame1'}"><a href="#/games/mockGame1" ng-click="lobby.changeGame('mockGame1')">MockGame1</a></li>
-    <li ng-class="{active: lobby.game == 'mockGame2'}"><a href="#/games/mockGame2" ng-click="lobby.changeGame('mockGame2')">MockGame2</a></li>
-  </ul>
-</div> -->
-<!-- use ng-switch so game object is only included when selected -->
-<!-- <div ng-switch="lobby.game">
-  <div ng-switch-when="multicollide">
-    <multicollide-game></multicollide-game>
-  </div>
-</div> -->
 
 
 
