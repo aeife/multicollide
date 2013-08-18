@@ -27,7 +27,8 @@ angular.module('multicollide',
   'STATES',
   'paginate',
   'tmh.dynamicLocale',
-  'progressBar'])
+  'progressBar',
+  'layout'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

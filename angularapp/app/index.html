@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="components/font-awesome/build/assets/font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="styles/main.css"/>
   </head>
-  <body ng-app="multicollideBoot" ng-cloak>
+  <body ng-app="multicollideBoot" ng-cloak ng-controller="LayoutCtrl">
   <!-- <confirm-dialoge>xy</confirm-dialoge> -->
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
@@ -51,20 +51,25 @@
               <ul class="nav navbar-nav pull-right">
                 <li ng-class="{ active: activePath=='/help' }"><a href="#/help"><i class="icon-question-sign"></i> {{'_Help_' | i18n}}</a></li>
                 <li ng-class="{ active: activePath=='/settings' }"><a href="#/settings"><i class="icon-wrench icon-large"></i> {{'_Settings_' | i18n}}</a></li>
+                <li><a href="" ng-click="toggleSideBar()" style="font-size: 22px;">
+                  <span ng-show="showSidebar">&raquo;</span>
+                  <span ng-show="!showSidebar">&laquo;</span>
+                </a></li>
               </ul>
               </div>
           </div><!-- /.container -->
       </div><!-- /.navbar -->
 
       <div class="container">
+
         <div class="row">
 
-          <div class="col-lg-9 col-sm-9" id="wrapper">
+          <div class="col-lg-{{mainGridSize}} col-sm-{{mainGridSize}} " id="wrapper">
             <flashbox></flashbox>
             <div ng-view></div>
           </div>
 
-          <div class="col-lg-3 col-sm-3">
+          <div class="col-lg-3 col-sm-3" ng-class="{hide: !showSidebar}">
 
             <div class="text-center" style="margin-top: 20px; margin-bottom: 20px;">
               <a href="#" class="btn btn-primary btn-large btn-block">{{'_QuickPlay_' | i18n}}</a>
@@ -151,6 +156,7 @@
     <script src="scripts/error/error.js"></script>
     <script src="scripts/signup/signup.js"></script>
     <script src="scripts/login/login.js"></script>
+    <script src="scripts/layout/layout.js"></script>
     <script src="scripts/flash/flash.js"></script>
     <script src="scripts/localization/localization.js"></script>
     <script src="scripts/sockets/socket.js"></script>
