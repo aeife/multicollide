@@ -43,9 +43,13 @@ angular.module('multicollide',
         templateUrl: 'scripts/signup/signup.html',
         controller: 'SignupCtrl'
       })
+      .when('/users', {
+        templateUrl: 'scripts/users/userlist.html',
+        controller: 'UserlistCtrl'
+      })
       .when('/users/:name', {
-        templateUrl: 'scripts/users/users.html',
-        controller: 'UsersCtrl'
+        templateUrl: 'scripts/users/profile.html',
+        controller: 'ProfileCtrl'
       })
       .when('/404', {
         templateUrl: 'scripts/error/error.html',

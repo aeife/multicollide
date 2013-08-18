@@ -1,0 +1,17 @@
+<h1 class="text-center">{{'_Playerlist_' | i18n}}</h1>
+<h5 class="text-center">
+  <ng-pluralize count="connectedUsers"
+    when="{0: '{{locale._NoOnline_ | i18n}}',
+      one: '{{locale._OneOnline_ | i18n}}',
+      other: '{{locale._ManyOnline_ | i18n:[connectedUsers]}}' }">
+  </ng-pluralize>
+</h5>
+<div class="text-center">
+  <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>
+  <input type="checkbox" ng-model="onlyConnected"/>{{'_ConnectedOnly_' | i18n}}
+  <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
+</div>
+<ul class="list-unstyled text-center ">
+  <li class="col-lg-2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/users/{{user.name}}">{{user.name}}</a></li>
+</ul>
+
