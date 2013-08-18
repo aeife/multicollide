@@ -1,21 +1,9 @@
 'use strict';
 
-
+var hooksystem = require('./hooksystem');
+hooksystem.registerHook('lobby', 'removeLobbyAfter');
 
 module.exports = {
-  hooks: {
-    removeLobbyAfter: []
-  },
-  addHook: function(hook, functionToHook){
-    hook.push(functionToHook);
-  },
-  includeHook: function(hook, params){
-    if (hook.length > 0){
-      for (var i = 0; i < hook.length; i++){
-        hook[i](params);
-      }
-    }
-  },
   // saves all current available self.lobbies
   lobbies: {},
   // saves current lobby for each username
@@ -73,8 +61,7 @@ module.exports = {
 
       delete self.lobbies[id];
 
-      // remove turn interval for lobby if currently started
-      self.includeHook(self.hooks.removeLobbyAfter, {lobbyId: id});
+      hooksystem.includeHook(hooksystem.hooks.lobby.removeLobbyAfter, {lobbyId: id});
     }
 
     /**
