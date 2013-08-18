@@ -2,7 +2,18 @@
 
 module.exports = {
   hooks: {
-    connectionAfter: undefined
+    connectionAfter: []
+  },
+  addHook: function(hook, functionToHook){
+    hook.push(functionToHook);
+  },
+  includeHook: function(hook, params){
+    if (hook){
+      console.log("####GOT HOOK");
+      for (var i = 0; i < hook.length; i++){
+        hook[i](params);
+      }
+    }
   },
   // names of current connected users
   connectedUsers: [],
@@ -77,7 +88,6 @@ module.exports = {
      * @param  {object} socket socket object for client
      */
     io.sockets.on('connection', function(socket){
-      console.log("GOT MAIN CONNECTION");
       socket.session = socket.handshake.session;
       console.log(socket.session);
 
@@ -86,9 +96,7 @@ module.exports = {
       console.log('client connected as ' + socket.session.username);
 
       // hook
-      if (self.hooks.connectionAfter){
-        self.hooks.connectionAfter(socket);
-      }
+      self.includeHook(self.hooks.connectionAfter, {socket: socket});
 
       /**
        * client requested list of open self.lobbies

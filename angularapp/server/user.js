@@ -101,20 +101,18 @@ module.exports = {
     /**
      * Register Hooks
      */
-    socketServer.hooks.connectionAfter = function(socket){
-      console.log("GOT USER CONNECTION");
+    socketServer.addHook(socketServer.hooks.connectionAfter, function(params){
       // if user is already logged in: add to connected user list
       // if (socket.session.username && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
       // if (socket.session.username && socket.session.loggedin && socketServer.connectedUsers.indexOf(socket.session.username) === -1){
-      if (socketServer.connectedUsers.indexOf(socket.session.username) === -1){
-        addConnectedUser(socket.session.username, socket);
+      if (socketServer.connectedUsers.indexOf(params.socket.session.username) === -1){
+        addConnectedUser(params.socket.session.username, params.socket);
       }
 
       // send success message with username
       // @TODO: Sessions for Guest or delete on exit?
-      socket.emit('successfullConnected', {username: socket.session.username});
-    };
-
+      params.socket.emit('successfullConnected', {username: params.socket.session.username});
+    });
 
     io.sockets.on('connection', function(socket){
       /**
