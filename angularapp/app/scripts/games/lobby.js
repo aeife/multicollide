@@ -7,7 +7,7 @@ angular.module('games')
 
     // Public API here
     return {
-      game: null,
+      game: 'multicollide',
       listeners: {statsUpdate: {}},
       inLobby: false,
       currentLobby: null,

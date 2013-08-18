@@ -1,11 +1,11 @@
 <div class="tabbable text-center">
   <ul class="nav nav-pills" style="display: inline-block;">
-    <li><a href="#multicollide" data-toggle="tab" ng-click="lobby.changeGame('multicollide')">Multicollide</a></li>
+    <li class="active"><a href="#multicollide" data-toggle="tab" ng-click="lobby.changeGame('multicollide')">Multicollide</a></li>
     <li><a href="#mockGame1" data-toggle="tab" ng-click="lobby.changeGame('mockGame1')">MockGame1</a></li>
     <li><a href="#mockGame2" data-toggle="tab" ng-click="lobby.changeGame('mockGame2')">MockGame2</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane" id="multicollide">
+    <div class="tab-pane active" id="multicollide">
       <!-- use ng-switch so game object is only included when selected -->
       <div ng-switch="lobby.game">
         <div ng-switch-when="multicollide">
