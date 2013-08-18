@@ -61,11 +61,11 @@ module.exports = {
      * Register Hooks
      */
     // remove turn interval for lobby if currently started
-    lobby.hooks.removeLobbyAfter = function(id){
-      if (turnLoop[id]){
-        clearInterval(turnLoop[id]);
+    lobby.addHook(lobby.hooks.removeLobbyAfter, function(params){
+      if (turnLoop[params.lobbyId]){
+        clearInterval(turnLoop[params.lobbyId]);
       }
-    };
+    });
 
     io.sockets.on('connection', function(socket){
 

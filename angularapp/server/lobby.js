@@ -4,7 +4,17 @@
 
 module.exports = {
   hooks: {
-    removeLobbyAfter: undefined
+    removeLobbyAfter: []
+  },
+  addHook: function(hook, functionToHook){
+    hook.push(functionToHook);
+  },
+  includeHook: function(hook, params){
+    if (hook){
+      for (var i = 0; i < hook.length; i++){
+        hook[i](params);
+      }
+    }
   },
   // saves all current available self.lobbies
   lobbies: {},
@@ -64,9 +74,7 @@ module.exports = {
       delete self.lobbies[id];
 
       // remove turn interval for lobby if currently started
-      if (self.hooks.removeLobbyAfter){
-        self.hooks.removeLobbyAfter(id);
-      }
+      self.includeHook(self.hooks.removeLobbyAfter, {lobbyId: id});
     }
 
     /**

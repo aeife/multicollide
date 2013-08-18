@@ -9,7 +9,6 @@ module.exports = {
   },
   includeHook: function(hook, params){
     if (hook){
-      console.log("####GOT HOOK");
       for (var i = 0; i < hook.length; i++){
         hook[i](params);
       }
