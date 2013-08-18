@@ -11,10 +11,6 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     clients: {},
     // saves ids for usernames
     clientUsernames: {},
-    // saves all current available socketApp.lobbies
-    lobbies: {},
-    // saves current lobby for each username
-    lobbyForUsername: {},
     /**
      * returns the id (socket.id) for a given username
      * @param  {string} username Name of user
@@ -57,11 +53,11 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
   // INCLUDE
-  require('./lobby.js').listen(io, socketApp);
+  var lobby = require('./lobby.js');
+  lobby.listen(io, socketApp);
   require('./user.js').listen(io, socketApp);
   require('./friend.js').listen(io, socketApp);
   require('./multicollide.js').listen(io, socketApp);
-
 
   /*
   ******************************************************
@@ -115,7 +111,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
      */
     socket.on('games', function(data){
       console.log('client requested games info');
-      socket.emit('games', socketApp.lobbies);
+      socket.emit('games', lobby.lobbies);
     });
 
     /**

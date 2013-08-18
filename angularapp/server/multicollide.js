@@ -5,14 +5,14 @@
 module.exports = {
   listen: function(io, socketApp){
     var STATES = require('../app/states.js')();
-    var lobbyModule = require('./lobby.js');
+    var lobby = require('./lobby.js');
 
     var turnLoop = {};
 
     // register hook in lobby
 
     // remove turn interval for lobby if currently started
-    lobbyModule.hooks.removeLobbyAfter = function(id){
+    lobby.hooks.removeLobbyAfter = function(id){
       if (turnLoop[id]){
         clearInterval(turnLoop[id]);
       }
@@ -73,7 +73,7 @@ module.exports = {
         directionChanges[lobbyId] = [];
 
         turnLoop[lobbyId] = setInterval(function(){
-          io.sockets.in(socketApp.lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
+          io.sockets.in(lobby.lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
 
           // reset information
           directionChanges[lobbyId] = [];
@@ -93,7 +93,7 @@ module.exports = {
       socket.on('multicollide:end', function(data){
         var lobbyId = socketApp.lobbyForUsername[socket.session.username];
         // change lobby status
-        socketApp.lobbies[lobbyId].status = STATES.GAME.LOBBY;
+        lobby.lobbies[lobbyId].status = STATES.GAME.LOBBY;
 
         // clear turn interval vor lobby
         clearInterval(turnLoop[lobbyId]);
@@ -117,7 +117,7 @@ module.exports = {
         }
 
         // emit game ending to all players
-        io.sockets.in(socketApp.lobbies[lobbyId].name).emit('multicollide:end', {});
+        io.sockets.in(lobby.lobbies[lobbyId].name).emit('multicollide:end', {});
       });
     });
   }
