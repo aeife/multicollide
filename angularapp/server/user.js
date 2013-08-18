@@ -3,7 +3,7 @@
 
 
 module.exports = {
-  listen: function(io, socketServer){
+  listen: function(io){
     var crypto = require('crypto');
     var db = require('./database');
     var socketServer = require('./socketServer');

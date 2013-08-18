@@ -10,7 +10,7 @@ module.exports = {
   lobbies: {},
   // saves current lobby for each username
   lobbyForUsername: {},
-  listen: function(io, socketServer){
+  listen: function(io){
     var self = this;
 
     var db = require('./database');
