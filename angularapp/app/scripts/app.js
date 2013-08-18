@@ -19,7 +19,7 @@ angular.module('multicollide',
   'profileBox',
   'eloBox',
   'imagePreload',
-  'profile',
+  'users',
   'games',
   'gameChoice',
   'websocketApi',
@@ -43,9 +43,9 @@ angular.module('multicollide',
         templateUrl: 'scripts/signup/signup.html',
         controller: 'SignupCtrl'
       })
-      .when('/profile/:name', {
-        templateUrl: 'scripts/profile/profile.html',
-        controller: 'ProfileCtrl'
+      .when('/users/:name', {
+        templateUrl: 'scripts/users/users.html',
+        controller: 'UsersCtrl'
       })
       .when('/404', {
         templateUrl: 'scripts/error/error.html',

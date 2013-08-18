@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ProfileCtrl', function () {
+describe('Controller: UsersCtrl', function () {
 
   // load the controller's module
   beforeEach(module('multicollide'));
@@ -11,7 +11,7 @@ describe('Controller: ProfileCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    UserCtrl = $controller('ProfileCtrl', {
+    UserCtrl = $controller('UsersCtrl', {
       $scope: scope
     });
   }));

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('profile', [])
-  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
+angular.module('users', [])
+  .controller('UsersCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
 
     $scope.locale = localization.getLocalizationKeys();
 

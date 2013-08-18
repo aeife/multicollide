@@ -83,7 +83,7 @@
                             <td style="vertical-align:middle;">
                               <ul class="list-unstyled" style="margin: 0px;">
                                 <li ng-repeat="player in standing">
-                                  <a href="#/profile/{{player}}">{{player}}</a>
+                                  <a href="#/users/{{player}}">{{player}}</a>
                                 </li>
                               </ul>
                             </td>
@@ -124,7 +124,7 @@
 
             <ul class="list-unstyled">
               <li class="text-center imitateTable" style="border-bottom:0;"><strong>{{'_FriendsOf_' | i18n}} {{user.name}}</strong></li>
-              <li class="text-center col-lg-6 col-lg-offset-6 imitateTable" ng-repeat="friend in user.friends | startFrom:friendsPaginate.startFrom | limitTo:friendsPaginate.limitTo"><a href="#/profile/{{friend}}">{{friend}}</a></li>
+              <li class="text-center col-lg-6 col-lg-offset-6 imitateTable" ng-repeat="friend in user.friends | startFrom:friendsPaginate.startFrom | limitTo:friendsPaginate.limitTo"><a href="#/users/{{friend}}">{{friend}}</a></li>
             </ul>
           </div>
         </div>
@@ -144,7 +144,7 @@
           <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
         </div>
         <ul class="list-unstyled text-center ">
-          <li class="col-lg-2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/profile/{{user.name}}">{{user.name}}</a></li>
+          <li class="col-lg-2" ng-repeat="user in users | withoutGuests | orderBy:'name' | filter:searchPlayer.string "><a href="#/users/{{user.name}}">{{user.name}}</a></li>
         </ul>
     </div>
 </div>

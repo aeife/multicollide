@@ -22,7 +22,7 @@
             <table class="text-center" style="width: 100%; table-layout: fixed; color: grey;">
               <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}">
                 <td><i class=" icon-circle"></i></td>
-                <td class="text-left"><a ng-class="{online: friend.online}" href="/#/profile/{{friend.$key}}">{{friend.$key}}</a></td>
+                <td class="text-left"><a ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a></td>
                 <td></td>
               </tr>
               <tr ng-hide="!requests.length">
@@ -32,7 +32,7 @@
               </tr>
               <tr ng-repeat="request in requests">
                 <td><i class=" icon-question-sign"></i></td>
-                <td class="text-left"><a href="/#/profile/{{request}}">{{request}}</a></td>
+                <td class="text-left"><a href="/#/users/{{request}}">{{request}}</a></td>
                 <td>
                   <div class="btn-group">
                     <a href="" ng-click="accept(request)"><i class="icon-ok-sign"></i></a>
