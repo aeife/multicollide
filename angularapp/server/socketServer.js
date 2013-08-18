@@ -1,19 +1,9 @@
 'use strict';
 
+var hooksystem = require('./hooksystem');
+hooksystem.registerHook('socketServer', 'connectionAfter');
+
 module.exports = {
-  hooks: {
-    connectionAfter: []
-  },
-  addHook: function(hook, functionToHook){
-    hook.push(functionToHook);
-  },
-  includeHook: function(hook, params){
-    if (hook.length > 0){
-      for (var i = 0; i < hook.length; i++){
-        hook[i](params);
-      }
-    }
-  },
   // names of current connected users
   connectedUsers: [],
   // sockets for all connected clients ordered with socket ids
@@ -95,7 +85,7 @@ module.exports = {
       console.log('client connected as ' + socket.session.username);
 
       // hook
-      self.includeHook(self.hooks.connectionAfter, {socket: socket});
+      hooksystem.includeHook(hooksystem.hooks.socketServer.connectionAfter, {socket: socket});
 
       /**
        * client requested list of open self.lobbies
