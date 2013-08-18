@@ -44,7 +44,7 @@
             <div class="nav-collapse collapse bs-navbar-collapse">
               <ul class="nav navbar-nav">
                 <li ng-class="{ active: activePath=='/' }"><a href="#/"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
-                <li ng-class="{ active: activePath=='/games/' }"><a href="#/games/"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
+                <li ng-class="{ active: activePath.indexOf('/games') > -1 }"><a href="#/games/"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
                 <li ng-class="{ active: activePath=='/profile/' }"><a href="#/profile/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
                 <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
               </ul>
@@ -171,6 +171,7 @@
     <script src="scripts/imagePreload/imagePreload.js"></script>
     <script src="scripts/profile/profile.js"></script>
     <script src="scripts/games/games.js"></script>
+    <script src="scripts/games/gameChoice.js"></script>
     <script src="scripts/games/lobby.js"></script>
 
     <script src="websocketApi.js"></script>

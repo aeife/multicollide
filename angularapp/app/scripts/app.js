@@ -3,7 +3,6 @@
 angular.module('multicollide',
   ['ngResource',
   'ngCookies',
-
   'main',
   'menu',
   'friendslist',
@@ -22,6 +21,7 @@ angular.module('multicollide',
   'imagePreload',
   'profile',
   'games',
+  'gameChoice',
   'websocketApi',
   'multicollideGame',
   'STATES',
@@ -54,6 +54,10 @@ angular.module('multicollide',
       .when('/about', {
         templateUrl: 'scripts/about/about.html',
         controller: 'AboutCtrl'
+      })
+      .when('/games', {
+        templateUrl: 'scripts/games/gameChoice.html',
+        controller: 'GameChoiceCtrl'
       })
       .when('/games/:game', {
         templateUrl: 'scripts/games/games.html',

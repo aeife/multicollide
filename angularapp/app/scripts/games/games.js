@@ -1,13 +1,7 @@
 'use strict';
 
 angular.module('games', [])
-  .controller('GamesCtrl', function ($scope, lobby, flash, $location, $rootScope, $filter, user, STATES, $routeParams) {
-
-    if ($routeParams.game) {
-      $scope.gamesChoice = false;
-    } else {
-      $scope.gamesChoice = true;
-    }
+  .controller('GamesCtrl', function ($scope, lobby, flash, $location, $rootScope, $filter, user, STATES) {
 
     $scope.order = 'name';
     $scope.reverse = false;
