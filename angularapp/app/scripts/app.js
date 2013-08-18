@@ -55,7 +55,7 @@ angular.module('multicollide',
         templateUrl: 'scripts/about/about.html',
         controller: 'AboutCtrl'
       })
-      .when('/games', {
+      .when('/games/:game', {
         templateUrl: 'scripts/games/games.html',
         controller: 'GamesCtrl'
       })

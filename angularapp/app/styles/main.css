@@ -184,3 +184,7 @@ a {
   margin:0 auto;
   float:none;
 }
+
+.gameChoice li {
+  margin: 10px;
+}
