@@ -81,9 +81,9 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   // INCLUDE
   require('./lobby.js').listen(io, socketApp);
-  var userHandler = require('./user.js')(io, socketApp);
-  var friendHandler = require('./friend.js')(io, socketApp);
-  var multicollideHandler = require('./multicollide.js')(io, socketApp);
+  require('./user.js').listen(io, socketApp);
+  require('./friend.js').listen(io, socketApp);
+  require('./multicollide.js').listen(io, socketApp);
 
 
   /*
