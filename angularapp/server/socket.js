@@ -2,7 +2,7 @@
 
 module.exports.startServer = function(server, cookieParser, sessionStore,sessionKey){
 
-  var crypto = require('crypto');
+
 
   var socketApp = {
     User: require('./database').User,
@@ -14,45 +14,28 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     lobbyForUsername: {},
     turnLoop: {},
     directionChanges: {},
-    generateRandomGuestName: function(){
-      //generate random number until not already in use
-      var randNr;
-      do{
-        randNr = Math.floor((Math.random()*900)+100);
-      } while (connectedUsers.indexOf('Guest'+randNr) > -1);
-
-      return 'Guest'+randNr;
-    },
-    addConnectedUser: function(username, socket){
-      // if no username, generate random and save
-      if (!username){
-        username = generateRandomGuestName();
-        setSession('username', username, socket);
-        // socket.session.username = username;
-      } else if (socket.session.username.indexOf('Guest') > -1 && connectedUsers.indexOf(socket.session.username) > -1){
-        // user was guest before he logged in (= he is already connected in as a guest)
-        deleteConnectedUser(socket.session.username, socket);
-        // socket.session.username = username;
-        setSession('username', username, socket);
-      }
-      // socket.session.save();
-      connectedUsers.push(username);
-      clientUsernames[username] = socket.id;
-      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
-
-      sendFriendRequestsIfExist(username);
-    },
-    setSession: function(attr, val, socket){
-      socket.session[attr] = val;
-      socket.session.save();
-    },
-    deleteConnectedUser: function(username, socket){
-      connectedUsers.splice(connectedUsers.indexOf(username),1);
-      delete clientUsernames[username];
-      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
-    },
     getIdForUsername: function(username){
-      return clientUsernames[username];
+      return socketApp.clientUsernames[username];
+    },
+    removeSensibleData: function(userObj, caller){
+      var user = userObj;
+
+      if (caller && caller === user.name) {
+        // if own infos dont delete some private information
+        delete user.requests;
+        delete user.password;
+        delete user._id;
+        delete user.__v;
+      } else {
+        delete user.requests;
+        delete user.password;
+        delete user._id;
+        delete user.__v;
+        delete user.language;
+        delete user.email;
+      }
+
+      return user;
     },
     addFriendRequest: function(username, friend){
       User.findOne({ name: username }, {password : 0}, function(err, user){
@@ -67,25 +50,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             }
 
             // send friend request if user is online
-            if (connectedUsers.indexOf(username) > -1){
+            if (socketApp.connectedUsers.indexOf(username) > -1){
 
               socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
             }
           });
         }
       });
-    },
-    sendFriendRequestsIfExist: function(username){
-      // @TODO: no db queries for guests
-      User.findOne({ name: username }, {password : 0}, function(err, user){
-        // console.log(user);
-
-        // only request if not already requested (so no multiple requests are possible)
-        if (user && user.requests.length > 0){
-          socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
-        }
-      });
-
     },
     removeFriendRequest: function(username, friend){
       User.findOne({ name: username }, {password : 0}, function(err, user){
@@ -149,9 +120,10 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
   var STATES = require('../app/states.js')();
 
 
+// INCLUDE
+var lobbyHandler = require('./lobby.js')(io, socketApp);
+var userHandler = require('./user.js')(io, socketApp);
 
-  // INCLUDE
-  var lobbyHandler = require('./lobby.js')(io, socketApp);
 
 
   /*
@@ -198,155 +170,25 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     console.log(socket.session);
 
 
+
     // save sockets for all clients ordered with socket id
     socketApp.clients[socket.id] = socket;
     console.log('client connected as ' + socket.session.usernamey);
     // console.log(socket.session.username);
 
-    // if user is already logged in: add to connected user list
-    // if (socket.session.username && connectedUsers.indexOf(socket.session.username) === -1){
-    // if (socket.session.username && socket.session.loggedin && connectedUsers.indexOf(socket.session.username) === -1){
-    if (connectedUsers.indexOf(socket.session.username) === -1){
-      addConnectedUser(socket.session.username, socket);
-    }
+
+
+
+
     // else {
     //   socket.session.username = 'Guest';
     // }
 
-    // send success message with username
-    // @TODO: Sessions for Guest or delete on exit?
-    socket.emit('successfullConnected', {username: socket.session.username});
+    // // send success message with username
+    // // @TODO: Sessions for Guest or delete on exit?
+    // socket.emit('successfullConnected', {username: socket.session.username});
 
-    /**
-     * sign up a new account
-     * @param  {object} data {username, password, email}
-     */
-    socket.on('user:new', function(data){
-      var user = new User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
-      user.save(function (err, user) {
-        var error = null;
-        if (err) {
-          console.log(err);
-          if (err.code === 11000) {
-            error = 'duplicate name';
-          }
-        }
-        socket.emit('user:new', {error: error});
-      });
-    });
 
-    /**
-     * get user info
-     * @param  {object} data {name}
-     */
-    socket.on('user:info', function(data){
-      // console.log(socket.session.username);
-      console.log(socket.session);
-      console.log("###POPULATE");
-      User.findOne({ name: data.name }).populate('gamesParticipated').exec(function(err, user){
-        console.log(user);
-        if (user) {
-          var userobj = user.toObject();
-
-          //check if own user
-          if (user.name === socket.session.username) {
-            // own user only data
-            userobj.own = true;
-          } else {
-            // delete own user only data
-            // delete userobj.friends;
-          }
-
-          //check if currently online
-          if (connectedUsers.indexOf(user.name) > -1) {
-            userobj.online = true;
-          }
-
-          socket.emit('user:info:'+data.name, removeSensibleData(userobj, socket.session.username));
-        } else {
-          socket.emit('user:info:'+data.name);
-        }
-
-      });
-
-    });
-
-    /**
-     * get list of all users
-     */
-    // socket.on(websocketApi.get.users.all.msgkey, function(data){
-    socket.on('users:all', function(data){
-      console.log('GETTIN ALL USERS');
-      User.find({}, {name : 1, _id : 0}, function(err, users){
-        console.log(users);
-        socket.emit('users:all', err, users);
-      });
-      // socket.emit('users:connected', {users: connectedUsers});
-    });
-
-    /**
-     * get list of current connected users
-     */
-    socket.on('users:connected', function(data){
-      var err = null;
-      socket.emit('users:connected', err, connectedUsers);
-    });
-
-    /**
-     * client wants to log in
-     * @param  {object} data {username, password}
-     */
-    socket.on('user:login', function(data){
-      User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
-        if (err) {
-          console.log(err);
-        }
-        if (user) {
-          // socket.session.loggedin = true;
-          setSession('loggedin', true, socket);
-          // socket.session.username = data.username;
-          // socket.session.save();
-
-          addConnectedUser(data.username, socket);
-          console.log('ID FOR USER: ' + data.username);
-          console.log(getIdForUsername(data.username));
-          socket.emit('user:login', {loggedin: true, language: user.language});
-        } else {
-          socket.emit('user:login', {loggedin: false});
-        }
-      });
-    });
-
-    /**
-     * user wants to log out
-     */
-    socket.on('user:logout', function(data){
-      console.log('LOGGING USER OUT');
-
-      // delete user from connected user list
-      if (connectedUsers.indexOf(socket.session.username) > -1){
-        deleteConnectedUser(socket.session.username, socket);
-      }
-
-      console.log(socket.session);
-      console.log(socket.session.username);
-      socket.session.destroy();
-      console.log(socket.handshake.sessionID);
-      sessionStore.destroy(socket.handshake.sessionID);
-
-      // @TODO: do not delete and add connected user on logout, just change name and status
-      socket.session.loggedin = null;
-      socket.session.username = generateRandomGuestName();
-      addConnectedUser(socket.session.username, socket);
-
-      // console.log(socket.session);
-      // console.log(socket.session.username);
-      // req.session.destroy = true;
-
-      // @TODO: send errors
-      // send new generated guest username
-      socket.emit('user:logout', {username: socket.session.username});
-    });
 
     /**
      * client wants to add friend
@@ -423,7 +265,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
             // emit new friend and his status
             if (!error) {
               var online = false;
-              if (connectedUsers.indexOf(data.user) > -1){
+              if (socketApp.connectedUsers.indexOf(data.user) > -1){
                 online = true;
               }
               socket.emit('friend:new', {user: data.user, online: online});
@@ -444,13 +286,13 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
                     removeFriendRequest(socket.session.username, data.user);
 
                     // only emit to other user when he is online
-                    if (connectedUsers.indexOf(data.user) > -1){
+                    if (socketApp.connectedUsers.indexOf(data.user) > -1){
                       // socketApp.clients[getIdForUsername(data.user)].emit('/friend/', {error: error});
 
                       // emit new friend and his status
                       if (!error) {
                         var online = false;
-                        if (connectedUsers.indexOf(socket.session.username) > -1){
+                        if (socketApp.connectedUsers.indexOf(socket.session.username) > -1){
                           online = true;
                         }
                         socketApp.clients[getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
@@ -493,7 +335,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
           console.log(user);
           for (var i = 0; i < user.friends.length; i++){
             var online = false;
-            if (connectedUsers.indexOf(user.friends[i]) > -1){
+            if (socketApp.connectedUsers.indexOf(user.friends[i]) > -1){
               online = true;
             }
             result[user.friends[i]] = {online: online};
@@ -568,12 +410,12 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
       console.log('client disconnected');
 
       delete socketApp.clients[socket.id];
-      if (socket.session.username){
-        // if user was logged in: delete user from connected user list
-        if (connectedUsers.indexOf(socket.session.username) > -1){
-          deleteConnectedUser(socket.session.username, socket);
-        }
-      }
+      // if (socket.session.username){
+      //   // if user was logged in: delete user from connected user list
+      //   if (socketApp.connectedUsers.indexOf(socket.session.username) > -1){
+      //     deleteConnectedUser(socket.session.username, socket);
+      //   }
+      // }
     });
 
 
@@ -589,7 +431,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
 
     socket.on('multicollide:start', function(data){
-      var lobbyId = lobbyForUsername[socket.session.username];
+      var lobbyId = socketApp.lobbyForUsername[socket.session.username];
       // reset or initialize for start
       directionChanges[lobbyId] = [];
 
@@ -602,7 +444,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
     socket.on('multicollide:changeDirection', function(data){
-      var lobbyId = lobbyForUsername[socket.session.username];
+      var lobbyId = socketApp.lobbyForUsername[socket.session.username];
 
       if (!directionChanges[lobbyId]) {
         directionChanges[lobbyId] = [];
@@ -612,7 +454,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
 
     socket.on('multicollide:end', function(data){
-      var lobbyId = lobbyForUsername[socket.session.username];
+      var lobbyId = socketApp.lobbyForUsername[socket.session.username];
       // change lobby status
       socketApp.lobbies[lobbyId].status = STATES.GAME.LOBBY;
 
@@ -708,77 +550,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
     });
   }
 
-  /**
-   * helper function to generate a random guest name
-   *
-   * guest name = "Guest" + random number between 100 and 999
-   * @return {string} random guest name
-   */
-  function generateRandomGuestName(){
-    //generate random number until not already in use
-    var randNr;
-    do{
-      randNr = Math.floor((Math.random()*900)+100);
-    } while (connectedUsers.indexOf('Guest'+randNr) > -1);
 
-    return 'Guest'+randNr;
-  }
-
-  /**
-   * handles a connecting user
-   *
-   * adds a user to the list of connected users
-   * adds the according id and username to the dictionary
-   * emits the event
-   * sends the user all pending friend requests
-   * @param {string} username Name of user
-   * @param {object} socket Socket object of user
-   */
-  function addConnectedUser(username, socket){
-    // if no username, generate random and save
-    if (!username){
-      username = generateRandomGuestName();
-      setSession('username', username, socket);
-      // socket.session.username = username;
-    } else if (socket.session.username.indexOf('Guest') > -1 && connectedUsers.indexOf(socket.session.username) > -1){
-      // user was guest before he logged in (= he is already connected in as a guest)
-      deleteConnectedUser(socket.session.username, socket);
-      // socket.session.username = username;
-      setSession('username', username, socket);
-    }
-    // socket.session.save();
-    connectedUsers.push(username);
-    clientUsernames[username] = socket.id;
-    socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
-
-    sendFriendRequestsIfExist(username);
-  }
-
-  /**
-   * helper function to set a session variable and save the session
-   * @param {string} attr Variable name
-   * @param {misc} val Variable value
-   * @param {object} socket Socket object
-   */
-  function setSession(attr, val, socket){
-    socket.session[attr] = val;
-    socket.session.save();
-  }
-
-  /**
-   * handles a disconnected user
-   *
-   * deletes a user from the list of connected users
-   * deletes the connected of username and id for user
-   * emits the event
-   * @param  {string} username Name of the user
-   * @param  {object} socket Socket object of the user
-   */
-  function deleteConnectedUser(username, socket){
-    connectedUsers.splice(connectedUsers.indexOf(username),1);
-    delete clientUsernames[username];
-    socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
-  }
 
   /**
    * returns the id (socket.id) for a given username
@@ -786,7 +558,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
    * @return {id} socket.id
    */
   function getIdForUsername(username){
-    return clientUsernames[username];
+    return socketApp.clientUsernames[username];
   }
 
   /**
@@ -807,7 +579,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
           }
 
           // send friend request if user is online
-          if (connectedUsers.indexOf(username) > -1){
+          if (socketApp.connectedUsers.indexOf(username) > -1){
 
             socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
           }
@@ -819,22 +591,7 @@ module.exports.startServer = function(server, cookieParser, sessionStore,session
 
   }
 
-  /**
-   * emits all pending friend requests to specific user
-   * @param  {string} username Name of the user for the requests
-   */
-  function sendFriendRequestsIfExist(username){
-    // @TODO: no db queries for guests
-    User.findOne({ name: username }, {password : 0}, function(err, user){
-      // console.log(user);
 
-      // only request if not already requested (so no multiple requests are possible)
-      if (user && user.requests.length > 0){
-        socketApp.clients[getIdForUsername(username)].emit('friend:request', {requests: user.requests});
-      }
-    });
-
-  }
 
   /**
    * removes a friend request for username from friend
