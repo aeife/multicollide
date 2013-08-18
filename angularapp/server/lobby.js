@@ -11,6 +11,7 @@ module.exports = {
 
     var STATES = require('../app/states.js')();
 
+    // highest current lobby id for continues counting
     var lobbyHighestCount = -1;
 
     /**
