@@ -27,7 +27,8 @@ angular.module('multicollide',
   'paginate',
   'tmh.dynamicLocale',
   'progressBar',
-  'layout'])
+  'layout',
+  'loadJs'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
