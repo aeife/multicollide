@@ -78,5 +78,9 @@ angular.module('games.game', [])
       }
     });
 
+    $scope.showGame = function(){
+      return lobby.status === STATES.GAME.INGAME;
+    };
+
     $scope.refresh();
   })

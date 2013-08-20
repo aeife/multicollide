@@ -1,6 +1,6 @@
 <!-- prerender game in background -->
 <div ng-repeat="game in appConfig.games" ng-switch on="lobby.game == game.name">
-  <div ng-switch-when="true">
+  <div ng-switch-when="true" ng-show="showGame()">
     <ng-include src="game.template"></ng-include>
   </div>
 </div>
