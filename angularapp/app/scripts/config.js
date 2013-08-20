@@ -31,6 +31,15 @@ var appConfig = {
           }
         }
       }
+    },
+    {
+      name: 'mockGame',
+      module: 'mockGame',
+      template: 'scripts/mockGame/mockGame.html',
+      files: [
+        'scripts/mockGame/mockGame.js'
+      ],
+      api: {}
     }
   ]
 };
