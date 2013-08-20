@@ -194,8 +194,9 @@ angular.module('sockets')
       }
     }
 
-
-    websocketApi = processSocketApi(websocketApi.api);
+    // append game apis before processing
+    websocketApi = websocketApi.appendGameApis(appConfig);
+    websocketApi = processSocketApi(websocketApi);
     console.log('websocketApi:');
     console.log(websocketApi);
 

@@ -24,10 +24,12 @@ module.exports = {
     // socket.io listens on server
     var io = require('socket.io').listen(server);
 
+    // include app config file
+    var appConfig = require('../app/scripts/config.js');
 
-    var websocketApi = require('../app/websocketApi.js')();
-    websocketApi = websocketApi.generateStringObject(websocketApi.api);
-    // websocketApi.generateStringObject();
+    // include api and generate object with appended api
+    var websocketApi = require('../app/websocketApi.js');
+    websocketApi = websocketApi.generateStringObject(websocketApi.appendGameApis(appConfig));
 
     // INCLUDE
     var lobby = require('./lobby.js');

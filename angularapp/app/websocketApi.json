@@ -1,0 +1,140 @@
+{
+  "onlinestatus": {
+    "on": {
+      "attach": "username"
+    }
+  },
+  "successfullConnected": {
+    "on": {}
+  },
+  "disconnect": {
+    "on": {}
+  },
+  "multicollide": {
+    "start": {
+      "on": {},
+      "emit": {}
+    },
+    "end": {
+      "on": {},
+      "emit": {}
+    },
+    "turn": {
+      "on": {}
+    },
+    "changeDirection": {
+      "emit": {}
+    }
+  },
+  "users": {
+    "connected": {
+      "get": {}
+    },
+    "all": {
+      "get": {}
+    }
+  },
+  "user": {
+    "new": {
+      "get": {
+        "emitData": ["username", "password", "email"]
+      }
+    },
+    "login": {
+      "get": {
+        "emitData": ["username", "password"]
+      }
+    },
+    "logout": {
+      "get": {}
+    },
+    "info": {
+      "get": {
+        "emitData": "name",
+        "attach": "name"
+      }
+    },
+    "statsUpdate": {
+      "on": {
+        "attach": "username"
+      }
+    }
+  },
+  "games": {
+    "get": {}
+  },
+  "lobby": {
+    "new": {
+      "get": {
+        "emitData": ["lobbyName", "playerLimit"]
+      }
+    },
+    "join": {
+      "get": {
+        "emitData": "id"
+      }
+    },
+    "leave": {
+      "get": {
+        "emitData": "id"
+      },
+      "on": {}
+    },
+    "start": {
+      "get": {
+        "emitData": "id"
+      },
+      "on": {}
+    },
+    "player": {
+      "joined": {
+        "on": {}
+      },
+      "left": {
+        "on": {}
+      }
+    }
+  },
+  "friend": {
+    "add": {
+      "get": {
+        "emitData": "username"
+      }
+    },
+    "remove": {
+      "get": {
+        "emitData": "username"
+      }
+    },
+    "accept": {
+      "emit": {}
+    },
+    "decline": {
+      "emit": {}
+    },
+    "request": {
+      "on": {}
+    },
+    "new": {
+      "on": {}
+    },
+    "deleted": {
+      "on": {}
+    }
+  },
+  "friends": {
+    "all": {
+      "get": {}
+    }
+  },
+  "settings": {
+    "changePassword": {
+      "get": {
+        "emitData": ["username", "oldPassword", "newPassword"]
+      }
+    },
+    "newLanguage": {
+      "emit": {}
+    }
+  }
+}
