@@ -5,6 +5,7 @@ var appConfig = {
     {
       name: 'multicollide',
       module: 'multicollideGame',
+      template: 'scripts/multicollide/multicollide.html',
       files: [
         'scripts/multicollide/multicollide.js',
         'scripts/multicollide/level.js',

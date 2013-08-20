@@ -3,6 +3,7 @@
 angular.module('games.game', [])
   .controller('GameCtrl', function ($scope, lobby, flash, $location, $rootScope, $filter, user, STATES) {
 
+    $scope.appConfig = appConfig;
     $scope.order = 'name';
     $scope.reverse = false;
     $scope.lobby = lobby;
