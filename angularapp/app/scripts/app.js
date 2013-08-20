@@ -26,8 +26,7 @@ angular.module('multicollide',
   'paginate',
   'tmh.dynamicLocale',
   'progressBar',
-  'layout',
-  'loadJs'])
+  'layout'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -105,6 +104,5 @@ angular.module('multicollideBoot', ['multicollide']).
         console.log('still logged in!');
       }
     }).once();
-
 
   });
