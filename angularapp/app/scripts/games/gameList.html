@@ -11,7 +11,7 @@
       <img ng-hide="game.previewImage" src="images/gamePlaceholder.png" alt="{{game.name}}">
       <div class="carousel-caption" style="color:black;">
         <h3>{{game.name}}</h3>
-        <p>{{game.description}}</p>
+        <p>{{getLocalDescription(game.description)}}</p>
       </div>
     </div>
   </div>
@@ -24,3 +24,4 @@
     <span class="icon-next"></span>
   </a>
 </div>
+

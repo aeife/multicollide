@@ -4,7 +4,10 @@ var appConfig = {
   games: [
     {
       name: 'multicollide',
-      description: 'A super awesome multiplayer game.',
+      description: {
+        'en-US': 'A super awesome multiplayer game.',
+        'de-DE': 'Ein super tolles Multiplayerspiel.'
+      },
       module: 'multicollideGame',
       template: 'scripts/multicollide/multicollide.html',
       files: [
@@ -36,7 +39,9 @@ var appConfig = {
     },
     {
       name: 'mockGame',
-      description: 'Just a placeholder game.',
+      description: {
+        'en-US': 'Just a placeholder game.'
+      },
       module: 'mockGame',
       template: 'scripts/mockGame/mockGame.html',
       files: [
