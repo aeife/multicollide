@@ -1,7 +1,7 @@
 <!-- prerender game in background -->
-<div ng-switch="lobby.game">
-  <div ng-switch-when="multicollide">
-    <ng-include src="appConfig.games[0].template"></ng-include>
+<div ng-repeat="game in appConfig.games" ng-switch on="lobby.game == game.name">
+  <div ng-switch-when="true">
+    <ng-include src="game.template"></ng-include>
   </div>
 </div>
 
