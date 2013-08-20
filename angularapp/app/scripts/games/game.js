@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('games.game', [])
-  .controller('GameCtrl', function ($scope, lobby, flash, $location, $rootScope, $filter, user, STATES) {
+  .controller('GameCtrl', function ($scope, lobby, flash, $location, $rootScope, $filter, user, STATES, $routeParams) {
+
+    lobby.changeGame($routeParams.game);
 
     $scope.appConfig = appConfig;
     $scope.order = 'name';
