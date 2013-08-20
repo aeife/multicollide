@@ -4,6 +4,7 @@ var appConfig = {
   games: [
     {
       name: 'multicollide',
+      description: 'A super awesome multiplayer game.',
       module: 'multicollideGame',
       template: 'scripts/multicollide/multicollide.html',
       files: [
@@ -13,6 +14,7 @@ var appConfig = {
         'scripts/multicollide/canvasRender.js',
         'scripts/multicollide/config.js'
       ],
+      previewImage: 'scripts/multicollide/multicollide.png',
       api: {
         multicollide: {
           start: {
@@ -34,6 +36,7 @@ var appConfig = {
     },
     {
       name: 'mockGame',
+      description: 'Just a placeholder game.',
       module: 'mockGame',
       template: 'scripts/mockGame/mockGame.html',
       files: [
