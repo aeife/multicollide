@@ -1,15 +1,7 @@
 <h1 class="text-center">{{'_ChooseAGame_' | i18n}}</h1>
-  <div class="text-center">
-    <ul class="list-unstyled gameChoice">
-      <li class="row"><a class="col-lg-5 span-centered btn btn-primary btn-large" href="#/games/multicollide" ng-click="lobby.changeGame('multicollide')">Multicollide</a></li>
-      <li class="row"><a class="col-lg-5 span-centered btn btn-primary btn-large" href="#/games/mockGame1" ng-click="lobby.changeGame('mockGame1')">MockGame1</a></li>
-      <li class="row"><a class="col-lg-5 span-centered btn btn-primary btn-large" href="#/games/mockGame2" ng-click="lobby.changeGame('mockGame2')">MockGame2</a></li>
-    </ul>
-  </div>
-  <!-- use ng-switch so game object is only included when selected -->
-  <div ng-switch="lobby.game">
-    <div ng-switch-when="multicollide">
-      <multicollide-game></multicollide-game>
-    </div>
-  </div>
+<div class="text-center">
+  <ul class="list-unstyled gameChoice" ng-repeat="game in appConfig.games">
+    <li class="row"><a class="col-lg-5 span-centered btn btn-primary btn-large" href="#/games/{{game.name}}" ng-click="lobby.changeGame(game.name)">{{game.name}}</a></li>
+  </ul>
 </div>
+
