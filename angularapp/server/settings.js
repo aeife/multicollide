@@ -6,6 +6,7 @@ module.exports = {
   listen: function(io){
     var crypto = require('crypto');
     var db = require('./database');
+    var api = require('./socketServer').api;
 
     io.sockets.on('connection', function(socket){
       /**
@@ -14,7 +15,7 @@ module.exports = {
        *
        * @param  {object} data {name, oldPassword, newPassword}
        */
-      socket.on('settings:changePassword', function(data){
+      socket.on(api.settings.changePassword, function(data){
         //check if user is logged in
         if (socket.session.loggedin) {
           //check if correct old password, then change
@@ -27,17 +28,17 @@ module.exports = {
               user.password = crypto.createHash('sha512').update(data.newPassword).digest('hex');
               user.save(function (err) {
                 if (err) {
-                  socket.emit('settings:changePassword', {error: 'error'});
+                  socket.emit(api.settings.changePassword, {error: 'error'});
                 } else {
-                  socket.emit('settings:changePassword', {error: null});
+                  socket.emit(api.settings.changePassword, {error: null});
                 }
               });
             } else {
-              socket.emit('settings:changePassword', {error: 'wrong old password'});
+              socket.emit(api.settings.changePassword, {error: 'wrong old password'});
             }
           });
         } else {
-          socket.emit('settings:changePassword', {error: 'only use this api when logged in'});
+          socket.emit(api.settings.changePassword, {error: 'only use this api when logged in'});
         }
       });
 
@@ -47,7 +48,7 @@ module.exports = {
        *
        * @param  {object} data {newLanguage}
        */
-      socket.on('settings:newLanguage', function(data){
+      socket.on(api.settings.newLanguage, function(data){
         if (socket.session.loggedin) {
           db.User.findOne({ name: socket.session.username}, function(err, user){
             if (err) {
