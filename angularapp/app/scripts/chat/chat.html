@@ -17,7 +17,18 @@
             <button class="btn btn-primary btn-mini" ng-click="leave()">leave chat</button>
           </div>
           <ul id="chat" class="list-unstyled" style="height: 200px; overflow-y:scroll;">
-            <li ng-repeat="message in messages"><strong>{{message.username}}:</strong> {{message.message}}</li>
+            <li ng-repeat="message in messages">
+              <div ng-switch on="message.message.length > 0">
+                <!-- chat message -->
+                <div ng-switch-when="true">
+                  <strong>{{message.username}}:</strong> {{message.message}}
+                </div>
+                <!-- status message -->
+                <div ng-switch-when="false">
+                  <span style="color:grey;">{{message.username}} {{message.type}}</span>
+                </div>
+              </div>
+            </li>
           </ul>
           <form class="text-center">
             <input ng-model="currentMessage">

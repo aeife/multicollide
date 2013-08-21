@@ -11,6 +11,8 @@ angular.module('chat', [])
         $scope.currentMessage = '';
         $scope.inChat = false;
         var chatMessageListener;
+        var chatJoinedListener;
+        var chatLeftListener;
 
         $scope.join = function(){
           console.log('joining');
@@ -19,13 +21,17 @@ angular.module('chat', [])
             if (!err){
               $scope.inChat = true;
               chatMessageListener = socketgenapi.chat.message.on(function(data){
-                $scope.messages.push(data);
-                // scroll down, wait shortly so it is already applied
-                // @TODO: better way to wait for apply?
-                setTimeout(function(){
-                  var chatElement = document.getElementById('chat');
-                  chatElement.scrollTop = chatElement.scrollHeight;
-                }, 5);
+                addMessage(data);
+              });
+
+              chatJoinedListener = socketgenapi.chat.user.joined.on(function(data){
+                data.type = 'joined';
+                addMessage(data);
+              });
+
+              chatLeftListener = socketgenapi.chat.user.left.on(function(data){
+                data.type = 'left';
+                addMessage(data);
               });
             }
           });
@@ -37,6 +43,8 @@ angular.module('chat', [])
             if (!err){
               $scope.inChat = false;
               chatMessageListener.stop();
+              chatJoinedListener.stop();
+              chatLeftListener.stop();
             }
           });
         };
@@ -46,6 +54,18 @@ angular.module('chat', [])
           socketgenapi.chat.message.emit({message: $scope.currentMessage});
           $scope.currentMessage = '';
         };
+
+        function addMessage(msg){
+          console.log(msg);
+          console.log(msg.message);
+          $scope.messages.push(msg);
+          // scroll down, wait shortly so it is already applied
+          // @TODO: better way to wait for apply?
+          setTimeout(function(){
+            var chatElement = document.getElementById('chat');
+            chatElement.scrollTop = chatElement.scrollHeight;
+          }, 5);
+        }
       }
     };
   });

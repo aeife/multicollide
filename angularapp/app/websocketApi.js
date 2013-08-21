@@ -129,6 +129,14 @@
         join: {
           get: {}
         },
+        user: {
+          joined: {
+            on: {}
+          },
+          left: {
+            on: {}
+          }
+        },
         leave: {
           get: {}
         },
