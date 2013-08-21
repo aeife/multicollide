@@ -1,9 +1,12 @@
 'use strict';
 
-
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = {
+  events: new EventEmitter(),
   listen: function(io){
+    var self = this;
+
     var crypto = require('crypto');
     var db = require('./database');
     var socketServer = require('./socketServer');
@@ -205,6 +208,9 @@ module.exports = {
             // socket.session.username = data.username;
             // socket.session.save();
 
+            // emit internal event
+            self.events.emit('userLoginBefore', {username: socket.session.username});
+
             addConnectedUser(data.username, socket);
             console.log('ID FOR USER: ' + data.username);
             console.log(socketServer.getIdForUsername(data.username));
@@ -220,6 +226,9 @@ module.exports = {
        */
       socket.on('user:logout', function(data){
         console.log('LOGGING USER OUT');
+
+        // emit internal event
+        self.events.emit('userLogoutBefore', {username: socket.session.username});
 
         // delete user from connected user list
         if (socketServer.connectedUsers.indexOf(socket.session.username) > -1){

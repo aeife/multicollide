@@ -3,7 +3,7 @@
     <div class="accordion-heading">
       <a class="accordion-toggle row text-center" data-toggle="collapse" data-parent="#accordion-chat" href="#collapse-chat">
         <div class="col-lg-12">
-          <h3 style="margin: 0;">Chat</h3>
+          <h3 style="margin: 0;">Chat <span ng-show="inChat" class="badge badge-info">{{chatUsers.length}}</span></h3>
         </div>
       </a>
     </div>
@@ -39,3 +39,6 @@
     </div>
   </div>
 </div>
+<!-- <ul>
+  <li ng-repeat="chatUser in chatUsers">{{chatUser}}</li>
+</ul> -->
