@@ -9,6 +9,7 @@ angular.module('chat', [])
 
         $scope.messages = [];
         $scope.currentMessage = '';
+        $scope.inChat = false;
         var chatMessageListener;
 
         $scope.join = function(){
@@ -16,8 +17,15 @@ angular.module('chat', [])
           socketgenapi.chat.join.get(function(err, data){
             console.log("got join, now listen");
             if (!err){
+              $scope.inChat = true;
               chatMessageListener = socketgenapi.chat.message.on(function(data){
                 $scope.messages.push(data);
+                // scroll down, wait shortly so it is already applied
+                // @TODO: better way to wait for apply?
+                setTimeout(function(){
+                  var chatElement = document.getElementById('chat');
+                  chatElement.scrollTop = chatElement.scrollHeight;
+                }, 5);
               });
             }
           });
@@ -27,6 +35,7 @@ angular.module('chat', [])
           console.log('leave');
           socketgenapi.chat.leave.get(function(err, data){
             if (!err){
+              $scope.inChat = false;
               chatMessageListener.stop();
             }
           });
