@@ -199,7 +199,12 @@
 
   function generateAttachFunction(msg){
     return function(param){
-      return msg + ':' + param;
+      if (param){
+        return msg + ':' + param;
+      } else {
+        return msg;
+      }
+
     };
   }
 
