@@ -14,6 +14,7 @@ module.exports = {
     var db = require('./database');
     var socketServer = require('./socketServer');
     var STATES = require('../app/states.js')();
+    var api = socketServer.api;
 
     // highest current lobby id for continues counting
     var lobbyHighestCount = -1;
@@ -87,10 +88,10 @@ module.exports = {
       db.User.findOne({name: socket.session.username}, function(err, user){
         if (user) {
           var userObj = user.toObject();
-          socket.broadcast.to(self.lobbies[id].name).emit('lobby:player:joined', db.removeSensibleData(userObj));
+          socket.broadcast.to(self.lobbies[id].name).emit(api.lobby.player.joined, db.removeSensibleData(userObj));
         } else {
           // user is guest, just send name
-          socket.broadcast.to(self.lobbies[id].name).emit('lobby:player:joined', {name: socket.session.username});
+          socket.broadcast.to(self.lobbies[id].name).emit(api.lobby.player.joined, {name: socket.session.username});
         }
       });
     }
@@ -105,7 +106,7 @@ module.exports = {
       if (self.lobbies[id].host === socket.session.username){
         // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
         socket.leave(self.lobbies[id].name);
-        io.sockets.in(self.lobbies[id].name).emit('lobby:leave', {reason: 'host left'});
+        io.sockets.in(self.lobbies[id].name).emit(api.lobby.leave, {reason: 'host left'});
 
         removeLobby(id);
       } else {
@@ -119,7 +120,7 @@ module.exports = {
 
         //send left event to other players in lobby and leave socket room
         socket.leave(self.lobbies[id].name);
-        io.sockets.in(self.lobbies[id].name).emit('lobby:player:left', {username: socket.session.username});
+        io.sockets.in(self.lobbies[id].name).emit(api.lobby.player.left, {username: socket.session.username});
       }
     }
 
@@ -129,7 +130,7 @@ module.exports = {
         self.lobbies[id].status = STATES.GAME.INGAME;
 
         // emit start to all players in lobby
-        io.sockets.in(self.lobbies[id].name).emit('lobby:start', {});
+        io.sockets.in(self.lobbies[id].name).emit(api.lobby.start, {});
       }
     }
 
@@ -137,14 +138,14 @@ module.exports = {
 
 
     io.sockets.on('connection', function(socket){
-      socket.on('lobby:new', function(data){
+      socket.on(api.lobby.new, function(data){
         console.log('client requested games info');
         var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: STATES.GAME.LOBBY, maxplayers: data.maxplayers});
         joinLobby(newLobby.id, socket);
-        socket.emit('lobby:new', newLobby);
+        socket.emit(api.lobby.new, newLobby);
       });
 
-      socket.on('lobby:join', function(data){
+      socket.on(api.lobby.join, function(data){
         console.log('client wants to join lobby');
         // checking if lobby still exists
         var err = null;
@@ -158,20 +159,20 @@ module.exports = {
         } else {
           err = 'lobby was deleted';
         }
-        socket.emit('lobby:join', err, self.lobbies[data.id]);
+        socket.emit(api.lobby.join, err, self.lobbies[data.id]);
       });
 
-      socket.on('lobby:leave', function(data){
+      socket.on(api.lobby.leave, function(data){
         var lobbyId = self.lobbyForUsername[socket.session.username];
 
         console.log('client wants to leave lobby');
         console.log(socket.session.username);
         leaveLobby(lobbyId, socket);
-        socket.emit('lobby:leave', self.lobbies[lobbyId]);
+        socket.emit(api.lobby.leave, self.lobbies[lobbyId]);
       });
 
 
-      socket.on('lobby:start', function(data){
+      socket.on(api.lobby.start, function(data){
         var lobbyId = self.lobbyForUsername[socket.session.username];
 
         console.log('host started game');
@@ -181,8 +182,9 @@ module.exports = {
 
         // wait a bit and then send game start
         // @TODO: something better then waiting?
+        // @TODO: adjust for multiple games, more modular
         setTimeout(function(){
-          io.sockets.in(self.lobbies[lobbyId].name).emit('multicollide:start', {});
+          io.sockets.in(self.lobbies[lobbyId].name).emit(api.multicollide.start, {});
         }, 500);
 
       });
