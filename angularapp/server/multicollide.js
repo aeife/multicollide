@@ -6,7 +6,8 @@ module.exports = {
   listen: function(io){
     var STATES = require('../app/states.js')();
     var db = require('./database');
-    var lobby = require('./lobby.js');
+    var lobby = require('./lobby');
+    var api = require('./socketServer').api;
 
     var turnLoop = {};
 
@@ -50,7 +51,7 @@ module.exports = {
               var userObj = user.toObject();
               userObj.ratioDiff = ratioDiff;
               userObj.eloDiff = eloDiff;
-              io.sockets.emit('user:statsUpdate:'+player, db.removeSensibleData(userObj));
+              io.sockets.emit(api.user.statsUpdate(player), db.removeSensibleData(userObj));
             }
           });
         }
@@ -70,20 +71,20 @@ module.exports = {
 
     io.sockets.on('connection', function(socket){
 
-      socket.on('multicollide:start', function(data){
+      socket.on(api.multicollide.start, function(data){
         var lobbyId = lobby.lobbyForUsername[socket.session.username];
         // reset or initialize for start
         directionChanges[lobbyId] = [];
 
         turnLoop[lobbyId] = setInterval(function(){
-          io.sockets.in(lobby.lobbies[lobbyId].name).emit('multicollide:turn', {directionChanges: directionChanges[lobbyId]});
+          io.sockets.in(lobby.lobbies[lobbyId].name).emit(api.multicollide.turn, {directionChanges: directionChanges[lobbyId]});
 
           // reset information
           directionChanges[lobbyId] = [];
         },50);
       });
 
-      socket.on('multicollide:changeDirection', function(data){
+      socket.on(api.multicollide.changeDirection, function(data){
         var lobbyId = lobby.lobbyForUsername[socket.session.username];
 
         if (!directionChanges[lobbyId]) {
@@ -93,7 +94,7 @@ module.exports = {
         directionChanges[lobbyId].push({player: socket.session.username, direction: data.direction});
       });
 
-      socket.on('multicollide:end', function(data){
+      socket.on(api.multicollide.end, function(data){
         var lobbyId = lobby.lobbyForUsername[socket.session.username];
         // change lobby status
         lobby.lobbies[lobbyId].status = STATES.GAME.LOBBY;
@@ -120,7 +121,7 @@ module.exports = {
         }
 
         // emit game ending to all players
-        io.sockets.in(lobby.lobbies[lobbyId].name).emit('multicollide:end', {});
+        io.sockets.in(lobby.lobbies[lobbyId].name).emit(api.multicollide.end, {});
       });
     });
   }
