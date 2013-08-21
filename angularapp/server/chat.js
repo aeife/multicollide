@@ -5,18 +5,19 @@
 module.exports = {
   listen: function(io){
     var user = require('./user');
+    var api = require('./socketServer').api;
 
     var chatUsers = [];
 
     io.sockets.on('connection', function(socket){
 
-      socket.on('chat:join', function(){
+      socket.on(api.chat.join, function(){
         chatUsers.push(socket.session.username);
         socket.join('chat');
-        socket.emit('chat:join', null, {chatUsers: chatUsers});
+        socket.emit(api.chat.join, null, {chatUsers: chatUsers});
 
         // send player join to all chat users
-        socket.broadcast.to('chat').emit('chat:user:joined', {username: socket.session.username});
+        socket.broadcast.to('chat').emit(api.chat.user.joined, {username: socket.session.username});
       });
 
       // listen for internal login and logout event to leave chat
@@ -27,12 +28,12 @@ module.exports = {
         leaveChat(socket, params.username);
       });
 
-      socket.on('chat:message', function(data){
-        io.sockets.in('chat').emit('chat:message', {username: socket.session.username, message: data.message});
+      socket.on(api.chat.message, function(data){
+        io.sockets.in('chat').emit(api.chat.message, {username: socket.session.username, message: data.message});
       });
 
-      socket.on('chat:leave', function(){
-        socket.emit('chat:leave', null, {});
+      socket.on(api.chat.leave, function(){
+        socket.emit(api.chat.leave, null, {});
 
         // send player leave to all chat users
         leaveChat(socket, socket.session.username);
@@ -48,7 +49,7 @@ module.exports = {
       if (chatUsers.indexOf(username) > -1){
         socket.leave('chat');
         chatUsers.splice(chatUsers.indexOf(username), 1);
-        io.sockets.in('chat').emit('chat:user:left', {username: username});
+        io.sockets.in('chat').emit(api.chat.user.left, {username: username});
       }
     }
   }
