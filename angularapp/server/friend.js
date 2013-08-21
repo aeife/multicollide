@@ -6,6 +6,7 @@ module.exports = {
   listen: function(io){
     var db = require('./database');
     var socketServer = require('./socketServer');
+    var api = socketServer.api;
 
     /**
      * adds a friend request for username from friend
@@ -27,7 +28,7 @@ module.exports = {
             // send friend request if user is online
             if (socketServer.connectedUsers.indexOf(username) > -1){
 
-              socketServer.clients[socketServer.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+              socketServer.clients[socketServer.getIdForUsername(username)].emit(api.friend.request, {requests: user.requests});
             }
           });
         }
@@ -59,7 +60,7 @@ module.exports = {
        * client wants to add friend
        * @param  {object} data {name}
        */
-      socket.on('friend:add', function(data){
+      socket.on(api.friend.add, function(data){
         console.log(socket.session.username + ' wants to add ' + data.name);
         addFriendRequest(data.name, socket.session.username);
       });
@@ -68,7 +69,7 @@ module.exports = {
        * client wants to remove friend
        * @param  {object} data {name}
        */
-      socket.on('friend:remove', function(data){
+      socket.on(api.friend.remove, function(data){
         // remove /friend/:name -> remove friend
         console.log(socket.session.username + ' wants to delete ' + data.name);
 
@@ -81,10 +82,10 @@ module.exports = {
               console.log(err);
               error = true;
             }
-            socket.emit('friend:remove'+data.name, {error: error});
+            socket.emit(api.friend.remove, {error: error});
 
             // emit deleted friend
-            socket.emit('friend:deleted', {user: data.name});
+            socket.emit(api.friend.deleted, {user: data.name});
           });
         });
 
@@ -99,10 +100,7 @@ module.exports = {
 
             // if other user is online: send deletion
             if (socketServer.clients[socketServer.getIdForUsername(data.name)]) {
-              socketServer.clients[socketServer.getIdForUsername(data.name)].emit('/friend/'+socket.session.username, {error: error});
-
-              // emit deleted friend
-              socketServer.clients[socketServer.getIdForUsername(data.name)].emit('friend:deleted', {user: socket.session.username});
+              socketServer.clients[socketServer.getIdForUsername(data.name)].emit(api.friend.deleted, {user: socket.session.username});
             }
           });
         });
@@ -112,7 +110,7 @@ module.exports = {
        * client accepted friend request
        * @param  {object} data user
        */
-      socket.on('friend:accept', function(data){
+      socket.on(api.friend.accept, function(data){
         console.log(socket.session.username + ' accepts request from ' + data.user);
 
         // add friend for both users
@@ -133,7 +131,7 @@ module.exports = {
                 if (socketServer.connectedUsers.indexOf(data.user) > -1){
                   online = true;
                 }
-                socket.emit('friend:new', {user: data.user, online: online});
+                socket.emit(api.friend.new, {user: data.user, online: online});
 
                 // add to other user
                 // @TODO: do parallel
@@ -160,7 +158,7 @@ module.exports = {
                           if (socketServer.connectedUsers.indexOf(socket.session.username) > -1){
                             online = true;
                           }
-                          socketServer.clients[socketServer.getIdForUsername(data.user)].emit('friend:new', {user: socket.session.username, online: online});
+                          socketServer.clients[socketServer.getIdForUsername(data.user)].emit(api.friend.new, {user: socket.session.username, online: online});
                         }
                       }
                     });
@@ -177,7 +175,7 @@ module.exports = {
        * client declined friend request
        * @param  {object} data {user}
        */
-      socket.on('friend:decline', function(data){
+      socket.on(api.friend.decline, function(data){
         console.log(socket.session.username + ' declines friend request from ' + data.user);
         removeFriendRequest(socket.session.username, data.user);
       });
@@ -186,7 +184,7 @@ module.exports = {
       /**
        * client wants list of all friends status
        */
-      socket.on('friends:all', function(data){
+      socket.on(api.friends.all, function(data){
         console.log('GETTING FRIENDS STATUS');
 
         var result = {};
@@ -206,7 +204,7 @@ module.exports = {
               result[user.friends[i]] = {online: online};
             }
             console.log('EMITTING TO /FRIENDS/');
-            socket.emit('friends:all', result);
+            socket.emit(api.friends.all, result);
           }
         });
       });
