@@ -32,7 +32,7 @@
           </ul>
           <form class="text-center">
             <input ng-model="currentMessage">
-            <button class="btn btn-primary btn-mini" ng-click="send()">send</button>
+            <button class="btn btn-primary btn-mini" ng-disabled="currentMessage == ''" ng-click="send()">send</button>
           </form>
         </div>
       </div>
