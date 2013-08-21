@@ -4,6 +4,8 @@ var EventEmitter = require('events').EventEmitter;
 
 module.exports = {
   events: new EventEmitter(),
+  // websocket api
+  api: null,
   // names of current connected users
   connectedUsers: [],
   // sockets for all connected clients ordered with socket ids
@@ -28,8 +30,8 @@ module.exports = {
     var appConfig = require('../app/scripts/config.js');
 
     // include api and generate object with appended api
-    var websocketApi = require('../app/websocketApi.js');
-    websocketApi = websocketApi.generateServerObject(websocketApi.appendGameApis(appConfig));
+    this.api = require('../app/websocketApi.js');
+    this.api = this.api.generateServerObject(this.api.appendGameApis(appConfig));
 
     // INCLUDE
     var lobby = require('./lobby.js');
@@ -93,9 +95,9 @@ module.exports = {
       /**
        * client requested list of open self.lobbies
        */
-      socket.on('games', function(data){
+      socket.on(self.api.games, function(data){
         console.log('client requested games info');
-        socket.emit('games', lobby.lobbies);
+        socket.emit(self.api.games, lobby.lobbies);
       });
 
       /**

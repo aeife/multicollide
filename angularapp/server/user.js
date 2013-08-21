@@ -10,6 +10,7 @@ module.exports = {
     var crypto = require('crypto');
     var db = require('./database');
     var socketServer = require('./socketServer');
+    var api = socketServer.api;
 
     /**
      * helper function to set a session variable and save the session
@@ -47,7 +48,7 @@ module.exports = {
       // socket.session.save();
       socketServer.connectedUsers.push(username);
       socketServer.clientUsernames[username] = socket.id;
-      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: true});
+      socket.broadcast.emit(api.onlinestatus(username), {user: username, online: true});
 
       sendFriendRequestsIfExist(username);
     }
@@ -64,7 +65,7 @@ module.exports = {
     function deleteConnectedUser(username, socket){
       socketServer.connectedUsers.splice(socketServer.connectedUsers.indexOf(username),1);
       delete socketServer.clientUsernames[username];
-      socket.broadcast.emit('onlinestatus:'+username, {user: username, online: false});
+      socket.broadcast.emit(api.onlinestatus(username), {user: username, online: false});
     }
 
     /**
@@ -94,7 +95,7 @@ module.exports = {
 
         // only request if not already requested (so no multiple requests are possible)
         if (user && user.requests.length > 0){
-          socketServer.clients[socketServer.getIdForUsername(username)].emit('friend:request', {requests: user.requests});
+          socketServer.clients[socketServer.getIdForUsername(username)].emit(api.friend.request, {requests: user.requests});
         }
       });
 
@@ -114,7 +115,7 @@ module.exports = {
 
       // send success message with username
       // @TODO: Sessions for Guest or delete on exit?
-      params.socket.emit('successfullConnected', {username: params.socket.session.username});
+      params.socket.emit(api.successfullConnected, {username: params.socket.session.username});
     });
 
     io.sockets.on('connection', function(socket){
@@ -122,7 +123,7 @@ module.exports = {
        * sign up a new account
        * @param  {object} data {username, password, email}
        */
-      socket.on('user:new', function(data){
+      socket.on(api.user.new, function(data){
         var user = new db.User({name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex'), email: data.email});
         user.save(function (err, user) {
           var error = null;
@@ -132,7 +133,7 @@ module.exports = {
               error = 'duplicate name';
             }
           }
-          socket.emit('user:new', {error: error});
+          socket.emit(api.user.new, {error: error});
         });
       });
 
@@ -140,7 +141,7 @@ module.exports = {
        * get user info
        * @param  {object} data {name}
        */
-      socket.on('user:info', function(data){
+      socket.on(api.user.info(), function(data){
         // console.log(socket.session.username);
         console.log(socket.session);
         db.User.findOne({ name: data.name }).populate('gamesParticipated').exec(function(err, user){
@@ -162,9 +163,9 @@ module.exports = {
               userobj.online = true;
             }
 
-            socket.emit('user:info:'+data.name, db.removeSensibleData(userobj, socket.session.username));
+            socket.emit(api.user.info(data.name), db.removeSensibleData(userobj, socket.session.username));
           } else {
-            socket.emit('user:info:'+data.name);
+            socket.emit(api.user.info(data.name));
           }
 
         });
@@ -175,11 +176,11 @@ module.exports = {
        * get list of all users
        */
       // socket.on(websocketApi.get.users.all.msgkey, function(data){
-      socket.on('users:all', function(data){
+      socket.on(api.users.all, function(data){
         console.log('GETTIN ALL USERS');
         db.User.find({}, {name : 1, _id : 0}, function(err, users){
           console.log(users);
-          socket.emit('users:all', err, users);
+          socket.emit(api.users.all, err, users);
         });
         // socket.emit('users:connected', {users: socketServer.connectedUsers});
       });
@@ -187,16 +188,16 @@ module.exports = {
       /**
        * get list of current connected users
        */
-      socket.on('users:connected', function(data){
+      socket.on(api.users.connected, function(data){
         var err = null;
-        socket.emit('users:connected', err, socketServer.connectedUsers);
+        socket.emit(api.users.connected, err, socketServer.connectedUsers);
       });
 
       /**
        * client wants to log in
        * @param  {object} data {username, password}
        */
-      socket.on('user:login', function(data){
+      socket.on(api.user.login, function(data){
         console.log("GOT LOGIN");
         db.User.findOne({ name: data.username, password: crypto.createHash('sha512').update(data.password).digest('hex')}, function(err, user){
           if (err) {
@@ -214,9 +215,9 @@ module.exports = {
             addConnectedUser(data.username, socket);
             console.log('ID FOR USER: ' + data.username);
             console.log(socketServer.getIdForUsername(data.username));
-            socket.emit('user:login', {loggedin: true, language: user.language});
+            socket.emit(api.user.login, {loggedin: true, language: user.language});
           } else {
-            socket.emit('user:login', {loggedin: false});
+            socket.emit(api.user.login, {loggedin: false});
           }
         });
       });
@@ -224,7 +225,7 @@ module.exports = {
       /**
        * user wants to log out
        */
-      socket.on('user:logout', function(data){
+      socket.on(api.user.logout, function(data){
         console.log('LOGGING USER OUT');
 
         // emit internal event
@@ -252,7 +253,7 @@ module.exports = {
 
         // @TODO: send errors
         // send new generated guest username
-        socket.emit('user:logout', {username: socket.session.username});
+        socket.emit(api.user.logout, {username: socket.session.username});
       });
 
       socket.on('disconnect', function(data){
