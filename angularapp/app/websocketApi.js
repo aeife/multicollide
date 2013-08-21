@@ -146,31 +146,35 @@
         }
       }
     },
-    generateStringObject: function(obj){
+    generateServerObject: function(obj){
       var self = this;
       console.log('generate');
-      Object.keys(obj).forEach(function(key) {
-        var msg = '';
-        self.iterate(obj[key], msg, key);
-      });
+      var msg = '';
+      self.iterate(obj, msg);
 
       return obj;
     },
     iterate: function(obj, msg, type){
       var self = this;
-      console.log('iterate');
       for (var property in obj) {
         if (obj.hasOwnProperty(property)) {
-          if (typeof obj[property] === 'object' && !obj[property].opts && Object.keys(obj[property]).length !== 0) {
-            // continue iterating till at the deepest level
-            self.iterate(obj[property], msg ? msg + ':' + property : property, type);
+          if (typeof obj[property] == 'object' && !obj[property].emit && !obj[property].get && !obj[property].on && Object.keys(obj[property]).length != 0) {
+            // continue iterating till at the deepest message level
+            self.iterate(obj[property], msg ? msg + ':' + property : property);
           } else {
             // process found end attribute
-            var m = msg ? msg + ':' + property : property;
-            console.log('---');
+            var message = msg ? msg + ':' + property : property;
+            console.log(message);
             console.log(obj[property]);
-            console.log(m);
-            obj[property].msgkey = m;
+            // attach message string to object or generate attach function to construct message at runtime
+            if ((obj[property].get && obj[property].get.attach) ||
+                (obj[property].on && obj[property].on.attach) ||
+                (obj[property].emit && obj[property].emit.attach)) {
+
+              obj[property] = generateAttachFunction(message);
+            } else {
+              obj[property] = message;
+            }
           }
         }
       }
@@ -179,7 +183,6 @@
       // add config apis
       var websocketApi;
       for (var i = 0; i < config.games.length; i++){
-        // console.lg()
         websocketApi = concatObj(this.api, config.games[i].api);
       }
       return websocketApi;
@@ -194,6 +197,11 @@
     return obj1;
   }
 
+  function generateAttachFunction(msg){
+    return function(param){
+      return msg + ':' + param;
+    };
+  }
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
     module.exports = websocket;

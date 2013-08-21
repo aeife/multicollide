@@ -29,7 +29,7 @@ module.exports = {
 
     // include api and generate object with appended api
     var websocketApi = require('../app/websocketApi.js');
-    websocketApi = websocketApi.generateStringObject(websocketApi.appendGameApis(appConfig));
+    websocketApi = websocketApi.generateServerObject(websocketApi.appendGameApis(appConfig));
 
     // INCLUDE
     var lobby = require('./lobby.js');
