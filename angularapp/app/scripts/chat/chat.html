@@ -1,0 +1,8 @@
+<h3>Chat</h3>
+<button class="btn btn-primary" ng-click="join()">join chat</button>
+<button class="btn btn-primary" ng-click="leave()">leave chat</button>
+<ul>
+  <li ng-repeat="message in messages">{{message.username}}: {{message.message}}</li>
+</ul>
+<input ng-model="currentMessage">
+<button class="btn" ng-click="send()">send</button>

@@ -38,6 +38,7 @@ module.exports = {
     require('./friend.js').listen(io);
     require('./multicollide.js').listen(io);
     require('./settings.js').listen(io);
+    require('./chat.js').listen(io);
 
     /*
     ******************************************************

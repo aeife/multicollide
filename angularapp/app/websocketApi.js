@@ -124,6 +124,18 @@
         newLanguage: {
           emit: {}
         }
+      },
+      chat: {
+        join: {
+          get: {}
+        },
+        leave: {
+          get: {}
+        },
+        message: {
+          emit: {},
+          on: {}
+        }
       }
     },
     generateStringObject: function(obj){

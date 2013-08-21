@@ -26,7 +26,8 @@ angular.module('multicollide',
   'paginate',
   'tmh.dynamicLocale',
   'progressBar',
-  'layout'])
+  'layout',
+  'chat'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -93,6 +94,7 @@ angular.module('multicollideBoot', ['multicollide']).
     // @TODO: Check if language is still account language on reconnect and logged in
     socketgenapi.successfullConnected.on(function(data){
 
+
       // @TODO: is not loaded before when directly opening route #/games
       $rootScope.username = data.username;
       if (data.username !== $cookies.username){
@@ -103,6 +105,7 @@ angular.module('multicollideBoot', ['multicollide']).
       } else {
         console.log('still logged in!');
       }
+      console.log($rootScope.username);
     }).once();
 
   });
