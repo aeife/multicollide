@@ -10,7 +10,7 @@
       <img ng-show="game.previewImage" src="{{game.previewImage}}" alt="{{game.name}}">
       <img ng-hide="game.previewImage" src="images/gamePlaceholder.png" alt="{{game.name}}">
       <div class="carousel-caption" style="color:black;">
-        <h3>{{game.name}}</h3>
+        <h3><a href="#/games/{{game.name}}">{{game.name}}</a></h3>
         <p>{{getLocalDescription(game.description)}}</p>
       </div>
     </div>
