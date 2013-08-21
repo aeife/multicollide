@@ -7,7 +7,7 @@ angular.module('profileBox', [])
       templateUrl: 'scripts/profileBox/profileBox.html',
       controller: function($scope, auth, user, lobby, $rootScope){
         $scope.lobby = lobby;
-        $scope.username = $rootScope.username;
+        $scope.$rootScope = $rootScope;
 
         $scope.logout = function(){
           auth.logout();
