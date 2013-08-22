@@ -37,13 +37,11 @@
   <div class="row text-center">
     <div class="btn-group">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        MultiCollide
+        {{currentGame}}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a>MultiCollide</a></li>
-        <li><a>MockGame1</a></li>
-        <li><a>MockGame2</a></li>
+        <li ng-repeat="game in appConfig.games"><a ng-click="changeGame(game.name)">{{game.name}}</a></li>
       </ul>
     </div>
   </div>

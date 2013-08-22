@@ -2,6 +2,9 @@
 
 angular.module('users.profile', [])
   .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
+    $scope.appConfig = appConfig;
+    $scope.currentGame = $scope.appConfig.games[0].name;
+
     user.getUserInfo($routeParams.name, function(data){
 
       if (data) {
@@ -93,4 +96,8 @@ angular.module('users.profile', [])
         }
       }
     };
+
+    $scope.changeGame = function(game){
+      $scope.currentGame = game;
+    }
   });
