@@ -29,6 +29,7 @@ userSchema.set('autoIndex', true);
 var User = mongoose.model('User', userSchema);
 
 var gameSchema = mongoose.Schema({
+  game: String,
   standings: [],
   date: { type: Date, default: Date.now }
 });
