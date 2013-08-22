@@ -60,7 +60,7 @@
           <th>{{'_Date_' | i18n}}</th>
           <th></th>
         </tr>
-        <tbody ng-repeat="game in user.gamesParticipated | startFrom:gamesPaginate.startFrom | limitTo:gamesPaginate.limitTo" style="border-top:0px;">
+        <tbody ng-repeat="game in user.gamesParticipated | filter:{game: currentGame} | startFrom:gamesPaginate.startFrom | limitTo:gamesPaginate.limitTo" style="border-top:0px;">
           <tr class="text-center">
             <td>{{getStanding(user.name, game.standings)}}</td>
             <td>{{game.date | date:'short'}}</td>
