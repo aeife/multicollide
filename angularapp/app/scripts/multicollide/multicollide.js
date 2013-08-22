@@ -131,7 +131,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
                 var standings = level.standings;
                 console.log("##standings:");
                 console.log(standings);
-                socketgenapi.multicollide.end.emit({standings: standings});
+                socketgenapi.multicollide.end.emit({game: lobby.game, standings: standings});
               }, 1000);
               endProcessed = true;
             }

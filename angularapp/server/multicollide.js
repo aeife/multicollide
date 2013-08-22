@@ -106,7 +106,7 @@ module.exports = {
         var standingsCount = data.standings.length;
 
         // add new game to database
-        var game = new db.Game({game: 'multicollide', standings: data.standings});
+        var game = new db.Game({game: data.game, standings: data.standings});
         game.save(function (err, game) {
           if (err) {
             console.log(err);
