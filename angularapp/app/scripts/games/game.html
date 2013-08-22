@@ -86,7 +86,7 @@
           <th ng-click="reorder('status')">{{'_Status_' | i18n}}</th>
           <th></th>
         </tr>
-        <tr class="text-center"ng-repeat="game in lobby.games | toArray | orderBy:order:reverse">
+        <tr class="text-center"ng-repeat="game in lobby.games | toArray | filter:{game: lobby.game} | orderBy:order:reverse">
           <td>{{game.name}}</td>
           <td>{{game.players.length}} / {{game.maxplayers}}</td>
           <td>{{game.status.toString | i18n}}</td>

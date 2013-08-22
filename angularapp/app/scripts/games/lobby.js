@@ -29,8 +29,7 @@ angular.module('games.lobby', [])
       },
       newLobby: function(lobbyName, maxplayers){
         var self = this;
-        console.log('adding new lobby: ' + lobbyName);
-        socketgenapi.lobby.new.get({lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
+        socketgenapi.lobby.new.get({game: self.game, lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
           self.onJoinedLobby(data);
         });
       },

@@ -31,6 +31,7 @@ module.exports = {
       // add player who opened lobby as first player to lobby
       self.lobbies[lobbyHighestCount] = {
         id: lobbyHighestCount,
+        game: data.game,
         name: (data.name) ? data.name  : 'new game ' + lobbyHighestCount,
         host: data.host,
         status: data.status,
@@ -140,7 +141,7 @@ module.exports = {
     io.sockets.on('connection', function(socket){
       socket.on(api.lobby.new, function(data){
         console.log('client requested games info');
-        var newLobby = addLobby({name: data.lobbyName, host: socket.session.username, status: STATES.GAME.LOBBY, maxplayers: data.maxplayers});
+        var newLobby = addLobby({game: data.game, name: data.lobbyName, host: socket.session.username, status: STATES.GAME.LOBBY, maxplayers: data.maxplayers});
         joinLobby(newLobby.id, socket);
         socket.emit(api.lobby.new, newLobby);
       });
