@@ -180,13 +180,8 @@ module.exports = {
         lobbyStart(lobbyId, socket);
         // socket.emit('lobby:start', {});
 
-
-        // wait a bit and then send game start
-        // @TODO: something better then waiting?
-        // @TODO: adjust for multiple games, more modular
-        setTimeout(function(){
-          io.sockets.in(self.lobbies[lobbyId].name).emit(api.multicollide.start, {});
-        }, 500);
+        // internal event
+        self.events.emit('startLobbyAfter', {lobbyId: lobbyId});
 
       });
 
@@ -202,7 +197,4 @@ module.exports = {
 
 
   }
-}
-
-
-
+};

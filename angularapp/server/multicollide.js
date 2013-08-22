@@ -63,9 +63,19 @@ module.exports = {
      */
     // remove turn interval for lobby if currently started
     lobby.events.on('removeLobbyAfter', function(params){
-      console.log("##########REMOVE LOBBY AFTER");
       if (turnLoop[params.lobbyId]){
         clearInterval(turnLoop[params.lobbyId]);
+      }
+    });
+    // start game on lobby start
+    lobby.events.on('startLobbyAfter', function(params){
+      // check if lobby contains this game
+      if (lobby.lobbies[params.lobbyId].game === 'multicollide'){
+        // wait a bit and then send game start
+        // @TODO: something better then waiting?
+        setTimeout(function(){
+          io.sockets.in(lobby.lobbies[params.lobbyId].name).emit(api.multicollide.start, {});
+        }, 500);
       }
     });
 
