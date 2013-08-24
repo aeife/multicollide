@@ -33,32 +33,36 @@
     <!-- Add your site or application content here -->
 
 
-      <div class="navbar">
-          <div class="container" ng-controller="MenuCtrl">
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+      <nav class="navbar navbar-default" ng-controller="MenuCtrl">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="nav navbar-brand" href="#">MultiCollide</a>
-            <div class="nav-collapse collapse bs-navbar-collapse">
-              <ul class="nav navbar-nav">
-                <li ng-class="{ active: activePath=='/' }"><a href="#/"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
-                <li ng-class="{ active: activePath.indexOf('/games') > -1 }"><a href="#/games/"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
-                <li ng-class="{ active: activePath=='/users/' }"><a href="#/users/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
-                <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
-              </ul>
-              <ul class="nav navbar-nav pull-right">
-                <li ng-class="{ active: activePath=='/help' }"><a href="#/help"><i class="icon-question-sign"></i> {{'_Help_' | i18n}}</a></li>
-                <li ng-class="{ active: activePath=='/settings' }"><a href="#/settings"><i class="icon-wrench icon-large"></i> {{'_Settings_' | i18n}}</a></li>
-                <li><a href="" ng-click="toggleSideBar()" style="font-size: 22px;">
-                  <span ng-show="showSidebar">&raquo;</span>
-                  <span ng-show="!showSidebar">&laquo;</span>
-                </a></li>
-              </ul>
-              </div>
-          </div><!-- /.container -->
-      </div><!-- /.navbar -->
+            <a class="navbar-brand" href="#">MultiCollide</a>
+          </div>
+
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+              <li ng-class="{ active: activePath=='/' }"><a href="#/"><i class="icon-home"></i> {{'_Home_' | i18n}}</a></li>
+              <li ng-class="{ active: activePath.indexOf('/games') > -1 }"><a href="#/games/"><i class="icon-list"></i> {{'_Games_' | i18n}}</a></li>
+              <li ng-class="{ active: activePath.indexOf('/users') > -1 }"><a href="#/users/"><i class="icon-group"></i> {{'_Users_' | i18n}}</a></li>
+              <li ng-class="{ active: activePath=='/about' }"><a href="#/about"><i class="icon-info-sign"></i> {{'_About_' | i18n}}</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li ng-class="{ active: activePath=='/help' }"><a href="#/help"><i class="icon-question-sign"></i> {{'_Help_' | i18n}}</a></li>
+              <li ng-class="{ active: activePath=='/settings' }"><a href="#/settings"><i class="icon-wrench icon-large"></i> {{'_Settings_' | i18n}}</a></li>
+              <li><a href="" ng-click="toggleSideBar()" style="font-size: 22px;">
+                <span ng-show="showSidebar">&raquo;</span>
+                <span ng-show="!showSidebar">&laquo;</span>
+              </a></li>
+            </ul>
+          </div>
+        </div>
+      </nav><!-- /.navbar -->
 
       <div class="container">
 
