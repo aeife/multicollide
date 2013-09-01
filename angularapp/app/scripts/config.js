@@ -8,6 +8,10 @@ var appConfig = {
         'en-US': 'A super awesome multiplayer game.',
         'de-DE': 'Ein super tolles Multiplayerspiel.'
       },
+      locale: {
+        'en-US': 'scripts/multicollide/locale_en-US.json',
+        'de-DE': 'scripts/multicollide/locale_de-DE.json'
+      },
       module: 'multicollideGame',
       template: 'scripts/multicollide/multicollide.html',
       previewImage: 'scripts/multicollide/multicollide.png',

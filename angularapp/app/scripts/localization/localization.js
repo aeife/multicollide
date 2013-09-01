@@ -50,12 +50,24 @@ angular.module('localization', [])
       },
       loadLocalization: function() {
         var self = this;
+        this.localization = {};
         $http.get('../../locale_' + this.language + '.json').success(function(data) {
           console.log('loaded localization');
           console.log(data);
-          self.localization = data;
+          angular.extend(self.localization, data);
           self.loaded = true;
         });
+
+        for (var i = 0; i < appConfig.games.length; i++){
+          if (appConfig.games[i].locale && appConfig.games[i].locale[this.language]){
+            $http.get(appConfig.games[i].locale[this.language]).success(function(data) {
+              console.log('loaded GAME SPECIFIC localization');
+              console.log(data);
+              angular.extend(self.localization, data);
+              self.loaded = true;
+            });
+          }
+        }
       },
       getLocalizedValue: function(input, args) {
         var result = '';
