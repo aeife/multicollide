@@ -1,0 +1,32 @@
+<h1>{{game.name}}</h1>
+<div class="row">
+  <img class="col-lg-6" ng-show="game.previewImage" src="{{game.previewImage}}" alt="{{game.name}}">
+  <p class="col-lg-6">Kind of multiplayer snake. Collect items and avoid collisions. Last player alive wins.</p>
+</div>
+<table class="table table-striped text-center">
+  <tr>
+    <th>{{'_Action_' | i18n}}</th>
+    <th>{{'_Control_' | i18n}}</th>
+    <th>{{'_AlternateControl_' | i18n}}</th>
+  </tr>
+  <tr>
+    <td>{{'_MoveUp_' | i18n}}</td>
+    <td>{{'_WKey_' | i18n}}</td>
+    <td>{{'_ArrowUp_' | i18n}}</td>
+  </tr>
+  <tr>
+    <td>{{'_MoveDown_' | i18n}}</td>
+    <td>{{'_SKey_' | i18n}}</td>
+    <td>{{'_ArrowDown_' | i18n}}</td>
+  </tr>
+  <tr>
+    <td>{{'_MoveLeft_' | i18n}}</td>
+    <td>{{'_AKey_' | i18n}}</td>
+    <td>{{'_ArrowLeft_' | i18n}}</td>
+  </tr>
+  <tr>
+    <td>{{'_MoveRight_' | i18n}}</td>
+    <td>{{'_DKey_' | i18n}}</td>
+    <td>{{'_ArrowRight_' | i18n}}</td>
+  </tr>
+</table>

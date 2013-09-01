@@ -26,14 +26,7 @@
       </div>
 
       <div ng-repeat="game in appConfig.games | filter:{name: gameHelp}">
-        <h1>{{game.name}}</h1>
-        <div class="row">
-          <img class="col-lg-6" ng-show="game.previewImage" src="{{game.previewImage}}" alt="{{game.name}}">
-          <p class="col-lg-6">{{getLocalText(game.description)}}</p>
-        </div>
-        <div class="row">
-          {{getLocalText(game.help)}}
-        </div>
+        <ng-include src="game.helpPage"></ng-include>
       </div>
 
     </div>

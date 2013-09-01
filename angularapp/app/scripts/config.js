@@ -29,9 +29,7 @@ var appConfig = {
           }
         }
       },
-      help: {
-        'en-US': 'Kind of multiplayer snake. Collect items and avoid collisions. Last player alive wins.'
-      }
+      helpPage: 'scripts/multicollide/help.html'
     },
     {
       name: 'mockGame',
