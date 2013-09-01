@@ -28,6 +28,9 @@ var appConfig = {
             emit: {}
           }
         }
+      },
+      help: {
+        'en-US': 'Kind of multiplayer snake. Collect items and avoid collisions. Last player alive wins.'
       }
     },
     {
