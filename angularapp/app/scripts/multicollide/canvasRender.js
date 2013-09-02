@@ -14,6 +14,11 @@ angular.module('multicollideGame.canvasRender', [])
       spriteSheet: null,
       spriteSheetPadding: 10,
       playerTileSize: 50,
+      showSidebarWatcher: null,
+      removeAutoResize: function(){
+        $(window).unbind('resize');
+        this.showSidebarWatcher();
+      },
       setAutoResize: function(){
         var self = this;
         // listen for window resize
@@ -24,17 +29,19 @@ angular.module('multicollideGame.canvasRender', [])
         });
 
         // listen for sidebar toggle
-        var showSidebarWatcher = $rootScope.$watch('showSidebar', function(newValue, oldValue) {
-          // wait shortly so width is adjusted
-          setTimeout(function(){
-            self.resize();
-          },1);
+        this.showSidebarWatcher = $rootScope.$watch('showSidebar', function(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            // wait shortly so width is adjusted
+            setTimeout(function(){
+              self.resize();
+            },1);
+          }
         });
 
         // stop listener and watcher on route change
         $rootScope.$on('$routeChangeSuccess', function() {
           $(window).unbind('resize');
-          showSidebarWatcher();
+          self.showSidebarWatcher();
         });
       },
       init: function(obj){
@@ -43,8 +50,9 @@ angular.module('multicollideGame.canvasRender', [])
         this.layer = obj.layer;
         this.wrapper = obj.wrapper;
 
-        this.setAutoResize();
         this.resize();
+        this.setAutoResize();
+
 
         this.spriteSheet = obj.spriteSheet;
       },

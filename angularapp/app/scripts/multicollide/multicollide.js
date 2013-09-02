@@ -3,6 +3,7 @@
 angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.player', 'multicollideGame.canvasRender', 'multicollideGame.config', 'multicollideGame.STATES'])
   .controller('multicollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES, MULTICOLLIDESTATES) {
     // initialization
+    console.log("MULTICOLLIDE START");
     // already happens when opening server browser
     var canvas = $('#canvas');
     var ctx = document.getElementById('canvas').getContext('2d');
@@ -30,43 +31,44 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
     var ownPlayer;
     var countdownInterval;
     var turnListener;
+    var gameStartListener;
     var gameEndListener;
     var lobbyLeaveListener;
     var lobbyPlayerLeftListener;
     var endProcessed;
 
+    // initialize game when spriteSheet is loaded
     spriteSheet.onload = function() {
-      initalize();
+      initialize();
     };
 
-    // reinitialize on lobby leave
-    socketgenapi.lobby.leave.on(function(){
+    /* handle game close */
 
-      // if player left during countdown, clear countdown
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-      }
+    // game ends
+    gameEndListener = socketgenapi.multicollide.end.on(function(){
+      postprocess();
+      lobby.status = STATES.GAME.LOBBY;
+    });
 
-      initalize();
-    }).forRoute();
+    // lobby leave (includes lobby deleted)
+    lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
+      postprocess();
+    }).once();
 
-    // reinitialize on game end
-    socketgenapi.multicollide.end.on(function(){
-      initalize();
-    }).forRoute();
-
-    function initalize(){
-      players = null;
-      ownPlayer = null;
-      endProcessed = false;
-
-      level.init({gridSize: config.gridSize});
-      canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
+    function postprocess(){
+      gameEndListener.stop();
+      turnListener.stop();
+      gameStartListener.stop();
+      lobbyLeaveListener.stop();
+      lobbyPlayerLeftListener.stop();
+      canvasRender.removeAutoResize();
     }
 
-    // initalize the rest when game starts
-    socketgenapi.lobby.start.on(function(){
-      // initialize players
+    /* host started game: initialize*/
+    function initialize(){
+      canvasRender.init({canvas: {background: bgCanvas, game: canvas, text: textCanvas}, layer: {background: bgCtx, game: ctx, text: textCtx}, wrapper: wrapper, spriteSheet: spriteSheet});
+      level.init({gridSize: config.gridSize});
+
       players = lobby.currentLobby.players;
       ownPlayer = null;
 
@@ -79,10 +81,10 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
       }
       level.spawnPlayers();
 
+      /* Listeners */
 
       // start signal and countdown
-      socketgenapi.multicollide.start.on(function(){
-
+      gameStartListener = socketgenapi.multicollide.start.on(function(){
         var countdown = 3;
         canvasRender.drawText(countdown);
         countdownInterval = setInterval(function(){
@@ -94,70 +96,44 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
           } else {
             clearInterval(countdownInterval);
             // if host send game start
-            if (ownPlayer.username === lobby.currentLobby.host){
+            if (lobby.currentLobby && ownPlayer.username === lobby.currentLobby.host){
               socketgenapi.multicollide.start.emit();
             }
           }
         },1000);
-
       }).once();
 
-      // set listeners if not exist
-
       // kill player during game on lobby leave
-      if (!lobbyPlayerLeftListener){
-        lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
-          if (lobby.status && lobby.status.value === STATES.GAME.INGAME.value) {
-            level.processPlayerLeave(data.username);
-          }
-        });
-      }
+      lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
+        if (lobby.status && lobby.status.value === STATES.GAME.INGAME.value) {
+          level.processPlayerLeave(data.username);
+        }
+      });
 
       // game loop
-      if (!turnListener){
-        turnListener = socketgenapi.multicollide.turn.on(function(data){
-          level.processTurn(data);
+      turnListener = socketgenapi.multicollide.turn.on(function(data){
+        level.processTurn(data);
 
-          // process end if not done
-          if (!endProcessed) {
-            lobby.lastStandings = level.standings;
-            lobby.lastStandings.reverse();
+        // process end if not done
+        if (!endProcessed) {
+          lobby.lastStandings = level.standings;
+          lobby.lastStandings.reverse();
 
-            // if host and game ended: wait a bit and then emit game ending with standings
-            if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
+          // if host and game ended: wait a bit and then emit game ending with standings
+          if (ownPlayer.username === lobby.currentLobby.host && level.gameEnded){
 
-              setTimeout(function(){
+            setTimeout(function(){
 
-                var standings = level.standings;
-                console.log("##standings:");
-                console.log(standings);
-                socketgenapi.multicollide.end.emit({game: lobby.game, standings: standings});
-              }, 1000);
-              endProcessed = true;
-            }
+              var standings = level.standings;
+              console.log("##standings:");
+              console.log(standings);
+              socketgenapi.multicollide.end.emit({game: lobby.game, standings: standings});
+            }, 1000);
+            endProcessed = true;
           }
-        });
-      }
+        }
+      });
 
-      // listen for game ending
-      if (!gameEndListener){
-        gameEndListener = socketgenapi.multicollide.end.on(function(){
-          lobby.status = STATES.GAME.LOBBY;
-        });
-      }
-
-      // listen for lobby leave (includes lobby deleted)
-      if (!lobbyLeaveListener){
-        lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
-          turnListener.stop();
-          turnListener = null;
-          lobbyPlayerLeftListener.stop();
-          lobbyPlayerLeftListener = null;
-          gameEndListener.stop();
-          gameEndListener = null;
-          lobbyLeaveListener = null;
-        }).once();
-      }
 
 
       // @TODO: allow press different key while other is still pressed
@@ -185,7 +161,9 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
       document.onkeyup = function(e) {
         keyEventFired = false;
       };
-    }).forRoute();
+    }
+
+
 
 
 
