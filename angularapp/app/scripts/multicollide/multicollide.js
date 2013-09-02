@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.player', 'multicollideGame.canvasRender', 'multicollideGame.config'])
-  .controller('multicollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES) {
+angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.player', 'multicollideGame.canvasRender', 'multicollideGame.config', 'multicollideGame.STATES'])
+  .controller('multicollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES, MULTICOLLIDESTATES) {
     // initialization
     // already happens when opening server browser
     var canvas = $('#canvas');
@@ -71,7 +71,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
       ownPlayer = null;
 
       for (var i = 0; i < players.length; i++){
-        var newPlayer = new Player(players[i].name, 'red', STATES.MULTICOLLIDE.DIRECTION.SOUTH, 0);
+        var newPlayer = new Player(players[i].name, 'red', MULTICOLLIDESTATES.DIRECTION.SOUTH, 0);
         if (players[i].name === $rootScope.username){
           ownPlayer = newPlayer;
         }
@@ -167,16 +167,16 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
           keyEventFired = true;
 
           if (e.keyCode === config.controls.default.up || e.keyCode === config.controls.alternate.up){
-            changeDirection(STATES.MULTICOLLIDE.DIRECTION.NORTH);
+            changeDirection(MULTICOLLIDESTATES.DIRECTION.NORTH);
             // sound.play();
           } else if (e.keyCode === config.controls.default.down || e.keyCode === config.controls.alternate.down){
-            changeDirection(STATES.MULTICOLLIDE.DIRECTION.SOUTH);
+            changeDirection(MULTICOLLIDESTATES.DIRECTION.SOUTH);
             // sound.play();
           } else if (e.keyCode === config.controls.default.left || e.keyCode === config.controls.alternate.left){
-            changeDirection(STATES.MULTICOLLIDE.DIRECTION.WEST);
+            changeDirection(MULTICOLLIDESTATES.DIRECTION.WEST);
             // sound.play();
           } else if (e.keyCode === config.controls.default.right || e.keyCode === config.controls.alternate.right){
-            changeDirection(STATES.MULTICOLLIDE.DIRECTION.EAST);
+            changeDirection(MULTICOLLIDESTATES.DIRECTION.EAST);
             // sound.play();
           }
         }
@@ -199,7 +199,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
 
     function validDirectionChange(direction){
       // valid direction change: not current direction and not opposite direction
-      return ((ownPlayer.direction.value !== direction.value) && (direction.value !== STATES.MULTICOLLIDE.DIRECTION[ownPlayer.direction.opposite].value));
+      return ((ownPlayer.direction.value !== direction.value) && (direction.value !== MULTICOLLIDESTATES.DIRECTION[ownPlayer.direction.opposite].value));
     }
 
     $scope.fullscreen = function(){
