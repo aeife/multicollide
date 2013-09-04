@@ -13,20 +13,37 @@ angular.module('sockets')
         };
     }
 
-    function on(msgname, callback){
+    function on(msgname, callback, onlyForListeners){
       var callbackConverted = convertCallback(callback);
+
+      if (onlyForListeners){
+        if (!socket.socketObj().$events[msgname]){
+          // first listener of that type: subscribe
+          socket.emit('subscribe', {msg: msgname});
+        }
+
+      }
 
       socket.onn(msgname, callbackConverted);
 
       return {
         forRoute: function(){
+          var self = this;
           $rootScope.$on('$routeChangeSuccess', function() {
-            socket.removeListener(msgname, callbackConverted);
+            self.stop();
           });
         },
         stop: function(){
           console.log("SocketAPI: stop listener for " + msgname);
           socket.removeListener(msgname, callbackConverted);
+
+          if (onlyForListeners){
+            if (!socket.socketObj().$events[msgname]){
+              // last listener of that type: unsubscribe
+              socket.emit('unsubscribe', {msg: msgname});
+            }
+
+          }
         },
         removeAll: function(){
           // dont use, each module should remove its own specific listeners
@@ -138,11 +155,11 @@ angular.module('sockets')
     function generateOn(m, opts){
       if (opts && opts.attach){
         return function(msg, callback){
-          return on(m + ':' + msg, callback);
+          return on(m + ':' + msg, callback, opts.onlyForListeners);
         };
       } else {
         return function(callback){
-          return on(m, callback);
+          return on(m, callback, opts.onlyForListeners);
         };
       }
     }

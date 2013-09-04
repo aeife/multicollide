@@ -5,7 +5,8 @@
     api: {
       onlinestatus: {
         on: {
-          attach: 'username'
+          attach: 'username',
+          onlyForListeners: true
         }
       },
       successfullConnected: {

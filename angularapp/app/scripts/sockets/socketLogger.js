@@ -19,7 +19,7 @@ angular.module('sockets')
               // length 0 equals 1
               count++;
             } else if (socket.socketObj().$events[event]) {
-              count += socket.socketObj().$events[event].length
+              count += socket.socketObj().$events[event].length;
             }
           }
 

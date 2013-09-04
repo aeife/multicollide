@@ -48,7 +48,7 @@ module.exports = {
       // socket.session.save();
       socketServer.connectedUsers.push(username);
       socketServer.clientUsernames[username] = socket.id;
-      socket.broadcast.emit(api.onlinestatus(username), {user: username, online: true});
+      socket.broadcast.to(api.onlinestatus(username)).emit(api.onlinestatus(username), {user: username, online: true});
 
       sendFriendRequestsIfExist(username);
     }
@@ -65,7 +65,7 @@ module.exports = {
     function deleteConnectedUser(username, socket){
       socketServer.connectedUsers.splice(socketServer.connectedUsers.indexOf(username),1);
       delete socketServer.clientUsernames[username];
-      socket.broadcast.emit(api.onlinestatus(username), {user: username, online: false});
+      socket.broadcast.to(api.onlinestatus(username)).emit(api.onlinestatus(username), {user: username, online: false});
     }
 
     /**

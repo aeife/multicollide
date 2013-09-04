@@ -114,6 +114,19 @@ module.exports = {
         //   }
         // }
       });
+
+      /**
+       * Subscriptions
+       */
+      socket.on('subscribe', function(data){
+        console.log("subscribing " + socket.session.username + " to " + data.msg);
+        socket.join(data.msg);
+      });
+
+      socket.on('unsubscribe', function(data){
+        console.log("unsubscribing " + socket.session.username + " to " + data.msg);
+        socket.leave(data.msg);
+      });
     });
   }
 };
