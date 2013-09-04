@@ -85,7 +85,7 @@ module.exports = {
 
       //join socket room and send join event to other players in lobby
       //io.sockets.in(self.lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
-      socket.join(self.lobbies[id].name);
+      socket.join('lobby' + id);
 
       // send new online status
       socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true, game: self.lobbies[id].game});
@@ -95,10 +95,10 @@ module.exports = {
       db.User.findOne({name: socket.session.username}, function(err, user){
         if (user) {
           var userObj = user.toObject();
-          socket.broadcast.to(self.lobbies[id].name).emit(api.lobby.player.joined, db.removeSensibleData(userObj));
+          socket.broadcast.to('lobby' + id).emit(api.lobby.player.joined, db.removeSensibleData(userObj));
         } else {
           // user is guest, just send name
-          socket.broadcast.to(self.lobbies[id].name).emit(api.lobby.player.joined, {name: socket.session.username});
+          socket.broadcast.to('lobby' + id).emit(api.lobby.player.joined, {name: socket.session.username});
         }
       });
     }
@@ -112,8 +112,8 @@ module.exports = {
     function leaveLobby(id, socket){
       if (self.lobbies[id].host === socket.session.username){
         // host left lobby, leave room with host (to not get 'host left' message) and remove lobby
-        socket.leave(self.lobbies[id].name);
-        io.sockets.in(self.lobbies[id].name).emit(api.lobby.leave, {reason: 'host left'});
+        socket.leave('lobby' + id);
+        io.sockets.in('lobby' + id).emit(api.lobby.leave, {reason: 'host left'});
 
         // send new online status
         socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
@@ -129,8 +129,8 @@ module.exports = {
         delete self.lobbyForUsername[socket.session.username];
 
         //send left event to other players in lobby and leave socket room
-        socket.leave(self.lobbies[id].name);
-        io.sockets.in(self.lobbies[id].name).emit(api.lobby.player.left, {username: socket.session.username});
+        socket.leave('lobby' + id);
+        io.sockets.in('lobby' + id).emit(api.lobby.player.left, {username: socket.session.username});
 
         // send new online status
         socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
@@ -143,7 +143,7 @@ module.exports = {
         self.lobbies[id].status = STATES.GAME.INGAME;
 
         // emit start to all players in lobby
-        io.sockets.in(self.lobbies[id].name).emit(api.lobby.start, {});
+        io.sockets.in('lobby' + id).emit(api.lobby.start, {});
       }
     }
 

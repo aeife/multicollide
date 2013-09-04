@@ -74,7 +74,7 @@ module.exports = {
         // wait a bit and then send game start
         // @TODO: something better then waiting?
         setTimeout(function(){
-          io.sockets.in(lobby.lobbies[params.lobbyId].name).emit(api.multicollide.start, {});
+          io.sockets.in('lobby' + lobby.lobbies[params.lobbyId].id).emit(api.multicollide.start, {});
         }, 500);
       }
     });
@@ -87,7 +87,7 @@ module.exports = {
         directionChanges[lobbyId] = [];
 
         turnLoop[lobbyId] = setInterval(function(){
-          io.sockets.in(lobby.lobbies[lobbyId].name).emit(api.multicollide.turn, {directionChanges: directionChanges[lobbyId]});
+          io.sockets.in('lobby' + lobby.lobbies[lobbyId].id).emit(api.multicollide.turn, {directionChanges: directionChanges[lobbyId]});
 
           // reset information
           directionChanges[lobbyId] = [];
@@ -131,7 +131,7 @@ module.exports = {
         }
 
         // emit game ending to all players
-        io.sockets.in(lobby.lobbies[lobbyId].name).emit(api.multicollide.end, {});
+        io.sockets.in('lobby' + lobby.lobbies[lobbyId].id).emit(api.multicollide.end, {});
       });
     });
   }
