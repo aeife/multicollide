@@ -45,7 +45,8 @@
         },
         statsUpdate: {
           on: {
-            attach: 'username'
+            attach: 'username',
+            onlyForListeners: true
           }
         }
       },

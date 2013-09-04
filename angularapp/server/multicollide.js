@@ -51,7 +51,7 @@ module.exports = {
               var userObj = user.toObject();
               userObj.ratioDiff = ratioDiff;
               userObj.eloDiff = eloDiff;
-              io.sockets.emit(api.user.statsUpdate(player), db.removeSensibleData(userObj));
+              io.sockets.in(api.user.statsUpdate(player)).emit(api.user.statsUpdate(player), db.removeSensibleData(userObj));
             }
           });
         }
