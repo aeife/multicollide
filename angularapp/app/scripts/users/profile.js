@@ -22,6 +22,7 @@ angular.module('users.profile', [])
         socketgenapi.onlinestatus.on(data.name, function(data){
           console.log(data);
           $scope.user.online = data.online;
+          $scope.user.ingame = data.game;
         }).forRoute();
 
         user.getStatsUpdate(data.name, function(data){

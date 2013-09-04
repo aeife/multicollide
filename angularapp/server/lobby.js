@@ -46,7 +46,7 @@ module.exports = {
      * remove a lobby from the collection
      * @param  {int} id Id of the corresponding lobby
      */
-    function removeLobby(id){
+    function removeLobby(id, socket){
       console.log('REMOVING LOBBY');
       // for each user connected: delete reference to username and leave socket room
       console.log(self.lobbyForUsername);
@@ -55,6 +55,9 @@ module.exports = {
         delete self.lobbyForUsername[player];
 
         socketServer.clients[socketServer.getIdForUsername(player)].leave(self.lobbies[id].name);
+
+        // send new online status
+        socket.broadcast.to(api.onlinestatus(player)).emit(api.onlinestatus(player), {user: player, online: true});
 
         console.log(player + ' leaves room ' + self.lobbies[id].name);
       }
@@ -84,6 +87,9 @@ module.exports = {
       //io.sockets.in(self.lobbies[id].name).emit('lobby:player:joined', {username: socket.session.username});
       socket.join(self.lobbies[id].name);
 
+      // send new online status
+      socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true, game: self.lobbies[id].game});
+
 
       // send user info when joining
       db.User.findOne({name: socket.session.username}, function(err, user){
@@ -109,7 +115,10 @@ module.exports = {
         socket.leave(self.lobbies[id].name);
         io.sockets.in(self.lobbies[id].name).emit(api.lobby.leave, {reason: 'host left'});
 
-        removeLobby(id);
+        // send new online status
+        socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
+
+        removeLobby(id, socket);
       } else {
 
         if (self.lobbies[id].players.indexOf(socket.session.username) > -1){
@@ -122,6 +131,9 @@ module.exports = {
         //send left event to other players in lobby and leave socket room
         socket.leave(self.lobbies[id].name);
         io.sockets.in(self.lobbies[id].name).emit(api.lobby.player.left, {username: socket.session.username});
+
+        // send new online status
+        socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
       }
     }
 

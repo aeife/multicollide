@@ -46,6 +46,7 @@ angular.module('friendslist', [])
             $scope.socketS[friend] = socketgenapi.onlinestatus.on(friend, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
+              $scope.friends[sdata.user].ingame = sdata.game;
 
               $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
             });
@@ -69,6 +70,7 @@ angular.module('friendslist', [])
             $scope.socketS[sdata.user] = socketgenapi.onlinestatus.on(sdata.user, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
+              $scope.friends[sdata.user].ingame = sdata.game;
 
               $scope.friendsOnlineCount = $scope.friendsOnline($scope.friends);
             });

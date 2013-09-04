@@ -23,7 +23,7 @@
               <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}">
                 <td><i class=" icon-circle"></i></td>
                 <td class="text-left"><a ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a></td>
-                <td></td>
+                <td>{{friend.ingame}}</td>
               </tr>
               <tr ng-hide="!requests.length">
                 <td colspan="3">
