@@ -24,7 +24,7 @@ module.exports = {
       this.onlinestatus[username][attr] = newStatus[attr];
     }
 
-    // send new onlne status
+    // send new online status
     socket.broadcast.to(this.api.onlinestatus(username)).emit(this.api.onlinestatus(username), this.onlinestatus[username]);
 
     // if offline delete object
