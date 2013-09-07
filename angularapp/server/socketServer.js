@@ -12,6 +12,26 @@ module.exports = {
   clients: [],
   // saves ids for usernames
   clientUsernames: {},
+  // onlinestatus of each (connected) user, by user name
+  onlinestatus: {},
+  updateOnlinestatus: function(username, newStatus, socket){
+    // create oblinestatus if not existend
+    if (!this.onlinestatus[username]){
+      this.onlinestatus[username] = {};
+    }
+
+    for (var attr in newStatus){
+      this.onlinestatus[username][attr] = newStatus[attr];
+    }
+
+    // send new onlne status
+    socket.broadcast.to(this.api.onlinestatus(username)).emit(this.api.onlinestatus(username), this.onlinestatus[username]);
+
+    // if offline delete object
+    if (!this.onlinestatus[username].online){
+      delete this.onlinestatus[username];
+    }
+  },
   /**
    * returns the id (socket.id) for a given username
    * @param  {string} username Name of user
