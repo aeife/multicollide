@@ -57,7 +57,7 @@ module.exports = {
         socketServer.clients[socketServer.getIdForUsername(player)].leave(self.lobbies[id].name);
 
         // send new online status
-        socket.broadcast.to(api.onlinestatus(player)).emit(api.onlinestatus(player), {user: player, online: true});
+        socketServer.updateOnlinestatus(player, {game: false}, socket);
 
         console.log(player + ' leaves room ' + self.lobbies[id].name);
       }
@@ -88,7 +88,7 @@ module.exports = {
       socket.join('lobby' + id);
 
       // send new online status
-      socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true, game: self.lobbies[id].game});
+      socketServer.updateOnlinestatus(socket.session.username, {game: self.lobbies[id].game}, socket);
 
 
       // send user info when joining
@@ -116,7 +116,7 @@ module.exports = {
         io.sockets.in('lobby' + id).emit(api.lobby.leave, {reason: 'host left'});
 
         // send new online status
-        socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
+        socketServer.updateOnlinestatus(socket.session.username, {game: false}, socket);
 
         removeLobby(id, socket);
       } else {
@@ -133,7 +133,7 @@ module.exports = {
         io.sockets.in('lobby' + id).emit(api.lobby.player.left, {username: socket.session.username});
 
         // send new online status
-        socket.broadcast.to(api.onlinestatus(socket.session.username)).emit(api.onlinestatus(socket.session.username), {user: socket.session.username, online: true});
+        socketServer.updateOnlinestatus(socket.session.username, {game: false}, socket);
       }
     }
 
