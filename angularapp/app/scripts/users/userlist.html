@@ -11,12 +11,12 @@
     <button type="button" class="btn btn-primary" ng-click="refresh()"><i class="icon-refresh"></i> {{'_Refresh_' | i18n}}</button>
   </div>
   <div class="row" style="margin-top:10px;">
-    <div class="col-lg-6 span-centered">
-      <div class="col-lg-6">
+    <div class="col-xs-8 span-centered">
+      <div class="col-xs-6">
         <input type="checkbox" class="" ng-model="onlyConnected"/> {{'_ConnectedOnly_' | i18n}}
       </div>
-      <div class="col-lg-6">
-        <input ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px;"></a>
+      <div class="col-xs-6">
+        <input class="col-xs-11" ng-model="searchPlayer.string" placeholder="{{'_SearchPlayer_' | i18n}}"/><a href="" class="icon-remove" ng-click="clearPlayerSearch()" style="position: relative; left: -20px; line-height:26px;"></a>
       </div>
     </div>
   </div>
@@ -25,6 +25,6 @@
   </div>
 </div>
 <ul class="list-unstyled text-center">
-  <li class="col-lg-2" ng-repeat="user in users | withoutGuests | filter:searchPlayer.string | startFrom:usersPaginate.startFrom | limitTo:usersPaginate.limitTo"><a href="#/users/{{user.name}}">{{user.name}}</a></li>
+  <li class="col-sm-2" ng-repeat="user in users | withoutGuests | filter:searchPlayer.string | orderBy:'name' | startFrom:usersPaginate.startFrom | limitTo:usersPaginate.limitTo"><a href="#/users/{{user.name}}">{{user.name}}</a></li>
 </ul>
 

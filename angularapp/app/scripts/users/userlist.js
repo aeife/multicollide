@@ -5,7 +5,7 @@ angular.module('users.userlist', [])
 
     $scope.locale = localization.getLocalizationKeys();
 
-    $scope.onlyConnected = true;
+    $scope.onlyConnected = false;
     $scope.searchPlayer = '';
     $scope.users = [];
     $scope.connectedUsers = 0;
@@ -24,13 +24,13 @@ angular.module('users.userlist', [])
       if (!this.onlyConnected){
         socketgenapi.users.all.get(function(err, data){
           $scope.users = data;
-          $scope.usersPaginate = new Paginate($scope.users, 5);
+          $scope.usersPaginate = new Paginate($scope.users, 12);
         });
       } else {
         socketgenapi.users.connected.get(function(err, data){
           $scope.users = $scope.convertUserLists(data);
           $scope.connectedUsers = data.length;
-          $scope.usersPaginate = new Paginate($scope.users, 5);
+          $scope.usersPaginate = new Paginate($scope.users, 12);
         });
       }
     };
