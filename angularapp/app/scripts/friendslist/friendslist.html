@@ -18,29 +18,10 @@
       </div>
       <div id="collapse-friendslist" class="accordion-body collapse">
         <div class="accordion-inner">
-          <div class="row">
-            <table class="text-center" style="width: 100%; table-layout: fixed; color: grey;">
-              <tr ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}">
-                <td><i class=" icon-circle"></i></td>
-                <td class="text-left"><a ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a></td>
-                <td ng-hide="!friend.ingame">{{friend.ingame}}</td>
-              </tr>
-              <tr ng-hide="!requests.length">
-                <td colspan="3">
-                  <hr/>
-                </td>
-              </tr>
-              <tr ng-repeat="request in requests">
-                <td><i class=" icon-question-sign"></i></td>
-                <td class="text-left"><a href="/#/users/{{request}}">{{request}}</a></td>
-                <td>
-                  <div class="btn-group">
-                    <a href="" ng-click="accept(request)"><i class="icon-ok-sign"></i></a>
-                    <a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
-                  </div>
-                </td>
-              </tr>
-            </table>
+          <div class="row" ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}" style="margin-left:10px; color:grey">
+            <i class="col-xs-2 icon-circle"></i>
+            <a class="col-xs-5" ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a>
+            <span class="col-xs-5">{{friend.ingame}}</span>
           </div>
         </div>
       </div>
