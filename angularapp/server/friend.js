@@ -197,11 +197,12 @@ module.exports = {
           if (user){
             console.log(user);
             for (var i = 0; i < user.friends.length; i++){
-              var online = false;
-              if (socketServer.connectedUsers.indexOf(user.friends[i]) > -1){
-                online = true;
+              // if user is online fetch whole onlinestatus
+              if (socketServer.onlinestatus[user.friends[i]]){
+                result[user.friends[i]] = socketServer.onlinestatus[user.friends[i]];
+              } else {
+                result[user.friends[i]] = {name: user.friends[i]};
               }
-              result[user.friends[i]] = {online: online};
             }
             console.log('EMITTING TO /FRIENDS/');
             socket.emit(api.friends.all, result);

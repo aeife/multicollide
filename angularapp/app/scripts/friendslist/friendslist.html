@@ -18,10 +18,10 @@
       </div>
       <div id="collapse-friendslist" class="accordion-body collapse">
         <div class="accordion-inner">
-          <div class="row" ng-repeat="(user,friend) in friends | toArray | orderBy:'online':true" ng-class="{online: friend.online}" style="margin-left:10px; color:grey">
+          <div class="row" ng-repeat="(user,friend) in friends | toArray | orderBy:'online'" ng-class="{online: friend.online}" style="margin-left:10px; color:grey">
             <i class="col-xs-2 icon-circle"></i>
             <a class="col-xs-5" ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a>
-            <span class="col-xs-5">{{friend.ingame}}</span>
+            <span class="col-xs-5" ng-hide="!friend.game">{{friend.game}}</span>
           </div>
         </div>
       </div>
