@@ -121,7 +121,7 @@
 
     <ul class="list-unstyled">
       <li class="text-center imitateTable" style="border-bottom:0;"><strong>{{'_FriendsOf_' | i18n}} {{user.name}}</strong></li>
-      <li class="text-center col-lg-6 col-lg-offset-6 imitateTable" ng-repeat="friend in user.friends | startFrom:friendsPaginate.startFrom | limitTo:friendsPaginate.limitTo"><a href="#/users/{{friend}}">{{friend}}</a></li>
+      <li class="text-center col-lg-6 imitateTable" ng-repeat="friend in user.friends | startFrom:friendsPaginate.startFrom | limitTo:friendsPaginate.limitTo"><a href="#/users/{{friend}}">{{friend}}</a></li>
     </ul>
   </div>
 </div>
