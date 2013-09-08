@@ -21,17 +21,24 @@ angular.module('users.userlist', [])
     };
 
     $scope.refresh = function(){
-      socketgenapi.users.connected.get(function(err, data){
-        $scope.users = $scope.convertUserLists(data);
-        $scope.connectedUsers = data.length;
-      });
-
       if (!this.onlyConnected){
         socketgenapi.users.all.get(function(err, data){
           $scope.users = data;
+          $scope.usersPaginate = new Paginate($scope.users, 5);
+        });
+      } else {
+        socketgenapi.users.connected.get(function(err, data){
+          $scope.users = $scope.convertUserLists(data);
+          $scope.connectedUsers = data.length;
+          $scope.usersPaginate = new Paginate($scope.users, 5);
         });
       }
     };
+
+    // refresh on option change
+    $scope.$watch('onlyConnected', function(){
+      $scope.refresh();
+    });
 
     $scope.refresh();
   });
