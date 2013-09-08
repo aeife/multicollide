@@ -57,7 +57,7 @@ module.exports = {
         socketServer.clients[socketServer.getIdForUsername(player)].leave(self.lobbies[id].name);
 
         // send new online status
-        socketServer.updateOnlinestatus(player, {game: false}, socket);
+        socketServer.updateOnlinestatus(player, {game: false}, socketServer.clients[socketServer.getIdForUsername(player)]);
 
         console.log(player + ' leaves room ' + self.lobbies[id].name);
       }
