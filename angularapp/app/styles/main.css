@@ -6,6 +6,12 @@
           border-radius: 0 !important;
 }
 
+@media (min-width: 768px) {
+  .container {
+    max-width: 970px;
+  }
+}
+
 body {
   background-image: url("../images/grey.png"); /* www.subtlepatterns.com */
   background-repeat: repeat;
