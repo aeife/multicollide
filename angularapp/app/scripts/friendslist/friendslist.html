@@ -18,6 +18,16 @@
       </div>
       <div id="collapse-friendslist" class="accordion-body collapse">
         <div class="accordion-inner">
+          <div class="row" ng-repeat="request in requests" style="margin-left:10px;">
+            <div class="col-xs-4">
+              <a href="" ng-click="accept(request)"><i class="icon-ok-sign"></i></a>
+              <a href="" ng-click="decline(request)"><i class=" icon-remove-sign"></i></a>
+            </div>
+            <a class="col-xs-8" href="/#/users/{{request}}">{{request}}</a>
+          </div>
+          <div class="row">
+            <hr/>
+          </div>
           <div class="row" ng-repeat="(user,friend) in friends | toArray | orderBy:'online'" ng-class="{online: friend.online}" style="margin-left:10px; color:grey">
             <i class="col-xs-2 icon-circle"></i>
             <a class="col-xs-5" ng-class="{online: friend.online}" href="/#/users/{{friend.$key}}">{{friend.$key}}</a>
@@ -28,6 +38,3 @@
     </div>
   </div>
 </div>
-
-
-
