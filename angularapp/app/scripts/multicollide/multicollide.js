@@ -25,7 +25,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
 
 
     var spriteSheet = new Image();
-    spriteSheet.src = '/images/spritesheet.png';
+    spriteSheet.src = '/scripts/multicollide/spritesheet.png';
 
     var players;
     var ownPlayer;
@@ -73,7 +73,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
       ownPlayer = null;
 
       for (var i = 0; i < players.length; i++){
-        var newPlayer = new Player(players[i].name, 'red', MULTICOLLIDESTATES.DIRECTION.SOUTH, 0);
+        var newPlayer = new Player(players[i].name, 'red', MULTICOLLIDESTATES.DIRECTION.SOUTH, i);
         if (players[i].name === $rootScope.username){
           ownPlayer = newPlayer;
         }
