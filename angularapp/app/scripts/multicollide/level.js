@@ -46,6 +46,7 @@ angular.module('multicollideGame.level', [])
         for (var i = 0; i < this.players.length; i++){
           this.players[i].spawn(spawnLocations[i].x, spawnLocations[i].y, spawnLocations[i].direction);
           // this.players[i].spawn(10*i, 10*i);
+          canvasRender.printText(this.players[i].username, spawnLocations[i].x, spawnLocations[i].y);
         }
       },
       generateFood: function(x, y){

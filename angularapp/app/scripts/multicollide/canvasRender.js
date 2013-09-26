@@ -210,6 +210,7 @@ angular.module('multicollideGame.canvasRender', [])
         ctx.clearRect(this.tileSize * x -1, this.tileSize * y -1, this.tileSize +2, this.tileSize +2);
       },
       drawText: function(text){
+        // draw text centered
         console.log('DRAW TEXT');
         this.layer.text.fillStyle = '#f00';
         this.layer.text.font = 'bold 30px sans-serif';
@@ -218,7 +219,19 @@ angular.module('multicollideGame.canvasRender', [])
         this.layer.text.fillText(text, this.canvasSize.width/2, this.canvasSize.height/2);
       },
       clearText: function(){
+        // clear all text
         this.layer.text.clearRect(1, 1, this.canvasSize.width, this.canvasSize.height);
-      }
+      },
+      printText: function(text, x, y){
+        // draw text in position
+        if (config.gridSize.width - x < 3){
+          x -= 3;
+        }
+        this.layer.text.fillStyle = '#f00';
+        this.layer.text.font = '10px sans-serif';
+        this.layer.text.textBaseline = 'bottom';
+        // this.layer.text.textAlign = 'center';
+        this.layer.text.fillText(text, this.tileSize*x, this.tileSize*y);
+      },
     };
   });
