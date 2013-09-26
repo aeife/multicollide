@@ -219,6 +219,10 @@ angular.module('multicollideGame.canvasRender', [])
         this.layer.text.fillText(text, this.canvasSize.width/2, this.canvasSize.height/2);
       },
       clearText: function(){
+        // clear centered text
+        this.layer.text.clearRect(this.canvasSize.width/2 - 100, this.canvasSize.height/2 - 100, 200, 200);
+      },
+      clearAllText: function(){
         // clear all text
         this.layer.text.clearRect(1, 1, this.canvasSize.width, this.canvasSize.height);
       },

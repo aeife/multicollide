@@ -95,6 +95,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
             canvasRender.drawText(countdown);
           } else {
             clearInterval(countdownInterval);
+            canvasRender.clearAllText();
             // if host send game start
             if (lobby.currentLobby && ownPlayer.username === lobby.currentLobby.host){
               socketgenapi.multicollide.start.emit();
