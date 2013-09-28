@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.player', 'multicollideGame.canvasRender', 'multicollideGame.config', 'multicollideGame.STATES'])
-  .controller('multicollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, socketgenapi, STATES, MULTICOLLIDESTATES) {
+  .controller('multicollideGameCtrl', function ($scope, level, Player, canvasRender, config, lobby, $rootScope, websocketApi, STATES, MULTICOLLIDESTATES) {
     // initialization
     console.log("MULTICOLLIDE START");
     // already happens when opening server browser
@@ -45,13 +45,13 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
     /* handle game close */
 
     // game ends
-    gameEndListener = socketgenapi.multicollide.end.on(function(){
+    gameEndListener = websocketApi.multicollide.end.on(function(){
       postprocess();
       lobby.status = STATES.GAME.LOBBY;
     });
 
     // lobby leave (includes lobby deleted)
-    lobbyLeaveListener = socketgenapi.lobby.leave.on(function(){
+    lobbyLeaveListener = websocketApi.lobby.leave.on(function(){
       postprocess();
     }).once();
 
@@ -84,7 +84,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
       /* Listeners */
 
       // start signal and countdown
-      gameStartListener = socketgenapi.multicollide.start.on(function(){
+      gameStartListener = websocketApi.multicollide.start.on(function(){
         var countdown = 3;
         canvasRender.drawText(countdown);
         countdownInterval = setInterval(function(){
@@ -98,21 +98,21 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
             canvasRender.clearAllText();
             // if host send game start
             if (lobby.currentLobby && ownPlayer.username === lobby.currentLobby.host){
-              socketgenapi.multicollide.start.emit();
+              websocketApi.multicollide.start.emit();
             }
           }
         },1000);
       }).once();
 
       // kill player during game on lobby leave
-      lobbyPlayerLeftListener = socketgenapi.lobby.player.left.on(function(data){
+      lobbyPlayerLeftListener = websocketApi.lobby.player.left.on(function(data){
         if (lobby.status && lobby.status.value === STATES.GAME.INGAME.value) {
           level.processPlayerLeave(data.username);
         }
       });
 
       // game loop
-      turnListener = socketgenapi.multicollide.turn.on(function(data){
+      turnListener = websocketApi.multicollide.turn.on(function(data){
         level.processTurn(data);
 
         // process end if not done
@@ -128,7 +128,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
               var standings = level.standings;
               console.log("##standings:");
               console.log(standings);
-              socketgenapi.multicollide.end.emit({game: lobby.game, standings: standings});
+              websocketApi.multicollide.end.emit({game: lobby.game, standings: standings});
             }, 1000);
             endProcessed = true;
           }
@@ -172,7 +172,7 @@ angular.module('multicollideGame', ['multicollideGame.level', 'multicollideGame.
 
       if (validDirectionChange(direction)) {
         // console.log("change to " + direction.value);
-        socketgenapi.multicollide.changeDirection.emit({direction: direction});
+        websocketApi.multicollide.changeDirection.emit({direction: direction});
       }
     }
 

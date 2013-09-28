@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('users.userlist', [])
-  .controller('UserlistCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
+  .controller('UserlistCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, websocketApi, Paginate) {
 
     $scope.locale = localization.getLocalizationKeys();
 
@@ -22,12 +22,12 @@ angular.module('users.userlist', [])
 
     $scope.refresh = function(){
       if (!this.onlyConnected){
-        socketgenapi.users.all.get(function(err, data){
+        websocketApi.users.all.get(function(err, data){
           $scope.users = data;
           $scope.usersPaginate = new Paginate($scope.users, 12);
         });
       } else {
-        socketgenapi.users.connected.get(function(err, data){
+        websocketApi.users.connected.get(function(err, data){
           $scope.users = $scope.convertUserLists(data);
           $scope.connectedUsers = data.length;
           $scope.usersPaginate = new Paginate($scope.users, 12);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('games.lobby', [])
-  .factory('lobby', function ($rootScope, socketgenapi, flash, level, STATES, user) {
+  .factory('lobby', function ($rootScope, websocketApi, flash, level, STATES, user) {
     // Service logic
     // ...
 
@@ -23,13 +23,13 @@ angular.module('games.lobby', [])
       },
       getAvailableGames: function(){
         var self = this;
-        socketgenapi.games.get(function(data){
+        websocketApi.games.get(function(data){
           self.games = data;
         });
       },
       newLobby: function(lobbyName, maxplayers){
         var self = this;
-        socketgenapi.lobby.new.get({game: self.game, lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
+        websocketApi.lobby.new.get({game: self.game, lobbyName: lobbyName, maxplayers: maxplayers}, function(data){
           self.onJoinedLobby(data);
         });
       },
@@ -37,7 +37,7 @@ angular.module('games.lobby', [])
         var self = this;
 
         console.log('joining lobby');
-        socketgenapi.lobby.join.get({id: id}, function(err, data){
+        websocketApi.lobby.join.get({id: id}, function(err, data){
           if (err) {
             flash.error(err);
             self.getAvailableGames();
@@ -50,7 +50,7 @@ angular.module('games.lobby', [])
       leaveLobby: function(callback){
         console.log('leaving lobby');
         var self = this;
-        socketgenapi.lobby.leave.get({}, function(data){
+        websocketApi.lobby.leave.get({}, function(data){
 
           // self.listeners.onPlayerJoined.stop();
           // self.listeners.onPlayerLeft.stop();
@@ -69,7 +69,7 @@ angular.module('games.lobby', [])
             self.currentLobby.players[index] = data;
 
             // listen for stats updates
-            self.listeners.statsUpdate[self.currentLobby.players[index].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[index].name, function(data){
+            self.listeners.statsUpdate[self.currentLobby.players[index].name] = websocketApi.user.statsUpdate.on(self.currentLobby.players[index].name, function(data){
               self.currentLobby.players[index] = data;
 
               // adjust link to username
@@ -106,7 +106,7 @@ angular.module('games.lobby', [])
           self.playerForUsername[data.name] = self.currentLobby.players[self.currentLobby.players.length-1];
 
           // listen for stat updates
-          self.listeners.statsUpdate[self.currentLobby.players[self.currentLobby.players.length-1].name] = socketgenapi.user.statsUpdate.on(self.currentLobby.players[self.currentLobby.players.length-1].name, function(data){
+          self.listeners.statsUpdate[self.currentLobby.players[self.currentLobby.players.length-1].name] = websocketApi.user.statsUpdate.on(self.currentLobby.players[self.currentLobby.players.length-1].name, function(data){
             self.currentLobby.players[self.currentLobby.players.length-1] = data;
 
             // adjust link to username
@@ -128,7 +128,7 @@ angular.module('games.lobby', [])
           self.listeners.statsUpdate[data.username].stop();
         });
 
-        this.listeners.onLobbyLeave = socketgenapi.lobby.leave.on(function(data){
+        this.listeners.onLobbyLeave = websocketApi.lobby.leave.on(function(data){
           self.onLeftLobby(data);
         });
 
@@ -156,25 +156,25 @@ angular.module('games.lobby', [])
         this.getAvailableGames();
       },
       onPlayerJoined: function(callback){
-        this.listeners.onPlayerJoined = socketgenapi.lobby.player.joined.on(function(data){
+        this.listeners.onPlayerJoined = websocketApi.lobby.player.joined.on(function(data){
           callback(data);
         });
       },
       onPlayerLeft: function(callback){
-        this.listeners.onPlayerLeft = socketgenapi.lobby.player.left.on(function(data){
+        this.listeners.onPlayerLeft = websocketApi.lobby.player.left.on(function(data){
           callback(data);
         });
       },
       onGameStart: function(){
         var self = this;
-        this.listeners.onGameStart = socketgenapi.lobby.start.on(function(data){
+        this.listeners.onGameStart = websocketApi.lobby.start.on(function(data){
           self.status = STATES.GAME.INGAME;
           self.lastStandings = null;
         });
       },
       startGame: function(){
         // @TODO: maybe get id from session on server?
-        socketgenapi.lobby.start.get({id: this.currentLobby.id}, function(){});
+        websocketApi.lobby.start.get({id: this.currentLobby.id}, function(){});
       }
     };
   });

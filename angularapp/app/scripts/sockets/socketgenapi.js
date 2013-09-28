@@ -1,230 +1,252 @@
 'use strict';
 
-angular.module('sockets')
-  .factory('socketgenapi', function ($rootScope, socket, websocketApi) {
-    // Service logic
-
-    function convertCallback(callback){
-      return function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            callback.apply(socket, args);
-          });
-        };
-    }
-
-    function on(msgname, callback, onlyForListeners){
-      var callbackConverted = convertCallback(callback);
-
-      if (onlyForListeners){
-        if (!socket.socketObj().$events[msgname]){
-          // first listener of that type: subscribe
-          socket.emit('subscribe', {msg: msgname});
+(function(){
+    var serverGeneration = {
+      init: function(obj){
+        if (obj instanceof Array){
+          var tempObj = obj[0];
+          for (var i = 1; i < obj.length; i++){
+            if (obj[i]) {
+              tempObj = concatObj(tempObj, obj[i]);
+            }
+          }
+          obj = tempObj;
         }
 
+        return this.generateServerObject(obj);
+      },
+      generateServerObject: function(obj){
+        var self = this;
+        console.log('generate');
+        var msg = '';
+        self.iterateServer(obj, msg);
+
+        return obj;
+      },
+      iterateServer: function(obj, msg, type){
+        var self = this;
+        for (var property in obj) {
+          if (obj.hasOwnProperty(property)) {
+            if (typeof obj[property] == 'object' && !obj[property].emit && !obj[property].get && !obj[property].on && Object.keys(obj[property]).length != 0) {
+              // continue iterating till at the deepest message level
+              self.iterateServer(obj[property], msg ? msg + ':' + property : property);
+            } else {
+              // process found end attribute
+              var message = msg ? msg + ':' + property : property;
+              console.log(message);
+              console.log(obj[property]);
+              // attach message string to object or generate attach function to construct message at runtime
+              if ((obj[property].get && obj[property].get.attach) ||
+                  (obj[property].on && obj[property].on.attach) ||
+                  (obj[property].emit && obj[property].emit.attach)) {
+
+                obj[property] = generateAttachFunction(message);
+              } else {
+                obj[property] = message;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    function concatObj(obj1, obj2){
+      for (var attrname in obj2){
+        obj1[attrname] = obj2[attrname];
       }
 
-      socket.onn(msgname, callbackConverted);
+      return obj1;
+    }
 
-      return {
-        forRoute: function(){
-          var self = this;
-          $rootScope.$on('$routeChangeSuccess', function() {
-            self.stop();
-          });
-        },
-        stop: function(){
-          console.log("SocketAPI: stop listener for " + msgname);
-          socket.removeListener(msgname, callbackConverted);
+    function generateAttachFunction(msg){
+      return function(param){
+        if (param){
+          return msg + ':' + param;
+        } else {
+          return msg;
+        }
+
+      };
+    }
+
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+      module.exports = serverGeneration;
+    } else {
+      angular.module('socketgenApi', [])
+      .factory('socketgenApi', function($rootScope, socket){
+        function convertCallback(callback){
+          return function () {
+              var args = arguments;
+              $rootScope.$apply(function () {
+                callback.apply(socket, args);
+              });
+            };
+        }
+
+        function on(msgname, callback, onlyForListeners){
+          var callbackConverted = convertCallback(callback);
 
           if (onlyForListeners){
             if (!socket.socketObj().$events[msgname]){
-              // last listener of that type: unsubscribe
-              socket.emit('unsubscribe', {msg: msgname});
+              // first listener of that type: subscribe
+              socket.emit('subscribe', {msg: msgname});
             }
 
           }
-        },
-        removeAll: function(){
-          // dont use, each module should remove its own specific listeners
-          socket.removeAllListeners(msgname);
-        },
-        once: function(){
-          // remove normal listener
-          this.stop();
-          // @TODO: can message can be emitted in between?
 
-          // add once listener
-          socket.once(msgname, callbackConverted);
+          socket.onn(msgname, callbackConverted);
 
-          return this;
-        },
-        whileLoggedIn: function() {
-          var self = this;
-          socket.once('user:logout', function(){
-            self.stop();
-          });
+          return {
+            forRoute: function(){
+              var self = this;
+              $rootScope.$on('$routeChangeSuccess', function() {
+                self.stop();
+              });
+            },
+            stop: function(){
+              console.log("SocketAPI: stop listener for " + msgname);
+              socket.removeListener(msgname, callbackConverted);
+
+              if (onlyForListeners){
+                if (!socket.socketObj().$events[msgname]){
+                  // last listener of that type: unsubscribe
+                  socket.emit('unsubscribe', {msg: msgname});
+                }
+
+              }
+            },
+            removeAll: function(){
+              // dont use, each module should remove its own specific listeners
+              socket.removeAllListeners(msgname);
+            },
+            once: function(){
+              // remove normal listener
+              this.stop();
+              // @TODO: can message can be emitted in between?
+
+              // add once listener
+              socket.once(msgname, callbackConverted);
+
+              return this;
+            },
+            whileLoggedIn: function() {
+              var self = this;
+              socket.once('user:logout', function(){
+                self.stop();
+              });
+            }
+          };
         }
-      };
-    }
 
-    function once(msgname, callback){
-      socket.once(msgname, callback);
-    }
+        function once(msgname, callback){
+          socket.once(msgname, callback);
+        }
 
-    function emit(msgname, data){
-      socket.emit(msgname, data);
-    }
+        function emit(msgname, data){
+          socket.emit(msgname, data);
+        }
 
-    function get(msgname, callback, data, attach){
-      if (data){
-        emit(msgname, data);
-      } else {
-        emit(msgname);
-      }
-
-      var callbackConverted = convertCallback(callback);
-      // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
-      // @TODO: always send error as first parameter
-      if (data && attach){
-        // attach a string to the listener message
-        once(msgname + ':' + data[attach], callbackConverted);
-      } else {
-        once(msgname, callbackConverted);
-      }
-    }
-
-    // Public API here
-    // var socketApi =
-    //   {
-    //     on: {
-    //       onlinestatus: function(username, callback){
-    //         return on('onlinestatus:'+username, callback);
-    //       }
-    //     },
-    //     get: {
-    //       users: {
-    //         connected: function(callback){
-    //           get('users:connected', callback);
-    //         },
-    //         all: function(callback){
-    //           get('users:all', callback);
-    //         }
-    //       }
-    //     }
-    //   }
-
-    // // alternate order
-    // var websocketApi1 = {
-    //   onlinestatus: {
-    //     on: undefined,
-    //     opts: {
-    //       attach: "username"
-    //     }
-    //   },
-    //   users: {
-    //     connected: {
-    //       get: undefined
-    //     },
-    //     all: {
-    //       get: undefined
-    //     }
-    //   },
-    //   friend: {
-    //     accept: {
-    //       emit: undefined
-    //     },
-    //     decline: {
-    //       emit: undefined
-    //     },
-    //     request: {
-    //       on: undefined
-    //     },
-    //     new: {
-    //       on: undefined
-    //     }
-    //   }
-    // }
-
-    function processSocketApi (obj){
-      var msg = "";
-      iterate(obj, msg);
-      return obj;
-    }
-
-    function generateOn(m, opts){
-      if (opts && opts.attach){
-        return function(msg, callback){
-          return on(m + ':' + msg, callback, opts.onlyForListeners);
-        };
-      } else {
-        return function(callback){
-          return on(m, callback, opts.onlyForListeners);
-        };
-      }
-    }
-
-    function generateGet(m, opts){
-      if (opts && opts.emitData) {
-        return function(data, callback){
-          get(m, callback, data, opts.attach);
-        };
-      } else {
-        return function(callback){
-          get(m, callback);
-        };
-      }
-    }
-
-    function generateEmit(m){
-      return function(data){
-        emit(m, data);
-      };
-    }
-
-    function iterate(obj, msg) {
-      for (var property in obj) {
-        if (obj.hasOwnProperty(property)) {
-          if (typeof obj[property] == "object" && property !== 'emit' && property !== 'get' && property !== 'on' && Object.keys(obj[property]).length != 0) {
-            // continue iterating till at the deepest message level
-            iterate(obj[property], msg ? msg + ":" + property : property);
+        function get(msgname, callback, data, attach){
+          if (data){
+            emit(msgname, data);
           } else {
-            // process found end attribute
-            if (property === "get"){
+            emit(msgname);
+          }
 
-              obj[property] = generateGet(msg, obj[property]);
+          var callbackConverted = convertCallback(callback);
+          // @TODO: always emit data? like socketgenapi.get.user.logout({}, function...)
+          // @TODO: always send error as first parameter
+          if (data && attach){
+            // attach a string to the listener message
+            once(msgname + ':' + data[attach], callbackConverted);
+          } else {
+            once(msgname, callbackConverted);
+          }
+        }
 
-              // every get also includes single on
-              obj['on'] = generateOn(msg, obj['on']);
+        function processSocketApi (obj){
+          var msg = "";
+          iterate(obj, msg);
+          return obj;
+        }
 
-            } else if (property === "on"){
+        function generateOn(m, opts){
+          if (opts && opts.attach){
+            return function(msg, callback){
+              return on(m + ':' + msg, callback, opts.onlyForListeners);
+            };
+          } else {
+            return function(callback){
+              return on(m, callback, opts.onlyForListeners);
+            };
+          }
+        }
 
-              obj[property] = generateOn(msg, obj[property]);
+        function generateGet(m, opts){
+          if (opts && opts.emitData) {
+            return function(data, callback){
+              get(m, callback, data, opts.attach);
+            };
+          } else {
+            return function(callback){
+              get(m, callback);
+            };
+          }
+        }
 
-            } else if (property === "emit"){
+        function generateEmit(m){
+          return function(data){
+            emit(m, data);
+          };
+        }
 
-              obj[property] = generateEmit(msg);
+        function iterate(obj, msg) {
+          for (var property in obj) {
+            if (obj.hasOwnProperty(property)) {
+              if (typeof obj[property] == "object" && property !== 'emit' && property !== 'get' && property !== 'on' && Object.keys(obj[property]).length != 0) {
+                // continue iterating till at the deepest message level
+                iterate(obj[property], msg ? msg + ":" + property : property);
+              } else {
+                // process found end attribute
+                if (property === "get"){
 
+                  obj[property] = generateGet(msg, obj[property]);
+
+                  // every get also includes single on
+                  obj['on'] = generateOn(msg, obj['on']);
+
+                } else if (property === "on"){
+
+                  obj[property] = generateOn(msg, obj[property]);
+
+                } else if (property === "emit"){
+
+                  obj[property] = generateEmit(msg);
+
+                }
+              }
             }
           }
         }
-      }
+        return {
+          init: function(obj){
+            if (obj instanceof Array){
+              var tempObj = obj[0];
+              for (var i = 1; i < obj.length; i++){
+                if (obj[i]) {
+                  tempObj = concatObj(tempObj, obj[i]);
+                }
+              }
+
+              obj = tempObj;
+            }
+
+            console.log(obj);
+            return processSocketApi(obj);
+          }
+        };
+
+      });
     }
 
-    // append game apis before processing
-    websocketApi = websocketApi.appendGameApis(appConfig);
-    websocketApi = processSocketApi(websocketApi);
-    console.log('websocketApi:');
-    console.log(websocketApi);
-
-    // initialization
-    websocketApi.disconnect.on(function(){
-      console.log("SHOW MODAL");
-      $('#serverOfflineModal').modal('show');
-      // <a data-toggle="modal" href="#serverOfflineModal" class="btn btn-primary btn-large">Launch demo modal</a>
-      // var d = $dialog.dialog({templateUrl: 'views/msgServerOffline.html', backdropClick: false, keyboard: false});
-      // d.open();
-    });
-
-    return websocketApi;
-  });
+})();

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('friendslist', [])
-  .controller('FriendslistCtrl', function($scope, auth, user, localization, socketgenapi){
+  .controller('FriendslistCtrl', function($scope, auth, user, localization, websocketApi){
     // get friend list
     // subscribe to online status changes for all friends
     // onlinestatus:<username>
@@ -27,7 +27,7 @@ angular.module('friendslist', [])
       if (newValue) {
 
         //get friend requests
-        socketgenapi.friend.request.on(function(data){
+        websocketApi.friend.request.on(function(data){
           console.log(data);
           $scope.requests = data.requests;
           // console.log(data.from + ' wants to add you!');
@@ -43,7 +43,7 @@ angular.module('friendslist', [])
           for (var friend in $scope.friends) {
             console.log(friend);
 
-            $scope.socketS[friend] = socketgenapi.onlinestatus.on(friend, function(sdata){
+            $scope.socketS[friend] = websocketApi.onlinestatus.on(friend, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
               $scope.friends[sdata.user].game = sdata.game;
@@ -54,7 +54,7 @@ angular.module('friendslist', [])
           }
 
           // new friend (= own or other user accepted friend request)
-          socketgenapi.friend.new.on(function(sdata){
+          websocketApi.friend.new.on(function(sdata){
             // if accepted from own user delete according request
             if ($scope.requests && $scope.requests.indexOf(sdata.user) > -1){
               $scope.requests.splice($scope.requests.indexOf(sdata.user), 1);
@@ -67,7 +67,7 @@ angular.module('friendslist', [])
             console.log($scope.friends);
             // var friend = $scope.friends[sdata.user];
 
-            $scope.socketS[sdata.user] = socketgenapi.onlinestatus.on(sdata.user, function(sdata){
+            $scope.socketS[sdata.user] = websocketApi.onlinestatus.on(sdata.user, function(sdata){
               console.log(sdata.user + ' has changed online status to: ' + sdata.online);
               $scope.friends[sdata.user].online = sdata.online;
               $scope.friends[sdata.user].game = sdata.game;
@@ -78,7 +78,7 @@ angular.module('friendslist', [])
           }).whileLoggedIn();
 
           // deleted friend
-          socketgenapi.friend.deleted.on(function(sdata){
+          websocketApi.friend.deleted.on(function(sdata){
             // delete friend from list and adjust friends count
             delete $scope.friends[sdata.user];
             $scope.friendCount = Object.keys($scope.friends).length;
@@ -105,13 +105,13 @@ angular.module('friendslist', [])
     // user accepted friend request
     $scope.accept = function(username){
       console.log('accepting request from ' + username);
-      socketgenapi.friend.accept.emit({user: username});
+      websocketApi.friend.accept.emit({user: username});
     };
 
     // user declined friend request
     $scope.decline = function(username){
       console.log('declining request from ' + username);
-      socketgenapi.friend.decline.emit({user: username});
+      websocketApi.friend.decline.emit({user: username});
 
       // remove request
       $scope.requests.splice($scope.requests.indexOf(username), 1);

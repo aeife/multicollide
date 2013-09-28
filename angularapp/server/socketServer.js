@@ -50,8 +50,10 @@ module.exports = {
     var appConfig = require('../app/scripts/config.js');
 
     // include api and generate object with appended api
-    this.api = require('../app/websocketApi.js');
-    this.api = this.api.generateServerObject(this.api.appendGameApis(appConfig));
+    this.api = require('../app/scripts/sockets/socketgenapi.js');
+    // this.api = this.api.generateServerObject(this.api.appendGameApis(appConfig));
+    this.api = this.api.init(appConfig.combinedApi());
+    console.log(this.api);
 
     // INCLUDE
     var lobby = require('./lobby.js');

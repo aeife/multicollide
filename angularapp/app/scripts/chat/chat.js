@@ -5,7 +5,7 @@ angular.module('chat', [])
     return {
       restrict: 'E',
       templateUrl: 'scripts/chat/chat.html',
-      controller: function($scope, socketgenapi, $rootScope){
+      controller: function($scope, websocketApi, $rootScope){
 
         $scope.messages = [];
         $scope.currentMessage = '';
@@ -24,22 +24,22 @@ angular.module('chat', [])
 
         $scope.join = function(){
           console.log('joining');
-          socketgenapi.chat.join.get(function(err, data){
+          websocketApi.chat.join.get(function(err, data){
             console.log("got join, now listen");
             if (!err){
               $scope.inChat = true;
               $scope.chatUsers = data.chatUsers;
-              chatMessageListener = socketgenapi.chat.message.on(function(data){
+              chatMessageListener = websocketApi.chat.message.on(function(data){
                 addMessage(data);
               });
 
-              chatJoinedListener = socketgenapi.chat.user.joined.on(function(data){
+              chatJoinedListener = websocketApi.chat.user.joined.on(function(data){
                 data.type = 'joined';
                 $scope.chatUsers.push(data.username);
                 addMessage(data);
               });
 
-              chatLeftListener = socketgenapi.chat.user.left.on(function(data){
+              chatLeftListener = websocketApi.chat.user.left.on(function(data){
                 data.type = 'left';
                 $scope.chatUsers.splice($scope.chatUsers.indexOf(data.username), 1);
                 addMessage(data);
@@ -50,7 +50,7 @@ angular.module('chat', [])
 
         $scope.leave = function(){
           console.log('leave');
-          socketgenapi.chat.leave.get(function(err, data){
+          websocketApi.chat.leave.get(function(err, data){
             if (!err){
               $scope.close();
             }
@@ -69,7 +69,7 @@ angular.module('chat', [])
 
         $scope.send = function(){
           console.log('sending ' + $scope.currentMessage);
-          socketgenapi.chat.message.emit({message: $scope.currentMessage});
+          websocketApi.chat.message.emit({message: $scope.currentMessage});
           $scope.currentMessage = '';
         };
 

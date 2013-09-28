@@ -21,7 +21,7 @@ angular.module('multicollide',
   'imagePreload',
   'users',
   'games',
-  'websocketApi',
+  'socketgenApi',
   'STATES',
   'paginate',
   'tmh.dynamicLocale',
@@ -82,7 +82,7 @@ angular.module('multicollide',
 
 angular.module('multicollideBoot', ['multicollide']).
 
-  run(function(localization, $templateCache, $http, imagePreload, socketgenapi, $cookies, $rootScope) { // instance-injector
+  run(function(localization, $templateCache, $http, imagePreload, websocketApi, $cookies, $rootScope) { // instance-injector
     // initialize localization service
     // reason: user controller needs localization keys for pluralize
     // when direct accessing user route localization is not loaded before
@@ -92,7 +92,7 @@ angular.module('multicollideBoot', ['multicollide']).
     // check login status on start up
     // @TODO: Case that client has no cookie but still is logged in on the server
     // @TODO: Check if language is still account language on reconnect and logged in
-    socketgenapi.successfullConnected.on(function(data){
+    websocketApi.successfullConnected.on(function(data){
 
 
       // @TODO: is not loaded before when directly opening route #/games

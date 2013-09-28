@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('users.profile', [])
-  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, socketgenapi, Paginate) {
+  .controller('ProfileCtrl', function ($scope, $routeParams, user, auth, $location, $rootScope, localization, websocketApi, Paginate) {
     $scope.appConfig = appConfig;
     $scope.currentGame = $scope.appConfig.games[0].name;
 
@@ -19,7 +19,7 @@ angular.module('users.profile', [])
         $scope.gamesPaginate = new Paginate($scope.user.gamesParticipated, 5);
         $scope.friendsPaginate = new Paginate($scope.user.friends, 6);
 
-        socketgenapi.onlinestatus.on(data.name, function(data){
+        websocketApi.onlinestatus.on(data.name, function(data){
           console.log(data);
           $scope.user.online = data.online;
           $scope.user.ingame = data.game;
@@ -46,7 +46,7 @@ angular.module('users.profile', [])
               }
 
               // register listener when friend is added (his request is accepted) while visiting his profile
-              socketgenapi.friend.new.on(function(data){
+              websocketApi.friend.new.on(function(data){
                 console.log(data);
                 if (data.user === $scope.user.name){
                   $scope.isFriend = data.online;
@@ -54,7 +54,7 @@ angular.module('users.profile', [])
               }).forRoute();
 
               // register listener when friend is deleted
-              socketgenapi.friend.deleted.on(function(data){
+              websocketApi.friend.deleted.on(function(data){
                 console.log(data);
                 if (data.user === $scope.user.name){
                   $scope.isFriend = false;

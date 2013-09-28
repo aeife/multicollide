@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('multicollide')
-  .factory('auth', function ($http, $cookies, user, socketgenapi, $rootScope, $location, flash, $filter, localization) {
+  .factory('auth', function ($http, $cookies, user, websocketApi, $rootScope, $location, flash, $filter, localization) {
     // Service logic
     // ...
 
@@ -14,7 +14,7 @@ angular.module('multicollide')
         });
       },
       login: function (username, password) {
-        socketgenapi.user.login.get({username: username, password: password}, function (data) {
+        websocketApi.user.login.get({username: username, password: password}, function (data) {
           console.log(data);
           if (data.loggedin) {
             $cookies.username = username;
@@ -34,7 +34,7 @@ angular.module('multicollide')
       },
       logout: function () {
         // @TODO: possible hook before logout?
-        socketgenapi.user.logout.get(function (data) {
+        websocketApi.user.logout.get(function (data) {
           console.log("successfully logged out");
           // save new guest username
           $rootScope.username = data.username;
