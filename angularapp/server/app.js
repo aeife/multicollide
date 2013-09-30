@@ -23,9 +23,9 @@ console.log(__dirname);
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/../app');
-  app.engine('html', require('ejs').renderFile);
-  app.use(express.bodyParser());
+  // app.set('views', __dirname + '/../app');
+  // app.engine('html', require('ejs').renderFile);
+  // app.use(express.bodyParser());
   app.use(express.logger('dev'));
   app.use(cookieParser);
   app.use(express.session({store: sessionStore, key: sessionKey, cookie: { httpOnly: false }}));
