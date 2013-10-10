@@ -1,9 +1,10 @@
 'use strict';
 
 describe('Directive: friendslist', function () {
-  beforeEach(module('multicollide'));
+  beforeEach(module('friendslist'));
   beforeEach(module('multicollideMock.socket'));
   beforeEach(module('multicollideMock.localization'));
+  // beforeEach(module('multicollide'));
 
   var FriendslistCtrl,
       scope,
@@ -18,7 +19,10 @@ describe('Directive: friendslist', function () {
     FriendslistCtrl = $controller('FriendslistCtrl', {
       $scope: scope,
       socket: socket,
-      localization: localization
+      localization: localization,
+      auth: {},
+      user: {},
+      websocketApi: {}
     });
   }));
 

@@ -4,7 +4,7 @@
 
 module.exports = {
   listen: function(io){
-    var STATES = require('../app/states.js')();
+    var STATES = require('../app/scripts/states.js')();
     var db = require('./database');
     var lobby = require('./lobby');
     var api = require('./socketServer').api;

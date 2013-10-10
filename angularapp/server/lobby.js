@@ -13,7 +13,7 @@ module.exports = {
 
     var db = require('./database');
     var socketServer = require('./socketServer');
-    var STATES = require('../app/states.js')();
+    var STATES = require('../app/scripts/states.js')();
     var api = socketServer.api;
 
     // highest current lobby id for continues counting
