@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sockets', [])
+angular.module('sockets', ['sockets.websocketApi'])
   .factory('socket', function ($rootScope) {
     var socket = io.connect();
     // var socket = io.connect("http://localhost:3000");

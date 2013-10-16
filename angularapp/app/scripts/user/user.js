@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('multicollide')
+angular.module('user', ['user.auth'])
   .factory('user', function ($resource, $location, $rootScope, websocketApi) {
     // Service logic
 

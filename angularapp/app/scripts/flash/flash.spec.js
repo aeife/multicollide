@@ -28,7 +28,10 @@ describe('Service: flash', function () {
     flash.error('generic error2');
 
     flash.remove(1);
-    expect(flash.get().length).toBe(2);
+    expect(flash.get()).toEqual([
+      {msg: 'generic error', type: 'danger'},
+      {msg: 'generic error2', type: 'danger'}
+    ]);
   });
 
 });

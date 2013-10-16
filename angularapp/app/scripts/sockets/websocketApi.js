@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sockets')
+angular.module('sockets.websocketApi', [])
   .factory('websocketApi', function (socketgenApi) {
 
     // append game apis before processing
