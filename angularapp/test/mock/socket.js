@@ -34,6 +34,14 @@ angular.module('multicollideMock.socket', [])
       emitCallback();
     }
   };
+
+  this.once = function(eventName, callback){
+    if(!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+    this.events[eventName].push(callback);
+  };
+
   return this;
 
 });

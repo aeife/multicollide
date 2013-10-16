@@ -5,12 +5,15 @@ angular.module('multicollideMock.auth', [])
     // Service logic
     // ...
 
+    var loginStatus = false;
+
     // Public API here
     return {
-      loginStatus: false,
+      changeLoginStatus: function(status){
+        loginStatus = status;
+      },
       isLoggedIn: function() {
-        var self = this;
-        return self.loginStatus;
+        return loginStatus;
       }
     };
   });
