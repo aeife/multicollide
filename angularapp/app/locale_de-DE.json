@@ -350,5 +350,25 @@
   "_Language_": {
     "message": "Sprache",
     "description": ""
+  },
+  "_GamesStatistics_": {
+    "message": "Spielstatistiken",
+    "description": ""
+  },
+  "_Friends_": {
+    "message": "Freunde",
+    "description": ""
+  },
+  "_FriendsOf_": {
+    "message": "Freunde von",
+    "description": ""
+  },
+  "_TheGames_": {
+    "message": "Die Spiele",
+    "description": ""
+  },
+  "_Offline_": {
+    "message": "Offline",
+    "description": ""
   }
 }
