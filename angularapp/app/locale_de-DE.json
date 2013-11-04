@@ -370,5 +370,9 @@
   "_Offline_": {
     "message": "Offline",
     "description": ""
+  },
+  "_HTWK_": {
+    "message": "Hochschule für Technik, Wirtschaft und Kultur (HTWK) Leipzig",
+    "description": ""
   }
 }

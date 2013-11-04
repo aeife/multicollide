@@ -371,5 +371,9 @@
   "_Offline_": {
     "message": "Offline",
     "description": ""
+  },
+  "_HTWK_": {
+    "message": "university of applied science Leipzig",
+    "description": ""
   }
 }
