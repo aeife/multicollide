@@ -53,7 +53,6 @@ module.exports = {
     this.api = require('../app/scripts/sockets/socketgenapi.js');
     // this.api = this.api.generateServerObject(this.api.appendGameApis(appConfig));
     this.api = this.api.init(appConfig.combinedApi());
-    console.log(this.api);
 
     // INCLUDE
     var lobby = require('./lobby.js');
@@ -141,12 +140,12 @@ module.exports = {
        * Subscriptions
        */
       socket.on('subscribe', function(data){
-        console.log("subscribing " + socket.session.username + " to " + data.msg);
+        console.log('subscribing ' + socket.session.username + ' to ' + data.msg);
         socket.join(data.msg);
       });
 
       socket.on('unsubscribe', function(data){
-        console.log("unsubscribing " + socket.session.username + " to " + data.msg);
+        console.log('unsubscribing ' + socket.session.username + ' to ' + data.msg);
         socket.leave(data.msg);
       });
     });

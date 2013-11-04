@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('paginate', [])
-  .factory('Paginate', function ($rootScope) {
+  .factory('Paginate', function () {
     // Service logic
     // ...
 
@@ -10,13 +10,13 @@ angular.module('paginate', [])
       this.pageSize = pageSize;
       this.maxPage = Math.ceil((this.data.length) / this.pageSize);
       this.pageArray = new Array(Math.ceil(this.data.length / this.pageSize));
+      this.limitTo = this.pageSize;
       this.update();
     }
 
     Paginate.prototype = {
       page: 0,
       startFrom: this.page*this.pageSize,
-      limitTo: this.pageSize,
       changePage: function(newPage){
         this.page = newPage;
         this.update();
@@ -35,7 +35,6 @@ angular.module('paginate', [])
       },
       update: function(){
         this.startFrom = this.page*this.pageSize;
-        this.limitTo = this.pageSize;
       }
     };
 

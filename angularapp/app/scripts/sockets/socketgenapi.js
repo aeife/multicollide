@@ -33,8 +33,6 @@
             } else {
               // process found end attribute
               var message = msg ? msg + ':' + property : property;
-              console.log(message);
-              console.log(obj[property]);
               // attach message string to object or generate attach function to construct message at runtime
               if ((obj[property].get && obj[property].get.attach) ||
                   (obj[property].on && obj[property].on.attach) ||
@@ -241,7 +239,6 @@
               obj = tempObj;
             }
 
-            console.log(obj);
             return processSocketApi(obj);
           }
         };
