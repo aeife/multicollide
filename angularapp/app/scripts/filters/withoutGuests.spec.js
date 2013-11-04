@@ -11,9 +11,8 @@ describe('Filter: withoutGuests', function () {
     withoutGuests = $filter('withoutGuests');
   }));
 
-  // it('should return the input prefixed with "withoutGuests filter:"', function () {
-  //   var text = 'angularjs';
-  //   expect(withoutGuests(text)).toBe('withoutGuests filter: ' + text);
-  // });
+  it('should clear out names with guest as leading substring"', function () {
+    expect(withoutGuests([{name: 'Testuser'}, {name: 'Guest'}, , {name: 'Guestter'}, {name: 'TheGuester'}, {name: 'Guesser'}])).toEqual([{name: 'Testuser'}, {name: 'TheGuester'}, {name: 'Guesser'}]);
+  });
 
 });
