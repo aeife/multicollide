@@ -3,7 +3,7 @@
 describe('Service: user', function () {
 
   // load the service's module
-  beforeEach(module('multicollide'));
+  beforeEach(module('user'));
 
   // instantiate service
   var user;
