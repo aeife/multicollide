@@ -2,7 +2,7 @@
 
 angular.module('layout', [])
   .controller('LayoutCtrl', function ($scope, $rootScope) {
-    $scope.mainGridSize = 9;
+    $scope.mainGridSize = 8;
     $rootScope.showSidebar = true;
     $scope.sidebarToggleBtnContent = "&laquo;";
 
@@ -10,7 +10,7 @@ angular.module('layout', [])
       $rootScope.showSidebar = !$rootScope.showSidebar;
 
       if ($scope.showSidebar){
-        $scope.mainGridSize = 9;
+        $scope.mainGridSize = 8;
       } else {
         $scope.mainGridSize = 12;
       }

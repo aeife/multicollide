@@ -9,6 +9,7 @@
 @media (min-width: 768px) {
   .container {
     max-width: 992px;
+    width: auto;
   }
 }
 
@@ -80,7 +81,7 @@ td {
 }
 
 .navbar .nav a {
-  font-size:16px;
+  font-size:15px;
 
 }
 
